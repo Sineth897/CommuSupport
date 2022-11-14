@@ -1,0 +1,15 @@
+{
+    "name": "cs-08/commu-support",
+    "autoload": {
+        "psr-4": {
+            "Cs08\\CommuSupport\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "THAMUDITHA P V G S",
+            "email": "2020CS183@stu.ucsc.cmb.ac.lk"
+        }
+    ],
+    "require": {}
+}
