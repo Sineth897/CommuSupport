@@ -2,7 +2,7 @@
     "name": "cs-08/commu-support",
     "autoload": {
         "psr-4": {
-            "Cs08\\CommuSupport\\": "src/"
+            "app\\": "./"
         }
     },
     "authors": [
@@ -11,5 +11,7 @@
             "email": "2020CS183@stu.ucsc.cmb.ac.lk"
         }
     ],
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
 }
