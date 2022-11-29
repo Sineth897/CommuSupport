@@ -2,14 +2,14 @@
 
 namespace app\models;
 
-use app\core\UserModel;
+use app\core\userModel;
 
-abstract class generalUser extends UserModel
+abstract class generalUser extends userModel
 {
-    public UserModel $thisUser;
+    public userModel $thisUser;
 
     public function __construct()
     {
-        $this->thisUser = new UserModel();
+        $this->thisUser = new userModel();
     }
 }

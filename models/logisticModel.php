@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class logisticModel
+class logisticModel extends userModel
 {
 
 }

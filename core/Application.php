@@ -2,19 +2,22 @@
 
 namespace app\core;
 
+use app\models\userModel;
+
 class Application
 {
     public static string $ROOT_DIR;
     public static Application $app;
 
     public string $userClass;
-    public string $userType = 'guest';
+    public string $userType = '';
     public Router $router;
     public Request $request;
     public Response $response;
     public Database $database;
     public Session $session;
-    public ?UserModel $user;
+    public ?userModel $user;
+    private array $rootInfo;
 
     public function __construct(public string $rootPath, array $config)
 
@@ -28,6 +31,7 @@ class Application
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
         $this->database = new Database($config['db']);
+        $this->rootInfo = $config['root'];
 
         $primaryValue = $this->session->get('user');
         if($primaryValue) {
@@ -63,8 +67,10 @@ class Application
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
+        $username = $user->username;
         $userType = $user->userType();
         $this->session->set('user', $primaryValue);
+        $this->session->set('username', $username);
         $this->session->set('userType', $userType);
         return true;
     }
@@ -83,8 +89,17 @@ class Application
 
     private function getUserClass(string $userType): string
     {
-        $userClass = $this->userClass;
-        $userClass = $userClass::getUserClass($userType);
-        return $userClass;
+        return $this->userClass::getUserClass($userType);
+
+    }
+
+    public function isRoot(string $username): bool
+    {
+        return $username === $this->rootInfo['username'];
+    }
+
+    public function isRootPassword(string $password): bool
+    {
+        return password_verify($password, $this->rootInfo['password']);
     }
 }

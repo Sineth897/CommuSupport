@@ -11,7 +11,7 @@ abstract class Middleware
     protected string $DONOR = 'donor';
     protected string $DRIVER = 'driver';
     protected string $LOGISTIC = 'logistic';
-    protected string $MANAGER = 'managerModel';
+    protected string $MANAGER = 'manager';
     protected string $CHO = 'cho';
     protected string $ADMIN = 'admin';
 

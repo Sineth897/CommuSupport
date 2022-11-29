@@ -1,6 +1,6 @@
 <?php
 
-/** @var $model \app\core\UserModel*/
+/** @var $model \app\models\userModel*/
 
 ?>
 

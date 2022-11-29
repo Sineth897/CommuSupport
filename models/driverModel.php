@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class driverModel
+class driverModel extends userModel
 {
 
 }

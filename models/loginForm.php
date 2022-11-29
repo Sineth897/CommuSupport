@@ -3,9 +3,9 @@
 namespace app\models;
 
 use app\core\Application;
-use app\core\UserModel;
+use app\core\userModel;
 
-class loginForm extends UserModel
+class loginForm extends userModel
 {
     public string $email = '';
     public string $password = '';

@@ -3,18 +3,17 @@
 namespace app\models;
 
 use app\core\Application;
-use app\core\DbModel;
-use app\core\UserModel;
+use app\models\userModel;
 
-class managerModel extends DbModel
+class managerModel extends userModel
 {
-    public UserModel $user;
+    public userModel $user;
     public string $username = '';
     public string $employeeID = '';
     public string $password = '';
 
 
-    public function __construct(UserModel $user = null)
+    public function __construct(userModel $user = null)
     {
         $this->user = $user;
     }
@@ -69,17 +68,4 @@ class managerModel extends DbModel
         return 'manager';
     }
 
-    public function login(): bool
-    {
-        $user = managerModel::findOne(['username' => $this->username]);
-        if( !$user ) {
-            $this->addError('username', 'User does not exist with this username');
-            return false;
-        }
-        if( !password_verify($this->password, $user->password) ) {
-            $this->addError('password', 'Password is incorrect');
-            return false;
-        }
-        return Application::$app->login($user);
-    }
 }

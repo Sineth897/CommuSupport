@@ -10,6 +10,7 @@ abstract class Model
     public static string $MAX = 'max';
     public static string $MATCH = 'match';
     public static string $UNIQUE = 'unique';
+    public static string $CONTACT = 'contact';
     public array $errors = [];
 
 
@@ -63,6 +64,9 @@ abstract class Model
                         $this->addRuleError($attribute, self::$UNIQUE, ['field' => $attribute]);
                     }
                 }
+                if( $ruleName === self::$CONTACT && !preg_match('/^0[0-9]{9}$/', $value) ) {
+                    $this->addRuleError($attribute, self::$CONTACT);
+                }
             }
         }
 
@@ -88,7 +92,8 @@ abstract class Model
             self::$MIN => 'Min length of this field must be equal or greater than {min}',
             self::$MAX => 'Max length of this field must be equal or less than {max}',
             self::$MATCH => 'This field must be the same as {match}',
-            self::$UNIQUE => '{field} already exists'
+            self::$UNIQUE => '{field} already exists',
+            self::$CONTACT => 'This field must be a valid contact number'
         ];
     }
 

@@ -2,22 +2,21 @@
 
 namespace app\controller;
 
+use app\core\Application;
 use app\core\Controller;
 use app\core\middlewares\loginMiddleware;
 use app\core\Request;
 use app\core\Response;
-use app\core\UserModel;
-use http\Client\Curl\User;
+use app\models\userModel;
 
 class loginController extends  Controller
 {
 
+
+
     public function __construct(string $func,Request $request,Response $response)
     {
         $this->getUserType();
-
-
-
         if(method_exists($this, $func)) {
             $this->middleware = new loginMiddleware();
             $this->middleware->execute($func, $this->userType);
@@ -28,20 +27,10 @@ class loginController extends  Controller
 
     }
 
-    public function userLogin()
+    public function userLogin($request, $response)
     {
-        $model = new UserModel();
-        $this->render("login/user", [
-            'model' => $model
-        ]);
-    }
-
-    public function employeeLogin(Request $request, Response $response)
-    {
-        $model = new UserModel();
-        echo $request->getUser();
+        $model = new userModel();
         if ($request->isPost()) {
-
             $model->getData($request->getBody());
             if ($model->validate($request->getBody()) && $model->login()) {
                 $response->redirect('/');
@@ -49,20 +38,32 @@ class loginController extends  Controller
             }
         }
 
+        $this->render("login/user", [
+            'model' => $model
+        ]);
+    }
+
+    public function employeeLogin(Request $request, Response $response)
+    {
+        $model = new userModel();
+        if ($request->isPost()) {
+            $model->getData($request->getBody());
+            if ($model->validate($request->getBody()) && $model->login(true)) {
+                $response->redirect('/');
+                return;
+            }
+        }
 
         $this->render("login/employee", [
             'model' => $model
         ]);
     }
 
-    public function managerLogin()
+    public function logout(Request $request, Response $response)
     {
-        $this->render("login/login");
-    }
-
-    public function handleLogin()
-    {
-        $this->render("login/login");
+        $model = new userModel();
+        $model->logout();
+        $response->redirect('/');
     }
 
     private function getModel(userModel $model)

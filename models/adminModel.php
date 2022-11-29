@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class adminModel
+class adminModel extends userModel
 {
 
 }

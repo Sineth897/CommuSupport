@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class doneeModel
+class doneeModel extends userModel
 {
 
 }

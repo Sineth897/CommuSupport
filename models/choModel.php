@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-class choModel
+class choModel extends userModel
 {
 
 }
