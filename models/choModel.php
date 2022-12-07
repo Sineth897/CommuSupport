@@ -2,7 +2,9 @@
 
 namespace app\models;
 
-class choModel extends userModel
+use app\core\DbModel;
+
+class choModel extends DbModel
 {
 
 }

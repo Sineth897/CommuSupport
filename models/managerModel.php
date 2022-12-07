@@ -3,19 +3,24 @@
 namespace app\models;
 
 use app\core\Application;
-use app\models\userModel;
+use app\core\DbModel;
 
-class managerModel extends userModel
+class managerModel extends DbModel
 {
     public userModel $user;
-    public string $username = '';
     public string $employeeID = '';
-    public string $password = '';
+    public string $name = '';
+    public int $age = 0;
+    public string $gender = '';
+    public string $NIC = '';
+    public string $address = '';
+    public string $contactNumber = '';
+    public string $ccID = '';
 
 
     public function __construct(userModel $user = null)
     {
-        $this->user = $user;
+        // $this->user = $user;
     }
 
     public function table() : string
@@ -25,42 +30,32 @@ class managerModel extends userModel
 
     public function attributes() : array
     {
-        return ['ID', 'username', 'password'];
+        return ['employeeID', 'name', 'age', 'gender', 'NIC', 'address', 'contactNumber', 'ccID'];
     }
 
     public function primaryKey(): string
     {
-        return 'ID';
+        return 'employeeID';
     }
 
     public function rules(): array
     {
         return [
-            'username' => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
-            'password' => [self::$REQUIRED, [self::$MIN, 'min' => 8], [self::$MAX, 'max' => 12]],
+            'name' => [self::$REQUIRED],
+            'age' => [self::$REQUIRED],
+            'gender' => [self::$REQUIRED],
+            'NIC' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'contactNumber' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'ccID' => [self::$REQUIRED],
         ];
     }
 
-    public function labels(): array
-    {
-        return [
-            'name' => 'Name',
-            'email' => 'Email',
-            'password' => 'Password',
-            'confirmPassword' => 'Confirm Password'
-        ];
-    }
 
     public function save(): bool
     {
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        $this->ID = uniqid("manager", true);
+        $this->employeeID = uniqid('manager',true);
         return parent::save();
-    }
-
-    public function getDisplayName(): string
-    {
-        return $this->username;
     }
 
     public function userType(): string

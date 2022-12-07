@@ -9,7 +9,7 @@ class eventMiddleware extends Middleware
     {
         return [
           'viewEvents' => [$this->MANAGER,$this->CHO,$this->ADMIN,$this->GUEST,$this->DONEE,$this->DONOR],
-          'createEvent' => [$this->MANAGER]
+          'createEvent' => [$this->MANAGER],
         ];
     }
 }

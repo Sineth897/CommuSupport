@@ -16,18 +16,12 @@ class loginController extends  Controller
 
     public function __construct(string $func,Request $request,Response $response)
     {
-        $this->getUserType();
-        if(method_exists($this, $func)) {
-            $this->middleware = new loginMiddleware();
-            $this->middleware->execute($func, $this->userType);
-            $this->$func($request,$response);
-        } else {
-            throw new \Exception('Method does not exist');
-        }
+        $this->middleware = new loginMiddleware();
+        parent::__construct($func, $request, $response);
 
     }
 
-    public function userLogin($request, $response)
+    protected function userLogin($request, $response)
     {
         $model = new userModel();
         if ($request->isPost()) {
@@ -43,7 +37,7 @@ class loginController extends  Controller
         ]);
     }
 
-    public function employeeLogin(Request $request, Response $response)
+    protected function employeeLogin(Request $request, Response $response)
     {
         $model = new userModel();
         if ($request->isPost()) {
@@ -59,7 +53,7 @@ class loginController extends  Controller
         ]);
     }
 
-    public function logout(Request $request, Response $response)
+    protected function logout(Request $request, Response $response)
     {
         $model = new userModel();
         $model->logout();

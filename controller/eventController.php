@@ -2,31 +2,50 @@
 
 namespace app\controller;
 
+use app\core\Application;
 use app\core\Controller;
 use app\core\middlewares\eventMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\eventModel;
 
 class eventController extends Controller
 {
     public function __construct(string $func,Request $request,Response $response)
     {
-        $this->getUserType();
-        if(method_exists($this, $func)) {
-            $this->middleware = new eventMiddleware();
-            $this->middleware->execute($func, $this->userType);
-            $this->$func($request,$response);
-        } else {
-            throw new \Exception('Method does not exist');
-        }
+        $this->middleware = new eventMiddleware();
+        parent::__construct($func, $request, $response);
 
     }
 
-    public function viewEvents(Request $request,Response $response) {
+    protected function viewEvents(Request $request,Response $response) {
 
         $user = $this->getUserType();
+        $model = new eventModel();
 
-        $this->render($user . "/events");
+        $this->render($user . "/events/view", [
+            'model' => $model
+        ]);
+    }
+
+    protected function createEvent(Request $request,Response $response) {
+
+        $model = new eventModel();
+
+        if($request->isPost()) {
+            $model->getData($request->getBody());
+            if($model->validate($request->getBody()) && $model->save()) {
+                $this->setFlash('result', 'Event created successfully');
+                $model->reset();
+            }
+            else {
+                $this->setFlash('result', 'Event creation failed');
+            }
+        }
+
+        $this->render("manager/events/create", [
+            'model' => $model
+        ]);
 
     }
 

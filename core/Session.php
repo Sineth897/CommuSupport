@@ -4,7 +4,7 @@ namespace app\core;
 
 class Session
 {
-    protected const FLASH_KEY = 'flash_messages';
+    protected const FLASH_KEY = 'flashMessages';
 
     public function __construct()
     {

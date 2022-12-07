@@ -2,7 +2,9 @@
 
 namespace app\models;
 
-class doneeModel extends userModel
+use app\core\DbModel;
+
+class doneeModel extends DbModel
 {
 
 }

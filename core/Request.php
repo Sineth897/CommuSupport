@@ -17,6 +17,12 @@ class Request
     {
         $path = strtr($_SERVER['REQUEST_URI'], self::$REPLACE_START);
         $position = strpos($path, '?');
+        if($path === '/') {
+            return $path;
+        }
+        if($path[-1] === '/') {
+            $path = substr($path, 0, -1);
+        }
         if ($position === false) {
             return $path;
         }

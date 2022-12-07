@@ -2,7 +2,9 @@
 
 namespace app\models;
 
-class logisticModel extends userModel
+use app\core\DbModel;
+
+class logisticModel extends DbModel
 {
 
 }

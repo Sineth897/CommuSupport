@@ -37,7 +37,7 @@ class Router
         $callback = $this->routes[$method][$path] ?? false;
 
         if ($callback === false) {
-            throw new notFoundException;
+            throw new notFoundException($path);
         }
 
         return call_user_func($callback,$this->request,$this->response);

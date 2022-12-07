@@ -37,8 +37,38 @@ $app->router->get('/login/user', function($request,$response){
     $controller = new loginController("userLogin", $request, $response);
 });
 
+//*************************Manager get and post methods*************************//
+//manager home page
+$app->router->get('/manager', function($request,$response){
+    $controller = new redirectController("redirectHome", $request, $response);
+});
+
+//manager view events
 $app->router->get('/manager/events', function ($request, $response) {
    $controller = new \app\controller\eventController("viewEvents",$request,$response);
+});
+
+//Manager event creation
+$app->router->get('/manager/events/create', function ($request, $response) {
+    $controller = new \app\controller\eventController("createEvent",$request,$response);
+});
+
+$app->router->post('/manager/events/create', function ($request, $response) {
+    $controller = new \app\controller\eventController("createEvent",$request,$response);
+});
+
+//Manager view drivers
+$app->router->get('/manager/drivers', function ($request, $response) {
+    $controller = new \app\controller\driverController("viewDrivers",$request,$response);
+});
+
+//Manager driver registration
+$app->router->get('/manager/drivers/register', function ($request, $response) {
+    $controller = new \app\controller\registerController("registerDriver",$request,$response);
+});
+
+$app->router->post('/manager/drivers/register', function ($request, $response) {
+    $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
 
@@ -50,9 +80,7 @@ $app->router->get('/manager/events', function ($request, $response) {
 
 
 
-
-
-
+//login and logout for employees and other users
 $app->router->post('/login/employee', function($request,$response){
     $controller = new loginController("employeeLogin", $request, $response);
 });

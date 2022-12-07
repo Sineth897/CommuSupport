@@ -117,4 +117,12 @@ class userModel extends  DbModel
         return Application::$app->isRootPassword($this->password);
     }
 
+    public function getGenders(): array {
+        return [
+            "Male" => "Male",
+            "Female" => "Female"
+        ];
+    }
+
+
 }

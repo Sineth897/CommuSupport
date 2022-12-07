@@ -6,9 +6,22 @@ use app\core\middlewares\Middleware;
 
 class Controller
 {
-
     protected string $userType  = 'guest';
     protected ?Middleware $middleware = null;
+
+    public function __construct($func, Request $request, Response $response)
+    {
+        $this->getUserType();
+        if (method_exists($this, $func)) {
+            $this->middleware->execute($func, $this->getUserType());
+            $this->$func($request, $response);
+        } else {
+            throw new \Exception('Method does not exist');
+        }
+    }
+
+
+
     //function to be called by the subclasses to render the view
 
     public function render($view, $params = []): void
@@ -36,4 +49,10 @@ class Controller
             throw new \Exception('You do not have access to this page');
         }
     }
+
+    protected function setFlash($key,$message): void
+    {
+        Application::$app->session->setFlash($key, $message);
+    }
+
 }

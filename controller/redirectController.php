@@ -6,6 +6,7 @@ use app\core\Controller;
 use app\core\middlewares\loginMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\eventModel;
 
 class redirectController extends Controller
 {
@@ -19,29 +20,29 @@ class redirectController extends Controller
 
     }
 
-    public function redirectHome($request, $response)
+    protected function redirectHome($request, $response)
     {
         switch ($this->getUserType()) {
             case 'admin':
-                $this->render('/admin/home');
+                $response->redirect('/admin/communitycenters');
                 break;
             case 'manager':
-                $this->render('/manager/home');
+                $response->redirect('/manager/events');
                 break;
             case 'logistic':
-                $this->render('/logistic/home');
+                $response->redirec('/logistic/deliveries');
                 break;
             case 'driver':
-                $this->render('/driver/home');
+                $response->redirec('/driver/deliveries');
                 break;
             case 'cho':
-                $this->render('/cho/home');
+                $response->redirec('/cho/communitycenters');
                 break;
             case 'donee':
-                $this->render('/donee/home');
+                $response->redirec('/donee/request');
                 break;
             case 'donor':
-                $this->render('/donor/home');
+                $response->redirec('/donor/donations');
                 break;
             default:
                 $this->render('/guest/home');

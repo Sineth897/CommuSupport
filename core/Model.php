@@ -104,4 +104,14 @@ abstract class Model
     public function getFirstError($attribute): string {
         return $this->errors[$attribute][0] ?? '';
     }
+
+    public function reset() {
+        foreach ($this->rules() as $attribute => $rules) {
+            if( is_int($this->{$attribute})) {
+                $this->{$attribute} = 0;
+            } else {
+                $this->{$attribute} = '';
+            }
+        }
+    }
 }

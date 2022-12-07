@@ -31,7 +31,6 @@ abstract class DbModel extends Model
         foreach ($attributes as $attribute) {
             $statement->bindValue(":$attribute", $this->{$attribute});
         }
-        var_dump($statement);
         $statement->execute();
         return true;
     }
@@ -52,5 +51,36 @@ abstract class DbModel extends Model
         }
         $statement->execute();
         return $statement->fetchObject(static::class);
+    }
+
+    public function retrieve($where = []) : array
+    {
+        $tableName = static::table();
+        $attributes = array_keys($where);
+        if( empty($attributes) ) {
+            $statement = self::prepare("SELECT * FROM $tableName");
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        }
+        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
+        foreach ($where as $key => $item) {
+            $statement->bindValue(":$key", $item);
+        }
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function deleteOne($where): bool
+    {
+        $tableName = static::table();
+        $attributes = array_keys($where);
+        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $statement = self::prepare("DELETE FROM $tableName WHERE $sql");
+        foreach ($where as $key => $item) {
+            $statement->bindValue(":$key", $item);
+        }
+        $statement->execute();
+        return true;
     }
 }

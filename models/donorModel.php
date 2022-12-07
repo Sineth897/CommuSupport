@@ -2,7 +2,9 @@
 
 namespace app\models;
 
-class donorModel extends userModel
+use app\core\DbModel;
+
+class donorModel extends DbModel
 {
 
 }
