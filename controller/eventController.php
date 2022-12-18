@@ -49,4 +49,12 @@ class eventController extends Controller
 
     }
 
+    protected function filterEvents(Request $request,Response $response) {
+
+        $model = new eventModel();
+        $filters = $request->getJsonData();
+        $this->sendJson($model->retrieve($filters));
+
+    }
+
 }

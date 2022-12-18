@@ -4,6 +4,8 @@ namespace app\core;
 
 class Response
 {
+    private $data;
+
     public static function staticRedirect(string $URL) {
         (new static())->redirect($URL);
     }
@@ -16,6 +18,16 @@ class Response
     public function redirect(string $URL): void
     {
         header("Location: /CommuSupport".$URL);
+    }
+
+    public function setJsonData($data): void
+    {
+        $this->data = json_encode($data);
+    }
+
+    public function send(): void
+    {
+        echo $this->data;
     }
 
 

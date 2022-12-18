@@ -83,4 +83,13 @@ abstract class DbModel extends Model
         $statement->execute();
         return true;
     }
+
+    public function getCC(string $userID): string {
+        $table = static::table();
+        $primaryKey = static::getPrimaryKey();
+        $sql = "SELECT ccID FROM $table WHERE $ = $userID";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
 }

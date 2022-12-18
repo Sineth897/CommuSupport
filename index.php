@@ -48,6 +48,11 @@ $app->router->get('/manager/events', function ($request, $response) {
    $controller = new \app\controller\eventController("viewEvents",$request,$response);
 });
 
+//manager filter event
+$app->router->post('/manager/events/filter', function ($request, $response) {
+    $controller = new \app\controller\eventController("filterEvents",$request,$response);
+});
+
 //Manager event creation
 $app->router->get('/manager/events/create', function ($request, $response) {
     $controller = new \app\controller\eventController("createEvent",$request,$response);
@@ -70,6 +75,8 @@ $app->router->get('/manager/drivers/register', function ($request, $response) {
 $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
+
+//Manager vie
 
 
 

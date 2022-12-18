@@ -4,6 +4,7 @@ namespace app\core;
 
 use app\controller\guestController;
 use app\core\exceptions\notFoundException;
+use function Composer\Autoload\includeFile;
 
 class Router
 {
@@ -48,6 +49,19 @@ class Router
         foreach ($params as $key => $value) {
             $$key = $value;
         }
+        include_once Application::$ROOT_DIR . "/views/layouts/header.php";
         include_once Application::$ROOT_DIR . "/views/$view.php";
+        include_once Application::$ROOT_DIR . "/views/layouts/footer.php";
     }
+
+
+
+    public function sendData($data, $status = 200): void
+    {
+        $this->response->setStatusCode($status);
+        $this->response->setJsonData($data);
+        $this->response->send();
+    }
+
+
 }

@@ -42,7 +42,7 @@ class driverModel extends DbModel
         return [
             'name'  => [self::$REQUIRED],
             'age' => [self::$REQUIRED],
-            'NIC' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'NIC' => [self::$REQUIRED, self::$nic, [self::$UNIQUE, 'class' => self::class]],
             'gender' => [self::$REQUIRED],
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],

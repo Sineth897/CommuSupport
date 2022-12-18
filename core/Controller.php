@@ -29,6 +29,11 @@ class Controller
         Application::$app->router->renderView($view, $params);
     }
 
+    public function sendJson($data): void
+    {
+        Application::$app->router->sendData($data);
+    }
+
     //function to get the user type
     protected function getUserType()
     {

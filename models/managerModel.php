@@ -44,7 +44,7 @@ class managerModel extends DbModel
             'name' => [self::$REQUIRED],
             'age' => [self::$REQUIRED],
             'gender' => [self::$REQUIRED],
-            'NIC' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'NIC' => [self::$REQUIRED, self::$nic, [self::$UNIQUE, 'class' => self::class]],
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'ccID' => [self::$REQUIRED],

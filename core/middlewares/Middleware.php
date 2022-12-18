@@ -18,7 +18,6 @@ abstract class Middleware
 
     public function execute($func, $userType):void
     {
-        echo $userType;
         if (!in_array($userType, $this->accessRules()[$func],true) || empty($userType)) {
             throw new forbiddenException();
         }

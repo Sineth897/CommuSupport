@@ -2,9 +2,14 @@
 
 /** @var $model \app\models\eventModel */
 
-echo empty($model);
+use app\core\Application;
 
-$events = $model->retrieve();
+$managerID = Application::$app->session->get('user');
+$manager = new \app\models\managerModel();
+$manager = $manager->findOne(['employeeID' => $managerID]);
+$ccID = $manager->ccID;
+
+$events = $model->retrieve(["ccID" => $ccID]);
 
 if( empty($events) ) {
     echo "No events";
@@ -20,6 +25,12 @@ if( empty($events) ) {
 
 ?>
 
+
+
+<button type="button" id="filterBtn">Filter</button>
+
+
+
 <?php $creatEvent = \app\core\components\form\form::begin('./events/create', 'get'); ?>
 
 <button> Create event </button>
@@ -31,3 +42,5 @@ if( empty($events) ) {
 <button> logout </button>
 
 <?php $logout->end(); ?>
+
+<script type="module" src="../public/JS/manager/events/view.js"></script>

@@ -11,6 +11,8 @@ abstract class Model
     public static string $MATCH = 'match';
     public static string $UNIQUE = 'unique';
     public static string $CONTACT = 'contact';
+    public static string $PASSWORD = 'password';
+    public static string $nic = 'nic';
     public array $errors = [];
 
 
@@ -67,6 +69,12 @@ abstract class Model
                 if( $ruleName === self::$CONTACT && !preg_match('/^0[0-9]{9}$/', $value) ) {
                     $this->addRuleError($attribute, self::$CONTACT);
                 }
+                if( $ruleName === self::$PASSWORD && !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $value) ) {
+                    $this->addRuleError($attribute, self::$PASSWORD);
+                }
+                if( $ruleName === self::$nic && !(preg_match('/^[0-9]{9}[vV]$/', $value) || preg_match('/^[0-9]{12}$/', $value)) ) {
+                    $this->addRuleError($attribute, self::$NIC);
+                }
             }
         }
 
@@ -105,7 +113,7 @@ abstract class Model
         return $this->errors[$attribute][0] ?? '';
     }
 
-    public function reset() {
+    public function reset(): void {
         foreach ($this->rules() as $attribute => $rules) {
             if( is_int($this->{$attribute})) {
                 $this->{$attribute} = 0;
