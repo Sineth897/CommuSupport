@@ -65,4 +65,10 @@ class loginController extends  Controller
         $username = $model->username;
     }
 
+    protected function lockedAccount(userModel $model)
+    {
+        $username = $model->username;
+        echo $username . " is locked";
+    }
+
 }

@@ -25,17 +25,48 @@ $config = [
 
 $app = new Application(dirname(__DIR__) . "/CommuSupport", $config);
 
+//*************************Guest get and post methods*************************//
+//Guest landing page
 $app->router->get('/', function($request, $response){
     $controller = new redirectController("redirectHome", $request, $response);
 });
 
+//Guest employee login page
 $app->router->get('/login/employee', function($request,$response){
     $controller = new loginController("employeeLogin", $request, $response);
 });
 
+//Guest user login page
 $app->router->get('/login/user', function($request,$response){
     $controller = new loginController("userLogin", $request, $response);
 });
+
+//Guest locked account
+$app->router->get('/login/locked', function($request,$response){
+    $controller = new loginController("lockedAccount", $request, $response);
+});
+
+//General user login post
+$app->router->post('logout', function($request,$response){
+    $controller = new loginController("logout", $request, $response);
+});
+
+//login and logout for employees and other users
+$app->router->post('/login/employee', function($request,$response){
+    $controller = new loginController("employeeLogin", $request, $response);
+});
+
+$app->router->post('/login/user', function($request,$response){
+    $controller = new loginController("userLogin", $request, $response);
+});
+
+$app->router->post('/logout', function($request,$response){
+    $controller = new loginController("logout", $request, $response);
+});
+
+
+
+
 
 //*************************Manager get and post methods*************************//
 //manager home page
@@ -76,7 +107,6 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
-//Manager vie
 
 
 
@@ -86,19 +116,6 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
 
 
 
-
-//login and logout for employees and other users
-$app->router->post('/login/employee', function($request,$response){
-    $controller = new loginController("employeeLogin", $request, $response);
-});
-
-$app->router->post('/login/user', function($request,$response){
-    $controller = new loginController("userLogin", $request, $response);
-});
-
-$app->router->post('/logout', function($request,$response){
-    $controller = new loginController("logout", $request, $response);
-});
 
 
 

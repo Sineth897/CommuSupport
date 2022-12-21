@@ -5,7 +5,7 @@ export default function request() {
     }
 }
 
-async function getData(URL, method, data) {
+async function getData(URL, method, data = {}) {
     return fetch(URL, {
         method: method,
         headers: {

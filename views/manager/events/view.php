@@ -37,7 +37,7 @@ if( empty($events) ) {
 
 <?php $creatEvent->end(); ?>
 
-<?php $logout = \app\core\components\form\form::begin('logout', 'post'); ?>
+<?php $logout = \app\core\components\form\form::begin('../logout', 'post'); ?>
 
 <button> logout </button>
 

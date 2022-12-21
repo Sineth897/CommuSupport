@@ -84,6 +84,19 @@ abstract class DbModel extends Model
         return true;
     }
 
+    public function updateOne($where, $data): bool
+    {
+        $tableName = static::table();
+        $attributes = array_keys($where);
+        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $statement = self::prepare("UPDATE $tableName SET $data WHERE $sql");
+        foreach ($where as $key => $item) {
+            $statement->bindValue(":$key", $item);
+        }
+        $statement->execute();
+        return true;
+    }
+
     public function getCC(string $userID): string {
         $table = static::table();
         $primaryKey = static::getPrimaryKey();

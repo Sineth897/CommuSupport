@@ -15,7 +15,6 @@ class Request
     //function to get the path of the request
     public function getPath(): string
     {
-//        $path =strtolower($_SERVER['REQUEST_URI'] ?? '/');
         $path = strtr($_SERVER['REQUEST_URI'], self::$REPLACE_START);
         $position = strpos($path, '?');
         if($path === '/') {
