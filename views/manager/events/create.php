@@ -6,10 +6,6 @@ echo \app\core\Application::session()->getFlash('result');
 
 ?>
 
-
-
-
-
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
 
 <div>
