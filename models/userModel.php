@@ -40,7 +40,7 @@ class userModel extends  DbModel
     {
         return [
             'username' => [self::$REQUIRED],
-            'password' => [self::$REQUIRED],
+            'password' => [self::$REQUIRED,self::$PASSWORD],
         ];
     }
 
