@@ -137,7 +137,7 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
-
+//Manager view donors
 
 
 
