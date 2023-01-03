@@ -137,10 +137,10 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
-//Manager view donors
-
-
-
+//Manager view donees
+$app->router->get('/manager/donees', function ($request, $response) {
+    $controller = new \app\controller\doneeController("viewDonees",$request,$response);
+});
 
 
 

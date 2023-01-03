@@ -40,4 +40,16 @@ class doneeModel extends DbModel
             'type' => [self::$REQUIRED],
         ];
     }
+
+    public function getAllDonees(string $ccID = ''): array
+    {
+        if($ccID) {
+            $individuals = $this->retrieveWithJoin('doneeindividual','doneeID','ccID',$ccID);
+            $organizations = $this->retrieveWithJoin('doneeorganization','doneeID','ccID',$ccID);
+            return ['individuals' => $individuals, 'organizations' => $organizations];
+        }
+        $individuals = $this->retrieveWithJoin('doneeindividual','doneeID');
+        $organizations = $this->retrieveWithJoin('doneeorganization','doneeID');
+        return ['individuals' => $individuals, 'organizations' => $organizations];
+    }
 }
