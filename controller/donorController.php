@@ -6,6 +6,7 @@ use app\core\Controller;
 use app\core\middlewares\donorMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\donorModel;
 
 class donorController extends Controller
 {
@@ -19,6 +20,9 @@ class donorController extends Controller
     protected function viewDonors(Request $request, Response $response)
     {
         $user = $this->getUserType();
-        $this->render($user . "/donors/view");
+        $model = new donorModel();
+        $this->render($user . "/donors/view", [
+            'model' => $model
+        ]);
     }
 }

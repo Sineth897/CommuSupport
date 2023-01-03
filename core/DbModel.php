@@ -105,4 +105,25 @@ abstract class DbModel extends Model
         $statement->execute();
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
+
+    public function retrieveWithJoin(string $tableName, string $onColumn, string $whereColumn = '', string $whereValue = ''): array {
+        $table = static::table();
+        $primaryKey = static::getPrimaryKey();
+        $where = '';
+        if($whereColumn && $whereValue) {
+            switch (gettype($whereValue)) {
+                case 'string':
+                    $where = "WHERE $whereColumn = '$whereValue'";
+                    break;
+                case 'integer':
+                    $where = "WHERE $whereColumn = $whereValue";
+                    break;
+            }
+        }
+        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$primaryKey = $tableName.$onColumn $where";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
 }
