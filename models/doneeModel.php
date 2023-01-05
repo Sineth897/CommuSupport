@@ -41,15 +41,24 @@ class doneeModel extends DbModel
         ];
     }
 
+    public function getDoneeIndividuals(string $ccID = "") {
+        if($ccID == "") {
+            return $this->retrieveWithJoin('doneeindividual','doneeID');
+        }
+        return $this->retrieveWithJoin('doneeindividual','doneeID',['donee.ccID' => $ccID]);
+    }
+
+    public function getDoneeOrganizations(string $ccID = "") {
+        if($ccID == "") {
+            return $this->retrieveWithJoin('doneeorganization','doneeID');
+        }
+        return $this->retrieveWithJoin('doneeorganization','doneeID',['donee.ccID' => $ccID]);
+    }
+
     public function getAllDonees(string $ccID = ''): array
     {
-        if($ccID) {
-            $individuals = $this->retrieveWithJoin('doneeindividual','doneeID','ccID',$ccID);
-            $organizations = $this->retrieveWithJoin('doneeorganization','doneeID','ccID',$ccID);
-            return ['individuals' => $individuals, 'organizations' => $organizations];
-        }
-        $individuals = $this->retrieveWithJoin('doneeindividual','doneeID');
-        $organizations = $this->retrieveWithJoin('doneeorganization','doneeID');
+        $individuals = $this->getDoneeIndividuals($ccID);
+        $organizations = $this->getDoneeOrganizations($ccID);
         return ['individuals' => $individuals, 'organizations' => $organizations];
     }
 }
