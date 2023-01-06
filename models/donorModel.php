@@ -40,5 +40,25 @@ class donorModel extends DbModel
         ];
     }
 
+    public function getDonorIndividuals(string $ccID = "") {
+        if($ccID == "") {
+            return $this->retrieveWithJoin('donorindividual','donorID');
+        }
+        return $this->retrieveWithJoin('donorindividual','donorID',['donor.ccID' => $ccID]);
+    }
+
+    public function getDonorOrganizations(string $ccID = "") {
+        if($ccID == "") {
+            return $this->retrieveWithJoin('donororganization','donorID');
+        }
+        return $this->retrieveWithJoin('donororganization','donorID',['donor.ccID' => $ccID]);
+    }
+
+    public function getAllDonors(string $ccID = ''): array
+    {
+        $individuals = $this->getDonorIndividuals($ccID);
+        $organizations = $this->getDonorOrganizations($ccID);
+        return [ 'individuals' => $individuals, 'organizations' => $organizations];
+    }
 
 }
