@@ -142,8 +142,10 @@ $app->router->get('/manager/donees', function ($request, $response) {
     $controller = new \app\controller\doneeController("viewDonees",$request,$response);
 });
 
-
-
+//Manager view donors
+$app->router->get('/manager/donors', function ($request, $response) {
+    $controller = new \app\controller\donorController("viewDonors",$request,$response);
+});
 
 
 

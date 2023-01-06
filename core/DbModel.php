@@ -82,12 +82,13 @@ abstract class DbModel extends Model
         return true;
     }
 
-    public function update($where, $data): bool
+    public function update(array $where,array $data): bool
     {
         $tableName = static::table();
         $attributes = array_keys($where);
+        $setData = implode(", ", array_map(fn($data) => "$data",$data));
         $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
-        $statement = self::prepare("UPDATE $tableName SET $data WHERE $sql");
+        $statement = self::prepare("UPDATE $tableName SET $setData WHERE $sql");
         foreach ($where as $key => $item) {
             $statement->bindValue(":$key", $item);
         }
