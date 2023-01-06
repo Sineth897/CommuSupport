@@ -9,7 +9,7 @@ $manager = new \app\models\managerModel();
 $manager = $manager->findOne(['employeeID' => $managerID]);
 $ccID = $manager->ccID;
 
-$events = $model->retrieve(["ccID" => $ccID]);
+$events = $model->retrieve(["ccID" => $ccID],["date", "DESC"]);
 
 if( empty($events) ) {
     echo "No events";

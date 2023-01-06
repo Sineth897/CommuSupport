@@ -135,13 +135,13 @@ class userModel extends  DbModel
 
     public function invalidLogin() {
         if($this->invalidAttempts >= 5) {
-            $this->updateOne(['username' => $this->username],"lockedStatus = 1");
+            $this->update(['username' => $this->username],"lockedStatus = 1");
             Application::$app->response->redirect('/login/locked');
         }
 
         $newAttemptValue = $this->invalidAttempts + 1;
         echo $newAttemptValue;
-        $this->updateOne( ['username' => $this->username],"invalidAttempts = $newAttemptValue");
+        $this->update( ['username' => $this->username],"invalidAttempts = $newAttemptValue");
     }
 
 
