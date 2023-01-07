@@ -1,9 +1,4 @@
-<html>
-<head>
-    <title>Home</title>
-    <link rel="stylesheet" href="public/CSS/styles.css">
-</head>
-<body>
+
 <h1>Home</h1>
 <p>Home page</p>
 
@@ -21,8 +16,6 @@
 <?php $userLogin->end(); ?>
 
 
-</body>
-</html>
 
 
 <?php

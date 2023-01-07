@@ -22,7 +22,7 @@ class donorController extends Controller
         $userType = $this->getUserType();
         $model = new donorModel();
         $user = $this->getUserModel();
-        $this->render($userType . "/donors/view", [
+        $this->render($userType . "/donors/view", "View Donors", [
             'model' => $model,
             'user' => $user
         ]);

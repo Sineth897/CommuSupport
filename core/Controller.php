@@ -31,9 +31,9 @@ class Controller
 
     //function to be called by the subclasses to render the view
 
-    public function render($view, $params = []): void
+    public function render($view, $title, $params = []): void
     {
-        Application::$app->router->renderView($view, $params);
+        echo Application::$app->router->render($view, $title, $params);
     }
 
     public function sendJson($data): void
