@@ -22,7 +22,7 @@ class doneeController extends Controller
         $userType = $this->getUserType();
         $model = new doneeModel();
         $user = $this->getUserModel();
-        $this->render($userType . "/donees/view", [
+        $this->render($userType . "/donees/view", "View Donees",[
             'model' => $model,
             'user' => $user
         ]);

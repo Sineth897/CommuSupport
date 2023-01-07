@@ -49,7 +49,7 @@ $app->router->get('/login/locked', function($request,$response){
 });
 
 //General user login post
-$app->router->post('logout', function($request,$response){
+$app->router->get('/logout', function($request,$response){
     $controller = new loginController("logout", $request, $response);
 });
 
