@@ -24,7 +24,7 @@ class redirectController extends Controller
     {
         switch ($this->getUserType()) {
             case 'admin':
-                $response->redirect('/admin/communitycenters');
+                $response->redirect('/admin/communityheadoffices');
                 break;
             case 'manager':
                 $response->redirect('/manager/events');
@@ -36,7 +36,7 @@ class redirectController extends Controller
                 $response->redirec('/driver/deliveries');
                 break;
             case 'cho':
-                $response->redirec('/cho/communitycenters');
+                $response->redirec('/cho/communityheadoffices');
                 break;
             case 'donee':
                 $response->redirec('/donee/request');
@@ -45,7 +45,7 @@ class redirectController extends Controller
                 $response->redirec('/donor/donations');
                 break;
             default:
-                $this->render('/guest/home');
+                $this->render('/guest/home', 'Welcome to CommuSupport!');
                 break;
         }
     }

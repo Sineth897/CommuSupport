@@ -40,11 +40,38 @@ class registerController extends Controller
             }
         }
 
-        $this->render("manager/drivers/register", [
+        $this->render("manager/drivers/register", "Register a Driver", [
             'driver' => $driver,
             'user' => $user
         ]);
 
+    }
+
+    protected function registerCho(Request $request,Response $response) {
+        $cho = new \app\models\choModel();
+        $user = new \app\models\userModel();
+
+        if($request->isPost()) {
+            $cho->getData($request->getBody());
+            $user->getData($request->getBody());
+            if($cho->validate($request->getBody()) && $user->validate($request->getBody())) {
+                $cho->setUser($user);
+                if($cho->save()) {
+                        $this->setFlash('success', 'Community Head Office registered successfully');
+                        $cho->reset();
+                        $user->reset();
+                }
+                $this->setFlash('Error', 'Unable to save on database');
+            }
+            else {
+                $this->setFlash('Error', 'Validation failed');
+            }
+        }
+
+        $this->render("admin/communityheadoffices/register", "Register a Community Head Office", [
+            'cho' => $cho,
+            'user' => $user
+        ]);
     }
 
     protected function registerManager(Request $request, Response $response)

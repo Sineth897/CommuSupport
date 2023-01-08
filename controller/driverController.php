@@ -21,7 +21,7 @@ class driverController extends Controller
         $user = $this->getUserType();
         $model = new driverModel();
 
-        $this->render($user . "/drivers/view", [
+        $this->render($user . "/drivers/view", "View Drivers", [
             'model' => $model
         ]);
     }
