@@ -49,7 +49,7 @@ $app->router->get('/login/locked', function($request,$response){
 });
 
 //General user login post
-$app->router->post('logout', function($request,$response){
+$app->router->get('/logout', function($request,$response){
     $controller = new loginController("logout", $request, $response);
 });
 
@@ -137,13 +137,15 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
+//Manager view donees
+$app->router->get('/manager/donees', function ($request, $response) {
+    $controller = new \app\controller\doneeController("viewDonees",$request,$response);
+});
 
-
-
-
-
-
-
+//Manager view donors
+$app->router->get('/manager/donors', function ($request, $response) {
+    $controller = new \app\controller\donorController("viewDonors",$request,$response);
+});
 
 
 

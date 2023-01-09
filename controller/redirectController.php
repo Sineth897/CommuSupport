@@ -45,7 +45,7 @@ class redirectController extends Controller
                 $response->redirec('/donor/donations');
                 break;
             default:
-                $this->render('/guest/home');
+                $this->render('/guest/home', 'Welcome to CommuSupport!');
                 break;
         }
     }

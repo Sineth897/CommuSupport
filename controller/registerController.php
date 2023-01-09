@@ -40,7 +40,7 @@ class registerController extends Controller
             }
         }
 
-        $this->render("manager/drivers/register", [
+        $this->render("manager/drivers/register", "Register a Driver", [
             'driver' => $driver,
             'user' => $user
         ]);
