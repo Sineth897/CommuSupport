@@ -521,19 +521,19 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************Admin get and post methods*************************//
+//Admin view cho
+$app->router->get('/admin/communityheadoffices', function ($request, $response) {
+    $controller = new \app\controller\choController("viewCho",$request,$response);
+});
 
+//Admin register cho
+$app->router->get('/admin/communityheadoffices/register', function ($request, $response) {
+    $controller = new \app\controller\registerController("registerCho",$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
-
-
+$app->router->post('/admin/communityheadoffices/register', function ($request, $response) {
+    $controller = new \app\controller\registerController("registerCho",$request,$response);
+});
 
 
 
