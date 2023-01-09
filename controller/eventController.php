@@ -23,7 +23,7 @@ class eventController extends Controller
         $user = $this->getUserType();
         $model = new eventModel();
 
-        $this->render($user . "/events/view", [
+        $this->render($user . "/events/view", "View Events", [
             'model' => $model
         ]);
     }
@@ -43,7 +43,7 @@ class eventController extends Controller
             }
         }
 
-        $this->render("manager/events/create", [
+        $this->render("manager/events/create", "Create a Event" ,[
             'model' => $model
         ]);
 
