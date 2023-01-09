@@ -6,6 +6,7 @@ use app\core\DbModel;
 
 class choModel extends DbModel
 {
+    protected userModel $user;
     public string $choID = '';
     public string $contactNumber = '';
     public string $district = '';
@@ -40,7 +41,16 @@ class choModel extends DbModel
     public function save(): bool
     {
         $this->choID = uniqid('cho',true);
-        return parent::save();
+        if(parent::save()){
+            if($this->user->save()){
+                return true;
+            }
+            else {
+                $this->delete(['choID' => $this->choID]);
+                return false;
+            }
+        }
+        return false;
     }
 
     public function setUser(userModel $user) {

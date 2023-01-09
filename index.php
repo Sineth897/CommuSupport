@@ -311,10 +311,10 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************Logistic get and post methods*************************//
-
-
-
-
+//logistic view drivers
+$app->router->get("/logistic/drivers", function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDrivers",$request,$response);
+});
 
 
 
