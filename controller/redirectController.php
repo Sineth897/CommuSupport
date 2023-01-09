@@ -30,19 +30,19 @@ class redirectController extends Controller
                 $response->redirect('/manager/events');
                 break;
             case 'logistic':
-                $response->redirec('/logistic/deliveries');
+                $response->redirect('/logistic/deliveries');
                 break;
             case 'driver':
-                $response->redirec('/driver/deliveries');
+                $response->redirect('/driver/deliveries');
                 break;
             case 'cho':
-                $response->redirec('/cho/communityheadoffices');
+                $response->redirect('/cho/communityheadoffices');
                 break;
             case 'donee':
-                $response->redirec('/donee/request');
+                $response->redirect('/donee/request');
                 break;
             case 'donor':
-                $response->redirec('/donor/donations');
+                $response->redirect('/donor/donations');
                 break;
             default:
                 $this->render('/guest/home', 'Welcome to CommuSupport!');
