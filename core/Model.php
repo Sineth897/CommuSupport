@@ -101,7 +101,8 @@ abstract class Model
             self::$MAX => 'Max length of this field must be equal or less than {max}',
             self::$MATCH => 'This field must be the same as {match}',
             self::$UNIQUE => '{field} already exists',
-            self::$CONTACT => 'This field must be a valid contact number'
+            self::$CONTACT => 'This field must be a valid contact number',
+            self::$nic => 'This field must be a valid NIC number'
         ];
     }
 

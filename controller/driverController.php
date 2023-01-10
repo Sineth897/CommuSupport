@@ -18,11 +18,13 @@ class driverController extends Controller
 
     protected function viewDrivers(Request $request, Response $response)
     {
-        $user = $this->getUserType();
+        $userType = $this->getUserType();
         $model = new driverModel();
+        $user = $this->getUserModel();
 
-        $this->render($user . "/drivers/view", "View Drivers", [
-            'model' => $model
+        $this->render($userType . "/drivers/view", "View Drivers", [
+            'model' => $model,
+            'user' => $user,
         ]);
     }
 }
