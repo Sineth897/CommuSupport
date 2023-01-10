@@ -450,9 +450,9 @@ $app->router->get("/logistic/drivers", function ($request,$response) {
 
 
 //*************************CHO get and post methods*************************//
-
-
-
+$app->get("cho/communitycenter/register", function($request,$response) {
+    $controller = new \app\controller\registerController("registerCC",$request,$response);
+});
 
 
 
