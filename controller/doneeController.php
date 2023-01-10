@@ -3,29 +3,29 @@
 namespace app\controller;
 
 use app\core\Controller;
-use app\core\middlewares\driverMiddleware;
+use app\core\middlewares\doneeMiddleware;
 use app\core\Request;
 use app\core\Response;
-use app\models\driverModel;
+use app\models\doneeModel;
 
-class driverController extends Controller
+class doneeController extends Controller
 {
+
     public function __construct($func, Request $request, Response $response)
     {
-        $this->middleware = new driverMiddleware();
+        $this->middleware = new doneeMiddleware();
         parent::__construct($func, $request, $response);
     }
 
-    protected function viewDrivers(Request $request, Response $response)
+    protected function viewDonees(Request $request, Response $response)
     {
         $userType = $this->getUserType();
-        $model = new driverModel();
+        $model = new doneeModel();
         $user = $this->getUserModel();
-
-        $this->render($userType . "/drivers/view", "View Drivers", [
+        $this->render($userType . "/donees/view", "View Donees",[
             'model' => $model,
-            'user' => $user,
+            'user' => $user
         ]);
     }
-}
 
+}

@@ -2,13 +2,14 @@
 
 namespace app\core\middlewares;
 
-class choMiddleware extends  Middleware
+class donorMiddleware extends Middleware
 {
 
     protected function accessRules(): array
     {
         return [
-            'viewCho' => [$this->ADMIN],
+            'viewDonors' => [$this->MANAGER, $this->ADMIN],
         ];
+
     }
 }
