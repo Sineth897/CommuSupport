@@ -311,10 +311,10 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************Logistic get and post methods*************************//
-
-
-
-
+//logistic view drivers
+$app->router->get("/logistic/drivers", function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDrivers",$request,$response);
+});
 
 
 
@@ -450,17 +450,17 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************CHO get and post methods*************************//
-
-
-
-
-
-
-
-
-
-
-
+//cho add a community center
+$app->router->get("cho/communitycenter/register", function($request,$response) {
+    $controller = new \app\controller\registerController("registerCC",$request,$response);
+});
+$app->router->get("/cho/communitycenter/register", function ($request,$response) {
+   $controller = new \app\controller\registerController('registerCC',$request,$response);
+});
+//cho views community center
+$app->router->get("/cho/communitycenters", function($request,$response) {
+   $controller = new \app\controller\ccController('viewCC',$request,$response);
+});
 
 
 
@@ -521,19 +521,19 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************Admin get and post methods*************************//
+//Admin view cho
+$app->router->get('/admin/communityheadoffices', function ($request, $response) {
+    $controller = new \app\controller\choController("viewCho",$request,$response);
+});
 
+//Admin register cho
+$app->router->get('/admin/communityheadoffices/register', function ($request, $response) {
+    $controller = new \app\controller\registerController("registerCho",$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
-
-
+$app->router->post('/admin/communityheadoffices/register', function ($request, $response) {
+    $controller = new \app\controller\registerController("registerCho",$request,$response);
+});
 
 
 
