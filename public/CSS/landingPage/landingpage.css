@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap');
+
+:root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #00d749;
+    --danger-color: #e10000;
+    --light-red: #ff9898;
+    --background-main: #e8e8e8;
+    --light: #a6a6a6;
+}
+
+* {
+    font-family: Inter, sans-serif;
+    margin: 0;
+    padding: 0;
+
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}
+
+button {
+    padding: 12px 20px;
+    outline: none;
+}
+
+/*      Nav-bar CSS     */
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 240px;
+    background-color: var(--primary-color);
+    color: #fff;
+
+}
+
+.nav_set {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+}
+
+.nav-btns
+{
+    gap: 20px;
+}
+
+.navbar #login
+{
+    border: solid white 1px;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.navbar #signup
+{
+    background-color: var(--secondary-color);
+    border: solid var(--secondary-color) 1px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+/*     Hero Section CSS    */
+
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 600px;
+}
+
+.hero-text
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 100px;
+}
+
+.hero-text h1{
+    font-size: 3rem;
+}
+
+.hero-text h1 span{
+    color: var(--secondary-color);
+}
+
+.hero-text p{
+    margin-right: 200px;
+    text-align: justify;
+    line-height: 1rem;
+}
+
+.hero-image
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.counter{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.counter-grid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    width: 50%;
+}
+.counter-item
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.counter-item h1
+{
+    font-size: 3rem;
+    color: var(--secondary-color);
+}
