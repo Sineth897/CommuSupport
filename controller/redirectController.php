@@ -36,7 +36,7 @@ class redirectController extends Controller
                 $response->redirect('/driver/deliveries');
                 break;
             case 'cho':
-                $response->redirect('/cho/communityheadoffices');
+                $response->redirect('/cho/communitycenters');
                 break;
             case 'donee':
                 $response->redirect('/donee/request');
