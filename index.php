@@ -316,9 +316,10 @@ $app->router->get("/logistic/drivers", function ($request,$response) {
     $controller = new \app\controller\driverController("viewDrivers",$request,$response);
 });
 
-
-
-
+//logistic view inventory
+$app->router->get("/logistic/inventory", function ($request,$response) {
+    $controller = new \app\controller\inventoryController("viewInventory",$request,$response);
+});
 
 
 
