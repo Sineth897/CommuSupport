@@ -53,9 +53,7 @@ function getParticipationCount(event) {
 }
 
 function getTheme(theme) {
-    let themeDiv = document.createElement('div');
-    themeDiv.append(Object.assign(document.createElement('p'),{innerHTML:theme}));
-    return themeDiv;
+    return Object.assign(document.createElement('h2'),{innerHTML:theme});
 }
 
 function getEventLocation(location) {

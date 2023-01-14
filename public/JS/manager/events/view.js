@@ -5,7 +5,7 @@ let filterBtn = document.getElementById('filterBtn');
 let eventsDiv = document.getElementById('eventDisplay')
 
 let eventCategory = document.getElementById('eventCategory');
-let samCC = document.getElementById('sameCC');
+let sameCC = document.getElementById('sameCC');
 
 filterBtn.addEventListener('click', async function() {
 
@@ -14,8 +14,8 @@ filterBtn.addEventListener('click', async function() {
     if (eventCategory.value) {
         filterValues['eventCategory'] = eventCategory.value;
     }
-    if(samCC.checked) {
-        filterValues['ccID'] = samCC.value;
+    if(sameCC.checked) {
+        filterValues['ccID'] = sameCC.value;
     }
 
     let array = await request().getData('./events/filter', 'POST', filterValues);
