@@ -30,10 +30,14 @@ class form
         echo sprintf('<p>%s</p>', $model->getFirstError($attribute));
     }
 
-    public function dropDownList($model, $label, $attribute, $options): void
+    public function dropDownList($model, $label, $attribute, $options, $id = ""): void
     {
         echo sprintf('<label>%s :</label>', $label);
-        echo sprintf("<select name='%s' >", $attribute);
+        if($id == "") {
+            echo sprintf("<select name='%s'>", $attribute);
+        } else {
+            echo sprintf("<select name='%s' id='%s'>", $attribute, $id);
+        }
         echo "<option value=''>Select</option>";
         foreach ($options as $key => $value) {
             $selected = $model->{$attribute} == $key ? 'selected' : '';
