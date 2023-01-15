@@ -9,6 +9,8 @@ class inventoryMiddleware extends Middleware
     {
         return [
             'viewInventory' => [$this->LOGISTIC,$this->ADMIN],
+            'addInventory' => [$this->LOGISTIC],
+            'filterInventory' => [$this->LOGISTIC,$this->ADMIN],
         ];
     }
 }

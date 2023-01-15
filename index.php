@@ -321,14 +321,13 @@ $app->router->get("/logistic/inventory", function ($request,$response) {
     $controller = new \app\controller\inventoryController("viewInventory",$request,$response);
 });
 
+$app->router->post('/logistic/inventory/add', function ($request,$response) {
+    $controller = new \app\controller\inventoryController("addInventory",$request,$response);
+});
 
-
-
-
-
-
-
-
+$app->router->post('/logistic/inventory/filter', function ($request,$response) {
+    $controller = new \app\controller\inventoryController("filterInventory",$request,$response);
+});
 
 
 

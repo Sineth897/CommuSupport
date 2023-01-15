@@ -16,10 +16,14 @@ class form
         echo '</form>';
     }
 
-    public function inputField($model, $label, $type,$attribute): void
+    public function inputField($model, $label, $type, $attribute, $id = ""): void
     {
         echo sprintf('<label>%s :</label>', $label);
-        echo sprintf("<input type='%s' name='%s' value='%s'>",$type ,$attribute, $model->{$attribute});
+        if($id == "") {
+            echo sprintf('<input type="%s" name="%s" value="%s">', $type, $attribute, $model->{$attribute});
+        } else {
+            echo sprintf('<input type="%s" name="%s" value="%s" id="%s">', $type, $attribute, $model->{$attribute}, $id);
+        }
         echo sprintf('<p>%s</p>', $model->getFirstError($attribute));
     }
 
@@ -30,22 +34,34 @@ class form
         echo sprintf('<p>%s</p>', $model->getFirstError($attribute));
     }
 
-    public function dropDownList($model, $label, $attribute, $options): void
+    public function dropDownList($model, $label, $attribute, $options, $id =""): void
     {
         echo sprintf('<label>%s :</label>', $label);
-        echo sprintf("<select name='%s' >", $attribute);
+        if($id == ""){
+            echo sprintf("<select name='%s'>", $attribute);
+        }else{
+            echo sprintf("<select name='%s' id='%s'>", $attribute, $id);
+        }
         echo "<option value=''>Select</option>";
         foreach ($options as $key => $value) {
-            $selected = $model->{$attribute} == $key ? 'selected' : '';
+            if($attribute){
+                $selected = $model->{$attribute} == $key ? 'selected' : '';
+            }else{
+                $selected = '';
+            }
             echo sprintf("<option value='%s' %s>%s</option>", $key, $selected, $value);
         }
         echo '</select>';
         echo sprintf('<p>%s</p>', $model->getFirstError($attribute));
     }
 
-    public function submitButton($label) : void
+    public function button($label, $type = 'submit', $id = '') : void
     {
-        echo sprintf("<button type='submit'>%s</button>", $label);
+        if($id == ""){
+            echo sprintf("<button type='%s'>%s</button>", $type, $label);
+        }else{
+            echo sprintf("<button type='%s' id='%s'>%s</button>", $type, $id, $label);
+        }
     }
 
 

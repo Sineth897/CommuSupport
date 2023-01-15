@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\core\Application;
 use app\core\DbModel;
 
 class inventoryModel extends DbModel
@@ -18,7 +19,7 @@ class inventoryModel extends DbModel
 
     public function attributes(): array
     {
-        return ['ccID','itemID','amount','updatedDate'];
+        return ['ccID','itemID','amount'];
     }
 
     public function primaryKey(): string
@@ -32,5 +33,29 @@ class inventoryModel extends DbModel
             'itemID' => [self::$REQUIRED],
             'amount' => [self::$REQUIRED],
         ];
+    }
+
+    public function save(): bool
+    {
+        $logisticOfficer = logisticModel::getUser(['employeeID' => Application::session()->get('user')]);
+        $this->ccID = $logisticOfficer->ccID;
+        $this->updatedDate = date('Y-m-d H:i:s');
+        return parent::save();
+    }
+
+    public function getCategories(): bool|array
+    {
+        $sql = "SELECT * FROM category";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getsubcategories($categoryID): bool|array
+    {
+        $sql = "SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = '$categoryID'";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 }
