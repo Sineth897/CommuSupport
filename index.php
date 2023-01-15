@@ -316,18 +316,18 @@ $app->router->get("/logistic/drivers", function ($request,$response) {
     $controller = new \app\controller\driverController("viewDrivers",$request,$response);
 });
 
+//logistic view inventory
+$app->router->get("/logistic/inventory", function ($request,$response) {
+    $controller = new \app\controller\inventoryController("viewInventory",$request,$response);
+});
 
+$app->router->post('/logistic/inventory/add', function ($request,$response) {
+    $controller = new \app\controller\inventoryController("addInventory",$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
-
+$app->router->post('/logistic/inventory/filter', function ($request,$response) {
+    $controller = new \app\controller\inventoryController("filterInventory",$request,$response);
+});
 
 
 
