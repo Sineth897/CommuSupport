@@ -40,6 +40,7 @@ class form
         if($id == ""){
             echo sprintf("<select name='%s'>", $attribute);
         }else{
+
             echo sprintf("<select name='%s' id='%s'>", $attribute, $id);
         }
         echo "<option value=''>Select</option>";
