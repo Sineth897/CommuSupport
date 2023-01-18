@@ -44,7 +44,7 @@ $organizationDoneeArrayKeys = ["organizationName","representative","contactNumbe
     if($donees['organizations']) {
         $organizationTable->displayTable($donees['organizations']);
     } else {
-        echo "No Organization Donees";
+        echo "No Organizations";
     } ?>
 
 </div>
