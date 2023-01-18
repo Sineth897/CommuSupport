@@ -1,4 +1,5 @@
 import request from "../../request.js";
+import table from "../../components/table.js";
 
 let addBtn = document.getElementById('addBtn');
 let filterBtn = document.getElementById('filterBtn');
@@ -60,7 +61,12 @@ filterBtn.addEventListener('click', async function() {
         filters['categoryID'] = filterCategory.value;
     }
     let array = await request().getData('./inventory/filter', 'POST', { filters: filters });
-    console.log(array);
+    let data = {
+        headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
+        keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],
+        data: array
+    };
+    table().createTable(inventoryDisplay, data);
 });
 
 

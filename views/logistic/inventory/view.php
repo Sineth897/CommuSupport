@@ -5,12 +5,20 @@
 use app\core\Application;
 
 $user = $user->findOne(['employeeID' => Application::session()->get('user')]);
-$Items = $inventory->retrieve(['ccID' => $user->ccID]);
+$items = $inventory->retrieveWithJoin('subcategory', 'subcategoryID', ['inventory.ccID' => $user->ccID]);
 $categories = $inventory->getCategories();
+$subcategories = $inventory->getsubcategories();
 
-echo '<pre>';
-var_dump($Items);
-echo '</pre>';
+//for ($i = 0; $i < count($items); $i++) {
+//    $items[$i]['subcategoryName'] = $subcategories[$items[$i]['itemID']];
+//}
+
+
+$tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
+
+//echo '<pre>';
+//var_dump($items);
+//echo '</pre>';
 
 ?>
 
@@ -55,6 +63,10 @@ echo '</pre>';
 <?php $filterForm::end(); ?>
 
 <div id="inventoryDisplay">
+
+    <?php $inventoryTable = new \app\core\components\tables\table($tableHeaders, ['subcategoryName', 'amount', 'scale', 'updatedTime']); ?>
+
+    <?php $inventoryTable->displayTable($items); ?>
 
 </div>
 

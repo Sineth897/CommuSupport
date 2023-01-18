@@ -48,24 +48,11 @@ class inventoryController extends Controller
         $inventory = new inventoryModel();
 
         $logistic = logisticModel::getUser(['employeeID' =>Application::session()->get('user')]);
-        $ccID = $logistic->ccID;
-
-        $stmt = "SELECT * FROM inventory WHERE ccID = '$ccID'";
 
         $filters = ($request->getJsonData())['filters'];
+        $filter['ccID'] = $logistic->ccID;
 
-
-        if(key_exists('categoryID', $filters)) {
-            $categoryID = $filters['categoryID'];
-            $subcategorySelect = "SELECT subcategoryID FROM subcategory WHERE categoryID = '$categoryID'";
-            $stmt .= " AND itemID IN ($subcategorySelect)";
-        }
-
-        $stmt = DbModel::prepare($stmt);
-        $stmt->execute();
-
-
-        $this->sendJson($stmt->fetchAll(\PDO::FETCH_ASSOC));
+        $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters));
     }
 
 }
