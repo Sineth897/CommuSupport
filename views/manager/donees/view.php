@@ -13,7 +13,7 @@ $manager = managerModel::getUser(['employeeID' => Application::session()->get('u
 $donees = $model->getAllDonees($manager->ccID);
 
 $individualDoneeHeaders = ["First Name","Last Name","Age","Contact Number","Email","Address"];
-$individualDoneeArrayKeys = ["firstName","lastName","age","contactNumber","email","address"];
+$individualDoneeArrayKeys = ["fname","lname","age","contactNumber","email","address"];
 
 $organizationDoneeHeaders = ["Organization Name","Representative Name","Contact Number","Email","Address"];
 $organizationDoneeArrayKeys = ["organizationName","representative","contactNumber","email","address"];
@@ -28,7 +28,7 @@ $organizationDoneeArrayKeys = ["organizationName","representative","contactNumbe
     <?php
 
     if($donees['individuals']) {
-        $individualTable->displayTable($donees['indiviuals']);
+        $individualTable->displayTable($donees['individuals']);
     } else {
         echo "No Individual Donees";
     } ?>
