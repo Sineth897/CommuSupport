@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/cards/eventcard.css">
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -11,24 +12,10 @@ $ccID = $manager->ccID;
 
 $events = $model->retrieve(["ccID" => $ccID],["date", "DESC"]);
 
-if( empty($events) ) {
-    echo "No events";
-} else {
-    echo "<pre>";
-    foreach ($events as $event) {
-        print_r($event);
-    }
-    echo "</pre>";
-}
-
-
+$eventCards = new \app\core\components\cards\eventcard();
+$eventCards->displayEvents($events);
 
 ?>
-
-
-
-<button type="button" id="filterBtn">Filter</button>
-
 
 
 <?php $creatEvent = \app\core\components\form\form::begin('./events/create', 'get'); ?>
@@ -43,4 +30,19 @@ if( empty($events) ) {
 
 <?php $logout->end(); ?>
 
-<script type="module" src="../public/JS/manager/events/view.js"></script>
+
+
+<div>
+    <?php $filter = \app\core\components\form\form::begin('', ''); ?>
+
+    <?php $filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory")?>
+
+    <label for="sameCC">Same CC</label>
+    <input type="checkbox" id="sameCC" value="<?php echo $manager->ccID ?>">
+
+    <button type="button" id="filterBtn">Filter</button>
+
+    <?php $filter->end(); ?>
+</div>
+
+<script type="module" src="/CommuSupport/public/JS/manager/events/view.js"></script>

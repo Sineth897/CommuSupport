@@ -1,0 +1,59 @@
+.mainDown {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.eventCard {
+    flex: 0 0 30%;
+    background-color: white;
+    margin: 0.5rem;
+    padding: 0.4rem;
+    border: 0.2rem;
+    border-radius: 0.5rem;
+}
+
+.eventCard>div {
+    padding: 0.2rem;
+}
+
+.eventCard>div:first-child {
+    display: flex;
+    flex-direction: row;
+}
+
+.eventCard>div:first-child>div:last-child {
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+}
+
+.eventCard>div:first-child>div:last-child>img {
+    margin-right: 0.15rem;
+}
+
+.eventCard>div:last-child {
+    display: flex;
+    flex-direction: row;
+}
+
+.eventCard>div:last-child>div:first-child {
+    display: flex;
+    flex-direction: row;
+    margin-right: auto;
+}
+
+.eventCard>div:last-child>div:first-child>img {
+    margin-right: 0.25rem;
+}
+
+.eventCard>div>h2 {
+    margin: 0.1rem;
+}
+
+.eventCard:hover {
+    box-shadow: 0 0 0.7rem #a6a6a6;
+    transform: scale(1.05);
+}
