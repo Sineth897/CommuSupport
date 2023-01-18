@@ -51,9 +51,14 @@ class inventoryModel extends DbModel
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-    public function getsubcategories($categoryID): bool|array
+    public function getsubcategories($categoryID = ""): bool|array
     {
-        $sql = "SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = '$categoryID'";
+        if($categoryID == "") {
+            $sql = "SELECT subcategoryID,subcategoryName FROM subcategory";
+        }
+        else {
+            $sql = "SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = '$categoryID'";
+        }
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
