@@ -7,12 +7,11 @@
 
 use app\core\Application;
 
-$managerID = Application::$app->session->get('user');
-$manager = $user->findOne(['employeeID' => $managerID]);
-$donees = $model->getAllDonees($manager->ccID);
+$manager = \app\models\managerModel::getUser(['employeeID' => Application::$app->session->get('user')]);
+$donors = $model->getAllDonees($manager->ccID);
 
 echo "<pre>";
-var_dump($donees);
+var_dump($donors);
 echo "</pre>";
 
 
