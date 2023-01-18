@@ -32,7 +32,7 @@ class loginController extends  Controller
             }
         }
 
-        $this->render("login/user", [
+        $this->render("login/user", "User Login", [
             'model' => $model
         ]);
     }
@@ -48,7 +48,7 @@ class loginController extends  Controller
             }
         }
 
-        $this->render("login/employee", [
+        $this->render("login/employee", "Employee Login",[
             'model' => $model
         ]);
     }

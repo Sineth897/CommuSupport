@@ -4,7 +4,6 @@ namespace app\core\middlewares;
 
 class eventMiddleware extends Middleware
 {
-
     protected function accessRules(): array
     {
         return [
