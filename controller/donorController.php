@@ -19,10 +19,12 @@ class donorController extends Controller
 
     protected function viewDonors(Request $request, Response $response)
     {
-        $user = $this->getUserType();
+        $userType = $this->getUserType();
         $model = new donorModel();
-        $this->render($user . "/donors/view", [
-            'model' => $model
+        $user = $this->getUserModel();
+        $this->render($userType . "/donors/view", "View Donors", [
+            'model' => $model,
+            'user' => $user
         ]);
     }
 }

@@ -59,6 +59,6 @@ class doneeModel extends DbModel
     {
         $individuals = $this->getDoneeIndividuals($ccID);
         $organizations = $this->getDoneeOrganizations($ccID);
-        return ['individuals' => $individuals, 'organizations' => $organizations];
+        return [ 'individuals' => $individuals, 'organizations' => $organizations];
     }
 }
