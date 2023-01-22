@@ -53,25 +53,23 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
-    public function retrieve($where = []) : array
+    public function retrieve(array $where = [], array $order = []) : array
     {
         $tableName = static::table();
-        $attributes = array_keys($where);
-        if( empty($attributes) ) {
-            $statement = self::prepare("SELECT * FROM $tableName");
-            $statement->execute();
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $sql = "Select * from $tableName";
+        if($where) {
+            $attributes = array_keys($where);
+            $sql .= " WHERE ".implode(" AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", $attributes));
         }
-        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
-        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
-        foreach ($where as $key => $item) {
-            $statement->bindValue(":$key", $item);
+        if($order) {
+            $sql .= " ORDER BY ".implode(" ", $order);
         }
+        $statement = self::prepare($sql);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function deleteOne($where): bool
+    public function delete($where): bool
     {
         $tableName = static::table();
         $attributes = array_keys($where);
@@ -84,12 +82,13 @@ abstract class DbModel extends Model
         return true;
     }
 
-    public function updateOne($where, $data): bool
+    public function update(array $where,array $data): bool
     {
         $tableName = static::table();
         $attributes = array_keys($where);
+        $setData = implode(", ", array_map(fn($data) => "$data",$data));
         $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
-        $statement = self::prepare("UPDATE $tableName SET $data WHERE $sql");
+        $statement = self::prepare("UPDATE $tableName SET $setData WHERE $sql");
         foreach ($where as $key => $item) {
             $statement->bindValue(":$key", $item);
         }
@@ -106,21 +105,18 @@ abstract class DbModel extends Model
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function retrieveWithJoin(string $tableName, string $onColumn, string $whereColumn = '', string $whereValue = ''): array {
+    public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = []): array {
         $table = static::table();
         $primaryKey = static::getPrimaryKey();
-        $where = '';
-        if($whereColumn && $whereValue) {
-            switch (gettype($whereValue)) {
-                case 'string':
-                    $where = "WHERE $whereColumn = '$whereValue'";
-                    break;
-                case 'integer':
-                    $where = "WHERE $whereColumn = $whereValue";
-                    break;
-            }
+        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$primaryKey = $tableName.$onColumn";
+        if($whereCondition) {
+            $attributes = array_keys($whereCondition);
+            $where = implode("AND ", array_map(fn($attr) => "$attr = '$whereCondition[$attr]'", $attributes));
+            $sql .= " WHERE $where";
         }
-        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$primaryKey = $tableName.$onColumn $where";
+        if($orderBy) {
+            $sql .= " ORDER BY ".implode(" ", $orderBy);
+        }
         $statement = self::prepare($sql);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);

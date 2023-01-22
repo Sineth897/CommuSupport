@@ -61,4 +61,13 @@ class eventModel extends DbModel
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    public static function getEventCategoryIcons() {
+        $categories = (new static())->getEventCategories();
+        $preparedIcons = [];
+        foreach ($categories as $key => $value) {
+            $preparedIcons[$key] = "/CommuSupport/public/src/icons/event/eventcategoryicons/" . $value . ".svg";
+        }
+        return $preparedIcons;
+    }
 }
