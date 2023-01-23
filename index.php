@@ -547,7 +547,10 @@ $app->router->get('/admin/employees', function ($request, $response) {
 $app->router->get('/admin/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
-
+//Admin view request
+$app->router->get('/admin/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
 
 
