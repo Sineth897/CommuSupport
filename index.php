@@ -526,6 +526,11 @@ $app->router->get('/admin/communityheadoffices', function ($request, $response) 
     $controller = new \app\controller\choController("viewCho",$request,$response);
 });
 
+//Admin view cc
+$app->router->get('/admin/cc', function ($request, $response) {
+    $controller = new \app\controller\ccController("adminViewCC",$request,$response);
+});
+
 //Admin register cho
 $app->router->get('/admin/communityheadoffices/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerCho",$request,$response);
