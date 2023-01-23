@@ -527,7 +527,7 @@ $app->router->get('/admin/communityheadoffices', function ($request, $response) 
 });
 
 //Admin view cc
-$app->router->get('/admin/cc', function ($request, $response) {
+$app->router->get('/admin/communitycenters', function ($request, $response) {
     $controller = new \app\controller\ccController("viewCC",$request,$response);
 });
 

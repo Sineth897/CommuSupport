@@ -8,8 +8,6 @@ $userID = \app\core\Application::session()->get('user');
 $CC = $model->retrieve();
 
 
-echo "<pre>
-admin view cc
-";
+echo "<pre>";
 print_r($CC);
 echo "</pre>";
