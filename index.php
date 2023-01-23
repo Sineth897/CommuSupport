@@ -543,7 +543,10 @@ $app->router->post('/admin/communityheadoffices/register', function ($request, $
 $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
-
+//Admin view donations
+$app->router->get('/admin/donations', function ($request, $response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
 
 
 
