@@ -4,8 +4,8 @@
 /** @var $user \app\models\adminModel */
 
 $userID = \app\core\Application::session()->get('user');
-$user = $user->findOne(['adminId' => $userID]);
-$CC = $model->retrieve(['admin' => $userID]);
+// $user = $user->findOne(['adminId' => $userID]);
+$CC = $model->retrieve();
 
 
 echo "<pre>
