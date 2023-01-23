@@ -539,6 +539,10 @@ $app->router->get('/admin/communityheadoffices/register', function ($request, $r
 $app->router->post('/admin/communityheadoffices/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerCho",$request,$response);
 });
+//Admin view employees
+$app->router->get('/admin/employees', function ($request, $response) {
+    $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
+});
 
 
 
