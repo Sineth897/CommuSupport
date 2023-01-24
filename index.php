@@ -562,7 +562,10 @@ $app->router->get('/admin/logistics', function ($request, $response) {
 $app->router->get('/admin/managers', function ($request, $response) {
     $controller = new \app\controller\managerController("viewManagers",$request,$response);
 });
-
+//Admin view  drivers
+$app->router->get('/admin/drivers', function ($request, $response) {
+    $controller = new \app\controller\driverController("viewDrivers",$request,$response);
+});
 
 
 
