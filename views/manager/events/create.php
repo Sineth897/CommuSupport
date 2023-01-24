@@ -40,7 +40,7 @@ echo \app\core\Application::session()->getFlash('result');
     <?php $creatEventForm->textArea($model, 'Event description','description'); ?>
 </div>
 
-<?php $creatEventForm->submitButton('Create');  ?>
+<?php $creatEventForm->button('Create');  ?>
 
 <?php $creatEventForm->end(); ?>
 

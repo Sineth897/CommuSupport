@@ -2,21 +2,18 @@
 
 /** @var $model \app\models\driverModel */
 
+use app\core\components\tables\table;
+
 echo empty($model);
 
 $drivers = $model->retrieve();
 
 if( empty($drivers) ) {
-    echo "No events";
-} else {
-    echo "<pre>";
-    foreach ($drivers as $driver) {
-        print_r($driver);
-    }
-    echo "</pre>";
+    echo "No drivers currently registered";
 }
 
-
+$headers = ['Name','Age','Contact Number','Address','Vehicle','Preference'];
+$arraykeys= ['name','age','contactNumber','address','vehicleType','preference'];
 
 ?>
 
@@ -26,8 +23,14 @@ if( empty($drivers) ) {
 
 <?php $creatEvent->end(); ?>
 
-<?php $logout = \app\core\components\form\form::begin('logout', 'post'); ?>
+<button type="button"> Filter </button>
 
-<button> logout </button>
+<div id="driverDisplay">
 
-<?php $logout->end(); ?>
+    <?php $driversTable = new table($headers,$arraykeys); ?>
+
+    <?php $driversTable->displayTable($drivers); ?>
+
+</div>
+
+
