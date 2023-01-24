@@ -2,11 +2,15 @@
 
 :root {
     --primary-color: #1a1a1a;
-    --secondary-color: #00d749;
+    --secondary-color: #00d776;
     --danger-color: #e10000;
     --light-red: #ff9898;
     --background-main: #e8e8e8;
     --light: #a6a6a6;
+    --light-green: #95c7b2;
+    --super-light: #eaeaea;
+    --secondary-dark: #00832f;
+
 }
 
 * {
@@ -24,6 +28,12 @@ a {
 button {
     padding: 12px 20px;
     outline: none;
+    cursor: pointer;
+}
+
+.container {
+    background: url("/CommuSupport/public/src/landingpage/hero-background.jpg");
+    background-size: cover;
 }
 
 /*      Nav-bar CSS     */
@@ -32,8 +42,8 @@ button {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 240px;
-    background-color: var(--primary-color);
+    padding: 20px 180px;
+    background-color: transparent;
     color: #fff;
 
 }
@@ -54,82 +64,85 @@ button {
     gap: 20px;
 }
 
-.nav-btns
-{
+.nav-btns {
+    display: flex;
+    flex-direction: row;
     gap: 20px;
 }
 
-.navbar #login
-{
+.navbar #login {
     border: solid white 1px;
     border-radius: 4px;
-    background-color: var(--primary-color);
+    background: transparent;
     color: #fff;
 }
 
-.navbar #signup
-{
-    background-color: var(--secondary-color);
-    border: solid var(--secondary-color) 1px;
-    border-radius: 4px;
-    color: #fff;
-}
+/*.navbar #signup, #readmore {*/
+/*    background-color: var(--secondary-color);*/
+/*    border: solid var(--secondary-color) 1px;*/
+/*    border-radius: 4px;*/
+/*    color: #fff;*/
+/*}*/
 
-/*     Hero Section CSS    */
 
 .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    height: 600px;
-}
-
-.hero-text
-{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    height: 600px;
+}
+
+.hero-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     padding: 0 100px;
+
 }
 
-.hero-text h1{
+.hero-box h1 {
     font-size: 3rem;
+    color: #fff;
 }
 
-.hero-text h1 span{
+.hero-box h1 span {
     color: var(--secondary-color);
+    font-size: 4rem;
 }
 
-.hero-text p{
-    margin-right: 200px;
-    text-align: justify;
+.hero-box p {
     line-height: 1rem;
+    color: white;
+    margin: 20px 0;
+    max-width: 60%;
 }
 
-.hero-image
-{
+.hero-image {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.counter{
+.counter {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
+    height: 400px;
 }
 
-.counter-grid
-{
+.counter-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
-    width: 50%;
+    /*width: 50%;*/
 }
-.counter-item
-{
+
+.counter-item {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -138,8 +151,154 @@ button {
     border-radius: 4px;
 }
 
-.counter-item h1
-{
-    font-size: 3rem;
+.counter-item h1 {
+    font-size: 6rem;
     color: var(--secondary-color);
 }
+
+.counter-item h6 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.info {
+    display: block;
+}
+
+.info h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin: 20px 0;
+}
+
+.info-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 0 100px;
+    align-items: center;
+}
+
+.info .text {
+    max-width: 300px;
+    text-align: justify;
+}
+
+.text h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin: 20px 0;
+}
+
+.footer {
+    background: url("/CommuSupport/public/src/landingpage/hero-background.jpg");
+    background-size: cover;
+    color: white;
+    padding-bottom: 20px;
+}
+
+
+.grid-2-1-1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    height: 300px;
+}
+
+.footer ul {
+    list-style: none;
+}
+
+.contact {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+margin-left: 25%;
+}
+
+.contact h3
+{
+    font-size: 1.5rem;
+    margin: 20px 0;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.basic-input-field {
+    width: 300px;
+    height: 40px;
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    padding: 0 10px;
+}
+
+.basic-input-field:focus {
+    outline: none;
+    border: 2px solid var(--primary-color);
+}
+
+.contact-btn, .action-btn {
+    border: none;
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+
+}
+
+.contact-btn:hover , .action-btn:hover {
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+
+.link-list {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+}
+
+.link-list h4 {
+    margin-top: 80px;
+    margin-left: 40px;
+    font-weight: 800;
+    color: var(--light);
+    font-size: 1rem;
+
+}
+
+.link-list ul {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
+    font-weight: lighter;
+    font-size: 0.8rem;
+}
+
+.link-list.two {
+    background: transparent;
+}
+
+.copyright
+{
+color: white;
+    width: 100%;
+    text-align: center;
+    color: var(--light);
+}
+
