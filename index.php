@@ -245,6 +245,10 @@ $app->router->get('/manager/donors', function ($request, $response) {
 $app->router->get('/donor/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
+//donor view communitycenter
+$app->router->get('/donor/communitycenters', function ($request, $response) {
+    $controller = new \app\controller\ccController("viewCC",$request,$response);
+});
 
 
 
