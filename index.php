@@ -556,7 +556,7 @@ $app->router->get('/admin/requests', function ($request, $response) {
 });
 //Admin view logistics
 $app->router->get('/admin/logistics', function ($request, $response) {
-    $controller = new \app\controller\logisticController("viewCC",$request,$response);
+    $controller = new \app\controller\logisticController("viewLogistics",$request,$response);
 });
 
 
