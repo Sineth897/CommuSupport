@@ -558,7 +558,10 @@ $app->router->get('/admin/requests', function ($request, $response) {
 $app->router->get('/admin/logistics', function ($request, $response) {
     $controller = new \app\controller\logisticController("viewLogistics",$request,$response);
 });
-
+//Admin view managers
+$app->router->get('/admin/managers', function ($request, $response) {
+    $controller = new \app\controller\managerController("viewManagers",$request,$response);
+});
 
 
 
