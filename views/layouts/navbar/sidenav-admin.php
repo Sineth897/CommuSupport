@@ -83,7 +83,7 @@
 
     </ul>
     <div class="logout">
-        <form method="post" action="/logout"><input type="submit"><i class="material-icons" id="log_out">power_settings_new</i></input></form>
+        <form method="post" action="/CommuSupport/logout"><button><i class="material-icons" id="log_out">power_settings_new</i></button></form>
     </div>
 </div>
 <div class="home_content">
