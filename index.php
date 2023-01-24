@@ -241,7 +241,10 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************Donor get and post methods*************************//
-
+//Donor view request
+$app->router->get('/donor/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
 
 
@@ -551,7 +554,10 @@ $app->router->get('/admin/donations', function ($request, $response) {
 $app->router->get('/admin/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
-
+//Admin view logistics
+$app->router->get('/admin/logistics', function ($request, $response) {
+    $controller = new \app\controller\logisticController("viewCC",$request,$response);
+});
 
 
 
