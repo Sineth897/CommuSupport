@@ -73,7 +73,7 @@ abstract class Model
                     $this->addRuleError($attribute, self::$PASSWORD);
                 }
                 if( $ruleName === self::$nic && !(preg_match('/^[0-9]{9}[vV]$/', $value) || preg_match('/^[0-9]{12}$/', $value)) ) {
-                    $this->addRuleError($attribute, self::$NIC);
+                    $this->addRuleError($attribute, self::$nic);
                 }
             }
         }
