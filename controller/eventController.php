@@ -23,7 +23,7 @@ class eventController extends Controller
         $user = $this->getUserType();
         $model = new eventModel();
 
-        $this->render($user . "/events/view", [
+        $this->render($user . "/events/view", "View Events", [
             'model' => $model
         ]);
     }
@@ -43,7 +43,7 @@ class eventController extends Controller
             }
         }
 
-        $this->render("manager/events/create", [
+        $this->render("manager/events/create", "Create a Event" ,[
             'model' => $model
         ]);
 
@@ -53,7 +53,9 @@ class eventController extends Controller
 
         $model = new eventModel();
         $filters = $request->getJsonData();
-        $this->sendJson($model->retrieve($filters));
+        $events = $model->retrieve($filters);
+        $categoryIcons = eventModel::getEventCategoryIcons();
+        $this->sendJson(['events' => $events, 'icons' => $categoryIcons]);
 
     }
 
