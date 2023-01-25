@@ -11,35 +11,35 @@
     </div>
     <ul class="nav_list">
         <li>
-            <a href="#">
+            <a href="/CommuSupport/logisitic/donations">
                 <i class="material-icons">inventory_2</i>
                 <span class="links_name">Donations</span>
             </a>
             <span class="tooltip">Donations</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/CommuSupport/logisitic/deliveries">
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Deliveries</span>
             </a>
             <span class="tooltip">Deliveries</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/CommuSupport/logisitic/inventory">
                 <i class="material-icons">inventory</i>
                 <span class="links_name">Inventory</span>
             </a>
             <span class="tooltip">Inventory</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/CommuSupport/logisitic/requests">
                 <i class="material-icons">summarize</i>
                 <span class="links_name">Requests</span>
             </a>
             <span class="tooltip">Requests</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/CommuSupport/logisitic/drivers">
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Drivers</span>
             </a>
@@ -47,11 +47,11 @@
         </li>
     </ul>
     <div class="logout">
-        <a href="#"><i class="material-icons" id="log_out">power_settings_new</i></a>
+        <form method="post" action="/CommuSupport/logout"><button><i class="material-icons" id="log_out">power_settings_new</i></button></form>
     </div>
 </div>
 <div class="home_content">
-
+    {content}
 </div>
 
 <script src="/CommuSupport/public/JS/navbar/sidebar-scripts.js"></script>

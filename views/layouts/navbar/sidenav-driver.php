@@ -11,14 +11,14 @@
     </div>
     <ul class="nav_list">
          <li>
-            <a href="#">
+            <a href="/CommuSupport/driver/deliveries">
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Deliveries</span>
             </a>
             <span class="tooltip">Deliveries</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/CommuSupport/driver/deliveries/completed">
                 <i class="material-icons">task_alt</i>
                 <span class="links_name">Completed</span>
             </a>
@@ -26,7 +26,7 @@
         </li>
      </ul>
     <div class="logout">
-        <a href="#"><i class="material-icons" id="log_out">power_settings_new</i></a>
+        <form method="post" action="/CommuSupport/logout"><button><i class="material-icons" id="log_out">power_settings_new</i></button></form>
     </div>
 </div>
 <div class="home_content">
