@@ -11,21 +11,21 @@
     </div>
     <ul class="nav_list">
         <li>
-            <a href="#">
+            <a href="/CommuSupport/cho/users">
                 <i class="material-icons">emoji_people</i>
                 <span class="links_name">Users</span>
             </a>
             <span class="tooltip">Users</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/CommuSupport/cho/communitycenters">
                 <i class="material-icons">emoji_transportation</i>
                 <span class="links_name">Community Centers</span>
             </a>
             <span class="tooltip">Community Centers</span>
         </li>
         <li>
-            <a href="#">
+            <a href="/CommuSupport/cho/complaints">
                 <i class="material-icons">report_gmailerrorred</i>
                 <span class="links_name">Complaints</span>
             </a>
@@ -33,11 +33,11 @@
         </li>
     </ul>
     <div class="logout">
-        <a href="#"><i class="material-icons" id="log_out">power_settings_new</i></a>
+        <form method="post" action="/CommuSupport/logout"><button><i class="material-icons" id="log_out">power_settings_new</i></button></form>
     </div>
 </div>
 <div class="home_content">
-
+    {content}
 </div>
 
 <script src="/CommuSupport/public/JS/navbar/sidebar-scripts.js"></script>
