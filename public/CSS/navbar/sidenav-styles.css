@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap');
+
+* {
+    font-family: Inter, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #00d776;
+    --danger-color: #e10000;
+    --light-red: #ff9898;
+    --background-main: #e8e8e8;
+    --light: #a6a6a6;
+    --light-green: #95c7b2;
+    --super-light: #eaeaea;
+    --secondary-dark: #00832f;
+}
+
+body{
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+::selection{
+    color:white;
+    background: var(--primary-color);
+}
+
+.sidenav{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:78px;
+    background:var(--primary-color);
+    padding:6px 14px;
+    z-index:99;
+    transition:all 0.5s ease;
+}
+
+.sidenav.active{
+    width:300px;
+}
+
+.logo_content{
+    padding: 10px 0;
+}
+
+.sidenav .logo_content .logo{
+    color:white;
+    display: flex;
+    height:50px;
+    width:100%;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition:all 0.5s ease;
+    margin-left: 10px;
+}
+
+.sidenav.active .logo_content .logo{
+    opacity:1;
+    pointer-events: none;
+}
+
+/*  hamburger button    */
+
+.sidenav #btn{
+    position:absolute;
+    color:white;
+    top:6px;
+    left:50%;
+    font-size: 22px;
+    height:50px;
+    width:50px;
+    text-align: center;
+    line-height: 50px;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+
+.sidenav.active #btn{
+    left:90%;
+}
+
+/*  navbar links complete     */
+
+.sidenav ul li{
+    position:relative;
+    height:50px;
+    width:100%;
+    margin:5px 0;
+    list-style: none;
+    line-height: 50px;
+}
+
+.sidenav ul li .tooltip
+{
+    background-color: var(--primary-color);
+    color: white;
+    opacity: 0;
+    position: absolute;
+    left: 80px;
+    transform: translate(0, -50%);
+    white-space: nowrap;
+    padding: 0 20px;
+    border-radius: 10px;
+
+}
+
+.sidenav ul li .tooltip::before{
+    content:'';
+    width:0;
+    height:0;
+    border-top:10px solid transparent;
+    border-bottom:10px solid transparent;
+    border-right:10px solid var(--primary-color);
+    position:absolute;
+    left:-8px;
+    transform: translate(0, 75%);
+}
+.sidenav.active ul li .tooltip{
+    display:none;
+}
+.sidenav ul li:hover .tooltip{
+    transition:all 0.5s ease;
+    opacity:1;
+    top:50%;
+}
+
+.sidenav ul li a{
+    color:white;
+    display:flex;
+    align-items:center;
+    text-decoration: none;
+    border-radius: 12px;
+    white-space: nowrap;
+    transition:all 0.4s ease;
+}
+
+.sidenav ul li a:hover{
+    color:var(--primary-color);
+    background:var(--secondary-color);
+}
+
+.sidenav ul li i{
+    font-size: 18px;
+    font-weight: 400;
+    height:50px;
+    min-width: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+    text-align: center;
+}
+.sidenav .links_name{
+    font-size: 15px;
+    font-weight: 400;
+    opacity:0;
+    pointer-events: none;
+    transition:all 0.3s ease;
+}
+.sidenav.active .links_name{
+    transition:0s;
+    opacity:1;
+    pointer-events: auto;
+}
+
+/*  Logout Button    */
+.logout{
+    position:absolute;
+    color:white;
+    bottom:0;
+    left:0;
+    width:100%;
+}
+
+.logout a{
+    text-decoration: none;
+}
+
+.logout .logout-text{
+    display:flex;
+    align-items:center;
+    opacity:0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition:all 0.4s ease;
+}
+
+.logout form button{
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    text-decoration: none;
+    border-radius: 12px;
+    white-space: nowrap;
+    transition:all 0.4s ease;
+    background: transparent;
+}
+
+.logout form button:hover{
+    color:var(--primary-color);
+    background:var(--danger-color);
+}
+
+.logout form button{
+    position:absolute;
+    bottom:5px;
+    left:50%;
+    transform:translateX(-50%);
+    min-width: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition:all 0.4s ease;
+    border: none;
+    outline: none;
+}
+
+/* Sidebar Active State Logout  */
+
+.sidenav.active .logout{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.sidenav.active .logout .logout-text{
+    opacity:1;
+    pointer-events: auto;
+    margin-left: 10px;
+}
+
+
