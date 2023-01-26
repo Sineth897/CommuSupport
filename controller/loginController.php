@@ -23,6 +23,9 @@ class loginController extends  Controller
 
     protected function userLogin($request, $response)
     {
+
+        $this->ifLoggedIn($response);
+
         $model = new userModel();
         if ($request->isPost()) {
             $model->getData($request->getBody());
@@ -32,13 +35,16 @@ class loginController extends  Controller
             }
         }
 
-        $this->render("login/user", [
+        $this->render("login/user", "User Login", [
             'model' => $model
         ]);
     }
 
     protected function employeeLogin(Request $request, Response $response)
     {
+
+        $this->ifLoggedIn($response);
+
         $model = new userModel();
         if ($request->isPost()) {
             $model->getData($request->getBody());
@@ -48,7 +54,7 @@ class loginController extends  Controller
             }
         }
 
-        $this->render("login/employee", [
+        $this->render("login/employee", "Employee Login",[
             'model' => $model
         ]);
     }
@@ -60,9 +66,12 @@ class loginController extends  Controller
         $response->redirect('/');
     }
 
-    private function getModel(userModel $model)
-    {
-        $username = $model->username;
+    private function ifLoggedIn(Response $response) {
+
+        if($this->getUserType() !== 'guest') {
+            $this->setFlash('loggedStatus', 'You are already logged in');
+            $response->redirect('/');
+        }
     }
 
     protected function lockedAccount(userModel $model)
