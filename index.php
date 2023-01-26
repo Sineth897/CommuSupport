@@ -462,9 +462,9 @@ $app->router->get("/cho/communitycenters", function($request,$response) {
    $controller = new \app\controller\ccController('viewCC',$request,$response);
 });
 
-
-
-
+$app->router->get("/cho/complaints",function($request,$response){
+    $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
+});
 
 
 
