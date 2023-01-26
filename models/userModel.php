@@ -61,7 +61,7 @@ class userModel extends  DbModel
 
         try {
 
-            if($this->isRoot()) {
+            if($this->isRoot() && $employee === true) {
 
                 if(!$this->passCheck()) {
                     $this->addError('password', 'Password is incorrect');
@@ -74,13 +74,12 @@ class userModel extends  DbModel
 
             $user = userModel::findOne(['username' => $this->username]);
 
-            if($user->lockedStatus == 1) {
-                Application::$app->response->redirect('/login/locked');
-                return false;
-            }
-
             if (!$user) {
                 $this->addError('username', 'User does not exist with this username');
+                return false;
+            }
+            if($user->lockedStatus == 1) {
+                Application::$app->response->redirect('/login/locked');
                 return false;
             }
             if($employee && $this->isUser($user->userType)) {
