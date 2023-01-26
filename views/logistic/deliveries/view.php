@@ -1,6 +1,14 @@
 <?php
 
+/** @var $deliveries \app\models\deliveryModel */
+/** @var $user \app\models\logisticModel */
+
 echo "Hello, " . $_SESSION['username'];
+
+echo "<pre>";
+var_dump($deliveries->retrieve());
+echo "</pre>";
+
 
 ?>
 
