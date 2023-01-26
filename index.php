@@ -329,9 +329,9 @@ $app->router->post('/logistic/inventory/filter', function ($request,$response) {
     $controller = new \app\controller\inventoryController("filterInventory",$request,$response);
 });
 
-
-
-
+$app->router->get('/logistic/deliveries', function ($request,$response) {
+    $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
+});
 
 
 
