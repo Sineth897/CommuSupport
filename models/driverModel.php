@@ -64,7 +64,8 @@ class driverModel extends DbModel
                 return true;
             }
             else {
-                $this->deleteOne(['employeeID' => $this->employeeID]);
+                $this->delete(['employeeID' => $this->employeeID]);
+                return false;
             }
         }
         return false;
