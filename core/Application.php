@@ -16,6 +16,7 @@ class Application
     public Response $response;
     public Database $database;
     public Session $session;
+    public Cookie $cookie;
     public ?userModel $user;
     private array $rootInfo;
 
@@ -30,6 +31,7 @@ class Application
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
+        $this->cookie = new Cookie();
         $this->database = new Database($config['db']);
         $this->rootInfo = $config['root'];
 
@@ -45,9 +47,14 @@ class Application
         }
     }
 
-    public static function session()
+    public static function session() : Session
     {
         return self::$app->session;
+    }
+
+    public static function cookie() : Cookie
+    {
+        return self::$app->cookie;
     }
 
     public function run() : void
@@ -70,10 +77,13 @@ class Application
         $primaryValue = $user->{$primaryKey};
         $username = $user->username;
         $userType = $user->userType();
-        $this->session->set('user', $primaryValue);
-        $this->session->set('username', $username);
-        $this->session->set('userType', $userType);
-        return true;
+        if(session_regenerate_id()) {
+            $this->session->set('user', $primaryValue);
+            $this->session->set('username', $username);
+            $this->session->set('userType', $userType);
+            return true;
+        }
+        return false;
     }
 
     public function logout(): void
@@ -81,6 +91,7 @@ class Application
         $this->user = null;
         $this->session->remove('user');
         $this->session->set('userType','guest');
+        session_regenerate_id();
     }
 
     public function userType()

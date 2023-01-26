@@ -26,6 +26,9 @@ class userModel extends  DbModel
     public int $invalidAttempts = 0;
     public int $lockedStatus = 0;
 
+    public string $selector = '';
+    public string $token = '';
+
     public function table() : string
     {
         return 'users';
@@ -143,5 +146,15 @@ class userModel extends  DbModel
         $this->update( ['username' => $this->username],["invalidAttempts = $newAttemptValue"]);
     }
 
+    public function setRememberMe(string $selector, string $token): bool {
+        $table = $this->table();
+        try {
+            self::prepare("UPDATE $table SET selector = :selector, token = :token WHERE username = :username")
+                ->execute(['selector' => $selector, 'token' => $token, 'username' => $this->username]);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 
 }

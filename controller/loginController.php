@@ -80,4 +80,27 @@ class loginController extends  Controller
         echo $username . " is locked";
     }
 
+    private function rememberMe(userModel $user) {
+        [$selector, $validator, $token] = $this->generateSelectorNValidator();
+
+    }
+
+    private function forgetMe() {
+
+    }
+
+    private function generateSelectorNValidator():array {
+        $selector = bin2hex(random_bytes(16));
+        $validator = bin2hex(random_bytes(32));
+        return [$selector, $validator, $selector . ":" . $validator];
+    }
+
+    private function getSelectorNValidator():array
+    {
+        $selectorNValidator =Application::cookie()->getCookieValue('rememberMe');
+        if(!$selectorNValidator) {
+            return [];
+        }
+        return explode(":", $selectorNValidator);
+    }
 }
