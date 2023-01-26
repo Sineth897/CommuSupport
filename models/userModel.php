@@ -61,7 +61,7 @@ class userModel extends  DbModel
 
         try {
 
-            if($this->isRoot()) {
+            if($this->isRoot() && $employee === true) {
 
                 if(!$this->passCheck()) {
                     $this->addError('password', 'Password is incorrect');
@@ -74,13 +74,12 @@ class userModel extends  DbModel
 
             $user = userModel::findOne(['username' => $this->username]);
 
-            if($user->lockedStatus == 1) {
-                Application::$app->response->redirect('/login/locked');
-                return false;
-            }
-
             if (!$user) {
                 $this->addError('username', 'User does not exist with this username');
+                return false;
+            }
+            if($user->lockedStatus == 1) {
+                Application::$app->response->redirect('/login/locked');
                 return false;
             }
             if($employee && $this->isUser($user->userType)) {
@@ -98,7 +97,7 @@ class userModel extends  DbModel
                 return false;
             }
             $user->userType = $user->userType();
-
+            $this->update(['username' => $this->username], ['invalidAttempts = 0']);
             return Application::$app->login($user);
         } catch (\Exception $e) {
             echo $e->getMessage();
@@ -135,13 +134,12 @@ class userModel extends  DbModel
 
     public function invalidLogin() {
         if($this->invalidAttempts >= 5) {
-            $this->updateOne(['username' => $this->username],"lockedStatus = 1");
+            $this->update(['username' => $this->username],["lockedStatus = 0"]);
             Application::$app->response->redirect('/login/locked');
         }
 
         $newAttemptValue = $this->invalidAttempts + 1;
-        echo $newAttemptValue;
-        $this->updateOne( ['username' => $this->username],"invalidAttempts = $newAttemptValue");
+        $this->update( ['username' => $this->username],["invalidAttempts = $newAttemptValue"]);
     }
 
 
