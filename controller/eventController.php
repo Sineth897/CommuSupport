@@ -53,7 +53,9 @@ class eventController extends Controller
 
         $model = new eventModel();
         $filters = $request->getJsonData();
-        $this->sendJson($model->retrieve($filters));
+        $events = $model->retrieve($filters);
+        $categoryIcons = eventModel::getEventCategoryIcons();
+        $this->sendJson(['events' => $events, 'icons' => $categoryIcons]);
 
     }
 

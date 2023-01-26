@@ -28,7 +28,7 @@ echo '</pre>';
 
 <?php $choRegistrationForm->inputField($user, "Password",'password','password') ?>
 
-<?php $choRegistrationForm->submitButton("Confirm") ?>
+<?php $choRegistrationForm->button("Confirm") ?>
 
 <?php $choRegistrationForm->end() ?>
 
