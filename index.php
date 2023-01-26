@@ -329,9 +329,9 @@ $app->router->post('/logistic/inventory/filter', function ($request,$response) {
     $controller = new \app\controller\inventoryController("filterInventory",$request,$response);
 });
 
-
-
-
+$app->router->get('/logistic/deliveries', function ($request,$response) {
+    $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
+});
 
 
 
@@ -539,8 +539,18 @@ $app->router->get('/admin/communityheadoffices/register', function ($request, $r
 $app->router->post('/admin/communityheadoffices/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerCho",$request,$response);
 });
-
-
+//Admin view employees
+$app->router->get('/admin/employees', function ($request, $response) {
+    $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
+});
+//Admin view donations
+$app->router->get('/admin/donations', function ($request, $response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
+//Admin view request
+$app->router->get('/admin/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
 
 
