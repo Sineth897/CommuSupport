@@ -100,7 +100,7 @@ class Controller
         return Application::$app->cookie->getCookie($key);
     }
 
-    protected function deleteCookie($key): void
+    protected function unsetCookie($key): void
     {
         Application::$app->cookie->unsetCookie($key);
     }

@@ -16,7 +16,7 @@ abstract class DbModel extends Model
         return (new static())->primaryKey();
     }
 
-    public static function getUser($where): ?DbModel
+    public static function getUser($where)
     {
         return (new static())->findOne($where);
     }

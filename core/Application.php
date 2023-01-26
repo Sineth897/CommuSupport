@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\models\userModel;
+use app\models\userTokenModel;
 
 class Application
 {
@@ -45,6 +46,12 @@ class Application
                 $this->session->set('userType', 'guest');
             }
         }
+
+        if($this->cookie->isRememberMeSet()) {
+            if($this->rememberLogin()) {
+                $this->response->redirect('/');
+            }
+        }
     }
 
     public static function session() : Session
@@ -60,7 +67,9 @@ class Application
     public function run() : void
     {
         try {
+            ob_start();
             echo $this->router->resolve();
+            ob_end_flush();
         } catch (\Exception $e) {
             echo $e->getMessage();
             $this->response->setStatusCode($e->getCode());
@@ -75,12 +84,10 @@ class Application
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
-        $username = $user->username;
-        $userType = $user->userType();
         if(session_regenerate_id()) {
             $this->session->set('user', $primaryValue);
-            $this->session->set('username', $username);
-            $this->session->set('userType', $userType);
+            $this->session->set('username', $user->username);
+            $this->session->set('userType', $user->userType());
             return true;
         }
         return false;
@@ -91,7 +98,6 @@ class Application
         $this->user = null;
         $this->session->remove('user');
         $this->session->set('userType','guest');
-        session_regenerate_id();
     }
 
     public function userType()
@@ -113,5 +119,23 @@ class Application
     public function isRootPassword(string $password): bool
     {
         return password_verify($password, $this->rootInfo['password']);
+    }
+
+    private function getSelectorNValidator(): array
+    {
+        $selectorNValidator = $this->cookie->getCookie('rememberMe');
+        return explode(':', $selectorNValidator);
+    }
+
+    private function rememberLogin() {
+        [$selector, $validator] = $this->getSelectorNValidator();
+        $userToken = userTokenModel::getUser(['selector' => $selector]);
+        if(!$userToken) {
+            return false;
+        }
+        if(password_verify($validator, $userToken->validator)) {
+            return $this->login(userModel::getUser(['userID' => $userToken->userID]));
+        }
+        return false;
     }
 }

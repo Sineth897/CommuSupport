@@ -26,8 +26,7 @@ class userModel extends  DbModel
     public int $invalidAttempts = 0;
     public int $lockedStatus = 0;
 
-    public string $selector = '';
-    public string $token = '';
+    public ?userTokenModel $userToken = null;
 
     public function table() : string
     {
@@ -95,8 +94,8 @@ class userModel extends  DbModel
             }
 
             if (!password_verify($this->password, $user->password)) {
-                $user->invalidLogin();
-                $this->addError('password', 'Password is incorrect');
+                $this->invalidLogin();
+                $this->addError('password', 'Incorrect Password');
                 return false;
             }
             $user->userType = $user->userType();
@@ -137,7 +136,7 @@ class userModel extends  DbModel
 
     public function invalidLogin() {
         if($this->invalidAttempts >= 5) {
-            $this->update(['username' => $this->username],["lockedStatus = 0"]);
+            $this->update(['username' => $this->username],["lockedStatus = 1"]);
             Application::$app->response->redirect('/login/locked');
         }
 
@@ -145,15 +144,27 @@ class userModel extends  DbModel
         $this->update( ['username' => $this->username],["invalidAttempts = $newAttemptValue"]);
     }
 
-    public function setRememberMe(string $selector, string $token): bool {
-        $table = $this->table();
+    public function setRememberMe(string $selector, string $token, $days): bool {
+        $tokenInfo = [
+            'selector' => $selector,
+            'token' => password_hash($token, PASSWORD_DEFAULT),
+            'userID' => $this->userID,
+            'expiryDate' => date('Y-m-d H:i:s', time() + 60 * 60 * 24 * $days)
+        ];
         try {
-            self::prepare("UPDATE $table SET selector = :selector, token = :token WHERE username = :username")
-                ->execute(['selector' => $selector, 'token' => $token, 'username' => $this->username]);
+            $this->userToken = new userTokenModel();
+            $this->userToken->getData($tokenInfo);
+            $this->userToken->save();
             return true;
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function unsetRememberMe(string $userID) : bool {
+        $this->userToken = new userTokenModel();
+        $this->userToken->delete(['userID' => $userID]);
+        return true;
     }
 
 }

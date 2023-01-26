@@ -24,7 +24,14 @@ class Cookie
     }
 
     public function unsetCookie($key):void {
-        unset($this->cookies[$key]);
+        $this->setCookie($key, '', -1);
     }
 
+    public function getAllCookies():array {
+        return $this->cookies;
+    }
+
+    public function isRememberMeSet():bool {
+        return isset($this->cookies['rememberMe']);
+    }
 }
