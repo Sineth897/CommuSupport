@@ -11,12 +11,8 @@ use app\core\components\tables\table;
 $manager = \app\models\managerModel::getUser(['employeeID' => Application::session()->get('user')]);
 $donors = $model->getAllDonors($manager->ccID);
 
-echo "<pre>";
-var_dump($donors);
-echo "</pre>";
-
 $individualDonorHeaders = ['First Name','Last name','Age','Contact Number','Email','Address'];
-$individualDonorKeys = ['firstName','lastName','age','contactNumber','email','address'];
+$individualDonorKeys = ['fname','lname','age','contactNumber','email','address'];
 
 $organizationDonorHeaders = ['Organization Name','Representative Name','Contact Number','Email','Address'];
 $organizationDonorKeys = ['organizationName','representativeName','contactNumber','email','address'];
