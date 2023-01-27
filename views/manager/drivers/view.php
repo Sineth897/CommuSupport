@@ -12,8 +12,8 @@ if( empty($drivers) ) {
     echo "No drivers currently registered";
 }
 
-$headers = ['Name','Age','Contact Number','Address','Vehicle','Preference'];
-$arraykeys= ['name','age','contactNumber','address','vehicleType','preference'];
+$headers = ['Name','Contact Number','Address','Vehicle', 'Vehicle No','Preference'];
+$arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo','preference'];
 
 ?>
 
