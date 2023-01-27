@@ -144,10 +144,10 @@ class userModel extends  DbModel
         $this->update( ['username' => $this->username],["invalidAttempts = $newAttemptValue"]);
     }
 
-    public function setRememberMe(string $selector, string $token, $days): bool {
+    public function setRememberMe(string $selector, string $validator, $days): bool {
         $tokenInfo = [
             'selector' => $selector,
-            'token' => password_hash($token, PASSWORD_DEFAULT),
+            'validator' => password_hash($validator, PASSWORD_DEFAULT),
             'userID' => $this->userID,
             'expiryDate' => date('Y-m-d H:i:s', time() + 60 * 60 * 24 * $days)
         ];

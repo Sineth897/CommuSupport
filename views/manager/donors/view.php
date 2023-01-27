@@ -8,7 +8,7 @@
 use app\core\Application;
 use app\core\components\tables\table;
 
-$manager = \app\models\managerModel::getUser(['employeeID' => Application::session()->get('user')]);
+$manager = \app\models\managerModel::getModel(['employeeID' => Application::session()->get('user')]);
 $donors = $model->getAllDonors($manager->ccID);
 
 $individualDonorHeaders = ['First Name','Last name','Age','Contact Number','Email','Address'];

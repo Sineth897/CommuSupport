@@ -19,7 +19,7 @@ class userTokenModel extends DbModel
 
     public function attributes(): array
     {
-        return ['selector', 'token', 'userID', 'expiryDate'];
+        return ['selector', 'validator', 'userID', 'expiryDate'];
     }
 
     public function primaryKey(): string

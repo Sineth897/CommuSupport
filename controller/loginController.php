@@ -94,7 +94,7 @@ class loginController extends  Controller
     private function rememberMe(userModel $user, $days = 30):void {
         $user = $user->findOne(['username' => $user->username]);
         [$selector, $validator, $token] = ['', '', ''];
-        while(!$selector) {
+        while(!($selector && $validator && $token)) {
             [$selector, $validator, $token] = $this->generateSelectorNValidator();
         }
         if($user->setRememberMe($selector, $validator,$days)) {
@@ -135,4 +135,6 @@ class loginController extends  Controller
         }
         return explode(":", $selectorNValidator);
     }
+
 }
+

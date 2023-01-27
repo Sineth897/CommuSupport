@@ -36,16 +36,7 @@ class Application
         $this->database = new Database($config['db']);
         $this->rootInfo = $config['root'];
 
-        $primaryValue = $this->session->get('user');
-        if($primaryValue) {
-            $primaryKey = $this->userClass::getPrimaryKey();
-            $this->user = $this->userClass::getUser([$primaryKey => $primaryValue]);
-        } else {
-            $this->user = null;
-            if(!$this->session->get('userType')) {
-                $this->session->set('userType', 'guest');
-            }
-        }
+        $this->settingLoggedData();
 
         if($this->cookie->isRememberMeSet()) {
             if($this->rememberLogin()) {
@@ -127,14 +118,33 @@ class Application
         return explode(':', $selectorNValidator);
     }
 
-    private function rememberLogin() {
+    private function settingLoggedData(): void {
+        $primaryValue = $this->session->get('user');
+        if($primaryValue) {
+            $primaryKey = $this->userClass::getPrimaryKey();
+            $this->user = $this->userClass::getModel([$primaryKey => $primaryValue]);
+        } else {
+            $this->user = null;
+            if(!$this->session->get('userType')) {
+                $this->session->set('userType', 'guest');
+            }
+        }
+    }
+
+    private function rememberLogin(): bool {
         [$selector, $validator] = $this->getSelectorNValidator();
-        $userToken = userTokenModel::getUser(['selector' => $selector]);
+        $userToken = userTokenModel::getModel(['selector' => $selector]);
         if(!$userToken) {
             return false;
         }
+        if(date('Y-m-d H:i:s') > $userToken->expiryDate) {
+            $this->cookie->unsetCookie('rememberMe');
+            $userToken->delete(['selector' => $selector]);
+            return false;
+        }
         if(password_verify($validator, $userToken->validator)) {
-            return $this->login(userModel::getUser(['userID' => $userToken->userID]));
+            echo 'remember login';
+            return $this->login(userModel::getModel(['userID' => $userToken->userID]));
         }
         return false;
     }
