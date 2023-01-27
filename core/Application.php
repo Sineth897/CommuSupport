@@ -135,6 +135,7 @@ class Application
         [$selector, $validator] = $this->getSelectorNValidator();
         $userToken = userTokenModel::getModel(['selector' => $selector]);
         if(!$userToken) {
+            $this->cookie->unsetCookie('rememberMe');
             return false;
         }
         if(date('Y-m-d H:i:s') > $userToken->expiryDate) {
