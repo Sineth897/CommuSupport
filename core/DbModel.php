@@ -16,7 +16,7 @@ abstract class DbModel extends Model
         return (new static())->primaryKey();
     }
 
-    public static function getUser($where): ?DbModel
+    public static function getModel($where)
     {
         return (new static())->findOne($where);
     }
@@ -35,7 +35,7 @@ abstract class DbModel extends Model
         return true;
     }
 
-    public static function prepare($sql)
+    public static function prepare($sql): \PDOStatement
     {
         return Application::$app->database->pdo->prepare($sql);
     }
