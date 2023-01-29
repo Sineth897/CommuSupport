@@ -466,7 +466,7 @@ $app->router->get("/cho/manager/register",function ($request,$response){
     $controller= new \app\controller\registerController("registerManager",$request,$response);
 });
 //cho views a manager
-$app->router-get("/cho/manager", function($request,$response){
+$app->router->get("/cho/manager", function($request,$response){
     $controller = new \app\controller\registerController('viewManager',$request,$response);
 });
 
