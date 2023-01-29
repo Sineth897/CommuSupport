@@ -16,7 +16,7 @@ abstract class DbModel extends Model
         return (new static())->primaryKey();
     }
 
-    public static function getUser($where): ?DbModel
+    public static function getModel($where)
     {
         return (new static())->findOne($where);
     }
@@ -35,7 +35,7 @@ abstract class DbModel extends Model
         return true;
     }
 
-    public static function prepare($sql)
+    public static function prepare($sql): \PDOStatement
     {
         return Application::$app->database->pdo->prepare($sql);
     }
@@ -108,7 +108,7 @@ abstract class DbModel extends Model
     public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = []): array {
         $table = static::table();
         $primaryKey = static::getPrimaryKey();
-        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$primaryKey = $tableName.$onColumn";
+        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$onColumn = $tableName.$onColumn";
         if($whereCondition) {
             $attributes = array_keys($whereCondition);
             $where = implode("AND ", array_map(fn($attr) => "$attr = '$whereCondition[$attr]'", $attributes));
