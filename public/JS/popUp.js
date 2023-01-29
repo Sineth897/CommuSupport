@@ -60,6 +60,7 @@ class PopUp {
         this.field = document.createElement('input');
         this.field.setAttribute('type',type);
         this.field.setAttribute('value',value);
+        this.field.setAttribute('disabled','');
         if(id !== "") {
             this.field.setAttribute('id',id);
         }
@@ -68,6 +69,7 @@ class PopUp {
 
     getTextArea(value,id = "") {
         this.field = document.createElement('textarea');
+        this.field.setAttribute('disabled','');
         this.field.innerHTML = value;
         if(id !== "") {
             this.field.setAttribute('id',id);

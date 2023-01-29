@@ -8,8 +8,8 @@ let eventsDiv = document.getElementById('eventDisplay')
 let eventCategory = document.getElementById('eventCategory');
 let sameCC = document.getElementById('sameCC');
 
-let popUpArrayKeys = ['name', 'organizedBy','date','time','status','description'];
-let popUpArrayLabels = ['Event Category', 'Organized By', ["Date",'date'],['Time','time'],'Status',['Event Description','textarea']];
+let popUpArrayKeys = ['name', 'organizedBy','date','time','location','status','description'];
+let popUpArrayLabels = ['Event Category', 'Organized By', ["Date",'date'],['Time','time'], 'Location', 'Status',['Event Description','textarea']];
 
 updateEventCardOnClick();
 filterBtn.addEventListener('click', async function() {

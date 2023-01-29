@@ -20,10 +20,10 @@
 
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username">
-                    <?php echo sprintf('<p class="error">%s</p>', $user->getFirstError('username')) ?>
+                    <?php echo sprintf('<span class="error">%s</span>', $user->getFirstError('username')) ?>
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password">
-                    <?php echo sprintf('<p class="error">%s</p>', $user->getFirstError('password')) ?>
+                    <?php echo sprintf('<span class="error">%s</span>', $user->getFirstError('password')) ?>
 
                     <div class="login-footer">
                         <div class="remember-me">
