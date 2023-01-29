@@ -9,7 +9,7 @@ echo \app\core\Application::session()->getFlash('result');
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
 
 <div>
-    <?php $creatEventForm->dropDownList($model, 'Event category', 'eventCategory', $model->getEventCategories()); ?>
+    <?php $creatEventForm->dropDownList($model, 'Event category', 'eventCategoryID', $model->getEventCategories()); ?>
 </div>
 
 <div>
