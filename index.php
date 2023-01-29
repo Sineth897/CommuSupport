@@ -461,21 +461,21 @@ $app->router->get("/cho/communitycenter/register", function ($request,$response)
 $app->router->get("/cho/communitycenters", function($request,$response) {
    $controller = new \app\controller\ccController('viewCC',$request,$response);
 });
+//cho add a manager
+$app->router->get("/cho/manager/register",function ($request,$response){
+    $controller= new \app\controller\registerController("registerManager",$request,$response);
+});
+//cho views a manager
+$app->router-get("/cho/manager", function($request,$response){
+    $controller = new \app\controller\registerController('viewManager',$request,$response);
+});
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+//cho add a logistic manager
+$app->router->get("cho/logistic/register",function ($request,$response){
+    $controller = new \app\controller\registerController("registerLogistic",$request,$response);
+});
 
 
 
