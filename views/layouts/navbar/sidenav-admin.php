@@ -86,7 +86,7 @@
         <form method="post" action="/CommuSupport/logout"><button><i class="material-icons" id="log_out">power_settings_new</i></button></form>
     </div>
 </div>
-<div class="home_content">
+<div class="main">
     {content}
 </div>
 
