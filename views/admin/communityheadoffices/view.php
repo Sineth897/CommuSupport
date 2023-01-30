@@ -1,13 +1,23 @@
 <?php
+use app\core\components\tables\table;
 /** @var $model \app\models\choModel */
 
-$chos = $model->retrieve();
+$communitycheadofice = $model->retrieve();
 
-echo "<pre>";
-print_r($chos);
-echo "</pre>";
+$header = ["District", "Email", "Address", "ContactNumber"];
+
+$arraykey = ["district", "email", "address", "contactNumber"];
+
+$communitycheadoficeTable=new table($header,$arraykey);
+
+$communitycheadoficeTable->displayTable($communitycheadofice)
+
+//echo "<pre>";
+//print_r($chos);
+//echo "</pre>";
 
 ?>
+
 
 <?php $regForm = \app\core\components\form\form::begin('logout', 'post'); ?>
 
