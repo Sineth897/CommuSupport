@@ -9,7 +9,7 @@ use app\core\Application;
 use app\core\components\tables\table;
 use app\models\managerModel;
 
-$manager = managerModel::getUser(['employeeID' => Application::session()->get('user')]);
+$manager = managerModel::getModel(['employeeID' => Application::session()->get('user')]);
 $donees = $model->getAllDonees($manager->ccID);
 
 $individualDoneeHeaders = ["First Name","Last Name","Age","Contact Number","Email","Address"];
