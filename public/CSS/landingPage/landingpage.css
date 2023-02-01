@@ -233,18 +233,18 @@ form {
     align-items: flex-start;
 }
 
-.basic-input-field {
-    width: 300px;
-    height: 40px;
-    border: 1px solid var(--light);
-    border-radius: 4px;
-    padding: 0 10px;
-}
+/*.basic-input-field {*/
+/*    width: 300px;*/
+/*    height: 40px;*/
+/*    border: 1px solid var(--light);*/
+/*    border-radius: 4px;*/
+/*    padding: 0 10px;*/
+/*}*/
 
-.basic-input-field:focus {
-    outline: none;
-    border: 2px solid var(--primary-color);
-}
+/*.basic-input-field:focus {*/
+/*    outline: none;*/
+/*    border: 2px solid var(--primary-color);*/
+/*}*/
 
 .contact-btn, .action-btn {
     border: none;

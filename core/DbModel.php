@@ -62,7 +62,8 @@ abstract class DbModel extends Model
             $sql .= " WHERE ".implode(" AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", $attributes));
         }
         if($order) {
-            $sql .= " ORDER BY ".implode(" ", $order);
+            $field = array_keys($order)[0];
+            $sql .= " ORDER BY ". $field . " " . $order[$field];
         }
         $statement = self::prepare($sql);
         $statement->execute();
@@ -108,7 +109,7 @@ abstract class DbModel extends Model
     public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = []): array {
         $table = static::table();
         $primaryKey = static::getPrimaryKey();
-        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$primaryKey = $tableName.$onColumn";
+        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$onColumn = $tableName.$onColumn";
         if($whereCondition) {
             $attributes = array_keys($whereCondition);
             $where = implode("AND ", array_map(fn($attr) => "$attr = '$whereCondition[$attr]'", $attributes));
