@@ -65,7 +65,7 @@
 </div>
 
 
-<?php $driverRegistrationForm->submitButton('Register') ?>
+<?php $driverRegistrationForm->button('Register') ?>
 
 <?php $driverRegistrationForm::end();?>
 

@@ -66,7 +66,7 @@ class Router
     public function layoutContent(): string
     {
         ob_start();
-        include_once Application::$ROOT_DIR . "/views/layouts/main.php";
+        include_once Application::$ROOT_DIR . "/views/layouts/baseLayout.php";
         return ob_get_clean();
     }
 
@@ -76,7 +76,7 @@ class Router
             return "{content}";
         }
         ob_start();
-        include_once Application::$ROOT_DIR . "/views/layouts/navbar/test.php";
+        include_once Application::$ROOT_DIR . "/views/layouts/navbar/sidenav-$userType.php";
         return ob_get_clean();
     }
 
