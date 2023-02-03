@@ -451,10 +451,10 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
 
 //*************************CHO get and post methods*************************//
 //cho add a community center
-$app->router->get("cho/communitycenter/register", function($request,$response) {
+$app->router->get("/cho/communitycenter/register", function($request,$response) {
     $controller = new \app\controller\registerController("registerCC",$request,$response);
 });
-$app->router->get("/cho/communitycenter/register", function ($request,$response) {
+$app->router->post("/cho/communitycenter/register", function ($request,$response) {
    $controller = new \app\controller\registerController('registerCC',$request,$response);
 });
 //cho views community center
@@ -465,29 +465,29 @@ $app->router->get("/cho/communitycenters", function($request,$response) {
 $app->router->get("/cho/manager/register",function ($request,$response){
     $controller= new \app\controller\registerController("registerManager",$request,$response);
 });
+$app->router->post("/cho/manager/register",function ($request,$response){
+    $controller= new \app\controller\registerController("registerManager",$request,$response);
+});
+
 //cho views a manager
-$app->router-get("/cho/manager", function($request,$response){
+$app->router->get("/cho/manager", function($request,$response){
     $controller = new \app\controller\registerController('viewManager',$request,$response);
 });
-
-
-
 //cho add a logistic manager
-$app->router->get("cho/logistic/register",function ($request,$response){
+$app->router->get("/cho/logistic/register",function ($request,$response){
     $controller = new \app\controller\registerController("registerLogistic",$request,$response);
 });
-
-
-
-
-
-
-
-
-
-
-
-
+$app->router->post("/cho/logistic/register",function ($request,$response){
+    $controller = new \app\controller\registerController("registerLogistic",$request,$response);
+});
+//cho views a logistic manager
+$app->router->get("/cho/logistic/view",function ($request,$response){
+    $controller= new \app\controller\registerController("viewLogistic",$request,$response);
+});
+//cho view a complaint
+$app->router->get("/cho/complaints",function($request,$response){
+   $controller=new \app\controller\complaintController("viewComplaint",$request,$response);
+});
 
 
 
