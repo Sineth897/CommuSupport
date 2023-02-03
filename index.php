@@ -471,7 +471,7 @@ $app->router->post("/cho/manager/register",function ($request,$response){
 
 //cho views a manager
 $app->router->get("/cho/manager", function($request,$response){
-    $controller = new \app\controller\registerController('viewManager',$request,$response);
+    $controller = new \app\controller\managerController('viewManager',$request,$response);
 });
 //cho add a logistic manager
 $app->router->get("/cho/logistic/register",function ($request,$response){
@@ -481,8 +481,8 @@ $app->router->post("/cho/logistic/register",function ($request,$response){
     $controller = new \app\controller\registerController("registerLogistic",$request,$response);
 });
 //cho views a logistic manager
-$app->router->get("/cho/logistic/view",function ($request,$response){
-    $controller= new \app\controller\registerController("viewLogistic",$request,$response);
+$app->router->get("/cho/logistic",function ($request,$response){
+    $controller= new \app\controller\logisticController("viewLogistic",$request,$response);
 });
 //cho view a complaint
 $app->router->get("/cho/complaints",function($request,$response){

@@ -5,7 +5,7 @@
 
 $userID = \app\core\Application::session()->get('user');
 
-$manager = $model->retrieve(['employee' => $userID]);
+$manager = $model->retrieve();
 
 
 echo "<pre>";
