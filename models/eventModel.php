@@ -7,7 +7,7 @@ use app\core\DbModel;
 class eventModel extends DbModel
 {
     public string $eventID = '';
-    public string $eventCategory = '';
+    public string $eventCategoryID = '';
     public string $theme = '';
     public string $organizedBy = '';
     public string $contact = '';
@@ -60,5 +60,14 @@ class eventModel extends DbModel
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public static function getEventCategoryIcons() {
+        $categories = (new static())->getEventCategories();
+        $preparedIcons = [];
+        foreach ($categories as $key => $value) {
+            $preparedIcons[$key] = "/CommuSupport/public/src/icons/event/eventcategoryicons/" . $value . ".svg";
+        }
+        return $preparedIcons;
     }
 }

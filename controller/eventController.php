@@ -8,6 +8,7 @@ use app\core\middlewares\eventMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\eventModel;
+use app\models\managerModel;
 
 class eventController extends Controller
 {
@@ -20,10 +21,10 @@ class eventController extends Controller
 
     protected function viewEvents(Request $request,Response $response) {
 
-        $user = $this->getUserType();
+        $userType = $this->getUserType();
         $model = new eventModel();
 
-        $this->render($user . "/events/view", [
+        $this->render($userType . "/events/view", "View Events", [
             'model' => $model
         ]);
     }
@@ -43,7 +44,7 @@ class eventController extends Controller
             }
         }
 
-        $this->render("manager/events/create", [
+        $this->render("manager/events/create", "Create a Event" ,[
             'model' => $model
         ]);
 
@@ -52,9 +53,26 @@ class eventController extends Controller
     protected function filterEvents(Request $request,Response $response) {
 
         $model = new eventModel();
+        $user = managerModel::getModel(['employeeID'=>Application::session()->get('user')]);
         $filters = $request->getJsonData();
-        $this->sendJson($model->retrieve($filters));
+        $filters['ccID'] = $user->ccID;
+        $events = $model->retrieve($filters);
+        $categoryIcons = eventModel::getEventCategoryIcons();
+        $this->sendJson([
+            'events' => $events,
+            'icons' => $categoryIcons
+        ]);
+    }
 
+    protected function eventPopUp(Request $request,Response $response) {
+        $model = new eventModel();
+        $event = $model->retrieveWithJoin('eventCategory','eventCategoryID',$request->getJsonData())[0];
+        $eventCategoryIcons = eventModel::getEventCategoryIcons();
+        $this->sendJson([
+            'event' => $event,
+            'icons' => $eventCategoryIcons,
+            'data' => $request->getJsonData()
+        ]);
     }
 
 }

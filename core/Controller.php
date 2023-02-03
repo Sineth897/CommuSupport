@@ -3,6 +3,13 @@
 namespace app\core;
 
 use app\core\middlewares\Middleware;
+use app\models\adminModel;
+use app\models\choModel;
+use app\models\doneeModel;
+use app\models\donorModel;
+use app\models\driverModel;
+use app\models\logisticModel;
+use app\models\managerModel;
 
 class Controller
 {
@@ -24,9 +31,9 @@ class Controller
 
     //function to be called by the subclasses to render the view
 
-    public function render($view, $params = []): void
+    public function render($view, $title, $params = []): void
     {
-        Application::$app->router->renderView($view, $params);
+        echo Application::$app->router->render($view, $title, $params);
     }
 
     public function sendJson($data): void
@@ -60,4 +67,41 @@ class Controller
         Application::$app->session->setFlash($key, $message);
     }
 
+    protected function getUserModel()
+    {
+        $user = $this->getUserType();
+        switch ($user) {
+            case 'donor':
+                return new donorModel();
+            case 'donee':
+                return new doneeModel();
+            case 'admin':
+                return new adminModel();
+            case 'manager':
+                return new managerModel();
+            case 'logistic':
+                return new logisticModel();
+            case 'driver':
+                return new driverModel();
+            case 'cho':
+                return new choModel();
+            default:
+                return null;
+        }
+    }
+
+    protected function setCookie($key, $value, $days = 30): void
+    {
+        Application::$app->cookie->setCookie($key, $value, $days);
+    }
+
+    protected function getCookie($key)
+    {
+        return Application::$app->cookie->getCookie($key);
+    }
+
+    protected function unsetCookie($key): void
+    {
+        Application::$app->cookie->unsetCookie($key);
+    }
 }

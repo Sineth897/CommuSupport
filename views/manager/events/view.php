@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/cards/eventcard.css">
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -9,27 +10,53 @@ $manager = new \app\models\managerModel();
 $manager = $manager->findOne(['employeeID' => $managerID]);
 $ccID = $manager->ccID;
 
-$events = $model->retrieve(["ccID" => $ccID]);
+$events = $model->retrieve(["ccID" => $ccID],["date" => "DESC"]);
+?>
 
-if( empty($events) ) {
-    echo "No events";
-} else {
-    echo "<pre>";
-    foreach ($events as $event) {
-        print_r($event);
-    }
-    echo "</pre>";
-}
+<!--profile div-->
+<div class="profile">
+    <div class="notif-box">
+        <i class="material-icons">notifications</i>
+    </div>
+    <div class="profile-box">
+        <div class="name-box">
+            <h4>Username</h4>
+            <p>Position</p>
+        </div>
+        <div class="profile-img">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
+        </div>
+    </div>
+</div>
 
+<!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
 
+$headerDiv->heading("Events");
 
+$headerDiv->pages(["ongoing", "completed", "cancelled"]);
+
+$headerDiv->end();
 ?>
 
 
+<!--        Search and filter boxes -->
+<?php
+$searchDiv = new \app\core\components\layout\searchDiv();
 
-<button type="button" id="filterBtn">Filter</button>
+$searchDiv->filters();
 
+$searchDiv->search();
 
+$searchDiv->end();
+?>
+
+<?php
+$eventCards = new \app\core\components\cards\eventcard();
+$eventCards->displayEvents($events);
+
+?>
 
 <?php $creatEvent = \app\core\components\form\form::begin('./events/create', 'get'); ?>
 
@@ -37,10 +64,25 @@ if( empty($events) ) {
 
 <?php $creatEvent->end(); ?>
 
-<?php $logout = \app\core\components\form\form::begin('../logout', 'post'); ?>
+<div>
+    <?php $filter = \app\core\components\form\form::begin('', ''); ?>
 
-<button> logout </button>
+    <?php $filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory")?>
 
-<?php $logout->end(); ?>
+    <label for="sameCC">Same CC</label>
+    <input type="checkbox" id="sameCC" value="<?php echo $manager->ccID ?>">
 
-<script type="module" src="../public/JS/manager/events/view.js"></script>
+    <button type="button" id="filterBtn">Filter</button>
+
+    <?php $filter->end(); ?>
+</div>
+
+<div id="popUpBackground" style="display: none">
+
+    <div id="popUpContainer">
+
+    </div>
+
+</div>
+
+<script type="module" src="/CommuSupport/public/JS/manager/events/view.js"></script>
