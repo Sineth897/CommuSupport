@@ -21,10 +21,10 @@ class eventController extends Controller
 
     protected function viewEvents(Request $request,Response $response) {
 
-        $user = $this->getUserType();
+        $userType = $this->getUserType();
         $model = new eventModel();
 
-        $this->render($user . "/events/view", "View Events", [
+        $this->render($userType . "/events/view", "View Events", [
             'model' => $model
         ]);
     }
