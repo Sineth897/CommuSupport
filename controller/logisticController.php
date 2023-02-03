@@ -20,7 +20,7 @@ class logisticController extends Controller
         $userType = $this->getUserType();
         $model = new logisticModel();
         $user = $this->getUserModel();
-        $this->render($userType."logistic/view","View Logistic",[
+        $this->render($userType."/logistic/view","View Logistic",[
             'model' => $model,
             'user' => $user
         ]);
