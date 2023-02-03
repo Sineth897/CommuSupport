@@ -26,17 +26,20 @@ class loginController extends  Controller
 
         $this->ifLoggedIn($response);
 
-        $model = new userModel();
+        $user = new userModel();
         if ($request->isPost()) {
-            $model->getData($request->getBody());
-            if ($model->validate($request->getBody()) && $model->login()) {
+            $user->getData($request->getBody());
+            if ($user->validate($request->getBody()) && $user->login()) {
+                if($this->isRememberMeClicked($request)) {
+                    $this->rememberMe($user);
+                }
                 $response->redirect('/');
                 return;
             }
         }
 
         $this->render("login/user", "User Login", [
-            'model' => $model
+            'user' => $user
         ]);
     }
 
@@ -45,25 +48,35 @@ class loginController extends  Controller
 
         $this->ifLoggedIn($response);
 
-        $model = new userModel();
+        $user = new userModel();
         if ($request->isPost()) {
-            $model->getData($request->getBody());
-            if ($model->validate($request->getBody()) && $model->login(true)) {
+            $user->getData($request->getBody());
+            if ($user->validate($request->getBody()) && $user->login(true)) {
+                if($this->isRememberMeClicked($request)) {
+                     $this->rememberMe($user);
+                }
                 $response->redirect('/');
                 return;
             }
         }
 
         $this->render("login/employee", "Employee Login",[
-            'model' => $model
+            'user' => $user
         ]);
     }
 
     protected function logout(Request $request, Response $response)
     {
-        $model = new userModel();
-        $model->logout();
+        $this->forgetMe();
+        $user = new userModel();
+        $user->logout();
         $response->redirect('/');
+    }
+
+    protected function lockedAccount(userModel $model)
+    {
+        $username = $model->username;
+        echo $username . " is locked";
     }
 
     private function ifLoggedIn(Response $response) {
@@ -74,10 +87,54 @@ class loginController extends  Controller
         }
     }
 
-    protected function lockedAccount(userModel $model)
+    private function isRememberMeClicked(Request $request):bool {
+        return !empty($request->getBody()['rememberMe']);
+    }
+
+    private function rememberMe(userModel $user, $days = 30):void {
+        $user = $user->findOne(['username' => $user->username]);
+        [$selector, $validator, $token] = ['', '', ''];
+        while(!($selector && $validator && $token)) {
+            [$selector, $validator, $token] = $this->generateSelectorNValidator();
+        }
+        if($user->setRememberMe($selector, $validator,$days)) {
+            $this->setFlash('rememberMe', 'Remember me is set');
+            $this->setCookie('rememberMe', $token,);
+        }
+        else {
+            $this->setFlash('rememberMe', 'Remember me is not set');
+        }
+    }
+
+    private function forgetMe() {
+        $user = new userModel();
+        if($user->unsetRememberMe(Application::session()->get('user'))) {
+            $this->setFlash('rememberMe', 'Remember me is unset');
+            $this->unsetCookie('rememberMe');
+        }
+        else {
+            $this->setFlash('rememberMe', 'Remember me is not unset');
+        }
+    }
+
+    private function generateSelectorNValidator():array {
+        try {
+            $selector = bin2hex(random_bytes(16));
+            $validator = bin2hex(random_bytes(32));
+            return [$selector, $validator, $selector . ":" . $validator];
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    private function getSelectorNValidator():array
     {
-        $username = $model->username;
-        echo $username . " is locked";
+        $selectorNValidator =Application::cookie()->getCookie('rememberMe');
+        if(!$selectorNValidator) {
+            return [];
+        }
+        return explode(":", $selectorNValidator);
     }
 
 }
+

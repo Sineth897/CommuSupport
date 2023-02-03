@@ -21,8 +21,18 @@ class ccController extends Controller
         $userType = $this->getUserType();
         $model = new ccModel();
         $user = $this->getUserModel();
-
         $this->render($userType ."/CC/view","View Community Centers",[
+            'model' => $model,
+            'user' => $user
+        ]);
+    }
+
+
+    protected function adminViewCC(Request $request, Response $response)
+    {
+        $model = new ccModel();
+        $user = $this->getUserModel();
+        $this->render("admin/CC/view","View Community Centers",[
             'model' => $model,
             'user' => $user
         ]);

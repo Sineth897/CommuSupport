@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 
 /** @var $model \app\modles\complaintModel */
 
@@ -35,3 +36,16 @@ $arraykeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'
 </div>
 
 
+=======
+/** @var $complaints \app\models\complaintModel */
+/** @var $user \app\models\choModel */
+
+$userID = \app\core\Application::session()->get('user');
+
+$complaint = $complaints->retrieve();
+
+
+echo "<pre>";
+print_r($complaint);
+echo "</pre>";
+>>>>>>> eff85e44986d3bc01499410308913423699b159b
