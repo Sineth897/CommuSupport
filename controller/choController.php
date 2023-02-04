@@ -20,21 +20,4 @@ class choController extends Controller
         $this->render('admin/communityheadoffices/view', 'View Cho', ['model' => $model,]);
     }
 
-    protected function viewManager(Request $request,Response $response)
-    {
-        $model= new \app\models\managerModel();
-        $this->render('manager/view','View Managers',[
-            'model'=>$model,
-
-        ]);
-    }
-
-    protected function viewLogistic(Request $request,Response $response)
-    {
-        $model= new \app\models\logisticModel();
-        $this->render('logistic/view','View Logistic Managers',[
-            'model'=>$model,
-
-        ]);
-    }
 }

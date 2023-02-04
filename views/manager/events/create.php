@@ -34,17 +34,17 @@ echo \app\core\Application::session()->getFlash('result');
 
     <?php $creatEventForm->inputField($model, 'Contact number','text','contact'); ?>
 
-<div class="form-split">
+    <div class="form-split">
         <?php $creatEventForm->inputField($model, 'Event date','date','date'); ?>
 
         <?php $creatEventForm->inputField($model, 'Event time','time','time'); ?>
-</div>
+    </div>
 
     <?php $creatEventForm->inputField($model, 'Event location','text','location'); ?>
 
     <?php $creatEventForm->textArea($model, 'Event description','description'); ?>
 
-<?php $creatEventForm->button('Create');  ?>
+    <?php $creatEventForm->button('Create');  ?>
 
 <?php $creatEventForm->end(); ?>
 
