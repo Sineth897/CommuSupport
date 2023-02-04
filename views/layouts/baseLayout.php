@@ -17,6 +17,11 @@
 
 <body>
 
+
+    <div id="popUpBackground" class="popup-background">
+        <div id="popUpContainer" class="popup"></div>
+    </div>
+
     {navbar}
 
 <!--    {scripts}-->

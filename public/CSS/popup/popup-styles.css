@@ -7,6 +7,7 @@
     --light-red: #ff9898;
     --background-main: #e8e8e8;
     --light: #a6a6a6;
+    --transparent-background: rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -24,19 +25,20 @@ button {
     outline: none;
 }
 
-.background
+.popup-background
 {
     height: 100vh;
     width: 100vw;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
-    background-color: var(--primary-color);
-
+    background-color: var(--transparent-background);
+    position: fixed;
+    z-index: 1;
 }
 
 .popup{
-        background-color: white;
+    background-color: white;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -45,7 +47,7 @@ button {
     gap: 10px;
     z-index: 1000;
     padding: 20px 40px;
-    position: relative;
+    position: fixed;
 }
 
 .popup-header
@@ -98,14 +100,14 @@ button {
     border: none;
 }
 
-#description
+.description
 {
     width: 300px;
     font-size: 0.8rem;
     resize: none;
 }
 
-#description:disabled
+.description:disabled
 {
     width: 300px;
     display: flex;
