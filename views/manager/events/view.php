@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/cards/eventcard.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -77,12 +79,6 @@ $eventCards->displayEvents($events);
     <?php $filter->end(); ?>
 </div>
 
-<div id="popUpBackground" style="display: none">
 
-    <div id="popUpContainer">
-
-    </div>
-
-</div>
 
 <script type="module" src="/CommuSupport/public/JS/manager/events/view.js"></script>
