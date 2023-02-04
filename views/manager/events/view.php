@@ -10,11 +10,10 @@ $manager = new \app\models\managerModel();
 $manager = $manager->findOne(['employeeID' => $managerID]);
 $ccID = $manager->ccID;
 
-$events = $model->retrieve(["ccID" => $ccID],["date", "DESC"]);
+$events = $model->retrieve(["ccID" => $ccID],["date" => "DESC"]);
 ?>
 
 <!--profile div-->
-
 <div class="profile">
     <div class="notif-box">
         <i class="material-icons">notifications</i>
@@ -31,40 +30,27 @@ $events = $model->retrieve(["ccID" => $ccID],["date", "DESC"]);
 </div>
 
 <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
-<div class="heading-pages">
-    <div class="heading">
-        <h1>Events</h1>
-    </div>
-    <div class="pages">
-        <a href="#">
-            <i class="material-icons">cached</i>
-            Ongoing</a>
-        <a href="#">
-            <i class="material-icons">check_circle_outline</i>
-            Completed</a>
-        <a href="#">
-            <i class="material-icons">block</i>
-            Cancelled</a>
-    </div>
-</div>
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
+
+$headerDiv->heading("Events");
+
+$headerDiv->pages(["ongoing", "completed", "cancelled"]);
+
+$headerDiv->end();
+?>
+
 
 <!--        Search and filter boxes -->
-<div class="search-filter">
+<?php
+$searchDiv = new \app\core\components\layout\searchDiv();
 
-    <div class="filters">
-        <div class="filter">
-            <p><i class="material-icons">filter_list</i><span>Filter</span></p>
-        </div>
-        <div class="sort">
-            <p><i class="material-icons">sort</i> <span>Sort</span></p>
-        </div>
-    </div>
-    <div class="search">
-        <input type="text" placeholder="Search">
-        <a href="#"><i class="material-icons">search</i></a>
-    </div>
+$searchDiv->filters();
 
-</div>
+$searchDiv->search();
+
+$searchDiv->end();
+?>
 
 <?php
 $eventCards = new \app\core\components\cards\eventcard();
