@@ -1,133 +1,147 @@
 @import url("https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap");
 
 :root {
-  --primary-color: #1a1a1a;
-  --secondary-color: #00d749;
-  --danger-color: #e10000;
-  --light-red: #ff9898;
-  --background-main: #e8e8e8;
-  --light: #a6a6a6;
+    --primary-color: #1a1a1a;
+    --secondary-color: #00d749;
+    --danger-color: #e10000;
+    --light-red: #ff9898;
+    --background-main: #e8e8e8;
+    --light: #a6a6a6;
+    --transparent-background: rgba(0, 0, 0, 0.5);
 }
 
 * {
-  font-family: Inter, sans-serif;
-  margin: 0;
-  padding: 0;
+    font-family: Inter, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 button {
-  padding: 10px 20px;
-  outline: none;
+    padding: 10px 20px;
+    outline: none;
 }
 
 .background {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--primary-color);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+}
+
+
+.popup-background {
+    height: 100vh;
+    width: 100vw;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--transparent-background);
+    position: fixed;
+    z-index: 1;
 }
 
 .popup {
-  background-color: white;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  z-index: 1000;
-  padding: 20px 40px;
-  position: relative;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    padding: 20px 40px;
+    position: fixed;
 }
 
 .popup-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .popup-info {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
 }
 
 .popup-info div {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
 }
 
 .status i {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #00d749;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #00d749;
 }
 
 .popup-img {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .popup-img img {
-  width: 200px;
+    width: 200px;
 }
 
 .popup input:disabled {
-  background-color: white;
-  outline: none;
-  border: none;
+    background-color: white;
+    outline: none;
+    border: none;
 }
 
-#description {
-  width: 300px;
-  font-size: 0.8rem;
-  resize: none;
+.description {
+    width: 300px;
+    font-size: 0.8rem;
+    resize: none;
 }
 
-#description:disabled {
-  width: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  resize: none;
-  border: none;
-  outline: none;
+.description:disabled {
+    background-color: white;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    resize: none;
+    border: none;
+    outline: none;
 }
 
 .form-group label i {
-  font-size: 0.8rem;
+    font-size: 0.8rem;
 }
 
 .close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1.5rem;
-  cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .popup-btns {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
 }
