@@ -81,7 +81,6 @@ class PopUp {
     getInputField(type, value, id ) {
         this.field = document.createElement('input');
         this.field.setAttribute('class','basic-input-field');
-        this.field.setAttribute('size','40');
         this.field.setAttribute('type',type);
         this.field.setAttribute('value',value);
         this.field.setAttribute('id',id);
@@ -91,7 +90,7 @@ class PopUp {
 
     getTextArea(value,id) {
         this.field = document.createElement('textarea');
-        this.field.setAttribute('class',' description');
+        this.field.setAttribute('class','basic-text-area description');
         this.field.setAttribute('disabled','');
         this.field.setAttribute('rows','6');
         this.field.innerHTML = value;
