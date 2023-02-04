@@ -62,7 +62,8 @@ abstract class DbModel extends Model
             $sql .= " WHERE ".implode(" AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", $attributes));
         }
         if($order) {
-            $sql .= " ORDER BY ".implode(" ", $order);
+            $field = array_keys($order)[0];
+            $sql .= " ORDER BY ". $field . " " . $order[$field];
         }
         $statement = self::prepare($sql);
         $statement->execute();
