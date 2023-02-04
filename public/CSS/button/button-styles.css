@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap');
+
+:root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #00d776;
+    --danger-color: #e10000;
+    --light-red: #ff9898;
+    --background-main: #e8e8e8;
+    --light: #a6a6a6;
+    --light-green: #95c7b2;
+    --super-light: #eaeaea;
+    --secondary-dark: #00832f;
+}
+
+* {
+    font-family: Inter, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a{
+    text-decoration: none;
+}
+
+body{
+    padding: 100px;
+    display: flex;
+    gap: 20px;
+}
+
+button {
+    outline: none;
+    border: none;
+}
+
+.btn-secondary{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border: solid 1px var(--primary-color);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-secondary:hover{
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary:hover
+{
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.btn-danger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: var(--danger-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+.btn-dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: var(--secondary-dark);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-dark:hover {
+    background: transparent;
+    border: 1px solid var(--secondary-dark);
+    color: var(--secondary-dark);
+}
+
+.btn-cta-primary{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 40px;
+}
+
+.btn-cta-primary:hover{
+    background: var(--primary-color);
+    color: white;
+}
