@@ -1,6 +1,8 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/cards/eventcard.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+
 <?php
 
 /** @var $model \app\models\eventModel */
