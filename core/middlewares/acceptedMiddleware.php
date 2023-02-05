@@ -2,13 +2,13 @@
 
 namespace app\core\middlewares;
 
-class requestMiddleware extends Middleware
+class acceptedMiddleware extends Middleware
 {
 
     protected function accessRules(): array
     {
         return [
-            'viewRequests' => [$this->ADMIN,$this->CHO,$this->DONOR]
+            'viewAcceptedRequests' => [$this->ADMIN,$this->CHO,$this->DONOR]
         ];
     }
 }

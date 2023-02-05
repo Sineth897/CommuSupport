@@ -250,7 +250,10 @@ $app->router->get('/donor/requests', function ($request, $response) {
 $app->router->get('/donor/communitycenters', function ($request, $response) {
     $controller = new \app\controller\ccController("viewCC",$request,$response);
 });
-
+//Donor accepted request
+$app->router->get('/donor/acceptedrequests', function ($request, $response) {
+    $controller = new \app\controller\acceptedController("viewAcceptedRequests",$request,$response);
+});
 
 
 
