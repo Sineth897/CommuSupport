@@ -17,7 +17,6 @@ class logisticController extends Controller
     }
 
     protected function viewLogistics(Request $request,Response $response) {
-
         $userType = $this->getUserType();
         $model = new logisticModel();
         $user = $this->getUserModel();
@@ -27,6 +26,4 @@ class logisticController extends Controller
         ]);
     }
 
-
-   
 }
