@@ -17,7 +17,7 @@ class logisticModel extends DbModel
 
     public function table(): string
     {
-        return "logisticofficer";
+        return "logisticOfficer";
     }
 
     public function attributes(): array

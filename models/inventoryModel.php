@@ -37,7 +37,7 @@ class inventoryModel extends DbModel
 
     public function save(): bool
     {
-        $logisticOfficer = logisticModel::getUser(['employeeID' => Application::session()->get('user')]);
+        $logisticOfficer = logisticModel::getModel(['employeeID' => Application::session()->get('user')]);
         $this->ccID = $logisticOfficer->ccID;
         $this->updatedDate = date('Y-m-d H:i:s');
         return parent::save();

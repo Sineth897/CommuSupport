@@ -10,6 +10,8 @@ class eventMiddleware extends Middleware
             'viewEvents' => [$this->MANAGER,$this->CHO,$this->ADMIN,$this->GUEST,$this->DONEE,$this->DONOR],
             'createEvent' => [$this->MANAGER],
             'filterEvents' => [$this->MANAGER,$this->CHO,$this->ADMIN,$this->GUEST,$this->DONEE,$this->DONOR],
+            'eventPopUp' => [$this->MANAGER,$this->CHO,$this->ADMIN,$this->GUEST,$this->DONEE,$this->DONOR],
+            'updateEvent' => [$this->MANAGER],
         ];
     }
 }
