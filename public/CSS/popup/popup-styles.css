@@ -1,32 +1,19 @@
-@import url('https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap');
-
-:root {
-    --primary-color: #1a1a1a;
-    --secondary-color: #00d749;
-    --danger-color: #e10000;
-    --light-red: #ff9898;
-    --background-main: #e8e8e8;
-    --light: #a6a6a6;
-    --transparent-background: rgba(0, 0, 0, 0.5);
-}
-
-* {
-    font-family: Inter, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-a {
-    text-decoration: none;
-}
-
 button {
     padding: 10px 20px;
     outline: none;
 }
 
-.popup-background
-{
+.background {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+}
+
+
+.popup-background {
     height: 100vh;
     width: 100vw;
     display: none;
@@ -37,7 +24,7 @@ button {
     z-index: 1;
 }
 
-.popup{
+.popup {
     background-color: white;
     border-radius: 10px;
     display: flex;
@@ -50,8 +37,7 @@ button {
     position: fixed;
 }
 
-.popup-header
-{
+.popup-header {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -59,7 +45,7 @@ button {
     width: 100%;
 }
 
-.popup-info{
+.popup-info {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -68,7 +54,7 @@ button {
     width: 100%;
 }
 
-.popup-info div{
+.popup-info div {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -77,38 +63,35 @@ button {
     font-size: 0.8rem;
 }
 
-.status i{
+.status i {
     font-size: 0.8rem;
     font-weight: 600;
     color: #00d749;
 }
 
-.popup-img{
-    width:100%;
+.popup-img {
+    width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.popup-img img{
+.popup-img img {
     width: 200px;
 }
 
-
-.popup input:disabled{
+.popup input:disabled {
     background-color: white;
     outline: none;
     border: none;
 }
 
-.description
-{
+.description {
     width: 300px;
     font-size: 0.8rem;
     resize: none;
 }
 
-.description:disabled
-{
+.description:disabled {
     background-color: white;
     width: 300px;
     display: flex;
@@ -120,11 +103,11 @@ button {
     outline: none;
 }
 
-.form-group label i{
+.form-group label i {
     font-size: 0.8rem;
 }
 
-.close{
+.close {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -140,9 +123,3 @@ button {
     width: 100%;
     gap: 10px;
 }
-
-
-
-
-
-
