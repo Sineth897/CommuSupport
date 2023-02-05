@@ -7,6 +7,13 @@
     width: 100%;
 }
 
+.basic-text-area{
+    border: 1px solid var(--light);
+    border-radius: 4px;
+    padding: 0 10px;
+    width: 100%;
+}
+
 .basic-input-field:focus {
     outline: none;
     border: 2px solid var(--primary-color);

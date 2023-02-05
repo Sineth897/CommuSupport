@@ -109,24 +109,24 @@ $app->router->get('/manager', function($request,$response){
 $app->router->get('/manager/events', function ($request, $response) {
    $controller = new \app\controller\eventController("viewEvents",$request,$response);
 });
-
 //manager filter event
 $app->router->post('/manager/events/filter', function ($request, $response) {
     $controller = new \app\controller\eventController("filterEvents",$request,$response);
 });
-
 //Event popUP
 $app->router->post('/manager/events/popup', function ($request, $response) {
     $controller = new \app\controller\eventController("eventPopUp",$request,$response);
 });
-
 //Manager event creation
 $app->router->get('/manager/events/create', function ($request, $response) {
     $controller = new \app\controller\eventController("createEvent",$request,$response);
 });
-
 $app->router->post('/manager/events/create', function ($request, $response) {
     $controller = new \app\controller\eventController("createEvent",$request,$response);
+});
+//manager event update
+$app->router->post('/manager/events/update', function ($request, $response) {
+    $controller = new \app\controller\eventController("updateEvent",$request,$response);
 });
 
 //Manager view drivers
@@ -242,19 +242,19 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************Donor get and post methods*************************//
+//Donor view request
+$app->router->get('/donor/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
+//donor view communitycenter
+$app->router->get('/donor/communitycenters', function ($request, $response) {
+    $controller = new \app\controller\ccController("viewCC",$request,$response);
+});
+//Donor accepted request
+$app->router->get('/donor/acceptedrequests', function ($request, $response) {
+    $controller = new \app\controller\acceptedController("viewAcceptedRequests",$request,$response);
+});
 
 
 
@@ -452,10 +452,10 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
 
 //*************************CHO get and post methods*************************//
 //cho add a community center
-$app->router->get("cho/communitycenter/register", function($request,$response) {
+$app->router->get("/cho/communitycenter/register", function($request,$response) {
     $controller = new \app\controller\registerController("registerCC",$request,$response);
 });
-$app->router->get("/cho/communitycenter/register", function ($request,$response) {
+$app->router->post("/cho/communitycenter/register", function ($request,$response) {
    $controller = new \app\controller\registerController('registerCC',$request,$response);
 });
 //cho views community center
@@ -466,28 +466,28 @@ $app->router->get("/cho/communitycenters", function($request,$response) {
 $app->router->get("/cho/manager/register",function ($request,$response){
     $controller= new \app\controller\registerController("registerManager",$request,$response);
 });
+$app->router->post("/cho/manager/register",function ($request,$response){
+    $controller= new \app\controller\registerController("registerManager",$request,$response);
+});
 //cho views a manager
 $app->router->get("/cho/manager", function($request,$response){
-    $controller = new \app\controller\registerController('viewManager',$request,$response);
+    $controller = new \app\controller\managerController('viewManager',$request,$response);
 });
-
-
-
-//cho add a logistic manager
-$app->router->get("cho/logistic/register",function ($request,$response){
+//cho add a logistic
+$app->router->get("/cho/logistic/register",function ($request,$response){
     $controller = new \app\controller\registerController("registerLogistic",$request,$response);
 });
-
-
-
-
-
-
-
-
-
-
-
+$app->router->post("/cho/logistic/register",function ($request,$response){
+    $controller = new \app\controller\registerController("registerLogistic",$request,$response);
+});
+//cho views a logistic manager
+$app->router->get("/cho/logistic",function ($request,$response){
+    $controller= new \app\controller\logisticController("viewLogistic",$request,$response);
+});
+//cho view a complaint
+$app->router->get("/cho/complaints",function($request,$response){
+   $controller=new \app\controller\complaintController("viewComplaint",$request,$response);
+});
 
 
 
@@ -553,22 +553,22 @@ $app->router->get('/admin/donations', function ($request, $response) {
 $app->router->get('/admin/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
+//Admin view logistics
+$app->router->get('/admin/logistics', function ($request, $response) {
+    $controller = new \app\controller\logisticController("viewLogistics",$request,$response);
+});
 
-//Admin views event
+//Admin view managers
+$app->router->get('/admin/managers', function ($request, $response) {
+    $controller = new \app\controller\managerController("viewManagers",$request,$response);
+});
+//Admin view  drivers
+$app->router->get('/admin/drivers', function ($request, $response) {
+    $controller = new \app\controller\driverController("viewDrivers",$request,$response);
+});
 $app->router->get("/admin/events", function ($request, $response) {
     $controller = new eventController("viewEvents", $request, $response);
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
