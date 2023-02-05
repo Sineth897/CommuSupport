@@ -242,19 +242,19 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 
 //*************************Donor get and post methods*************************//
+//Donor view request
+$app->router->get('/donor/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
+//donor view communitycenter
+$app->router->get('/donor/communitycenters', function ($request, $response) {
+    $controller = new \app\controller\ccController("viewCC",$request,$response);
+});
+//Donor accepted request
+$app->router->get('/donor/acceptedrequests', function ($request, $response) {
+    $controller = new \app\controller\acceptedController("viewAcceptedRequests",$request,$response);
+});
 
 
 
@@ -520,6 +520,7 @@ $app->router->get("/cho/complaints",function($request,$response){
 
 
 
+
 //*************************Admin get and post methods*************************//
 //Admin view cho
 $app->router->get('/admin/communityheadoffices', function ($request, $response) {
@@ -552,23 +553,22 @@ $app->router->get('/admin/donations', function ($request, $response) {
 $app->router->get('/admin/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
+//Admin view logistics
+$app->router->get('/admin/logistics', function ($request, $response) {
+    $controller = new \app\controller\logisticController("viewLogistics",$request,$response);
+});
 
-//Admin views event
+//Admin view managers
+$app->router->get('/admin/managers', function ($request, $response) {
+    $controller = new \app\controller\managerController("viewManagers",$request,$response);
+});
+//Admin view  drivers
+$app->router->get('/admin/drivers', function ($request, $response) {
+    $controller = new \app\controller\driverController("viewDrivers",$request,$response);
+});
 $app->router->get("/admin/events", function ($request, $response) {
     $controller = new eventController("viewEvents", $request, $response);
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
