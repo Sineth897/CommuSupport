@@ -15,7 +15,6 @@ class logisticController extends Controller
         $this->middleware = new  logisticMiddleware();
         parent::__construct($func, $request, $response);
     }
-
     protected function viewLogistics(Request $request,Response $response) {
         $userType = $this->getUserType();
         $model = new logisticModel();
@@ -25,5 +24,5 @@ class logisticController extends Controller
             'user' => $user
         ]);
     }
-
+   
 }

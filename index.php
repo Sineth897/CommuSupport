@@ -246,6 +246,7 @@ $app->router->get('/manager/donors', function ($request, $response) {
 $app->router->get('/donor/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
+
 //donor view communitycenter
 $app->router->get('/donor/communitycenters', function ($request, $response) {
     $controller = new \app\controller\ccController("viewCC",$request,$response);
@@ -254,10 +255,6 @@ $app->router->get('/donor/communitycenters', function ($request, $response) {
 $app->router->get('/donor/acceptedrequests', function ($request, $response) {
     $controller = new \app\controller\acceptedController("viewAcceptedRequests",$request,$response);
 });
-
-
-
-
 
 
 
@@ -560,6 +557,7 @@ $app->router->get('/admin/requests', function ($request, $response) {
 $app->router->get('/admin/logistics', function ($request, $response) {
     $controller = new \app\controller\logisticController("viewLogistics",$request,$response);
 });
+
 //Admin view managers
 $app->router->get('/admin/managers', function ($request, $response) {
     $controller = new \app\controller\managerController("viewManagers",$request,$response);
@@ -571,7 +569,6 @@ $app->router->get('/admin/drivers', function ($request, $response) {
 $app->router->get("/admin/events", function ($request, $response) {
     $controller = new eventController("viewEvents", $request, $response);
 });
-
 
 
 

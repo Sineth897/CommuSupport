@@ -4,8 +4,9 @@
 /** @var $user \app\models\donorModel */
 
 
-
-$request = $model->retrieve();
+$userID = \app\core\Application::session()->get('user');
+$user = $user->findOne(['donorId' => $userID]);
+$request = $model->retrieve(['donor' => $userID]);
 
 
 echo "<pre>";
