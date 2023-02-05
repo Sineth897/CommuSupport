@@ -1,5 +1,5 @@
-import request from "../../request.js";
-import table from "../../components/table.js";
+import { getData } from "../../request.js";
+import {displayTable} from "../../components/table.js";
 
 let addBtn = document.getElementById('addBtn');
 let filterBtn = document.getElementById('filterBtn');
@@ -39,7 +39,7 @@ confirmBtn.addEventListener('click', async function() {
         let data = {
             itemID: subcategorySelect[activeSubcategory].value,
             amount: amount.value };
-        let array = await request().getData('./inventory/add', 'POST', { data:data });
+        let array = await getData('./inventory/add', 'POST', { data:data });
 
         console.log(array);
 
@@ -60,13 +60,13 @@ filterBtn.addEventListener('click', async function() {
     if(filterCategory.value !== '') {
         filters['categoryID'] = filterCategory.value;
     }
-    let array = await request().getData('./inventory/filter', 'POST', { filters: filters });
+    let array = await getData().getData('./inventory/filter', 'POST', { filters: filters });
     let data = {
         headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
         keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],
         data: array
     };
-    table().createTable(inventoryDisplay, data);
+    displayTable(inventoryDisplay, data);
 });
 
 
