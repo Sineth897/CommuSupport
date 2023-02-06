@@ -2,13 +2,13 @@
 
 namespace app\core\middlewares;
 
-class ccMiddleware extends Middleware
+class acceptedMiddleware extends Middleware
 {
 
     protected function accessRules(): array
     {
         return [
-            'viewCC' => [$this->ADMIN,$this->CHO,$this->DONOR]
+            'viewAcceptedRequests' => [$this->ADMIN,$this->CHO,$this->DONOR]
         ];
     }
 }

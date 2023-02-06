@@ -87,8 +87,8 @@ abstract class DbModel extends Model
     {
         $tableName = static::table();
         $attributes = array_keys($where);
-        $setData = implode(", ", array_map(fn($data) => "$data",$data));
-        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $setData = implode(", ", array_map(fn($key,$value) => "$key = '$value'", array_keys($data), $data));
+        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr ", $attributes));
         $statement = self::prepare("UPDATE $tableName SET $setData WHERE $sql");
         foreach ($where as $key => $item) {
             $statement->bindValue(":$key", $item);
