@@ -8,6 +8,7 @@ use app\core\middlewares\loginMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\userModel;
+use http\Exception;
 
 class loginController extends  Controller
 {
@@ -73,10 +74,73 @@ class loginController extends  Controller
         $response->redirect('/');
     }
 
+    protected function forgetPassword(Request $request,Response $response) {
+        try{
+            if($request->isPost()) {
+                $data = $request->getBody();
+                $func = $data['do'];
+                switch ($func) {
+                    case 'requestOTP':
+                        $this->sendJson($this->requestOTP($data));
+                        break;
+                    case 'checkOTP':
+                        $this->sendJson($this->checkOTP($data));
+                        break;
+                    case 'checkUsername':
+                        $this->sendJson($this->checkUsername($data));
+                        break;
+                    default:
+                        $this->sendJson(['success' => 0, 'message' => 'Invalid request']);
+                }
+            }
+        }
+        catch(\Exception $e) {
+            $this->sendJson(['success' => 0, 'message' => $e->getMessage()]);
+        }
+
+        if($request->isGet()) {
+            $this->render("login/forgetPassword/forgetPassword", "Forget Password");
+        }
+
+    }
+
     protected function lockedAccount(userModel $model)
     {
-        $username = $model->username;
-        echo $username . " is locked";
+//        $username = $model->username;
+        echo " is locked";
+    }
+
+    private function requestOTP($data):array {
+        try {
+            $OTP = rand(100000,999999);
+            $createdTime = time();
+            $validTime = $createdTime + 600;
+        }
+        catch (\Exception $e) {
+            return ['success' => 0, 'message' => $e->getMessage()];
+        }
+
+        $OTP = [
+            'OTP' => $OTP,
+            'createdTime' => $createdTime,
+            'validTime' => $validTime
+        ];
+        $this->setSession('OTP', $OTP);
+        //$this->sendOTP($OTP['OTP']);
+        return ['success' => 1, 'message' => 'OTP sent', 'OTP' => $OTP];
+    }
+
+    private function checkOTP($data) {
+        $this->sendJson("Hello");
+    }
+
+    private function checkUsername($data):array {
+        $username = $data['username'];
+        $user = userModel::getModel(['username' => $username]);
+        if(!$user) {
+            return ['success' => 0,'message' => 'User account with given username does not exist'];
+        }
+        return ['success' => 1, 'message' => 'User account found'];
     }
 
     private function ifLoggedIn(Response $response) {
@@ -127,14 +191,6 @@ class loginController extends  Controller
         }
     }
 
-    private function getSelectorNValidator():array
-    {
-        $selectorNValidator =Application::cookie()->getCookie('rememberMe');
-        if(!$selectorNValidator) {
-            return [];
-        }
-        return explode(":", $selectorNValidator);
-    }
 
 }
 
