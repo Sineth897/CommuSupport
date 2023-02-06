@@ -125,7 +125,7 @@ class loginController extends  Controller
             'createdTime' => $createdTime,
             'validTime' => $validTime
         ];
-        $this->setSession('OTP', $OTP);
+        $this->setSessionMsg('OTP', $OTP);
         //$this->sendOTP($OTP['OTP']);
         return ['success' => 1, 'message' => 'OTP sent', 'OTP' => $OTP];
     }
