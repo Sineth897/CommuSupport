@@ -88,6 +88,7 @@ class Application
     {
         $this->user = null;
         $this->session->remove('user');
+        $this->session->remove('username');
         $this->session->set('userType','guest');
     }
 

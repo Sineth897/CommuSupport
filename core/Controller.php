@@ -62,6 +62,16 @@ class Controller
         }
     }
 
+    protected function setSessionMsg($key, $value): void
+    {
+        Application::$app->session->set($key, $value);
+    }
+
+    protected function getSessionMsg($key)
+    {
+        return Application::$app->session->get($key);
+    }
+
     protected function setFlash($key,$message): void
     {
         Application::$app->session->setFlash($key, $message);
