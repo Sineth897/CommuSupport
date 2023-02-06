@@ -77,7 +77,7 @@ class loginController extends  Controller
     protected function forgetPassword(Request $request,Response $response) {
         try{
             if($request->isPost()) {
-                $data = $request->getBody();
+                $data = $request->getJsonData();
                 $func = $data['do'];
                 switch ($func) {
                     case 'requestOTP':
@@ -90,7 +90,7 @@ class loginController extends  Controller
                         $this->sendJson($this->checkUsername($data));
                         break;
                     default:
-                        $this->sendJson(['success' => 0, 'message' => 'Invalid request']);
+                        $this->sendJson(['success' => 0, 'message' => 'Invalid request', 'data' => $data]);
                 }
             }
         }
