@@ -24,5 +24,4 @@ class logisticController extends Controller
             'user' => $user
         ]);
     }
-   
 }
