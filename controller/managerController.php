@@ -17,7 +17,6 @@ class managerController extends Controller
     }
 
     protected function viewManagers(Request $request,Response $response) {
-
         $userType = $this->getUserType();
         $model = new managerModel();
         $user = $this->getUserModel();
@@ -27,6 +26,4 @@ class managerController extends Controller
         ]);
     }
 
-
-   
 }

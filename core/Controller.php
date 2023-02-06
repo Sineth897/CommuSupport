@@ -90,4 +90,18 @@ class Controller
         }
     }
 
+    protected function setCookie($key, $value, $days = 30): void
+    {
+        Application::$app->cookie->setCookie($key, $value, $days);
+    }
+
+    protected function getCookie($key)
+    {
+        return Application::$app->cookie->getCookie($key);
+    }
+
+    protected function unsetCookie($key): void
+    {
+        Application::$app->cookie->unsetCookie($key);
+    }
 }
