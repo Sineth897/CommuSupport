@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <?php
 /** @var $inventory \app\models\inventoryModel */
 /** @var $user \app\models\logisticModel */
@@ -32,6 +34,8 @@ $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
 
 <?php $headerDiv->heading("Inventory"); ?>
 
+<button id="addBtn" class="btn-cta-primary">Add Item</button>
+
 <?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
@@ -44,7 +48,7 @@ $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
 
 
 
-<button id="addBtn">Add Item</button>
+
 
 <div id="itemForm" style="display: none">
 
