@@ -462,9 +462,6 @@ $app->router->post("/cho/communitycenter/register", function ($request,$response
 $app->router->get("/cho/communitycenters", function($request,$response) {
    $controller = new \app\controller\ccController('viewCC',$request,$response);
 });
-$app->router->get("/cho/complaints",function($request,$response){
-    $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
-});
 
 //cho add a manager
 $app->router->get("/cho/manager/register",function ($request,$response){
@@ -492,6 +489,9 @@ $app->router->get("/cho/logistic",function ($request,$response){
 $app->router->get("/cho/complaints",function($request,$response){
    $controller=new \app\controller\complaintController("viewComplaint",$request,$response);
 });
+
+
+
 
 
 
