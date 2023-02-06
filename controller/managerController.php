@@ -10,20 +10,20 @@ use app\models\managerModel;
 
 class managerController extends Controller
 {
-   public function __construct($func, Request $request, Response $response)
-   {
-       $this->middleware= new managerMiddleware();
-       parent::__construct($func, $request, $response);
-   }
+    public function __construct($func, Request $request, Response $response)
+    {
+        $this->middleware = new  managerMiddleware();
+        parent::__construct($func, $request, $response);
+    }
 
-   protected function viewManager(Request $request, Response $response)
-   {
-       $userType = $this->getUserType();
-       $model = new managerModel();
-       $user = $this->getUserModel();
-       $this->render($userType. "/manager/view",'View Manager',[
-           'model'=> $model,
-           'user' =>$user
-       ]);
-   }
+    protected function viewManagers(Request $request,Response $response) {
+        $userType = $this->getUserType();
+        $model = new managerModel();
+        $user = $this->getUserModel();
+        $this->render($userType ."/manager/view","View managers",[
+            'model' => $model,
+            'user' => $user
+        ]);
+    }
+
 }

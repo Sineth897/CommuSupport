@@ -17,6 +17,7 @@
   --light-green: #95c7b2;
   --super-light: #eaeaea;
   --secondary-dark: #00832f;
+  --transparent-background: rgba(0, 0, 0, 0.5);
 }
 
 a {

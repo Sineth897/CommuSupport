@@ -1,4 +1,11 @@
 class PopUp {
+
+    popInfoFlag = false;
+    statusIcon = {
+        Upcoming: 'status-green',
+    }
+
+    inputFields = [];
     constructor() {
         this.popUpBackgroud = document.getElementById("popUpBackground");
         this.popUpContainer = document.getElementById("popUpContainer");
@@ -66,6 +73,7 @@ class PopUp {
         this.popUpButtons = this.getDiv('popUpButtons',['popup-btns']);
         for(let i = 0; i < buttons.length; i++) {
             this.popUpButtons.append(this.getButton(buttons[i]));
+            this.popUpButtons.append(this.getCancelButton(buttons[i]));
         }
         this.popUpContainer.append(this.popUpButtons);
     }
@@ -85,6 +93,7 @@ class PopUp {
         this.field.setAttribute('value',value);
         this.field.setAttribute('id',id);
         this.field.setAttribute('disabled','');
+        this.inputFields.push(this.field);
         return this.field;
     }
 
@@ -95,6 +104,7 @@ class PopUp {
         this.field.setAttribute('rows','6');
         this.field.innerHTML = value;
         this.field.setAttribute('id',id);
+        this.inputFields.push(this.field);
         return this.field;
     }
     setCloseButton() {
@@ -120,6 +130,24 @@ class PopUp {
         }
         return this.div;
     }
+
+    getiTag(innerText,classes = []) {
+        this.iTag = document.createElement('i');
+        this.iTag.innerHTML = innerText;
+        if(classes.length !== 0) {
+            this.iTag.setAttribute('class',classes.join(' '));
+        }
+        return this.iTag;
+    }
+
+    getpTag(innerText,classes = []) {
+        this.pTag = document.createElement('p');
+        this.pTag.innerHTML = innerText;
+        if(classes.length !== 0) {
+            this.pTag.setAttribute('class',classes.join(' '));
+        }
+        return this.pTag;
+    }
     showPopUp() {
         this.popUpBackgroud.style.display = "flex";
     }
@@ -131,6 +159,7 @@ class PopUp {
     clearPopUp() {
         this.popUpContainer.innerHTML = "";
         this.setCloseButton();
+        this.inputFields = [];
     }
 
     getButton(button) {
@@ -149,6 +178,65 @@ class PopUp {
             this.button.addEventListener('click',button['func']);
         }
         return this.button;
+    }
+
+    getCancelButton(button) {
+        let cancelBtn = this.getButton({text:'Cancel',classes:['btn-secondary'],value:'Cancel'});
+        cancelBtn.style.display = 'none';
+
+            cancelBtn.addEventListener('click',(e) => {
+                this.showAllButtonsExceptCancel(e.target.parentElement);
+                cancelBtn.previousSibling.innerHTML = button['text'];
+                cancelBtn.style.display = 'none';
+                if(button['text'] === 'Update') {
+                    for(let i = 0; i < this.inputFields.length; i++) {
+                        this.inputFields[i].setAttribute('disabled','');
+                    }
+                }
+            });
+
+        return cancelBtn;
+    }
+
+    startPopUpInfo(info) {
+        this.popUpInfo = this.getDiv('',['popup-info']);
+        this.popInfoFlag = true;
+    }
+
+    endPopUpInfo() {
+        this.popUpContainer.append(this.popUpInfo);
+        this.popInfoFlag = false;
+    }
+
+    showStatus(status) {
+        this.statusDiv = this.getDiv('',['status']);
+        this.statusDiv.append(this.getiTag('fiber_manual_record',['material-icons',this.statusIcon[status]]),this.getpTag(status,));
+
+        if(this.popInfoFlag) {
+            this.popUpInfo.append(this.statusDiv);
+        }
+        else {
+            this.popUpContainer.append(this.statusDiv);
+        }
+    }
+
+    showParticipants(participants) {
+        this.participantsDiv = this.getDiv('',['participants']);
+        this.participantsDiv.append(this.getiTag('people',['material-icons']),this.getpTag(participants,));
+        if(this.popInfoFlag) {
+            this.popUpInfo.append(this.participantsDiv);
+        }
+        else {
+            this.popUpContainer.append(this.participantsDiv);
+        }
+    }
+
+    showAllButtonsExceptCancel(parent) {
+        for(let i = 0; i < parent.children.length; i++) {
+            if(parent.children[i].value !== 'Cancel') {
+                parent.children[i].style.display = 'block';
+            }
+        }
     }
 }
 

@@ -22,7 +22,7 @@ class complaintModel extends DbModel
 
     public function attributes(): array
     {
-        return ["complaintID","filledBy","filedDate","subject","status","solution","reviewedDate"];
+        return ["complaintID","filedBy","filedDate","subject","status","solution","reviewedDate"];
     }
 
     public function primaryKey(): string
@@ -33,7 +33,7 @@ class complaintModel extends DbModel
     public function rules(): array
     {
         return [
-            "filledBy" => [self::$REQUIRED],
+            "filedBy" => [self::$REQUIRED],
             "filedDate" => [self::$REQUIRED],
             "subject" => [self::$REQUIRED],
             "status"=> [self::$REQUIRED],

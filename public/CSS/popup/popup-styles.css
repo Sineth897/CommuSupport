@@ -63,7 +63,7 @@ button {
     font-size: 0.8rem;
 }
 
-.status i {
+.status-green {
     font-size: 0.8rem;
     font-weight: 600;
     color: #00d749;
