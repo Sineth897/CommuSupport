@@ -34,7 +34,7 @@ class form
     {
         echo "<div class='form-group'>";
         echo sprintf('<div></div><label class="form-label">%s :</label></div>', $label);
-        echo sprintf("<textarea name='%s' rows='%s' cols='%s' class='basic-input-field'>%s</textarea>", $attribute, $size[0], $size[1], $model->{$attribute});
+        echo sprintf("<textarea name='%s' rows='%s' cols='%s' class='basic-text-area'>%s</textarea>", $attribute, $size[0], $size[1], $model->{$attribute});
         echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
         echo "<div>";
     }

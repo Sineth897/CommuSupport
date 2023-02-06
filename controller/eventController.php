@@ -75,4 +75,42 @@ class eventController extends Controller
         ]);
     }
 
+    protected function updateEvent(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $func = $data['do'];
+        $data = $data['data'];
+        try {
+            switch ($func) {
+                case 'update':
+                    $this->updateFields($data['eventID'],$data);
+                    break;
+                case 'cancel':
+                    $this->cancelEvent($data);
+                    break;
+                default:
+                    throw new \Exception("Invalid function");
+            }
+            $this->sendJson([
+                'status' => 1
+            ]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'status' => 0,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    private function updateFields($eventID,$data) {
+        $model = new eventModel();
+        unset($data['eventID']);
+        $model->update(['eventID'=>$eventID],$data);
+    }
+
+    private function cancelEvent($eventID) {
+        $model = new eventModel();
+        $model->update(['eventID'=>$eventID],['status'=>'Cancelled']);
+    }
+
 }
