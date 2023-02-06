@@ -1,4 +1,8 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/cards/eventcard.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -47,7 +51,11 @@ $searchDiv = new \app\core\components\layout\searchDiv();
 
 $searchDiv->filters();
 
-$searchDiv->search();
+$creatEvent = \app\core\components\form\form::begin('./events/create', 'get');
+
+echo "<button class='btn-cta-primary'> Create event </button>";
+
+$creatEvent->end();
 
 $searchDiv->end();
 ?>
@@ -58,31 +66,18 @@ $eventCards->displayEvents($events);
 
 ?>
 
-<?php $creatEvent = \app\core\components\form\form::begin('./events/create', 'get'); ?>
 
-<button> Create event </button>
-
-<?php $creatEvent->end(); ?>
 
 <div>
     <?php $filter = \app\core\components\form\form::begin('', ''); ?>
 
     <?php $filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory")?>
 
-    <label for="sameCC">Same CC</label>
-    <input type="checkbox" id="sameCC" value="<?php echo $manager->ccID ?>">
-
     <button type="button" id="filterBtn">Filter</button>
 
     <?php $filter->end(); ?>
 </div>
 
-<div id="popUpBackground" style="display: none">
 
-    <div id="popUpContainer">
-
-    </div>
-
-</div>
 
 <script type="module" src="/CommuSupport/public/JS/manager/events/view.js"></script>

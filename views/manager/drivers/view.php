@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
 <?php
 
 /** @var $model \app\models\driverModel */
@@ -36,6 +38,12 @@ $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'prefe
 
 <?php $headerDiv->heading("Drivers"); ?>
 
+<?php $creatEvent = \app\core\components\form\form::begin('./drivers/register', 'get'); ?>
+
+<button class="btn-cta-primary"> Register a driver </button>
+
+<?php $creatEvent->end(); ?>
+
 <?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
@@ -46,11 +54,7 @@ $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'prefe
 
 <?php $searchDiv->end(); ?>
 
-<?php $creatEvent = \app\core\components\form\form::begin('./drivers/register', 'get'); ?>
 
-<button> Register a driver </button>
-
-<?php $creatEvent->end(); ?>
 
 <button type="button"> Filter </button>
 
