@@ -1,9 +1,3 @@
-export default function eventCards() {
-    return {
-        displayEventcards: displayEventcards
-    }
-
-}
 
 let eventIcons = [];
 let locationIcon = "/CommuSupport/public/src/icons/event/location.svg";
@@ -28,10 +22,11 @@ function eventCard(event) {
     let cardUpper = document.createElement('div');
     let cardMiddle = document.createElement('div');
     let cardLower = document.createElement('div');
-    cardUpper.append(getEventIcon(event['eventCategory']),getParticipationCount(event));
+    cardUpper.append(getEventIcon(event['eventCategoryID']),getParticipationCount(event));
     cardMiddle.append(getTheme(event['theme']));
     cardLower.append(getEventLocation(event['location']),getEventDate(event['date']));
     let card = document.createElement('div');
+    card.setAttribute('id',event['eventID']);
     card.setAttribute('class','eventCard');
     card.append(cardUpper,cardMiddle,cardLower);
     return card;
@@ -68,3 +63,5 @@ function getEventDate(date) {
     dateDiv.append(Object.assign(document.createElement('p'),{innerHTML:date}));
     return dateDiv;
 }
+
+export {displayEventcards};
