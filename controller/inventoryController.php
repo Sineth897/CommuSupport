@@ -47,7 +47,7 @@ class inventoryController extends Controller
     protected function filterInventory(Request $request, Response $response) {
         $inventory = new inventoryModel();
 
-        $logistic = logisticModel::getUser(['employeeID' =>Application::session()->get('user')]);
+        $logistic = logisticModel::getModel(['employeeID' =>Application::session()->get('user')]);
 
         $filters = ($request->getJsonData())['filters'];
         $filter['ccID'] = $logistic->ccID;

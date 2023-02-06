@@ -7,7 +7,7 @@ use app\core\DbModel;
 class eventModel extends DbModel
 {
     public string $eventID = '';
-    public string $eventCategory = '';
+    public string $eventCategoryID = '';
     public string $theme = '';
     public string $organizedBy = '';
     public string $contact = '';

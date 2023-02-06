@@ -1,6 +1,6 @@
 <?php
 
-/** @var $model \app\models\userModel*/
+/** @var $user \app\models\userModel*/
 
 ?>
 
@@ -20,13 +20,15 @@
 
                     <label for="username">Username</label>
                     <input type="text" name="username" id="username">
+                    <?php echo sprintf('<span class="error">%s</span>', $user->getFirstError('username')) ?>
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password">
+                    <?php echo sprintf('<span class="error">%s</span>', $user->getFirstError('password')) ?>
 
                     <div class="login-footer">
                         <div class="remember-me">
-                            <input type="checkbox" name="remember" id="remember">
-                            <label for="remember">Remember me</label>
+                            <input type="checkbox" name="rememberMe" id="rememberMe">
+                            <label for="rememberMe">Remember me</label>
                         </div>
                         <a href="#">Forgot Password?</a>
                     </div>

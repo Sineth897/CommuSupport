@@ -11,35 +11,35 @@
     </div>
     <ul class="nav_list">
         <li>
-            <a href="/CommuSupport/logisitic/donations">
+            <a href="/CommuSupport/logistic/donations">
                 <i class="material-icons">inventory_2</i>
                 <span class="links_name">Donations</span>
             </a>
             <span class="tooltip">Donations</span>
         </li>
         <li>
-            <a href="/CommuSupport/logisitic/deliveries">
+            <a href="/CommuSupport/logistic/deliveries">
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Deliveries</span>
             </a>
             <span class="tooltip">Deliveries</span>
         </li>
         <li>
-            <a href="/CommuSupport/logisitic/inventory">
+            <a href="/CommuSupport/logistic/inventory">
                 <i class="material-icons">inventory</i>
                 <span class="links_name">Inventory</span>
             </a>
             <span class="tooltip">Inventory</span>
         </li>
         <li>
-            <a href="/CommuSupport/logisitic/requests">
+            <a href="/CommuSupport/logistic/requests">
                 <i class="material-icons">summarize</i>
                 <span class="links_name">Requests</span>
             </a>
             <span class="tooltip">Requests</span>
         </li>
         <li>
-            <a href="/CommuSupport/logisitic/drivers">
+            <a href="/CommuSupport/logistic/drivers">
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Drivers</span>
             </a>
@@ -50,7 +50,7 @@
         <form method="post" action="/CommuSupport/logout"><button><i class="material-icons" id="log_out">power_settings_new</i></button></form>
     </div>
 </div>
-<div class="home_content">
+<div class="main">
     {content}
 </div>
 
