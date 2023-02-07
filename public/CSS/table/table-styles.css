@@ -26,6 +26,7 @@ table {
     background-color: white;
     text-align: left;
     border-radius: 12px;
+    width: 95%;
 
 }
 
@@ -96,6 +97,6 @@ table td .view {
 
 
 table tr:nth-child(even) {
-    background-color: #f0faf0;
+    background-color: #f3fff3;
 }
 
