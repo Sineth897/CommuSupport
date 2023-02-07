@@ -67,6 +67,11 @@ class Controller
         Application::$app->session->set($key, $value);
     }
 
+    protected function unsetSessionMsg($key): void
+    {
+        Application::$app->session->unset($key);
+    }
+
     protected function getSessionMsg($key)
     {
         return Application::$app->session->get($key);

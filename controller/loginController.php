@@ -79,19 +79,9 @@ class loginController extends  Controller
             if($request->isPost()) {
                 $data = $request->getJsonData();
                 $func = $data['do'];
-                switch ($func) {
-                    case 'requestOTP':
-                        $this->sendJson($this->requestOTP($data));
-                        break;
-                    case 'checkOTP':
-                        $this->sendJson($this->checkOTP($data));
-                        break;
-                    case 'checkUsername':
-                        $this->sendJson($this->checkUsername($data));
-                        break;
-                    default:
-                        $this->sendJson(['success' => 0, 'message' => 'Invalid request', 'data' => $data]);
-                }
+                unset($data['do']);
+                $result = $this->$func($data);
+                $this->sendJson($result);
             }
         }
         catch(\Exception $e) {
@@ -110,11 +100,19 @@ class loginController extends  Controller
         echo " is locked";
     }
 
+    private function changePassword($data):array {
+        $user = userModel::getModel(['username' => $data['username']]);
+        if($user->changePassword($data['newPassword'])) {
+            return ['success' => 1, 'message' => 'Password changed successfully'];
+        }
+        return ['success' => 0, 'message' => 'Password change failed'];
+    }
+
     private function requestOTP($data):array {
         try {
             $OTP = rand(100000,999999);
             $createdTime = time();
-            $validTime = $createdTime + 600;
+            $validTime = $createdTime + 60 * 10;
         }
         catch (\Exception $e) {
             return ['success' => 0, 'message' => $e->getMessage()];
@@ -130,8 +128,19 @@ class loginController extends  Controller
         return ['success' => 1, 'message' => 'OTP sent', 'OTP' => $OTP];
     }
 
-    private function checkOTP($data) {
-        $this->sendJson("Hello");
+    private function checkOTP($data):array {
+        $OTP = $this->getSessionMsg('OTP');
+        if(!$OTP) {
+            return ['success' => 0, 'message' => 'OTP not found. '];
+        }
+        if($OTP['validTime'] < time()) {
+            return ['success' => 0, 'message' => 'OTP is expired. Please request a new OTP'];
+        }
+        if($OTP['OTP'] != $data['OTP']) {
+            return ['success' => 0, 'message' => 'OTP does not match'];
+        }
+
+        return ['success' => 1, 'message' => 'OTP is valid'];
     }
 
     private function checkUsername($data):array {
