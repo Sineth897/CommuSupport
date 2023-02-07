@@ -58,20 +58,20 @@ $app->router->get('/logout', function($request,$response){
 $app->router->post('/login/employee', function($request,$response){
     $controller = new loginController("employeeLogin", $request, $response);
 });
-
 $app->router->post('/login/user', function($request,$response){
     $controller = new loginController("userLogin", $request, $response);
 });
-
 $app->router->post('/logout', function($request,$response){
     $controller = new loginController("logout", $request, $response);
 });
 
-
-
-
-
-
+//forget password for all users
+$app->router->get('/forgetpassword', function($request,$response){
+    $controller = new loginController("forgetPassword", $request, $response);
+});
+$app->router->post('/forgetpassword', function($request,$response){
+    $controller = new loginController("forgetPassword", $request, $response);
+});
 
 
 
