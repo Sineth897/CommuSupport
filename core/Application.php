@@ -18,6 +18,7 @@ class Application
     public Database $database;
     public Session $session;
     public Cookie $cookie;
+    public SMS $sms;
     public ?userModel $user;
     private array $rootInfo;
 
@@ -33,6 +34,7 @@ class Application
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
         $this->cookie = new Cookie();
+        $this->sms = new SMS($config['sms']);
         $this->database = new Database($config['db']);
         $this->rootInfo = $config['root'];
 
@@ -53,6 +55,11 @@ class Application
     public static function cookie() : Cookie
     {
         return self::$app->cookie;
+    }
+
+    public static function sms() : SMS
+    {
+        return self::$app->sms;
     }
 
     public function run() : void
