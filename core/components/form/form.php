@@ -66,9 +66,9 @@ class form
     public function button($label, $type = 'submit', $id = '') : void
     {
         if($id == ""){
-            echo sprintf("<button type='%s'>%s</button>", $type, $label);
+            echo sprintf("<button type='%s' class='btn-cta-primary'>%s</button>", $type, $label);
         }else{
-            echo sprintf("<button type='%s' id='%s'>%s</button>", $type, $id, $label);
+            echo sprintf("<button type='%s' id='%s' class='btn-cta-primary'>%s</button>", $type, $id, $label);
         }
     }
 

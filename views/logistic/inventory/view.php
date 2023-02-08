@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css" >
 <?php
 /** @var $inventory \app\models\inventoryModel */
 /** @var $user \app\models\logisticModel */
@@ -34,50 +35,49 @@ $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
 
 <?php $headerDiv->heading("Inventory"); ?>
 
-<button id="addBtn" class="btn-cta-primary">Add Item</button>
-
 <?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
 
 <?php $searchDiv->filters(); ?>
 
-<?php $searchDiv->search(); ?>
+<button id="addBtn" class="btn-cta-primary">Add Item</button>
 
 <?php $searchDiv->end(); ?>
 
 
 
+<div id="itemForm" class="popup-background">
 
+    <div class="popup" >
 
-<div id="itemForm" style="display: none">
+        <span id="resultMsg" class="error"></span>
 
-    <p id="resultMsg"></p>
+        <?php $form = \app\core\components\form\form::begin('', ''); ?>
 
-    <?php $form = \app\core\components\form\form::begin('', ''); ?>
-
-    <div>
-        <?php $form->dropDownList($inventory, "Select a Category", '', $categories,'category'); ?>
-    </div>
-
-    <?php foreach ($categories as $key => $value): {?>
-        <div id="<?php echo $key ?>" style="display: none">
-            <?php $form->dropDownList($inventory, "Select an Item", 'itemID', $inventory->getsubcategories($key)); ?>
+        <div>
+            <?php $form->dropDownList($inventory, "Select a Category", '', $categories,'category'); ?>
         </div>
-    <?php } endforeach; ?>
 
-    <div>
-        <?php $form->inputField($inventory, 'Enter the Amount', 'number','amount', 'amount'); ?>
+        <?php foreach ($categories as $key => $value): {?>
+            <div id="<?php echo $key ?>" style="display: none">
+                <?php $form->dropDownList($inventory, "Select an Item", 'itemID', $inventory->getsubcategories($key)); ?>
+            </div>
+        <?php } endforeach; ?>
+
+        <div>
+            <?php $form->inputField($inventory, 'Enter the Amount', 'number','amount', 'amount'); ?>
+        </div>
+
+        <div>
+            <?php $form->button('Confirm','button', 'addToInventory'); ?>
+        </div>
+
+        <?php $form::end(); ?>
+
     </div>
-
-    <div>
-        <?php $form->button('Confirm','button', 'addToInventory'); ?>
-    </div>
-
-    <?php $form::end(); ?>
 
 </div>
-
 
 
 <?php $filterForm = \app\core\components\form\form::begin('', ''); ?>

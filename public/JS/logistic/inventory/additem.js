@@ -60,7 +60,7 @@ filterBtn.addEventListener('click', async function() {
     if(filterCategory.value !== '') {
         filters['categoryID'] = filterCategory.value;
     }
-    let array = await getData().getData('./inventory/filter', 'POST', { filters: filters });
+    let array = await getData('./inventory/filter', 'POST', { filters: filters });
     let data = {
         headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
         keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],
