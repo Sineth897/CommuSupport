@@ -148,6 +148,23 @@ a {
   box-shadow: 0 0 10px #e1e5ee;
 }
 
+
+.filter{
+  position: relative;
+}
+
+.filter-box
+{
+  position: absolute;
+  top: 60px;
+  left: 0;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 10px;
+
+}
+
 .filters p {
   display: flex;
   align-items: center;

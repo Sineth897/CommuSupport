@@ -24,15 +24,8 @@ echo \app\core\Application::session()->getFlash('result');
         </div>
     </div>
 </div>
-
-<?php
-$headerDiv = new \app\core\components\layout\headerDiv();
-
-$headerDiv->heading("Create a Event");
-
-$headerDiv->end();
-?>
-
+<div class="form-container event-manager">
+    <h3>Publish Event</h3>
 
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
 
@@ -59,4 +52,4 @@ $headerDiv->end();
 <?php $creatEventForm->end(); ?>
 
 
-
+</div>
