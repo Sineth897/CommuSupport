@@ -96,7 +96,12 @@ newPasswordSubmitBtn.addEventListener('click',async () => {
     if(message['success']) {
         newPasswordDiv.style.display = 'none';
         //alert success
-        window.location.href = '/login';
+        if(message['isEmployee']){
+            window.location.replace('/login/employee');
+        }
+        else {
+            window.location.replace('/login/user');
+        }
     }
     else {
         newPasswordError.innerHTML = message['message'];

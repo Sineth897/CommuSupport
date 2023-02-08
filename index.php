@@ -22,6 +22,10 @@ $config = [
         "username"  =>  $_ENV['DB_ADMIN_USER'],
         "password" => $_ENV['DB_ADMIN_PASS']
         ],
+    "sms" => [
+        'id' => $_ENV['SMS_ID'],
+        'pw' => $_ENV['SMS_PW']
+    ],
 ];
 
 $app = new Application(dirname(__DIR__) . "/CommuSupport", $config);

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
+
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -22,6 +24,14 @@ echo \app\core\Application::session()->getFlash('result');
         </div>
     </div>
 </div>
+
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
+
+$headerDiv->heading("Create a Event");
+
+$headerDiv->end();
+?>
 
 
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>

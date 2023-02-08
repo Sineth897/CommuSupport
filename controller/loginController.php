@@ -124,8 +124,11 @@ class loginController extends  Controller
             'validTime' => $validTime
         ];
         $this->setSessionMsg('OTP', $OTP);
-        //$this->sendOTP($OTP['OTP']);
-        return ['success' => 1, 'message' => 'OTP sent', 'OTP' => $OTP];
+        $user = userModel::getModel(['username' => $data['username']]);
+        if($this->sendOTP($OTP['OTP'], $user)) {
+            return ['success' => 1, 'message' => 'OTP sent'];
+        }
+        return ['success' => 0, 'message' => 'Unable to send OTP'];
     }
 
     private function checkOTP($data):array {
@@ -139,8 +142,9 @@ class loginController extends  Controller
         if($OTP['OTP'] != $data['OTP']) {
             return ['success' => 0, 'message' => 'OTP does not match'];
         }
-
-        return ['success' => 1, 'message' => 'OTP is valid'];
+        $user = userModel::getModel(['username' => $data['username']]);
+        $isEmployee = $user->isEmployee($user->userType);
+        return ['success' => 1, 'message' => 'OTP is valid', 'isEmployee' => $isEmployee];
     }
 
     private function checkUsername($data):array {
