@@ -17,7 +17,7 @@ class complaintController extends Controller
         parent::__construct($func, $request, $response);
     }
 
-    protected function viewComplaint(Request $request, Response $response)
+    protected function viewComplaints(Request $request, Response $response)
     {
         $complaints = new complaintModel();
         $user = $this->getUserModel();

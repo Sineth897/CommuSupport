@@ -8,7 +8,7 @@ class complaintMiddleware extends Middleware
     protected function accessRules(): array
     {
         return[
-            'viewComplaint' =>[$this->ADMIN,$this->CHO,$this->DONOR,$this->DONEE]
+            'viewComplaints' =>[$this->ADMIN,$this->CHO,$this->DONOR,$this->DONEE]
         ];
     }
 }

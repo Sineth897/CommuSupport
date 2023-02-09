@@ -569,10 +569,10 @@ $app->router->get('/admin/drivers', function ($request, $response) {
 $app->router->get("/admin/events", function ($request, $response) {
     $controller = new eventController("viewEvents", $request, $response);
 });
-
-
-
-
+//Admin view  complaints
+$app->router->get('/admin/complaints', function ($request, $response) {
+    $controller = new \app\controller\complaintController("viewComplaints",$request,$response);
+});
 
 
 
