@@ -175,17 +175,17 @@ $app->router->get('/manager/donations', function ($request, $response) {
 
 
 //*************************Donee get and post methods*************************//
+$app->router->get('/donee/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
+$app->router->get('/donee/communitycenters', function ($request, $response) {
+    $controller = new \app\controller\ccController("viewCC",$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
+$app->router->get('/donee/events', function ($request, $response) {
+    $controller = new \app\controller\eventController("viewEvents",$request,$response);
+});
 
 
 
@@ -260,15 +260,15 @@ $app->router->get('/donor/acceptedrequests', function ($request, $response) {
     $controller = new \app\controller\acceptedController("viewAcceptedRequests",$request,$response);
 });
 
+///Donor view donation
+$app->router->get('/donor/donations', function ($request, $response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
 
-
-
-
-
-
-
-
-
+//Donor view requests
+$app->router->get('/donor/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
 
 

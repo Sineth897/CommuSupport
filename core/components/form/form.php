@@ -63,6 +63,19 @@ class form
         echo "</div>";
     }
 
+    public function checkBox($model,$label,$attribute,$id='') {
+        echo "<div>";
+        echo sprintf("<label>%s : </label>",$label);
+        if($id == '') {
+            echo sprintf("<input type='checkbox' name='%s' value='%s'>",$attribute,$model->{$attribute});
+        }
+        else {
+            echo sprintf("<input type='checkbox' name='%s' value='%s' id='%s'>",$attribute,$model->{$attribute},$id);
+        }
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
+        echo "</div>";
+    }
+
     public function button($label, $type = 'submit', $id = '') : void
     {
         if($id == ""){

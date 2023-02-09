@@ -8,7 +8,7 @@ class requestMiddleware extends Middleware
     protected function accessRules(): array
     {
         return [
-            'viewRequests' => [$this->ADMIN,$this->CHO,$this->MANAGER,$this->DONOR,$this->LOGISTIC],
+            'viewRequests' => [$this->ADMIN,$this->CHO,$this->MANAGER,$this->DONOR,$this->DONEE,$this->LOGISTIC],
         ];
     }
 }

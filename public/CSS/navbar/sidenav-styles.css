@@ -110,6 +110,7 @@ body{
     display:none;
 }
 .sidenav ul li:hover .tooltip{
+    display: initial;
     transition:all 0.5s ease;
     opacity:1;
     top:50%;

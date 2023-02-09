@@ -1,13 +1,8 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
-/** @var $model \app\models\requestModel */
-/** @var $user \app\models\donorModel */
-
-$userID = \app\core\Application::session()->get('user');
-$user = $user->findOne(['donorID' => $userID]);
-$request = $model->retrieve();
-
 ?>
+
 
 <!--profile div-->
 <div class="profile">
@@ -29,7 +24,9 @@ $request = $model->retrieve();
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Posted Requests");
+$headerDiv->heading("Your Requests");
+
+$headerDiv->pages(["active", "completed"]);
 
 $headerDiv->end();
 ?>
@@ -50,6 +47,12 @@ $searchDiv->sortBegin();
 $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
+
+$creatEvent = \app\core\components\form\form::begin('./donations/create', 'get');
+
+echo "<button class='btn-cta-primary'> Request </button>";
+
+$creatEvent->end();
 
 $searchDiv->end();
 ?>

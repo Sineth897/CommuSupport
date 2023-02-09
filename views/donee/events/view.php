@@ -1,13 +1,13 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/eventcard.css">
 <?php
 
-/** @var $model \app\models\requestModel */
-/** @var $user \app\models\donorModel */
+/** @var $model \app\models\eventModel */
 
-$userID = \app\core\Application::session()->get('user');
-$user = $user->findOne(['donorID' => $userID]);
-$request = $model->retrieve();
+$events = $model->retrieve();
 
 ?>
+
 
 <!--profile div-->
 <div class="profile">
@@ -29,7 +29,7 @@ $request = $model->retrieve();
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Posted Requests");
+$headerDiv->heading("Events");
 
 $headerDiv->end();
 ?>
@@ -51,5 +51,16 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+$creatEvent = \app\core\components\form\form::begin('./donations/create', 'get');
+
+$creatEvent->end();
+
 $searchDiv->end();
 ?>
+
+<div class="main">
+    <?php
+    $eventCards = new \app\core\components\cards\eventcard();
+    $eventCards->displayEvents($events);
+    ?>
+</div>
