@@ -75,8 +75,4 @@ use app\core\components\tables\table;
 ?>
         </div>
 
-    
-
-
-
-
+ 
