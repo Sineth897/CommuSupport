@@ -1,15 +1,11 @@
-<link rel="stylesheet" href="/CommuSupport/public/CSS/landingPage/landingpage.css">
+<link rel="stylesheet" href="./public/CSS/landingPage/landingpage.css">
+<link rel="stylesheet" href="./public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="./public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="./public/CSS/form/form.css">
 <div class="container">
     <section class="navbar">
         <div class="nav_logo">
-            <img src="/CommuSupport/public/src/landingpage/CMS-Logo.svg" alt="logo">
-        </div>
-        <div class="nav_set">
-            <ul class="nav-list">
-                <li class="nav-link"><a href="#">Home</a></li>
-                <li class="nav-link"><a href="#">Community Centers</a></li>
-                <li class="nav-link"><a href="#">Events</a></li>
-            </ul>
+            <img src="./public/src/landingpage/CMS-Logo.svg" alt="logo">
         </div>
         <div class="nav-btns">
             <a href="./login/user">
@@ -17,7 +13,7 @@
                     Log in
                 </button>
             </a>
-            <button id="signup"  class="action-btn">
+            <button id="signup" class="action-btn">
                 Create an Account
             </button>
         </div>
@@ -27,13 +23,20 @@
         <div class="hero-box">
             <h1 id="title"><span class="title-color">CommuSupport<br></span>From the Community. For the Community.</h1>
             <p id="desc">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto consectetur eligendi
-                hic,
-                illum impedit incidunt iure nam neque nihil placeat, quaerat rem sapiente velit.
+                Our goal is to bring people together and create a strong, supportive network where everyone can make a difference.
+                <br>
+                <br>
+                Join us in making a difference. Be a part of the CommuSupport community and show your support today. Together, we can create a brighter tomorrow for all.
+                <br>
+                <br>
+                |
+                <br>
+                |<br>
+                V
             </p>
             <div class="hero-btns">
                 <button id="readmore"  class="action-btn">
-                    Read More
+                    Make this button a sign up button
                 </button>
             </div>
         </div>
@@ -59,7 +62,7 @@
         How we work
     </h1>
     <div class="info-block">
-        <img src="/CommuSupport/public/src/landingpage/01.svg" alt="image">
+        <img src="./public/src/landingpage/01.svg" alt="image">
         <div class="text">
             <h3>Opportunity to Request from the Community</h3>
             <p>As some donors will have a hard time transporting their donations. We will pick up the delivery right
@@ -74,11 +77,11 @@
                 delectus dolor ex impedit non, nulla sequi totam. Deleniti eius illum minima mollitia, necessitatibus
                 nihil porro quasi quidem similique vero vitae?</p>
         </div>
-        <img src="/CommuSupport/public/src/landingpage/02.svg" alt="image">
+        <img src="./public/src/landingpage/02.svg" alt="image">
     </div>
 
     <div class="info-block">
-        <img src="/CommuSupport/public/src/landingpage/03.svg" alt="image">
+        <img src="./public/src/landingpage/03.svg" alt="image">
         <div class="text">
             <h3>Getting donations from drivers to drivers</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum et eveniet hic id inventore ipsum maiores
@@ -128,6 +131,41 @@
     <p class="copyright">Copyright 2023 CommuSupport</p>
 </section>
 
+
+<div id="signupPopup" class="popup-background">
+
+    <div class="popup form-split">
+
+        <div>
+            <?php $doneeSignup = \app\core\components\form\form::begin('./register/donee', 'get'); ?>
+
+            <?php $doneeSignup->formHeader('Donee Sign Up'); ?>
+
+            <?php $doneeSignup->button('Donee Sign Up', 'submit'); ?>
+
+            <?php $doneeSignup->end(); ?>
+        </div>
+
+        <div>
+            <?php  $donorSignup= \app\core\components\form\form::begin('./register/donor', 'get'); ?>
+
+            <?php $donorSignup->formHeader('Donor Sign Up'); ?>
+
+            <?php $donorSignup->button('Donor Sign Up', 'submit'); ?>
+
+            <?php $donorSignup->end(); ?>
+        </div>
+
+        <div class="close" id="signupCloseBtn">
+            <i class="material-icons">close</i>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module" src="./public/JS/guest/home.js"></script>
 
 <!--
 <?php $userLogin = \app\core\components\form\form::begin('./login/user', 'get'); ?>

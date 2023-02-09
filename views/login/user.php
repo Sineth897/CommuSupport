@@ -29,7 +29,7 @@
                             <input type="checkbox" name="remember" id="remember">
                             <label for="remember">Remember me</label>
                         </div>
-                        <a href="#">Forgot Password?</a>
+                        <a href="/CommuSupport/forgetpassword">Forgot Password?</a>
                     </div>
 
                     <div class="btn-block">

@@ -42,7 +42,7 @@ class redirectController extends Controller
                 $response->redirect('/donee/request');
                 break;
             case 'donor':
-                $response->redirect('/donor/donations');
+                $response->redirect('/donor/donation');
                 break;
             default:
                 $this->render('/guest/home', 'Welcome to CommuSupport!');

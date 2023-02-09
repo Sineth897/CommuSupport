@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
+
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -22,7 +24,8 @@ echo \app\core\Application::session()->getFlash('result');
         </div>
     </div>
 </div>
-
+<div class="form-container event-manager">
+    <h3>Publish Event</h3>
 
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
 
@@ -49,4 +52,4 @@ echo \app\core\Application::session()->getFlash('result');
 <?php $creatEventForm->end(); ?>
 
 
-
+</div>

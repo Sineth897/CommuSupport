@@ -10,6 +10,7 @@ use app\models\donorModel;
 use app\models\driverModel;
 use app\models\logisticModel;
 use app\models\managerModel;
+use app\models\userModel;
 
 class Controller
 {
@@ -62,6 +63,21 @@ class Controller
         }
     }
 
+    protected function setSessionMsg($key, $value): void
+    {
+        Application::$app->session->set($key, $value);
+    }
+
+    protected function unsetSessionMsg($key): void
+    {
+        Application::$app->session->remove($key);
+    }
+
+    protected function getSessionMsg($key)
+    {
+        return Application::$app->session->get($key);
+    }
+
     protected function setFlash($key,$message): void
     {
         Application::$app->session->setFlash($key, $message);
@@ -103,5 +119,14 @@ class Controller
     protected function unsetCookie($key): void
     {
         Application::$app->cookie->unsetCookie($key);
+    }
+
+    protected function sendOTP(INT $otp,userModel $user): bool {
+        $msg = "Your OTP is $otp. Valid for 10 minutes only. Please do not share this with anyone.";
+        return Application::sms()->send($msg,$user);
+    }
+
+    protected function sendSMS(string $msg,userModel $user): bool {
+        return Application::sms()->send($msg,$user);
     }
 }

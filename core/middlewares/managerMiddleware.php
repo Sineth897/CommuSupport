@@ -7,7 +7,7 @@ class managerMiddleware extends Middleware
     protected function accessRules(): array
     {
         return[
-            'viewManager'=>[$this->CHO,$this->ADMIN],
+            'viewManagers'=>[$this->CHO,$this->ADMIN],
         ];
     }
 }

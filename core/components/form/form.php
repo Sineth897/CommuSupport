@@ -22,9 +22,9 @@ class form
         echo "<div class='form-group'>";
         echo sprintf('<label class="form-label">%s :</label>', $label);
         if($id == "") {
-            echo sprintf('<input type="%s" name="%s" value="%s" class="basic-input-field">', $type, $attribute, $model->{$attribute});
+            echo sprintf('<input type="%s" name="%s" value="%s" class="basic-input-field" size="40">', $type, $attribute, $model->{$attribute});
         } else {
-            echo sprintf('<input type="%s" name="%s" value="%s" id="%s">', $type, $attribute, $model->{$attribute}, $id);
+            echo sprintf('<input type="%s" name="%s" value="%s" id="%s" class="basic-input-field" size="40">', $type, $attribute, $model->{$attribute}, $id);
         }
         echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
         echo "</div>";
@@ -66,10 +66,15 @@ class form
     public function button($label, $type = 'submit', $id = '') : void
     {
         if($id == ""){
-            echo sprintf("<button type='%s'>%s</button>", $type, $label);
+            echo sprintf("<button type='%s' class='btn-cta-primary'>%s</button>", $type, $label);
         }else{
-            echo sprintf("<button type='%s' id='%s'>%s</button>", $type, $id, $label);
+            echo sprintf("<button type='%s' id='%s' class='btn-cta-primary'>%s</button>", $type, $id, $label);
         }
+    }
+
+    public function formHeader($heading) : void
+    {
+        echo sprintf("<h3>%s</h3>", $heading);
     }
 
 

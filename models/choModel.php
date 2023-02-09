@@ -65,4 +65,17 @@ class choModel extends DbModel
                 "mannar" => "Mannar", "batticaloa" => "Batticaloa", "trincomalee" => "Trincomalee", "ampara" => "Ampara", "badulla" => "Badulla",
                 "monaragala" => "Monaragala", "ratnapura" => "Ratnapura", "kegalle" => "Kegalle" ];
     }
+
+    public static function getCHOs(): array {
+        $stmnt = self::prepare("SELECT choID,district FROM communityheadoffice");
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public static function getCCsUnderCHO($choID): array {
+        $stmnt = self::prepare("SELECT ccID,city FROM communitycenter WHERE cho = :choID");
+        $stmnt->bindValue(":choID", $choID);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 }

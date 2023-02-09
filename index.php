@@ -6,6 +6,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use app\controller\eventController;
 use app\controller\loginController;
 use app\controller\redirectController;
+use app\controller\registerController;
 use app\core\Application;
 use app\models\userModel;
 
@@ -22,6 +23,10 @@ $config = [
         "username"  =>  $_ENV['DB_ADMIN_USER'],
         "password" => $_ENV['DB_ADMIN_PASS']
         ],
+    "sms" => [
+        'id' => $_ENV['SMS_ID'],
+        'pw' => $_ENV['SMS_PW']
+    ],
 ];
 
 $app = new Application(dirname(__DIR__) . "/CommuSupport", $config);
@@ -58,36 +63,35 @@ $app->router->get('/logout', function($request,$response){
 $app->router->post('/login/employee', function($request,$response){
     $controller = new loginController("employeeLogin", $request, $response);
 });
-
 $app->router->post('/login/user', function($request,$response){
     $controller = new loginController("userLogin", $request, $response);
 });
-
 $app->router->post('/logout', function($request,$response){
     $controller = new loginController("logout", $request, $response);
 });
 
+//forget password for all users
+$app->router->get('/forgetpassword', function($request,$response){
+    $controller = new loginController("forgetPassword", $request, $response);
+});
+$app->router->post('/forgetpassword', function($request,$response){
+    $controller = new loginController("forgetPassword", $request, $response);
+});
 
+//Register methods for all users
+$app->router->get('/register/donee', function($request,$response){
+    $controller = new registerController("registerDonee", $request, $response);
+});
+$app->router->post('/register/donee', function($request,$response){
+    $controller = new registerController("registerDonee", $request, $response);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$app->router->get('/register/donor', function($request,$response){
+    $controller = new registerController("registerDonor", $request, $response);
+});
+$app->router->post('/register/donor', function($request,$response){
+    $controller = new registerController("registerDonor", $request, $response);
+});
 
 
 
@@ -153,15 +157,15 @@ $app->router->get('/manager/donors', function ($request, $response) {
     $controller = new \app\controller\donorController("viewDonors",$request,$response);
 });
 
+//Manager view request
+$app->router->get('/manager/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
-
-
-
-
-
-
-
-
+//Manager view donation
+$app->router->get('/manager/donations', function ($request, $response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
 
 
 
@@ -243,7 +247,7 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 //*************************Donor get and post methods*************************//
 //Donor view request
-$app->router->get('/donor/requests', function ($request, $response) {
+$app->router->get('/donor/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 
@@ -334,13 +338,13 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
     $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
 });
 
+$app->router->get('/logistic/requests', function ($request,$response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
-
-
-
-
-
-
+$app->router->get('/logistic/donations', function ($request,$response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
 
 
 
@@ -544,19 +548,18 @@ $app->router->post('/admin/communityheadoffices/register', function ($request, $
 $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
-//Admin view donations
-$app->router->get('/admin/donations', function ($request, $response) {
+//Admin view donation
+$app->router->get('/admin/donation', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
 //Admin view request
-$app->router->get('/admin/requests', function ($request, $response) {
+$app->router->get('/admin/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 //Admin view logistics
 $app->router->get('/admin/logistics', function ($request, $response) {
     $controller = new \app\controller\logisticController("viewLogistics",$request,$response);
 });
-
 //Admin view managers
 $app->router->get('/admin/managers', function ($request, $response) {
     $controller = new \app\controller\managerController("viewManagers",$request,$response);
