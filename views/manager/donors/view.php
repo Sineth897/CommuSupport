@@ -8,7 +8,7 @@
 use app\core\Application;
 use app\core\components\tables\table;
 
-$manager = \app\models\managerModel::getUser(['employeeID' => Application::session()->get('user')]);
+$manager = \app\models\managerModel::getModel(['employeeID' => Application::session()->get('user')]);
 $donors = $model->getAllDonors($manager->ccID);
 
 $individualDonorHeaders = ['First Name','Last name','Age','Contact Number','Email','Address'];
@@ -18,6 +18,38 @@ $organizationDonorHeaders = ['Organization Name','Representative Name','Contact 
 $organizationDonorKeys = ['organizationName','representativeName','contactNumber','email','address'];
 
 ?>
+
+<div class="profile">
+    <div class="notif-box">
+        <i class="material-icons">notifications</i>
+    </div>
+    <div class="profile-box">
+        <div class="name-box">
+            <h4>Username</h4>
+            <p>Position</p>
+        </div>
+        <div class="profile-img">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
+        </div>
+    </div>
+</div>
+
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Donors"); ?>
+
+<?php $headerDiv->pages(["individuals", "organizations"]); ?>
+
+<?php $headerDiv->end(); ?>
+
+<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+
+<?php $searchDiv->filters(); ?>
+
+<?php $searchDiv->search(); ?>
+
+<?php $searchDiv->end(); ?>
+
 
 <div id="individualDonorDisplay">
 

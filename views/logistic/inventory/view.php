@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <?php
 /** @var $inventory \app\models\inventoryModel */
 /** @var $user \app\models\logisticModel */
@@ -9,20 +11,44 @@ $items = $inventory->retrieveWithJoin('subcategory', 'subcategoryID', ['inventor
 $categories = $inventory->getCategories();
 $subcategories = $inventory->getsubcategories();
 
-//for ($i = 0; $i < count($items); $i++) {
-//    $items[$i]['subcategoryName'] = $subcategories[$items[$i]['itemID']];
-//}
-
-
 $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
-
-//echo '<pre>';
-//var_dump($items);
-//echo '</pre>';
 
 ?>
 
-<button id="addBtn">Add Item</button>
+<div class="profile">
+    <div class="notif-box">
+        <i class="material-icons">notifications</i>
+    </div>
+    <div class="profile-box">
+        <div class="name-box">
+            <h4>Username</h4>
+            <p>Position</p>
+        </div>
+        <div class="profile-img">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
+        </div>
+    </div>
+</div>
+
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Inventory"); ?>
+
+<button id="addBtn" class="btn-cta-primary">Add Item</button>
+
+<?php $headerDiv->end(); ?>
+
+<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+
+<?php $searchDiv->filters(); ?>
+
+<?php $searchDiv->search(); ?>
+
+<?php $searchDiv->end(); ?>
+
+
+
+
 
 <div id="itemForm" style="display: none">
 
