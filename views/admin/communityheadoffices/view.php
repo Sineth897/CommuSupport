@@ -1,14 +1,10 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
-
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css"
 
 <?php
 use app\core\components\tables\table;
 /** @var $model \app\models\choModel */
-
-
-
-
 
 ?>
 
@@ -32,24 +28,10 @@ use app\core\components\tables\table;
         <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
             <div class="heading">
-                <h1>Heading</h1>
+                <h1>Community Head Offices</h1>
             </div>
-            <div class="pages">
-                <a href="#">
-                    <i class="material-icons">cached</i>
-                    Ongoing</a>
-                <a href="#">
-                    <i class="material-icons">check_circle_outline</i>
-                    Completed</a>
-                <a href="#">
-                    <i class="material-icons">block</i>
-                    Cancelled</a>
-            </div>
-            <?php $registerCho = \app\core\components\form\form::begin('./communityheadoffices/register','post') ?>
 
-    <button> Register a Cho</button>
 
-    <?php $registerCho->end(); ?>
 
         </div>
 
@@ -64,16 +46,18 @@ use app\core\components\tables\table;
                     <p><i class="material-icons">sort</i> <span>Sort</span></p>
                 </div>
             </div>
-            <div class="search">
-                <input type="text" placeholder="Search">
-                <a href="#"><i class="material-icons">search</i></a>
-            </div>
+
+            <?php $registerCho = \app\core\components\form\form::begin('./communityheadoffices/register','post');
+
+            $registerCho->button("Register a CHO","submit");
+
+            $registerCho->end(); ?>
+
 
         </div>
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
         <?php    $communitycheadofice = $model->retrieve();
 
        $header = ["District", "Email", "Address", "ContactNumber"];
@@ -84,7 +68,6 @@ use app\core\components\tables\table;
 
        $communitycheadoficeTable->displayTable($communitycheadofice)
 ?>
-            </div>
         </div>
 
   

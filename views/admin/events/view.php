@@ -27,7 +27,7 @@ use app\core\components\tables\table;
         <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
             <div class="heading">
-                <h1>Heading</h1>
+                <h1>Events</h1>
             </div>
             <div class="pages">
                 <a href="#">
@@ -62,23 +62,20 @@ use app\core\components\tables\table;
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
 <?php
             $userID = \app\core\Application::session()->get('user');
            // $user = $user->findOne(['adminId' => $userID]);
            $event = $model->retrieve();
 
-           $header = ["EventCategory", "OrganizedBy", "Contact", "Date", "Time", "Status","Description","Location","ParticipationCount"];
+           $header = ["Theme", "OrganizedBy", "Contact", "Date", "Time", "Status","Description","Location","ParticipationCount"];
 
-           $arrayKey = ["eventCategory", "organizedBy", "contact", "date", "time", "status","description","location","participationCount"];
+           $arrayKey = ["theme","organizedBy", "contact", "date", "time", "status","description","location","participationCount"];
 
            $eventTable = new table($header, $arrayKey);
 
            $eventTable->displayTable($event);
 
 ?>
-
-            </div>
         </div>
 
     
