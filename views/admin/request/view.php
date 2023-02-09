@@ -11,10 +11,15 @@ $request = $model->retrieve();
 $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","Address", "Urgency", "PostedDate", "Notes"];
 
 $arrayKey = ["requestID","postedBy","approval",	"approvedDate",	"item",	"amount","address", "urgency", "postedDate", "notes"];
+?>
 
-$requestTable = new table($header, $arrayKey);
+<div class="content">
+    <?php
+    $requestTable = new table($header, $arrayKey);
 
-$requestTable->displayTable($request);
+    $requestTable->displayTable($request);
+    ?>
+</div>
 
 
 //echo "<pre>";
