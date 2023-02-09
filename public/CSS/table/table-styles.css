@@ -1,0 +1,97 @@
+
+* {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+body
+{
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+table {
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px #e1e5ee;
+    background-color: white;
+    text-align: left;
+    border-radius: 12px;
+    width: 95%;
+
+}
+
+table thead {
+    box-shadow: 0 5px 10px #e1e5ee;
+}
+
+table th {
+    padding: 10px 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+table td {
+    padding: 20px 20px;
+    max-width: 225px;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+
+}
+
+
+table tbody td a {
+    border-radius: 0.5rem;
+    padding: 10px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    grid-gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+table td .edit {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+
+table td .delete {
+    background-color: var(--danger-color);
+    color: white
+}
+
+table td .view {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.actions a i
+{
+    display: none;
+    font-size: 0.01rem;
+}
+
+.actions a:hover i{
+    color: white;
+    display: block;
+    font-size: 1rem;
+}
+
+

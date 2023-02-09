@@ -1,10 +1,11 @@
+<link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
+
 <?php
     /** @var $driver \app\models\driverModel */
     /** @var $user \app\models\userModel */
 ?>
 
 <?php
-    echo $_SESSION['user'];
     echo '<pre>';
     if(empty(\app\core\Application::session()->getFlash('success'))) {
         print_r(\app\core\Application::session()->getFlash('error'));
@@ -14,58 +15,82 @@
     echo '</pre>';
 ?>
 
+<div class="profile">
+    <div class="notif-box">
+        <i class="material-icons">notifications</i>
+    </div>
+    <div class="profile-box">
+        <div class="name-box">
+            <h4>Username</h4>
+            <p>Position</p>
+        </div>
+        <div class="profile-img">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
+        </div>
+    </div>
+</div>
+
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
+
+$headerDiv->heading("Register a Driver");
+
+
+
+$headerDiv->end();
+?>
+
+
+
 <?php $driverRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 
-<div>
-    <?php $driverRegistrationForm->inputField($driver, "Driver's name",'text','name') ?>
-</div>
+    <div class="form-split" >
 
-<div>
-    <?php $driverRegistrationForm->inputField($driver, "Age",'number','age') ?>
-</div>
+        <div id="driverDetails">
 
-<div>
-    <?php $driverRegistrationForm->inputField($driver, "NIC",'text','NIC') ?>
-</div>
+            <div class='heading'>
+                <h1>Driver Details</h1>
+            </div>
 
-<div>
-    <?php $driverRegistrationForm->dropDownList($driver,'Gender','gender',$user->getGenders()); ?>
-</div>
+            <?php $driverRegistrationForm->inputField($driver, "Driver's name",'text','name') ?>
 
-<div>
-    <?php $driverRegistrationForm->inputField($driver, "Address",'text','address') ?>
-</div>
+            <?php $driverRegistrationForm->inputField($driver, "Age",'number','age') ?>
 
-<div>
-    <?php $driverRegistrationForm->inputField($driver, "Contact Number",'text','contactNumber') ?>
-</div>
+            <?php $driverRegistrationForm->dropDownList($driver,'Gender','gender',$user->getGenders()); ?>
 
-<div>
-    <?php $driverRegistrationForm->inputField($driver, "License Number",'text','licenseNo') ?>
-</div>
+            <?php $driverRegistrationForm->inputField($driver, "NIC",'text','NIC') ?>
 
-<div>
-    <?php $driverRegistrationForm->inputField($driver, "Vehicle Number",'text','vehicleNo') ?>
-</div>
+            <?php $driverRegistrationForm->inputField($driver, "License Number",'text','licenseNo') ?>
 
-<div>
-    <?php $driverRegistrationForm->dropDownList($driver, "Vehicle Type",'vehicleType',$driver->getVehicleTypes()) ?>
-</div>
+            <?php $driverRegistrationForm->inputField($driver, "Address",'text','address') ?>
 
-<div>
-    <?php $driverRegistrationForm->dropDownList($driver, "Delivery preference",'preference',$driver->getPreferences()) ?>
-</div>
+            <?php $driverRegistrationForm->inputField($driver, "Contact Number",'text','contactNumber') ?>
+        </div>
 
-<div>
-    <?php $driverRegistrationForm->inputField($user, "Username",'text','username') ?>
-</div>
+        <div id="vehicleDetails">
 
-<div>
-    <?php $driverRegistrationForm->inputField($user, "Password",'password','password') ?>
-</div>
+            <div class='heading'>
+                <h1>Vehicle Details</h1>
+            </div>
 
+            <?php $driverRegistrationForm->inputField($driver, "Vehicle Number",'text','vehicleNo') ?>
 
-<?php $driverRegistrationForm->submitButton('Register') ?>
+            <?php $driverRegistrationForm->dropDownList($driver, "Vehicle Type",'vehicleType',$driver->getVehicleTypes()) ?>
+
+            <?php $driverRegistrationForm->dropDownList($driver, "Delivery preference",'preference',$driver->getPreferences()) ?>
+
+            <div class='heading'>
+                <h1>User Profile</h1>
+            </div>
+
+            <?php $driverRegistrationForm->inputField($user, "Username",'text','username') ?>
+
+            <?php $driverRegistrationForm->inputField($user, "Password",'password','password') ?>
+
+            <?php $driverRegistrationForm->button('Register') ?>
+        </div>
+
+    </div>
 
 <?php $driverRegistrationForm::end();?>
 

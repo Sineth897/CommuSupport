@@ -1,0 +1,107 @@
+
+button {
+    outline: none;
+    border: none;
+}
+
+.btn-secondary{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border: solid 1px var(--primary-color);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-secondary:hover{
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary:hover
+{
+    background: transparent;
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.btn-danger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: var(--danger-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: transparent;
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+.btn-dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 10px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: var(--secondary-dark);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-dark:hover {
+    background: transparent;
+    border: 1px solid var(--secondary-dark);
+    color: var(--secondary-dark);
+}
+
+.btn-cta-primary{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+    border-radius: 8px;
+    background-color: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 40px;
+    font-size: 1rem;
+}
+
+.btn-cta-primary:hover{
+    background: var(--primary-color);
+    color: white;
+}

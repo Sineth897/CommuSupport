@@ -9,8 +9,11 @@ class registerMiddleware extends Middleware
     {
         return [
             'registerDriver' => [$this->MANAGER],
-            'registerManager' => [$this->ADMIN],
-            'registerLogistic' => [$this->ADMIN],
+            'registerManager' => [$this->CHO],
+            'registerLogistic' => [$this->CHO],
+            'registerCho' => [$this->ADMIN],
+            'registerDonor' => [$this->GUEST],
+            'registerDonee' => [$this->GUEST],
         ];
     }
 }
