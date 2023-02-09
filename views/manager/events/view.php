@@ -59,13 +59,13 @@ $creatEvent->end();
 
 $searchDiv->end();
 ?>
-
+<div class="content">
 <?php
 $eventCards = new \app\core\components\cards\eventcard();
 $eventCards->displayEvents($events);
 
 ?>
-
+</div>
 
 
 <div>
