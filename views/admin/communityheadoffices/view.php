@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+
+
 <?php
 use app\core\components\tables\table;
 /** @var $model \app\models\choModel */
