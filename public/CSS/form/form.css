@@ -79,3 +79,16 @@
     align-items: end;
     justify-content: end;
 }
+
+
+
+/* Form Containers */
+
+.form-container.event-manager
+{
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    overflow-y: scroll;
+    height: 100%;
+}

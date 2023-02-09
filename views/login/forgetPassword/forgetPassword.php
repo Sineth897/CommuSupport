@@ -4,14 +4,17 @@
 
 
 ?>
-
-<div class="form-grid-1">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/login/forget-password.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<div class="background">
+<div class="grid-1">
 
     <div id="usernameDiv" class="form-group">
         <label for="username" class="form-label">Username:</label>
         <input id="username" type="text" size="40" class="basic-input-field">
         <span id="usernameError" class="error"></span>
         <button id="usernameSubmit" class="btn-primary">Confirm</button>
+
     </div>
 
     <div id="otpDiv" class="form-group" style="display: none">
@@ -34,8 +37,9 @@
         <button id="newPasswordSubmit" class="btn-primary">Submit</button>
     </div>
 
+    <i class="material-icons back-to-login">arrow_back</i>
 </div>
-
+</div>
 
 
 
