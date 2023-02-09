@@ -487,7 +487,7 @@ $app->router->get("/cho/logistic",function ($request,$response){
 });
 //cho view a complaint
 $app->router->get("/cho/complaints",function($request,$response){
-   $controller=new \app\controller\complaintController("viewComplaint",$request,$response);
+   $controller=new \app\controller\complaintController("viewComplaints",$request,$response);
 });
 
 

@@ -8,12 +8,8 @@ $user = $user->findOne(['choID' => $userID]);
 $CC = $model->retrieve(['choID' => $userID]);
 
 
-//echo "<pre>";
-//print_r($CC);
-//echo "</pre>";
-
 ?>
-
+        <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
         <!--        Profile Details-->
         <div class="profile">
             <div class="notif-box">
@@ -68,5 +64,12 @@ Cancelled</a>
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler"></div>
+            <?php
+
+            $headers=['City','Email','Fax','Contact Number','Manager Name','Logistic Manager Name'];
+            $arrayKeys=['city','email','fax','contactNumber'];
+            $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
+            $ccTable->displayTable($CC);
+            ?>
+
         </div>

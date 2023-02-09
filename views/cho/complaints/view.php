@@ -1,20 +1,23 @@
 <?php
-<<<<<<< HEAD
 
-/** @var $model \app\modles\complaintModel */
+/** @var $model \app\models\complaintModel */
+/** @var $user \app\models\choModel */
 
 use app\core\components\tables\table;
-
-echo empty($model);
-
-$complaints = $model->retrieve();
+$userID = \app\core\Application::session()->get('user');
+$user = $user->findOne(['filedBy'=>$userID]);
+$complaint= $model->retrieve(['filedBy'=>$userID]);
 
 if(empty($complaints)){
     echo "No Complaints has been filed.";
 }
 
 $headers = ['Filled By','Filled Date','Subject','Status','Solution','Reviewed Date'];
-$arraykeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'];
+$arrayKeys = ['filledBy','filledDate','subject','status','solution','reviewedDate'];
+
+$complaintsTable = new table($headers,$arrayKeys);
+$complaintsTable->displayTable($complaint);
+
 
 
 ?>
@@ -29,23 +32,16 @@ $arraykeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'
 
 <div id="complaintDisplay">
 
-    <?php $complaintsTable = new table($headers,$arraykeys); ?>
+    <?php $complaintsTable = new table($headers,$arrayKeys); ?>
 
-    <?php $complaintsTable->displayTable($complaints); ?>
+    <?php $complaintsTable->displayTable($complaint); ?>
 
 </div>
 
 
-=======
-/** @var $complaints \app\models\complaintModel */
-/** @var $user \app\models\choModel */
-
-$userID = \app\core\Application::session()->get('user');
-
-$complaint = $complaints->retrieve();
 
 
-echo "<pre>";
-print_r($complaint);
-echo "</pre>";
->>>>>>> eff85e44986d3bc01499410308913423699b159b
+
+
+
+
