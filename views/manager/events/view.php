@@ -88,5 +88,4 @@ $eventCards->displayEvents($events);
 
 
 
-
 <script type="module" src="/CommuSupport/public/JS/manager/events/view.js"></script>

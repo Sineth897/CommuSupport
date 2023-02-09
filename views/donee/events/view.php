@@ -58,7 +58,7 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="">
+<div class="main">
     <?php
     $eventCards = new \app\core\components\cards\eventcard();
     $eventCards->displayEvents($events);

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="./public/CSS/login/forget-password.css">
 <?php
 
 
@@ -5,18 +6,15 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/login/forget-password.css">
 <div class="background">
-    <div class="grid-forget-pw">
-
-        <div id="usernameDiv" class="form-group">
-            <h4>Forgot Password?</h4>
-            <p>Enter your username to find if an account exists. Then we will send and OTP to the phone number registered to that account.</p>
-            <label for="username" class="form-label">Username:</label>
-            <input id="username" type="text" size="40" class="basic-input-field">
-            <span id="usernameError" class="error"></span>
-            <button id="usernameSubmit" class="btn-primary">Confirm</button>
-
-
     <div class="grid-background">
+
+<!--        <div id="usernameDiv" class="form-group">-->
+<!--            <h4>Forgot Password?</h4>-->
+<!--            <p>Enter your username to find if an account exists. Then we will send and OTP to the phone number registered to that account.</p>-->
+<!--            <label for="username" class="form-label">Username:</label>-->
+<!--            <input id="username" type="text" size="40" class="basic-input-field">-->
+<!--            <span id="usernameError" class="error"></span>-->
+<!--            <button id="usernameSubmit" class="btn-primary">Confirm</button>-->
 
         <div id="usernameDiv" class="form-group">
             <h3>Forgot Password?</h3>
@@ -31,16 +29,17 @@
 
         </div>
 
+        <div id="otpReqDiv" style="display: none">
+            <p> Account exists request a otp </p>
+            <span id="otpCountDown" class="success"></span>
+            <button id="otpRequest" class="btn-primary">Request OTP</button>
+        </div>
+
         <div id="otpDiv" class="form-group" style="display: none">
             <label for="otp" class="form-label">Enter your otp:</label>
             <input id="otp" type="password" size="40" class="basic-input-field">
             <span id="otpError" class="error"></span>
-            <span id="otpCountDown" class="success"></span>
-            <button id="otpSubmit" class="btn-primary" style="display: none">Submit</button>
-            <button id="otpRequest" class="btn-primary">Request OTP</button>
-
-            <button id="otpRequest" class="btn-primary">Request OTP Again</button>
-
+            <button id="otpSubmit" class="btn-primary" >Submit</button>
         </div>
 
         <div id="newPasswordDiv" class="form-group" style="display: none">
@@ -59,7 +58,6 @@
             <button id="back-to-login" class="btn-secondary">Back to Login</button>
         </div>
 
-    </div>
 </div>
 
 

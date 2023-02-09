@@ -39,7 +39,7 @@ filterBtn.addEventListener('click', async function() {
 });
 
 function updateEventCardOnClick() {
-    let eventCards = document.getElementsByClassName('eventCard');
+    let eventCards = document.getElementsByClassName('event-card');
     for(let i = 0; i < eventCards.length; i++) {
         eventCards[i].addEventListener('click', (e) => showPopUp(e));
     }
@@ -49,7 +49,7 @@ let popUpEvent = new PopUp();
 
 async function showPopUp(e) {
     let eventCard = e.target;
-    while(eventCard.className !== 'eventCard') {
+    while(eventCard.className !== 'event-card') {
         eventCard = eventCard.parentNode;
     }
     let event = await getData('./events/popup', 'POST', {"event.eventID": eventCard.id});
