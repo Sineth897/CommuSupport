@@ -207,6 +207,7 @@ a {
   justify-content: center;
   box-shadow: 0 0 10px #e1e5ee;
   cursor: pointer;
+  position: relative;
 }
 
 .filter{

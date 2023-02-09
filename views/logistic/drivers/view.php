@@ -36,17 +36,25 @@ $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'prefe
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
-<?php $searchDiv->filters(); ?>
+$searchDiv->filterDivStart();
 
-<?php $searchDiv->search(); ?>
+$searchDiv->filterBegin();
 
-<?php $searchDiv->end(); ?>
+$searchDiv->filterEnd();
 
-<button type="button"> Filter </button>
+$searchDiv->sortBegin();
 
-<div id="driverDisplay">
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+$searchDiv->search();
+
+$searchDiv->end(); ?>
+
+<div id="driverDisplay" class="main">
 
     <?php $driversTable = new \app\core\components\tables\table($headers,$arraykeys); ?>
 

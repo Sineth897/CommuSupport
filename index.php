@@ -157,15 +157,15 @@ $app->router->get('/manager/donors', function ($request, $response) {
     $controller = new \app\controller\donorController("viewDonors",$request,$response);
 });
 
+//Manager view request
+$app->router->get('/manager/requests', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
-
-
-
-
-
-
-
-
+//Manager view donation
+$app->router->get('/manager/donations', function ($request, $response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
 
 
 
@@ -247,7 +247,7 @@ $app->router->get('/manager/donors', function ($request, $response) {
 
 //*************************Donor get and post methods*************************//
 //Donor view request
-$app->router->get('/donor/requests', function ($request, $response) {
+$app->router->get('/donor/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 
@@ -338,13 +338,13 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
     $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
 });
 
+$app->router->get('/logistic/requests', function ($request,$response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
-
-
-
-
-
-
+$app->router->get('/logistic/donations', function ($request,$response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
 
 
 
@@ -549,12 +549,12 @@ $app->router->post('/admin/communityheadoffices/register', function ($request, $
 $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
-//Admin view donations
-$app->router->get('/admin/donations', function ($request, $response) {
+//Admin view donation
+$app->router->get('/admin/donation', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
 //Admin view request
-$app->router->get('/admin/requests', function ($request, $response) {
+$app->router->get('/admin/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 //Admin view logistics
