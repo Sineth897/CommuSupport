@@ -7,7 +7,7 @@
     width: 100%;
 }
 
-.basic-text-area{
+.basic-text-area {
     border: 1px solid var(--light);
     border-radius: 4px;
     padding: 0 10px;
@@ -22,7 +22,7 @@
 /* add this to the form tag */
 
 /*  Form with one column    */
-.form-grid-1{
+.form-grid-1 {
     display: grid;
     grid-template-columns: 1fr;
 }
@@ -64,7 +64,7 @@
 }
 
 /* add to span tag */
-.error{
+.error {
     color: red;
     font-size: 0.6rem;
     font-weight: 500;
@@ -73,9 +73,22 @@
     text-align: left;
 }
 
-#submit-form-group
-{
+#submit-form-group {
     display: flex;
     align-items: end;
     justify-content: end;
+}
+
+/* Form Containers */
+
+.form-container.event-manager {
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.basic-check-box {
+
 }

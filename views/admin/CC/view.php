@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+
+
+
 <?php
 use app\core\components\tables\table;
 
@@ -24,18 +29,7 @@ use app\core\components\tables\table;
         <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
             <div class="heading">
-                <h1>Heading</h1>
-            </div>
-            <div class="pages">
-                <a href="#">
-                    <i class="material-icons">cached</i>
-                    Ongoing</a>
-                <a href="#">
-                    <i class="material-icons">check_circle_outline</i>
-                    Completed</a>
-                <a href="#">
-                    <i class="material-icons">block</i>
-                    Cancelled</a>
+                <h1>Community Centers</h1>
             </div>
         </div>
 
@@ -59,7 +53,6 @@ use app\core\components\tables\table;
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
 <?php
             $userID = \app\core\Application::session()->get('user');
            // $user = $user->findOne(['adminId' => $userID]);
@@ -75,7 +68,6 @@ use app\core\components\tables\table;
 
 ?>
 
-            </div>
         </div>
 
     

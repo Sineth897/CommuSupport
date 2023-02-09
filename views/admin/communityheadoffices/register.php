@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
 <?php
 /** @var $cho \app\models\choModel */
 /** @var $user \app\models\userModel */
@@ -13,6 +14,30 @@ if(empty(\app\core\Application::session()->getFlash('success'))) {
 }
 echo '</pre>';
 ?>
+
+<!--        Profile Details-->
+<div class="profile">
+    <div class="notif-box">
+        <i class="material-icons">notifications</i>
+    </div>
+    <div class="profile-box">
+        <div class="name-box">
+            <h4>Username</h4>
+            <p>Position</p>
+        </div>
+        <div class="profile-img">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
+        </div>
+    </div>
+</div>
+
+<!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
+<div class="heading-pages">
+    <div class="heading">
+        <h1>Create a Community Head Office</h1>
+    </div>
+</div>
+
 
 <?php $choRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 

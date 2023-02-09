@@ -6,34 +6,58 @@ class headerDiv
 {
     private array $pages = [
         'ongoing' => [
+            'id' => 'ongoing',
             'link' => '#',
             'icon' => 'cached',
             'name' => 'Ongoing'
         ],
         'pending' => [
+            'id' => 'pending',
             'link' => '#',
             'icon' => 'hourglass_empty',
             'name' => 'Pending'
         ],
         'completed' => [
+            'id' => 'completed',
             'link' => '#',
             'icon' => 'check_circle_outline',
             'name' => 'Completed'
         ],
         'cancelled' => [
+            'id' => 'cancelled',
             'link' => '#',
             'icon' => 'block',
             'name' => 'Cancelled'
         ],
         'individuals' => [
+            'id' => 'individual',
             'link' => '#',
             'icon' => 'person',
-            'name' => 'Individuals'
+            'name' => 'Individual'
         ],
         'organizations' => [
+            'id' => 'organization',
             'link' => '#',
             'icon' => 'business',
-            'name' => 'Organizations'
+            'name' => 'Organization'
+        ],
+        'published' => [
+            'id' => 'published',
+            'link' => '#',
+            'icon' => 'publish',
+            'name' => 'Published'
+        ],
+        'history' => [
+            'id' => 'history',
+            'link' => '#',
+            'icon' => 'history',
+            'name' => 'History'
+        ],
+        'active' => [
+            'id' => 'active',
+            'link' => '#',
+            'icon' => 'broadcast_on_personal',
+            'name' => 'Active'
         ],
     ];
 
@@ -52,7 +76,7 @@ class headerDiv
         echo "<div class='pages'>";
         foreach ($pages as $key) {
             $page = $this->pages[$key];
-            echo sprintf("<a href='%s' id='%s'><i class='material-icons'>%s</i> %s</a>", $page['link'], $page['name'], $page['icon'], $page['name']);
+            echo sprintf("<a href='%s' id='%s'><i class='material-icons'>%s</i> %s</a>", $page['link'], $page['id'], $page['icon'], $page['name']);
         }
         echo "</div>";
     }
