@@ -3,6 +3,7 @@ import {displayTable} from "../../components/table.js";
 
 let addBtn = document.getElementById('addBtn');
 let filterBtn = document.getElementById('filterBtn');
+let closeBtn = document.getElementById('closeBtnDiv');
 let itemForm = document.getElementById('itemForm');
 let resultMsg = document.getElementById('resultMsg');
 let inventoryDisplay = document.getElementById('inventoryDisplay');
@@ -23,6 +24,10 @@ addBtn.addEventListener('click', function() {
     show(itemForm);
 });
 
+closeBtn.addEventListener('click', function() {
+    hide(itemForm);
+});
+
 category.addEventListener('change', function() {
     if(activeSubcategory !== '') {
         hide(subcategorySelectDivs[activeSubcategory]);
@@ -37,12 +42,10 @@ confirmBtn.addEventListener('click', async function() {
     resultMsg.innerHTML = "";
     if(verifyForm()) {
         let data = {
-            itemID: subcategorySelect[activeSubcategory].value,
+            subcategoryID: subcategorySelect[activeSubcategory].value,
             amount: amount.value };
         let array = await getData('./inventory/add', 'POST', { data:data });
-
         console.log(array);
-
         if(array['success']) {
             resultMsg.innerHTML = "Item added to inventory";
             resultMsg.style.color = "green";
@@ -111,5 +114,5 @@ function hide(element) {
 }
 
 function show(element) {
-    element.style.display = "block";
+    element.style.display = "flex";
 }

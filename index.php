@@ -6,6 +6,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use app\controller\eventController;
 use app\controller\loginController;
 use app\controller\redirectController;
+use app\controller\registerController;
 use app\core\Application;
 use app\models\userModel;
 
@@ -77,21 +78,20 @@ $app->router->post('/forgetpassword', function($request,$response){
     $controller = new loginController("forgetPassword", $request, $response);
 });
 
+//Register methods for all users
+$app->router->get('/register/donee', function($request,$response){
+    $controller = new registerController("registerDonee", $request, $response);
+});
+$app->router->post('/register/donee', function($request,$response){
+    $controller = new registerController("registerDonee", $request, $response);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$app->router->get('/register/donor', function($request,$response){
+    $controller = new registerController("registerDonor", $request, $response);
+});
+$app->router->post('/register/donor', function($request,$response){
+    $controller = new registerController("registerDonor", $request, $response);
+});
 
 
 

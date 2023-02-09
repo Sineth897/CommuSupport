@@ -1,8 +1,11 @@
-<link rel="stylesheet" href="/CommuSupport/public/CSS/landingPage/landingpage.css">
+<link rel="stylesheet" href="./public/CSS/landingPage/landingpage.css">
+<link rel="stylesheet" href="./public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="./public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="./public/CSS/form/form.css">
 <div class="container">
     <section class="navbar">
         <div class="nav_logo">
-            <img src="/CommuSupport/public/src/landingpage/CMS-Logo.svg" alt="logo">
+            <img src="./public/src/landingpage/CMS-Logo.svg" alt="logo">
         </div>
         <div class="nav_set">
             <ul class="nav-list">
@@ -59,7 +62,7 @@
         How we work
     </h1>
     <div class="info-block">
-        <img src="/CommuSupport/public/src/landingpage/01.svg" alt="image">
+        <img src="./public/src/landingpage/01.svg" alt="image">
         <div class="text">
             <h3>Opportunity to Request from the Community</h3>
             <p>As some donors will have a hard time transporting their donations. We will pick up the delivery right
@@ -74,11 +77,11 @@
                 delectus dolor ex impedit non, nulla sequi totam. Deleniti eius illum minima mollitia, necessitatibus
                 nihil porro quasi quidem similique vero vitae?</p>
         </div>
-        <img src="/CommuSupport/public/src/landingpage/02.svg" alt="image">
+        <img src="./public/src/landingpage/02.svg" alt="image">
     </div>
 
     <div class="info-block">
-        <img src="/CommuSupport/public/src/landingpage/03.svg" alt="image">
+        <img src="./public/src/landingpage/03.svg" alt="image">
         <div class="text">
             <h3>Getting donations from drivers to drivers</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum et eveniet hic id inventore ipsum maiores
@@ -128,6 +131,41 @@
     <p class="copyright">Copyright 2023 CommuSupport</p>
 </section>
 
+
+<div id="signupPopup" class="popup-background">
+
+    <div class="popup form-split">
+
+        <div>
+            <?php $doneeSignup = \app\core\components\form\form::begin('./register/donee', 'get'); ?>
+
+            <?php $doneeSignup->formHeader('Donee Sign Up'); ?>
+
+            <?php $doneeSignup->button('Donee Sign Up', 'submit'); ?>
+
+            <?php $doneeSignup->end(); ?>
+        </div>
+
+        <div>
+            <?php  $donorSignup= \app\core\components\form\form::begin('./register/donor', 'get'); ?>
+
+            <?php $donorSignup->formHeader('Donor Sign Up'); ?>
+
+            <?php $donorSignup->button('Donor Sign Up', 'submit'); ?>
+
+            <?php $donorSignup->end(); ?>
+        </div>
+
+        <div class="close" id="signupCloseBtn">
+            <i class="material-icons">close</i>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module" src="./public/JS/guest/home.js"></script>
 
 <!--
 <?php $userLogin = \app\core\components\form\form::begin('./login/user', 'get'); ?>

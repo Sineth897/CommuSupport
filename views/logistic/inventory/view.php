@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/popup/popup-styles.css" >
 <?php
 /** @var $inventory \app\models\inventoryModel */
@@ -12,7 +12,12 @@ $items = $inventory->retrieveWithJoin('subcategory', 'subcategoryID', ['inventor
 $categories = $inventory->getCategories();
 $subcategories = $inventory->getsubcategories();
 
-$tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
+$tableHeaders = ['Item Name','Category','Amount', 'Unit','Last Updated'];
+$arrayKeys = ['subcategoryName', 'categoryName', 'amount', 'scale', 'updatedTime'];
+
+for($i = 0; $i < count($items); $i++) {
+    $items[$i]['categoryName'] = $categories[$items[$i]['categoryID']];
+}
 
 ?>
 
@@ -49,11 +54,13 @@ $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
 
 <div id="itemForm" class="popup-background">
 
-    <div class="popup" >
+    <div class="popup" id="logistic-item-add-popup-form">
 
         <span id="resultMsg" class="error"></span>
 
         <?php $form = \app\core\components\form\form::begin('', ''); ?>
+
+        <?php $form->formHeader('Add Item'); ?>
 
         <div>
             <?php $form->dropDownList($inventory, "Select a Category", '', $categories,'category'); ?>
@@ -61,7 +68,7 @@ $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
 
         <?php foreach ($categories as $key => $value): {?>
             <div id="<?php echo $key ?>" style="display: none">
-                <?php $form->dropDownList($inventory, "Select an Item", 'itemID', $inventory->getsubcategories($key)); ?>
+                <?php $form->dropDownList($inventory, "Select an Item", 'subcategoryID', $inventory->getsubcategories($key)); ?>
             </div>
         <?php } endforeach; ?>
 
@@ -74,6 +81,11 @@ $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
         </div>
 
         <?php $form::end(); ?>
+
+        <div class="close" id="closeBtnDiv">
+            <i class="material-icons">close</i>
+        </div>
+
 
     </div>
 
@@ -90,7 +102,7 @@ $tableHeaders = ['Item Name','Amount', 'Unit','Last Updated'];
 
 <div id="inventoryDisplay">
 
-    <?php $inventoryTable = new \app\core\components\tables\table($tableHeaders, ['subcategoryName', 'amount', 'scale', 'updatedTime']); ?>
+    <?php $inventoryTable = new \app\core\components\tables\table($tableHeaders, $arrayKeys); ?>
 
     <?php $inventoryTable->displayTable($items); ?>
 
