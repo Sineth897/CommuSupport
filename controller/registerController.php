@@ -7,6 +7,9 @@ use app\core\Controller;
 use app\core\middlewares\registerMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\doneeIndividualModel;
+use app\models\doneeModel;
+use app\models\doneeOrganizationModel;
 use app\models\donorIndividualModel;
 use app\models\donorModel;
 use app\models\donorOrganizationModel;
@@ -86,9 +89,6 @@ class registerController extends Controller
 
         if($request->isPost()) {
             $data = $request->getBody();
-            echo "<pre>";
-            print_r($data);
-            echo "</pre>";
             $donor->getData($data);
             $user->getData($data);
             if($this->validateDonor($data,$user,$donor,$donorIndividual,$donorOrganization)) {
@@ -128,6 +128,25 @@ class registerController extends Controller
             }
             return false;
         }
+    }
+
+    protected function registerDonee(Request $request,Response $response) {
+        $donee = new doneeModel();
+        $user = new userModel();
+        $doneeIndividual = new doneeIndividualModel();
+        $doneeOrganization = new doneeOrganizationModel();
+
+        if($request->isPost()) {
+
+        }
+
+        $this->render('guest/register/donee',"Register as a Donee", [
+            'donee' => $donee,
+            'user' => $user,
+            'doneeIndividual' => $doneeIndividual,
+            'doneeOrganization' => $doneeOrganization,
+        ]);
+
     }
 
     protected function verifyMobile(Request $request, Response $response)

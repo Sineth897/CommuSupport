@@ -4,7 +4,6 @@
 ?>
 
 
-<!--profile div-->
 <div class="profile">
     <div class="notif-box">
         <i class="material-icons">notifications</i>
@@ -20,20 +19,15 @@
     </div>
 </div>
 
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php
-$headerDiv = new \app\core\components\layout\headerDiv();
+<?php $headerDiv->heading("Donations"); ?>
 
-$headerDiv->heading("Requests");
+<?php $headerDiv->pages(["ongoing","completed"]); ?>
 
-$headerDiv->pages(["pending","published","history"]);
+<?php $headerDiv->end(); ?>
 
-$headerDiv->end();
-?>
-
-<!--        Search and filter boxes -->
-<?php
-$searchDiv = new \app\core\components\layout\searchDiv();
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
 $searchDiv->filterDivStart();
 
@@ -45,11 +39,7 @@ $searchDiv->sortBegin();
 
 $searchDiv->sortEnd();
 
-$searchDiv->filterDivEnd();
+$searchDiv->filterDivEnd(); ?>
 
-$searchDiv->end();
-?>
 
-<div class="filler main">
-
-</div>
+<?php $searchDiv->end(); ?>

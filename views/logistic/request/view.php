@@ -3,7 +3,6 @@
 
 ?>
 
-
 <!--profile div-->
 <div class="profile">
     <div class="notif-box">
@@ -53,3 +52,4 @@ $searchDiv->end();
 <div class="filler main">
 
 </div>
+

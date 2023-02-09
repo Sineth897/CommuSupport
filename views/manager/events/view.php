@@ -14,7 +14,7 @@ $manager = new \app\models\managerModel();
 $manager = $manager->findOne(['employeeID' => $managerID]);
 $ccID = $manager->ccID;
 
-$events = $model->retrieve(["ccID" => $ccID],["date" => "DESC"]);
+$events = $model->retrieve(["ccID" => $ccID],["DESC" => ["date"]]);
 ?>
 
 <!--profile div-->
@@ -49,7 +49,21 @@ $headerDiv->end();
 <?php
 $searchDiv = new \app\core\components\layout\searchDiv();
 
-$searchDiv->filters();
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+    $filter = \app\core\components\form\form::begin('', '');
+    $filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory");
+    $filter->end();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
 
 $creatEvent = \app\core\components\form\form::begin('./events/create', 'get');
 
@@ -60,7 +74,7 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="main">
+<div class="">
     <?php
     $eventCards = new \app\core\components\cards\eventcard();
     $eventCards->displayEvents($events);
@@ -69,15 +83,7 @@ $searchDiv->end();
 
 
 
-<div>
-    <?php $filter = \app\core\components\form\form::begin('', ''); ?>
 
-    <?php $filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory")?>
-
-    <button type="button" id="filterBtn">Filter</button>
-
-    <?php $filter->end(); ?>
-</div>
 
 
 

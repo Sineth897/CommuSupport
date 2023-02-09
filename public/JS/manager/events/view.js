@@ -3,6 +3,16 @@ import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 
+let filterOptions = document.getElementById('filterOptions');
+
+document.getElementById('filter').addEventListener('click', function(e) {
+   if(filterOptions.style.display === 'block') {
+       filterOptions.style.display = 'none';
+   } else {
+       filterOptions.style.display = 'block';
+   }
+});
+
 let filterBtn = document.getElementById('filterBtn');
 let eventsDiv = document.getElementById('eventDisplay')
 
@@ -22,6 +32,7 @@ filterBtn.addEventListener('click', async function() {
 
     let array = await getData('./events/filter', 'POST', filterValues);
 
+    filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);
     updateEventCardOnClick();
 

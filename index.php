@@ -147,7 +147,6 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
-
 //Manager view donees
 $app->router->get('/manager/donees', function ($request, $response) {
     $controller = new \app\controller\doneeController("viewDonees",$request,$response);
@@ -163,10 +162,11 @@ $app->router->get('/manager/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 
-//Manager view donations
+//Manager view donation
 $app->router->get('/manager/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
+
 
 
 
@@ -338,13 +338,13 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
     $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
 });
 
+$app->router->get('/logistic/requests', function ($request,$response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
-
-
-
-
-
-
+$app->router->get('/logistic/donations', function ($request,$response) {
+    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+});
 
 
 
@@ -549,8 +549,8 @@ $app->router->post('/admin/communityheadoffices/register', function ($request, $
 $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
-//Admin view donations
-$app->router->get('/admin/donations', function ($request, $response) {
+//Admin view donation
+$app->router->get('/admin/donation', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
 //Admin view request

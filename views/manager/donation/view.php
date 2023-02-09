@@ -35,7 +35,17 @@ $headerDiv->end();
 <?php
 $searchDiv = new \app\core\components\layout\searchDiv();
 
-$searchDiv->filters();
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
 
 $searchDiv->end();
 ?>

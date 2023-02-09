@@ -42,9 +42,28 @@ for($i = 0; $i < count($items); $i++) {
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
-<?php $searchDiv->filters(); ?>
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($inventory, "Select a Category", '', $categories, 'filterCategory');
+$filterForm::end();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->inputField($inventory, "Last Updated", 'checkbox', "updatedTime", 'sortLastUpdated');
+$sortForm->inputField($inventory, "Amount", 'checkbox', "amount", 'sortAmount');
+$sortForm::end();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd(); ?>
 
 <button id="addBtn" class="btn-cta-primary">Add Item</button>
 
@@ -90,15 +109,6 @@ for($i = 0; $i < count($items); $i++) {
     </div>
 
 </div>
-
-
-<?php $filterForm = \app\core\components\form\form::begin('', ''); ?>
-
-<?php $filterForm->dropDownList($inventory, "Select a Category", '', $categories, 'filterCategory'); ?>
-
-<?php $filterForm->button('Filter', 'button', 'filterBtn'); ?>
-
-<?php $filterForm::end(); ?>
 
 <div id="inventoryDisplay">
 

@@ -48,7 +48,17 @@ $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'prefe
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
 
-<?php $searchDiv->filters(); ?>
+<?php $searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();?>
 
 <?php $searchDiv->search(); ?>
 
