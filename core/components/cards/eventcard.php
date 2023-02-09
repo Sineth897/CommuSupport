@@ -12,7 +12,7 @@ class eventcard
     }
 
     public function displayEvents(array $events = []) {
-        echo "<div class='mainDown' id='eventDisplay'>";
+        echo "<div class='card-container' id='eventDisplay'>";
         if(!$events) {
             echo "<h1>There are no events to display</h1>";
         }
@@ -25,17 +25,17 @@ class eventcard
     }
 
     private function eventCard(array $event) {
-        echo "<div class='eventCard' id='${event['eventID']}'>";
-        echo "<div class='event-header'>";
-        echo sprintf("<div><img src='%s' alt='Blood'></div>",$this->eventCategoryIcons[$event['eventCategoryID']]);
-        echo "<div class=''>";
-        echo sprintf("<p>%s</p></div>",$event['participationCount']);
+        echo "<div class='event-card' id='${event['eventID']}'>";
+        echo "<div class='event-card-header'>";
+        echo sprintf("<img src='%s' alt='Blood' class='event-icon'>",$this->eventCategoryIcons[$event['eventCategoryID']]);
+        echo "<div class='event-participants'><i class='material-icons'>people</i>";
+        echo sprintf("<p class='participant-count'>%s</p></div>",$event['participationCount']);
         echo "</div>";
-        echo sprintf("<div><h2>%s</h2></div>",$event['theme']);
-        echo "<div>";
-        echo "<div><img src='/CommuSupport/public/src/icons/event/location.svg' alt='location'>";
+        echo sprintf("<div class='event-title'><h3>%s</h3></div>",$event['theme']);
+        echo "<div class='event-details'>";
+        echo "<div class='event-location'><i class='material-icons'>location_on</i>";
         echo sprintf("<p>%s</p> </div>",$event['location']);
-        echo sprintf("<div><p>%s</p></div>",$event['date']);
+        echo sprintf("<p>%s</p>",$event['date']);
         echo "</div></div>";
     }
 
