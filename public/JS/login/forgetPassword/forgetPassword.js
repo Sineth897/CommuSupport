@@ -25,9 +25,11 @@ usernameSubmitBtn.addEventListener('click',async () => {
     }
     usernameInput.setAttribute('disabled','');
     usernameSubmitBtn.style.display = 'none';
-    otpDiv.style.display = 'block';
+    otpReqDiv.style.display = 'block';
 })
 
+
+let otpReqDiv = document.getElementById('otpReqDiv');
 let otpDiv = document.getElementById('otpDiv');
 let otpSubmitBtn = document.getElementById('otpSubmit');
 let otpRequestBtn = document.getElementById('otpRequest');
@@ -41,7 +43,7 @@ otpRequestBtn.addEventListener('click',async () => {
     });
     otpRequestBtn.setAttribute('disabled','');
     otpRequestBtn.innerHTML = 'Resend OTP';
-    otpSubmitBtn.style.display = 'block';
+    otpDiv.style.display = 'block';
     displayCountDown();
     console.log(message);
 });
@@ -55,6 +57,7 @@ otpSubmitBtn.addEventListener('click',async () => {
     if(message['success']) {
         otpDiv.style.display = 'none';
         newPasswordDiv.style.display = 'block';
+        otpReqDiv.style.display = 'none';
     }
     else {
         otpError.innerHTML = message['message'];
@@ -97,10 +100,10 @@ newPasswordSubmitBtn.addEventListener('click',async () => {
         newPasswordDiv.style.display = 'none';
         //alert success
         if(message['isEmployee']){
-            window.location.replace('/login/employee');
+            window.location.replace('/CommuSupport/login/employee');
         }
         else {
-            window.location.replace('/login/user');
+            window.location.replace('CommuSupport/login/user');
         }
     }
     else {

@@ -39,7 +39,7 @@ class redirectController extends Controller
                 $response->redirect('/cho/communitycenters');
                 break;
             case 'donee':
-                $response->redirect('/donee/request');
+                $response->redirect('/donee/requests');
                 break;
             case 'donor':
                 $response->redirect('/donor/donations');

@@ -15,42 +15,42 @@
                     <i class="material-icons">summarize</i>
                     <span class="links_name">Requests</span>
                 </a>
-                <span class="tooltip">Requests</span>
+<!--                <span class="tooltip">Requests</span>-->
             </li>
             <li>
                 <a href="/CommuSupport/manager/events">
                     <i class="material-icons">today</i>
                     <span class="links_name">Events</span>
                 </a>
-                <span class="tooltip">Events</span>
+<!--                <span class="tooltip">Events</span>-->
             </li>
             <li>
                 <a href="/CommuSupport/manager/donations">
                     <i class="material-icons">inventory_2</i>
                     <span class="links_name">Donations</span>
                 </a>
-                <span class="tooltip">Donations</span>
+<!--                <span class="tooltip">Donations</span>-->
             </li>
             <li>
                 <a href="/CommuSupport/manager/donees">
                     <i class="material-icons">emoji_people</i>
                     <span class="links_name">Donees</span>
                 </a>
-                <span class="tooltip">Donees</span>
+<!--                <span class="tooltip">Donees</span>-->
             </li>
             <li>
                 <a href="/CommuSupport/manager/donors">
                     <i class="material-icons">accessibility_new</i>
                     <span class="links_name">Donors</span>
                 </a>
-                <span class="tooltip">Donors</span>
+<!--                <span class="tooltip">Donors</span>-->
             </li>
             <li>
                 <a href="/CommuSupport/manager/drivers">
                     <i class="material-icons">local_shipping</i>
                     <span class="links_name">Drivers</span>
                 </a>
-                <span class="tooltip">Drivers</span>
+<!--                <span class="tooltip">Drivers</span>-->
             </li>
 
         </ul>

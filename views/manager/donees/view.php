@@ -44,13 +44,23 @@ $organizationDoneeArrayKeys = ["organizationName","representative","contactNumbe
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
-<?php $searchDiv->filters(); ?>
+$searchDiv->filterDivStart();
 
-<?php $searchDiv->search(); ?>
+$searchDiv->filterBegin();
 
-<?php $searchDiv->end(); ?>
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+$searchDiv->search();
+
+$searchDiv->end(); ?>
 
 
 <div id="individualDoneeDisplay">

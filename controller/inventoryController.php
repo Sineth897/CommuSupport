@@ -55,10 +55,20 @@ class inventoryController extends Controller
 
         $logistic = logisticModel::getModel(['employeeID' =>Application::session()->get('user')]);
 
-        $filters = ($request->getJsonData())['filters'];
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sortBy = $data['sortBy'];
+        if(empty($sortBy['DESC'])) {
+            $sortBy = [];
+        }
         $filter['ccID'] = $logistic->ccID;
 
-        $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters));
+        try {
+            $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters, $sortBy));
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
+        }
     }
 
 }

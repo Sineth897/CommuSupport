@@ -53,7 +53,7 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
-    public function retrieve(array $where = [], array $order = []) : array
+    public function retrieve(array $where = [], array $orderBy = []): array
     {
         $tableName = static::table();
         $sql = "Select * from $tableName";
@@ -61,9 +61,10 @@ abstract class DbModel extends Model
             $attributes = array_keys($where);
             $sql .= " WHERE ".implode(" AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", $attributes));
         }
-        if($order) {
-            $field = array_keys($order)[0];
-            $sql .= " ORDER BY ". $field . " " . $order[$field];
+        if($orderBy) {
+            $order = array_keys($orderBy)[0];
+            $columns = implode("','", $orderBy[$order]);
+            $sql .= " ORDER BY ". $columns . " " . $order;
         }
         $statement = self::prepare($sql);
         $statement->execute();
@@ -116,7 +117,8 @@ abstract class DbModel extends Model
             $sql .= " WHERE $where";
         }
         if($orderBy) {
-            $sql .= " ORDER BY ".implode(" ", $orderBy);
+            $order = array_keys($orderBy)[0];
+            $sql .= " ORDER BY ". implode(",", $orderBy[$order]) . " " . $order;
         }
         $statement = self::prepare($sql);
         $statement->execute();

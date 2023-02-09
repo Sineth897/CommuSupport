@@ -3,6 +3,16 @@ import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 
+let filterOptions = document.getElementById('filterOptions');
+
+document.getElementById('filter').addEventListener('click', function(e) {
+   if(filterOptions.style.display === 'block') {
+       filterOptions.style.display = 'none';
+   } else {
+       filterOptions.style.display = 'block';
+   }
+});
+
 let filterBtn = document.getElementById('filterBtn');
 let eventsDiv = document.getElementById('eventDisplay')
 
@@ -22,13 +32,14 @@ filterBtn.addEventListener('click', async function() {
 
     let array = await getData('./events/filter', 'POST', filterValues);
 
+    filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);
     updateEventCardOnClick();
 
 });
 
 function updateEventCardOnClick() {
-    let eventCards = document.getElementsByClassName('eventCard');
+    let eventCards = document.getElementsByClassName('event-card');
     for(let i = 0; i < eventCards.length; i++) {
         eventCards[i].addEventListener('click', (e) => showPopUp(e));
     }
@@ -38,7 +49,7 @@ let popUpEvent = new PopUp();
 
 async function showPopUp(e) {
     let eventCard = e.target;
-    while(eventCard.className !== 'eventCard') {
+    while(eventCard.className !== 'event-card') {
         eventCard = eventCard.parentNode;
     }
     let event = await getData('./events/popup', 'POST', {"event.eventID": eventCard.id});
