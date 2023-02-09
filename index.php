@@ -137,9 +137,9 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
-
-
-
+$app->router->get('/manager/request', function ($request, $response) {
+    $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
 
 
 
