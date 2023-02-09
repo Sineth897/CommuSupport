@@ -35,15 +35,15 @@ table thead {
 }
 
 table th {
-    padding: 20px 20px;
+    padding: 10px 20px;
     text-transform: uppercase;
     letter-spacing: 0.1rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 700;
 }
 
 table td {
-    padding: 10px 20px;
+    padding: 20px 20px;
     max-width: 225px;
 }
 
@@ -94,9 +94,4 @@ table td .view {
     font-size: 1rem;
 }
 
-
-
-table tr:nth-child(even) {
-    background-color: #f3fff3;
-}
 

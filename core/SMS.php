@@ -45,13 +45,13 @@ class SMS
                 $userClass = donorModel::getModel(['donorID' => $user->userID]);
                 break;
             case 'driver':
-                $userClass = driverModel::getModel(['driverID' => $user->userID]);
+                $userClass = driverModel::getModel(['employeeID' => $user->userID]);
                 break;
             case 'logistic':
-                $userClass = logisticModel::getModel(['logisticID' => $user->userID]);
+                $userClass = logisticModel::getModel(['employeeID' => $user->userID]);
                 break;
             case 'manager':
-                $userClass = managerModel::getModel(['managerID' => $user->userID]);
+                $userClass = managerModel::getModel(['employeeID' => $user->userID]);
                 break;
             case 'cho':
                 $userClass = choModel::getModel(['choID' => $user->userID]);
