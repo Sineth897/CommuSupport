@@ -385,9 +385,9 @@ $app->router->get('/logistic/donations', function ($request,$response) {
 
 
 //*************************Driver get and post methods*************************//
-
-
-
+$app->router->get('/driver/deliveries', function($request,$response) {
+    $controller = new \app\controller\deliveryController('viewDeliveries',$request,$response);
+});
 
 
 
