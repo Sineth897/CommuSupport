@@ -10,5 +10,5 @@ class logisticMiddleware extends Middleware
           'viewLogistics'=>[$this->ADMIN,$this->CHO],
         ];
     }
-    
+
 }
