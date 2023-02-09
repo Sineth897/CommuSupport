@@ -53,6 +53,12 @@ class headerDiv
             'icon' => 'history',
             'name' => 'History'
         ],
+        'active' => [
+            'id' => 'active',
+            'link' => '#',
+            'icon' => 'broadcast_on_personal',
+            'name' => 'Active'
+        ],
     ];
 
     public function __construct()

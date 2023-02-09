@@ -39,10 +39,10 @@ class redirectController extends Controller
                 $response->redirect('/cho/communitycenters');
                 break;
             case 'donee':
-                $response->redirect('/donee/request');
+                $response->redirect('/donee/requests');
                 break;
             case 'donor':
-                $response->redirect('/donor/donation');
+                $response->redirect('/donor/donations');
                 break;
             default:
                 $this->render('/guest/home', 'Welcome to CommuSupport!');

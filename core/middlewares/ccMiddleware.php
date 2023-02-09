@@ -8,7 +8,7 @@ class ccMiddleware extends Middleware
     protected function accessRules(): array
     {
         return [
-            'viewCC' => [$this->ADMIN,$this->CHO,$this->DONOR]
+            'viewCC' => [$this->ADMIN,$this->CHO,$this->DONOR,$this->DONEE]
         ];
     }
 }

@@ -15,14 +15,14 @@
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Deliveries</span>
             </a>
-            <span class="tooltip">Deliveries</span>
+<!--            <span class="tooltip">Deliveries</span>-->
         </li>
         <li>
             <a href="/CommuSupport/driver/deliveries/completed">
                 <i class="material-icons">task_alt</i>
                 <span class="links_name">Completed</span>
             </a>
-            <span class="tooltip">Completed</span>
+<!--            <span class="tooltip">Completed</span>-->
         </li>
      </ul>
     <div class="logout">

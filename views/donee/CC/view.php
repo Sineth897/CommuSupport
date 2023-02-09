@@ -1,13 +1,7 @@
 <?php
 
-/** @var $model \app\models\requestModel */
-/** @var $user \app\models\donorModel */
-
-$userID = \app\core\Application::session()->get('user');
-$user = $user->findOne(['donorID' => $userID]);
-$request = $model->retrieve();
-
 ?>
+
 
 <!--profile div-->
 <div class="profile">
@@ -29,7 +23,7 @@ $request = $model->retrieve();
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Posted Requests");
+$headerDiv->heading("Community Centers");
 
 $headerDiv->end();
 ?>
@@ -50,6 +44,10 @@ $searchDiv->sortBegin();
 $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
+
+$creatEvent = \app\core\components\form\form::begin('./donations/create', 'get');
+
+$creatEvent->end();
 
 $searchDiv->end();
 ?>
