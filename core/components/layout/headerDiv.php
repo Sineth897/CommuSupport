@@ -41,6 +41,18 @@ class headerDiv
             'icon' => 'business',
             'name' => 'Organization'
         ],
+        'published' => [
+            'id' => 'published',
+            'link' => '#',
+            'icon' => 'publish',
+            'name' => 'Published'
+        ],
+        'history' => [
+            'id' => 'history',
+            'link' => '#',
+            'icon' => 'history',
+            'name' => 'History'
+        ],
     ];
 
     public function __construct()

@@ -60,11 +60,12 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<?php
-$eventCards = new \app\core\components\cards\eventcard();
-$eventCards->displayEvents($events);
-
-?>
+<div class="main">
+    <?php
+    $eventCards = new \app\core\components\cards\eventcard();
+    $eventCards->displayEvents($events);
+    ?>
+</div>
 
 
 

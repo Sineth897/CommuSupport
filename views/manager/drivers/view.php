@@ -54,11 +54,7 @@ $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'prefe
 
 <?php $searchDiv->end(); ?>
 
-
-
-<button type="button"> Filter </button>
-
-<div id="driverDisplay">
+<div id="driverDisplay"  class="main">
 
     <?php $driversTable = new table($headers,$arraykeys); ?>
 
