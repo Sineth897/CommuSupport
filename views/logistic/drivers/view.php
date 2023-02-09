@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
 <?php
 
 /** @var $model \app\models\driverModel */
@@ -7,7 +8,7 @@
 use app\core\Application;
 $logisticID = Application::$app->session->get('user');
 $user = $user->findOne(['employeeID' => $logisticID]);
-$drivers = $model->retrieve(["ccID" => $user->ccID],["age", "ASC"]);
+$drivers = $model->retrieve(["ccID" => $user->ccID]);
 
 $headers = ['Name','Contact Number','Address','Vehicle', 'Vehicle Number', 'Preference'];
 $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'preference'];
@@ -42,12 +43,6 @@ $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'prefe
 <?php $searchDiv->search(); ?>
 
 <?php $searchDiv->end(); ?>
-
-<?php $creatEvent = \app\core\components\form\form::begin('./drivers/register', 'get'); ?>
-
-<button> Register a driver </button>
-
-<?php $creatEvent->end(); ?>
 
 <button type="button"> Filter </button>
 

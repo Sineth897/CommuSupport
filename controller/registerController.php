@@ -7,6 +7,9 @@ use app\core\Controller;
 use app\core\middlewares\registerMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\donorIndividualModel;
+use app\models\donorModel;
+use app\models\donorOrganizationModel;
 use app\models\driverModel;
 use app\models\userModel;
 
@@ -72,6 +75,64 @@ class registerController extends Controller
             'cho' => $cho,
             'user' => $user
         ]);
+    }
+
+    protected function registerDonor(Request $request, Response $response)
+    {
+        $donor = new \app\models\donorModel();
+        $user = new \app\models\userModel();
+        $donorIndividual = new \app\models\donorIndividualModel();
+        $donorOrganization = new \app\models\donorOrganizationModel();
+
+        if($request->isPost()) {
+            $data = $request->getBody();
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+            $donor->getData($data);
+            $user->getData($data);
+            if($this->validateDonor($data,$user,$donor,$donorIndividual,$donorOrganization)) {
+                if($donor->saveOnALL($data)) {
+                    $this->setFlash('success', 'Donor registered successfully');
+                    $donor->reset();
+                    $user->reset();
+                }
+                $this->setFlash('Error', 'Unable to save on database');
+            }
+            else {
+                $this->setFlash('Error', 'Validation failed');
+            }
+
+        }
+
+        $this->render("guest/register/donor", "Register as a Donor", [
+            'donor' => $donor,
+            'user' => $user,
+            'donorIndividual' => $donorIndividual,
+            'donorOrganization' => $donorOrganization
+        ]);
+    }
+
+    private function validateDonor($data,userModel $user,donorModel $donor,donorIndividualModel $donorIndividual,donorOrganizationModel $donorOrganization):bool {
+        if($data['type'] === "Individual") {
+            $donorIndividual->getData($data);
+            if($donor->validate($data) && $user->validate($data) && $donorIndividual->validate($data)) {
+                return true;
+            }
+            return false;
+        }
+        else {
+            $donorOrganization->getData($data);
+            if($donor->validate($data) && $user->validate($data) && $donorOrganization->validate($data)) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    protected function verifyMobile(Request $request, Response $response)
+    {
+        //
     }
 
     protected function registerManager(Request $request, Response $response)

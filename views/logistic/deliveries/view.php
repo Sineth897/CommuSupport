@@ -3,9 +3,9 @@
 /** @var $deliveries \app\models\deliveryModel */
 /** @var $user \app\models\logisticModel */
 
-echo "<pre>";
-var_dump($deliveries->retrieve());
-echo "</pre>";
+//echo "<pre>";
+//var_dump($deliveries->retrieve());
+//echo "</pre>";
 
 
 ?>
