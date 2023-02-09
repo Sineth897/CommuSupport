@@ -2,6 +2,11 @@
 <link rel="stylesheet" href="./public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="./public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="./public/CSS/form/form.css">
+<link rel="stylesheet" href="./public/CSS/registration/all-reg.css">
+<link rel="stylesheet" href="./public/CSS/registration/reg-base.css">
+
+
+
 <div class="container">
     <section class="navbar">
         <div class="nav_logo">
@@ -23,13 +28,16 @@
         <div class="hero-box">
             <h1 id="title"><span class="title-color">CommuSupport<br></span>From the Community. For the Community.</h1>
             <p id="desc">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto consectetur eligendi
-                hic,
-                illum impedit incidunt iure nam neque nihil placeat, quaerat rem sapiente velit.
+                Our goal is to bring people together and create a strong, supportive network where everyone can make a
+                difference.
+                <br>
+                <br>
+                Join us in making a difference. Be a part of the CommuSupport community and show your support today.
+                Together, we can create a brighter tomorrow for all.
             </p>
             <div class="hero-btns">
-                <button id="readmore"  class="action-btn">
-                    Read More
+                <button id="readmore" class="action-btn">
+                    Join with Us!
                 </button>
             </div>
         </div>
@@ -64,11 +72,8 @@
     </div>
     <div class="info-block">
         <div class="text">
-            <h3></h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum et eveniet hic id inventore ipsum maiores
-                minus nostrum, nulla omnis placeat quaerat quasi quidem reprehenderit unde velit voluptate. Accusamus
-                delectus dolor ex impedit non, nulla sequi totam. Deleniti eius illum minima mollitia, necessitatibus
-                nihil porro quasi quidem similique vero vitae?</p>
+            <h3>Delivery from anywhere to anywhere</h3>
+            <p>Drivers from our community centers will handle the delivery from both parties (Donor and Donee)</p>
         </div>
         <img src="./public/src/landingpage/02.svg" alt="image">
     </div>
@@ -76,14 +81,14 @@
     <div class="info-block">
         <img src="./public/src/landingpage/03.svg" alt="image">
         <div class="text">
-            <h3>Getting donations from drivers to drivers</h3>
+            <h3>Giving donations to the needed people</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum et eveniet hic id inventore ipsum maiores
                 minus nostrum, nulla omnis placeat quaerat quasi quidem reprehenderit unde velit voluptate. Accusamus
                 delectus dolor ex impedit non, nulla sequi totam. Deleniti eius illum minima mollitia, necessitatibus
                 nihil porro quasi quidem similique vero vitae?</p>
         </div>
     </div>
-    
+
 </section>
 
 <section class="footer">
@@ -126,7 +131,45 @@
 
 
 <div id="signupPopup" class="popup-background">
+        <div class="popup login-grid-2">
+            <div class="block left">
+                <div class="block-header">
+                    <h1>Donor</h1>
+                    <p>Join the community to help each other</p>
+                </div>
+                <ul>
+                    <li><i class="material-icons">volunteer_activism</i>View and accept requests.</li>
+                    <li><i class="material-icons">local_shipping</i>Create direct donations</li>
+                    <li><i class="material-icons">verified_user</i>Guaranteed security for the donations</li>
+                    <li><i class="material-icons">calendar_today</i>View and participate in charity events.</li>
+                    <li><i class="material-icons">lock</i>Complete anonymity</li>
+                </ul>
+                <a href="individual-donor-reg.html">
+                    <button>Register as a Donor</button>
+                </a>
+            </div>
 
+            <div class="block right">
+                <div class="block-header">
+                    <h1>Donee</h1>
+                    <p>Request help from the community</p>
+                </div>
+                <ul>
+                    <li><i class="material-icons">volunteer_activism</i>Ask for Public Requests.</li>
+                    <li><i class="material-icons">local_shipping</i>Track Order Deliveries</li>
+                    <li><i class="material-icons">verified_user</i>Guaranteed security throughout the process</li>
+                    <li><i class="material-icons">calendar_today</i>View and participate in charity events.</li>
+                    <li><i class="material-icons">lock</i>Complete anonymity</li>
+                </ul>
+                <a href="donee-reg">
+                    <button>Register as a Donee</button>
+                </a>
+            </div>
+<div class="close" id="signupCloseBtn">
+    <i class="material-icons">close</i>
+</div>
+        </div>
+    </div>
     <div class="popup form-split">
 
         <div>
@@ -140,7 +183,7 @@
         </div>
 
         <div>
-            <?php  $donorSignup= \app\core\components\form\form::begin('./register/donor', 'get'); ?>
+            <?php $donorSignup = \app\core\components\form\form::begin('./register/donor', 'get'); ?>
 
             <?php $donorSignup->formHeader('Donor Sign Up'); ?>
 
@@ -153,7 +196,6 @@
             <i class="material-icons">close</i>
         </div>
 
-    </div>
 
 </div>
 
