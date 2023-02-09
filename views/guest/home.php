@@ -23,13 +23,20 @@
         <div class="hero-box">
             <h1 id="title"><span class="title-color">CommuSupport<br></span>From the Community. For the Community.</h1>
             <p id="desc">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto consectetur eligendi
-                hic,
-                illum impedit incidunt iure nam neque nihil placeat, quaerat rem sapiente velit.
+                Our goal is to bring people together and create a strong, supportive network where everyone can make a difference.
+                <br>
+                <br>
+                Join us in making a difference. Be a part of the CommuSupport community and show your support today. Together, we can create a brighter tomorrow for all.
+                <br>
+                <br>
+                |
+                <br>
+                |<br>
+                V
             </p>
             <div class="hero-btns">
                 <button id="readmore"  class="action-btn">
-                    Read More
+                    Make this button a sign up button
                 </button>
             </div>
         </div>
