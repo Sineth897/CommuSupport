@@ -7,20 +7,13 @@
         <div class="nav_logo">
             <img src="./public/src/landingpage/CMS-Logo.svg" alt="logo">
         </div>
-        <div class="nav_set">
-            <ul class="nav-list">
-                <li class="nav-link"><a href="#">Home</a></li>
-                <li class="nav-link"><a href="#">Community Centers</a></li>
-                <li class="nav-link"><a href="#">Events</a></li>
-            </ul>
-        </div>
         <div class="nav-btns">
             <a href="./login/user">
                 <button id="login">
                     Log in
                 </button>
             </a>
-            <button id="signup"  class="action-btn">
+            <button id="signup" class="action-btn">
                 Create an Account
             </button>
         </div>
