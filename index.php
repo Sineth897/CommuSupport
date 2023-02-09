@@ -6,6 +6,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use app\controller\eventController;
 use app\controller\loginController;
 use app\controller\redirectController;
+use app\controller\registerController;
 use app\core\Application;
 use app\models\userModel;
 
@@ -22,6 +23,10 @@ $config = [
         "username"  =>  $_ENV['DB_ADMIN_USER'],
         "password" => $_ENV['DB_ADMIN_PASS']
         ],
+    "sms" => [
+        'id' => $_ENV['SMS_ID'],
+        'pw' => $_ENV['SMS_PW']
+    ],
 ];
 
 $app = new Application(dirname(__DIR__) . "/CommuSupport", $config);
@@ -58,36 +63,35 @@ $app->router->get('/logout', function($request,$response){
 $app->router->post('/login/employee', function($request,$response){
     $controller = new loginController("employeeLogin", $request, $response);
 });
-
 $app->router->post('/login/user', function($request,$response){
     $controller = new loginController("userLogin", $request, $response);
 });
-
 $app->router->post('/logout', function($request,$response){
     $controller = new loginController("logout", $request, $response);
 });
 
+//forget password for all users
+$app->router->get('/forgetpassword', function($request,$response){
+    $controller = new loginController("forgetPassword", $request, $response);
+});
+$app->router->post('/forgetpassword', function($request,$response){
+    $controller = new loginController("forgetPassword", $request, $response);
+});
 
+//Register methods for all users
+$app->router->get('/register/donee', function($request,$response){
+    $controller = new registerController("registerDonee", $request, $response);
+});
+$app->router->post('/register/donee', function($request,$response){
+    $controller = new registerController("registerDonee", $request, $response);
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$app->router->get('/register/donor', function($request,$response){
+    $controller = new registerController("registerDonor", $request, $response);
+});
+$app->router->post('/register/donor', function($request,$response){
+    $controller = new registerController("registerDonor", $request, $response);
+});
 
 
 

@@ -8,6 +8,7 @@ use app\core\middlewares\loginMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\userModel;
+use http\Exception;
 
 class loginController extends  Controller
 {
@@ -73,10 +74,86 @@ class loginController extends  Controller
         $response->redirect('/');
     }
 
+    protected function forgetPassword(Request $request,Response $response) {
+        try{
+            if($request->isPost()) {
+                $data = $request->getJsonData();
+                $func = $data['do'];
+                unset($data['do']);
+                $result = $this->$func($data);
+                $this->sendJson($result);
+            }
+        }
+        catch(\Exception $e) {
+            $this->sendJson(['success' => 0, 'message' => $e->getMessage()]);
+        }
+
+        if($request->isGet()) {
+            $this->render("login/forgetPassword/forgetPassword", "Forget Password");
+        }
+
+    }
+
     protected function lockedAccount(userModel $model)
     {
-        $username = $model->username;
-        echo $username . " is locked";
+//        $username = $model->username;
+        echo " is locked";
+    }
+
+    private function changePassword($data):array {
+        $user = userModel::getModel(['username' => $data['username']]);
+        if($user->changePassword($data['newPassword'])) {
+            return ['success' => 1, 'message' => 'Password changed successfully'];
+        }
+        return ['success' => 0, 'message' => 'Password change failed'];
+    }
+
+    private function requestOTP($data):array {
+        try {
+            $OTP = rand(100000,999999);
+            $createdTime = time();
+            $validTime = $createdTime + 60 * 10;
+        }
+        catch (\Exception $e) {
+            return ['success' => 0, 'message' => $e->getMessage()];
+        }
+
+        $OTP = [
+            'OTP' => $OTP,
+            'createdTime' => $createdTime,
+            'validTime' => $validTime
+        ];
+        $this->setSessionMsg('OTP', $OTP);
+        $user = userModel::getModel(['username' => $data['username']]);
+        if($this->sendOTP($OTP['OTP'], $user)) {
+            return ['success' => 1, 'message' => 'OTP sent'];
+        }
+        return ['success' => 0, 'message' => 'Unable to send OTP'];
+    }
+
+    private function checkOTP($data):array {
+        $OTP = $this->getSessionMsg('OTP');
+        if(!$OTP) {
+            return ['success' => 0, 'message' => 'OTP not found. '];
+        }
+        if($OTP['validTime'] < time()) {
+            return ['success' => 0, 'message' => 'OTP is expired. Please request a new OTP'];
+        }
+        if($OTP['OTP'] != $data['OTP']) {
+            return ['success' => 0, 'message' => 'OTP does not match'];
+        }
+        $user = userModel::getModel(['username' => $data['username']]);
+        $isEmployee = $user->isEmployee($user->userType);
+        return ['success' => 1, 'message' => 'OTP is valid', 'isEmployee' => $isEmployee];
+    }
+
+    private function checkUsername($data):array {
+        $username = $data['username'];
+        $user = userModel::getModel(['username' => $username]);
+        if(!$user) {
+            return ['success' => 0,'message' => 'User account with given username does not exist'];
+        }
+        return ['success' => 1, 'message' => 'User account found'];
     }
 
     private function ifLoggedIn(Response $response) {
@@ -127,14 +204,6 @@ class loginController extends  Controller
         }
     }
 
-    private function getSelectorNValidator():array
-    {
-        $selectorNValidator =Application::cookie()->getCookie('rememberMe');
-        if(!$selectorNValidator) {
-            return [];
-        }
-        return explode(":", $selectorNValidator);
-    }
 
 }
 

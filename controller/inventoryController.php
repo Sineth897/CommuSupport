@@ -35,13 +35,19 @@ class inventoryController extends Controller
         $data = ($request->getJsonData())['data'];
 
         $inventory->getData($data);
-        if($inventory->validate($data) && $inventory->save()) {
-            $this->sendJson(['success' => 1]);
-            $inventory->reset();
-        }
-        else {
-            $this->sendJson(['success' => 0]);
-        }
+         try {
+             if($inventory->validate($data) && $inventory->save()) {
+                 $this->sendJson(['success' => 1]);
+                 $inventory->reset();
+             }
+             else {
+                 $this->sendJson(['success' => 0]);
+             }
+         }
+            catch (\Exception $e) {
+                $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
+            }
+
     }
 
     protected function filterInventory(Request $request, Response $response) {

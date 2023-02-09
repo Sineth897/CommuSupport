@@ -167,4 +167,14 @@ class userModel extends  DbModel
         return true;
     }
 
+    public function changePassword(string $newPassword) : bool {
+        try {
+            $this->password = password_hash($newPassword, PASSWORD_DEFAULT);
+            $this->update(['userID' => $this->userID], ['password' => $this->password]);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
 }

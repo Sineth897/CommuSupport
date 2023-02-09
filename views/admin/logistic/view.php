@@ -1,6 +1,7 @@
 <?php
+use app\core\components\tables\table;
 
-/** @var $model \app\models\logsticModel */
+/** @var $model \app\models\logisticModel */
 /** @var $user \app\models\adminModel */
 
 $userID = \app\core\Application::session()->get('user');

@@ -7,7 +7,7 @@ class logisticMiddleware extends Middleware
     protected function accessRules(): array
     {
         return[
-          'viewLogistic'=>[$this->ADMIN,$this->CHO],
+          'viewLogistics'=>[$this->ADMIN,$this->CHO],
         ];
     }
 
