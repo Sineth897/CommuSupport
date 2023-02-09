@@ -57,8 +57,8 @@ $searchDiv->filterEnd();
 $searchDiv->sortBegin();
 
 $sortForm = \app\core\components\form\form::begin('', '');
-$sortForm->inputField($inventory, "Last Updated", 'checkbox', "updatedTime", 'sortLastUpdated');
-$sortForm->inputField($inventory, "Amount", 'checkbox', "amount", 'sortAmount');
+$sortForm->checkBox($inventory,"Last Updated","updatedTime",'sortLastUpdated');
+$sortForm->checkBox($inventory, "Amount", "amount", 'sortAmount');
 $sortForm::end();
 
 $searchDiv->sortEnd();
@@ -110,7 +110,7 @@ $searchDiv->filterDivEnd(); ?>
 
 </div>
 
-<div id="inventoryDisplay">
+<div id="inventoryDisplay" class="content">
 
     <?php $inventoryTable = new \app\core\components\tables\table($tableHeaders, $arrayKeys); ?>
 
