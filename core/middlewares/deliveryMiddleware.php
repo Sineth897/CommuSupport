@@ -9,6 +9,7 @@ class deliveryMiddleware extends Middleware
     {
         return [
             'viewDeliveries' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC,$this->DRIVER],
+            'createDelivery'=> [$this->LOGISTIC]
         ];
     }
 }

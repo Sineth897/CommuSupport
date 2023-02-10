@@ -5,7 +5,7 @@
 
 $userID = \app\core\Application::session()->get('user');
 //$user = $user->findOne(['choID' => $userID]);
-$CC = $model->retrieve(['choID' => $userID]);
+$CC = $model->retrieve(['cho' => $userID]);
 
 
 echo "<pre>";

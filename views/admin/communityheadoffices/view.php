@@ -47,7 +47,7 @@ use app\core\components\tables\table;
                 </div>
             </div>
 
-            <?php $registerCho = \app\core\components\form\form::begin('./communityheadoffices/register','post');
+            <?php $registerCho = \app\core\components\form\form::begin('./communityheadoffices/register','get');
 
             $registerCho->button("Register a CHO","submit");
 
