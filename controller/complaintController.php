@@ -19,9 +19,10 @@ class complaintController extends Controller
 
     protected function viewComplaint(Request $request, Response $response)
     {
+        $userType = $this->getUserType();
         $complaints = new complaintModel();
         $user = $this->getUserModel();
-        $this->render('cho/complaints/view','Complaints',[
+        $this->render($userType . '/complaints/view','Complaints',[
             "complaints"=> $complaints,
             "user"=>$user
 

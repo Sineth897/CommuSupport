@@ -81,11 +81,8 @@
     <div class="info-block">
         <img src="./public/src/landingpage/03.svg" alt="image">
         <div class="text">
-            <h3>Giving donations to the needed people</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum et eveniet hic id inventore ipsum maiores
-                minus nostrum, nulla omnis placeat quaerat quasi quidem reprehenderit unde velit voluptate. Accusamus
-                delectus dolor ex impedit non, nulla sequi totam. Deleniti eius illum minima mollitia, necessitatibus
-                nihil porro quasi quidem similique vero vitae?</p>
+            <h3>Maximum security and privacy for everyone.</h3>
+            <p>Privacy and security of all users will be protected and the donation process will be handled with every step recorded to avoid issues.</p>
         </div>
     </div>
 
@@ -144,7 +141,7 @@
                     <li><i class="material-icons">calendar_today</i>View and participate in charity events.</li>
                     <li><i class="material-icons">lock</i>Complete anonymity</li>
                 </ul>
-                <a href="individual-donor-reg.html">
+                <a href="./register/donor">
                     <button>Register as a Donor</button>
                 </a>
             </div>
@@ -161,7 +158,7 @@
                     <li><i class="material-icons">calendar_today</i>View and participate in charity events.</li>
                     <li><i class="material-icons">lock</i>Complete anonymity</li>
                 </ul>
-                <a href="donee-reg">
+                <a href="./register/donee">
                     <button>Register as a Donee</button>
                 </a>
             </div>
@@ -169,35 +166,7 @@
     <i class="material-icons">close</i>
 </div>
         </div>
-    </div>
-    <div class="popup form-split">
 
-        <div>
-            <?php $doneeSignup = \app\core\components\form\form::begin('./register/donee', 'get'); ?>
-
-            <?php $doneeSignup->formHeader('Donee Sign Up'); ?>
-
-            <?php $doneeSignup->button('Donee Sign Up', 'submit'); ?>
-
-            <?php $doneeSignup->end(); ?>
-        </div>
-
-        <div>
-            <?php $donorSignup = \app\core\components\form\form::begin('./register/donor', 'get'); ?>
-
-            <?php $donorSignup->formHeader('Donor Sign Up'); ?>
-
-            <?php $donorSignup->button('Donor Sign Up', 'submit'); ?>
-
-            <?php $donorSignup->end(); ?>
-        </div>
-
-        <div class="close" id="signupCloseBtn">
-            <i class="material-icons">close</i>
-        </div>
-
-
-</div>
 
 
 <script type="module" src="./public/JS/guest/home.js"></script>

@@ -76,7 +76,7 @@ abstract class Model
                 if( $ruleName === self::$nic && !(preg_match('/^[0-9]{9}[vV]$/', $value) || preg_match('/^[0-9]{12}$/', $value)) ) {
                     $this->addRuleError($attribute, self::$nic);
                 }
-                if( $ruleName === self::$DATE && date('Y-m-d') <= $value ) {
+                if( $ruleName === self::$DATE && date('Y-m-d') >= $value ) {
                     $this->addRuleError($attribute, self::$DATE);
                 }
             }

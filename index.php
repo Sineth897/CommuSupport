@@ -175,8 +175,16 @@ $app->router->get('/manager/donations', function ($request, $response) {
 
 
 //*************************Donee get and post methods*************************//
-$app->router->get('/donee/requests', function ($request, $response) {
+$app->router->get('/donee/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
+
+$app->router->get('/donee/request/create', function($request,$response) {
+    $controller = new \app\controller\requestController('postRequest',$request,$response);
+});
+
+$app->router->post('/donee/request/create', function($request,$response) {
+    $controller = new \app\controller\requestController('postRequest',$request,$response);
 });
 
 $app->router->get('/donee/communitycenters', function ($request, $response) {
@@ -187,17 +195,9 @@ $app->router->get('/donee/events', function ($request, $response) {
     $controller = new \app\controller\eventController("viewEvents",$request,$response);
 });
 
-
-
-
-
-
-
-
-
-
-
-
+$app->router->get('/donee/complaints', function($request,$response) {
+    $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
+});
 
 
 
@@ -270,15 +270,15 @@ $app->router->get('/donor/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 
+//Donor view events
+$app->router->get('/donor/events', function($request,$response) {
+    $controller = new eventController("viewEvents",$request,$response);
+});
 
-
-
-
-
-
-
-
-
+//Donor view complaints
+$app->router->get('/donor/complaints', function($request,$response) {
+    $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
+});
 
 
 
@@ -338,6 +338,14 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
     $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
 });
 
+$app->router->get('/logistic/delivery/create', function($request,$response) {
+    $controller = new \app\controller\deliveryController("createDelivery",$request,$response);
+});
+
+$app->router->post('/logistic/delivery/create', function($request,$response) {
+    $controller = new \app\controller\deliveryController("createDelivery",$request,$response);
+});
+
 $app->router->get('/logistic/requests', function ($request,$response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
@@ -345,14 +353,6 @@ $app->router->get('/logistic/requests', function ($request,$response) {
 $app->router->get('/logistic/donations', function ($request,$response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
-
-
-
-
-
-
-
-
 
 
 
@@ -550,11 +550,11 @@ $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
 //Admin view donation
-$app->router->get('/admin/donation', function ($request, $response) {
+$app->router->get('/admin/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
 //Admin view request
-$app->router->get('/admin/request', function ($request, $response) {
+$app->router->get('/admin/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 //Admin view logistics
@@ -572,12 +572,12 @@ $app->router->get('/admin/drivers', function ($request, $response) {
 $app->router->get("/admin/events", function ($request, $response) {
     $controller = new eventController("viewEvents", $request, $response);
 });
-
-
-
-
-
-
+$app->router->get('/admin/donees', function($request,$response) {
+    $controller = new \app\controller\doneeController('viewDonees',$request,$response);
+});
+$app->router->get('/admin/donors', function($request,$response) {
+    $controller = new \app\controller\donorController('viewDonors', $request,$response);
+});
 
 
 

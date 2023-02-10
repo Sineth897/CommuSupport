@@ -1,5 +1,6 @@
 <?php
 
+
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
@@ -14,7 +15,9 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Community Centers");
+$headerDiv->heading("Complaints");
+
+$headerDiv->pages(['pending','completed']);
 
 $headerDiv->end();
 ?>
@@ -33,12 +36,6 @@ $searchDiv->filterEnd();
 $searchDiv->sortBegin();
 
 $searchDiv->sortEnd();
-
-$searchDiv->filterDivEnd();
-
-$creatEvent = \app\core\components\form\form::begin('./donations/create', 'get');
-
-$creatEvent->end();
 
 $searchDiv->end();
 ?>

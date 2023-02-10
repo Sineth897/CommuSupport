@@ -29,4 +29,12 @@ class deliveryController extends Controller
         ]);
     }
 
+    protected function createDelivery(Request $request,Response $response) {
+
+        $delivery = new deliveryModel();
+
+        $this->render('/logistic/deliveries/create','Create a Delivery',[
+                'delivery' => $delivery
+        ]);
+    }
 }

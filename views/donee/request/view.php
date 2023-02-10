@@ -48,7 +48,7 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$creatEvent = \app\core\components\form\form::begin('./donations/create', 'get');
+$creatEvent = \app\core\components\form\form::begin('./request/create', 'get');
 
 echo "<button class='btn-cta-primary'> Request </button>";
 
