@@ -1,11 +1,52 @@
 <?php
 
-echo "Hello, " . $_SESSION['username'];
+/** @var $deliveries \app\models\deliveryModel */
+/** @var $user \app\models\logisticModel */
+
+//echo "<pre>";
+//var_dump($deliveries->retrieve());
+//echo "</pre>";
+
 
 ?>
 
-<?php $regForm = \app\core\components\form\form::begin('logout', 'post'); ?>
+    <div class="profile">
+        <div class="notif-box">
+            <i class="material-icons">notifications</i>
+        </div>
+        <div class="profile-box">
+            <div class="name-box">
+                <h4>Username</h4>
+                <p>Position</p>
+            </div>
+            <div class="profile-img">
+                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
+            </div>
+        </div>
+    </div>
 
-    <button> logout </button>
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $regForm->end(); ?>
+<?php $headerDiv->heading("Deliveries"); ?>
+
+<?php $headerDiv->pages(["pending", "completed"]); ?>
+
+<?php $headerDiv->end(); ?>
+
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
+
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+$searchDiv->search();
+
+$searchDiv->end(); ?>

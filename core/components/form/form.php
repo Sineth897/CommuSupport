@@ -5,9 +5,10 @@ namespace app\core\components\form;
 class form
 {
 
-    public static function begin($action, $method) : form
+    public static function begin($action, $method,$cols =1) : form
     {
-        echo sprintf("<form action='%s' method='%s'>", $action, $method);
+        $colClass = $cols == 1 ? "form-grid-1" : "form-grid-2-2";
+        echo sprintf("<form action='%s' method='%s' class='%s'>", $action, $method, $colClass);
         return new form();
     }
 
@@ -16,36 +17,77 @@ class form
         echo '</form>';
     }
 
-    public function inputField($model, $label, $type,$attribute): void
+    public function inputField($model, $label, $type, $attribute, $id = ""): void
     {
-        echo sprintf('<label>%s :</label>', $label);
-        echo sprintf("<input type='%s' name='%s' value='%s'>",$type ,$attribute, $model->{$attribute});
-        echo sprintf('<p>%s</p>', $model->getFirstError($attribute));
+        echo "<div class='form-group'>";
+        echo sprintf('<label class="form-label">%s :</label>', $label);
+        if($id == "") {
+            echo sprintf('<input type="%s" name="%s" value="%s" class="basic-input-field" size="40">', $type, $attribute, $model->{$attribute});
+        } else {
+            echo sprintf('<input type="%s" name="%s" value="%s" id="%s" class="basic-input-field" size="40">', $type, $attribute, $model->{$attribute}, $id);
+        }
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
+        echo "</div>";
     }
 
     public function textArea($model, $label, $attribute,$size = [10,30]): void
     {
-        echo sprintf('<div></div><label>%s :</label></div>', $label);
-        echo sprintf("<textarea name='%s' rows='%s' cols='%s'>%s</textarea>", $attribute, $size[0], $size[1], $model->{$attribute});
-        echo sprintf('<p>%s</p>', $model->getFirstError($attribute));
+        echo "<div class='form-group'>";
+        echo sprintf('<div></div><label class="form-label">%s :</label></div>', $label);
+        echo sprintf("<textarea name='%s' rows='%s' cols='%s' class='basic-text-area'>%s</textarea>", $attribute, $size[0], $size[1], $model->{$attribute});
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
+        echo "<div>";
     }
 
-    public function dropDownList($model, $label, $attribute, $options): void
+    public function dropDownList($model, $label, $attribute, $options, $id =""): void
     {
-        echo sprintf('<label>%s :</label>', $label);
-        echo sprintf("<select name='%s' >", $attribute);
+        echo "<div class='form-group'>";
+        echo sprintf('<label class="form-label">%s :</label>', $label);
+        if($id == ""){
+            echo sprintf("<select name='%s' class='basic-input-field'>", $attribute);
+        }else{
+
+            echo sprintf("<select name='%s' id='%s' class='basic-input-field'>", $attribute, $id);
+        }
         echo "<option value=''>Select</option>";
         foreach ($options as $key => $value) {
-            $selected = $model->{$attribute} == $key ? 'selected' : '';
+            if($attribute){
+                $selected = $model->{$attribute} == $key ? 'selected' : '';
+            }else{
+                $selected = '';
+            }
             echo sprintf("<option value='%s' %s>%s</option>", $key, $selected, $value);
         }
         echo '</select>';
-        echo sprintf('<p>%s</p>', $model->getFirstError($attribute));
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
+        echo "</div>";
     }
 
-    public function submitButton($label) : void
+    public function checkBox($model,$label,$attribute,$id='') {
+        echo "<div>";
+        echo sprintf("<label>%s : </label>",$label);
+        if($id == '') {
+            echo sprintf("<input type='checkbox' name='%s' value='%s'>",$attribute,$model->{$attribute});
+        }
+        else {
+            echo sprintf("<input type='checkbox' name='%s' value='%s' id='%s'>",$attribute,$model->{$attribute},$id);
+        }
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
+        echo "</div>";
+    }
+
+    public function button($label, $type = 'submit', $id = '') : void
     {
-        echo sprintf("<button type='submit'>%s</button>", $label);
+        if($id == ""){
+            echo sprintf("<button type='%s' class='btn-cta-primary'>%s</button>", $type, $label);
+        }else{
+            echo sprintf("<button type='%s' id='%s' class='btn-cta-primary'>%s</button>", $type, $id, $label);
+        }
+    }
+
+    public function formHeader($heading) : void
+    {
+        echo sprintf("<h3>%s</h3>", $heading);
     }
 
 

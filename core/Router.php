@@ -2,7 +2,6 @@
 
 namespace app\core;
 
-use app\controller\guestController;
 use app\core\exceptions\notFoundException;
 use function Composer\Autoload\includeFile;
 
@@ -44,16 +43,42 @@ class Router
         return call_user_func($callback,$this->request,$this->response);
     }
 
-    public function renderView($view, $params = []): void
+    public function render($view, $title,$params = [], $active = ""): string
+    {
+        $viewContent = $this->renderOnlyView($view, $params);
+        $layout = $this->layoutContent();
+        $navbar = $this->renderNavbar($active);
+        $layout = str_replace("{title}", $title, $layout);
+        $layout = str_replace("{navbar}", $navbar, $layout);
+        return str_replace('{content}', $viewContent, $layout);
+    }
+
+    public function renderOnlyView($view,$params = []): string
     {
         foreach ($params as $key => $value) {
             $$key = $value;
         }
-        include_once Application::$ROOT_DIR . "/views/layouts/header.php";
+        ob_start();
         include_once Application::$ROOT_DIR . "/views/$view.php";
-        include_once Application::$ROOT_DIR . "/views/layouts/footer.php";
+        return ob_get_clean();
     }
 
+    public function layoutContent(): string
+    {
+        ob_start();
+        include_once Application::$ROOT_DIR . "/views/layouts/baseLayout.php";
+        return ob_get_clean();
+    }
+
+    public function renderNavbar(): string {
+        $userType = Application::session()->get('userType');
+        if($userType === "guest") {
+            return "{content}";
+        }
+        ob_start();
+        include_once Application::$ROOT_DIR . "/views/layouts/navbar/sidenav-$userType.php";
+        return ob_get_clean();
+    }
 
 
     public function sendData($data, $status = 200): void
