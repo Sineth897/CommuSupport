@@ -1,11 +1,15 @@
 let district = document.getElementById('district');
-let activeCity = '';
+let activeCity = district.value;
 let citySelectDivs = [];
 let citySelect = [];
 
 prepareDistrictOptionArray();
 prepareCitySelectionArray();
 
+if(activeCity !== '') {
+    show(citySelectDivs[activeCity]);
+    citySelect[activeCity].removeAttribute("disabled");
+}
 district.addEventListener('change', function() {
     if(activeCity !== '') {
         hide(citySelectDivs[activeCity]);

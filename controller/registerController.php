@@ -93,7 +93,7 @@ class registerController extends Controller
             $user->getData($data);
             if($this->validateDonor($data,$user,$donor,$donorIndividual,$donorOrganization)) {
                 if($donor->saveOnALL($data)) {
-                    $this->setFlash('success', 'Donor registered successfully');
+                    $this->setFlash('success', 'Donor registered successfully. Please verify your mobile number to complete registration');
                     $donor->reset();
                     $user->reset();
                 }

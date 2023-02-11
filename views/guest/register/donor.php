@@ -27,7 +27,7 @@ $CHOs = \app\models\choModel::getCHOs();
         <?php $donorForm->inputField($donor, 'Donor Type','text','type','donorType'); ?>
     </div>
 
-    <?php $donorForm->dropDownList($donor,'Choose District','',$CHOs,'district'); ?>
+    <?php $donorForm->dropDownList($donor,'Choose District','district',$CHOs,'district'); ?>
 
     <?php foreach ($CHOs as $key => $value) : ?>
         <div id="<?php echo $key ?>" class="form-group" style="display: none">
@@ -73,6 +73,20 @@ $CHOs = \app\models\choModel::getCHOs();
 
 <script type="module" src="../public/JS/guest/register/donor.js"></script>
 
+<?php if(isset($_POST['type'])) : ?>
+    <script>
+        <?php if($_POST['type'] == 'Individual') : ?>
+            document.getElementById('individualForm').style.display = 'block';
+        <?php else : ?>
+            document.getElementById('organizationForm').style.display = 'block';
+        <?php endif; ?>
+    </script>
+<?php endif?>
 
+<?php if(isset($_POST['district'])) : ?>
+    <script>
+        document.getElementById('district').value = '<?php echo $_POST['district'] ?>';
+    </script>
+<?php endif?>
 
 
