@@ -12,7 +12,7 @@
     <ul class="nav_list">
 
         <li>
-            <a href="/CommuSupport/donee/requests">
+            <a href="/CommuSupport/donee/request">
                 <i class="material-icons">summarize</i>
                 <span class="links_name">Requests</span>
             </a>

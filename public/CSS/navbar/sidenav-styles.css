@@ -114,7 +114,6 @@ body{
     transition:all 0.5s ease;
     opacity:1;
     top:50%;
-    display:initial;
 }
 
 .sidenav ul li a{
@@ -176,7 +175,7 @@ body{
     transition:all 0.4s ease;
 }
 
-.logout a{
+.logout form button{
     color:white;
     display:flex;
     align-items:center;
@@ -190,12 +189,12 @@ body{
     background: transparent;
 }
 
-.logout a:hover{
+.logout form button:hover{
     color:var(--primary-color);
     background:var(--danger-color);
 }
 
-.logout a{
+.logout form button{
     position:absolute;
     bottom:5px;
     left:50%;
@@ -206,6 +205,8 @@ body{
     border-radius: 12px;
     text-align: center;
     transition:all 0.4s ease;
+    border: none;
+    outline: none;
 }
 
 /* Sidebar Active State Logout  */

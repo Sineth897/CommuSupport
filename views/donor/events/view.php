@@ -1,6 +1,13 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/eventcard.css">
 <?php
 
+/** @var $model \app\models\eventModel */
+
+$events = $model->retrieve();
+
 ?>
+
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
@@ -14,7 +21,7 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Community Centers");
+$headerDiv->heading("Events");
 
 $headerDiv->end();
 ?>
@@ -42,3 +49,10 @@ $creatEvent->end();
 
 $searchDiv->end();
 ?>
+
+<div class="main">
+    <?php
+    $eventCards = new \app\core\components\cards\eventcard();
+    $eventCards->displayEvents($events);
+    ?>
+</div>

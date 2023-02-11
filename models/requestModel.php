@@ -33,17 +33,30 @@ class requestModel extends DbModel
     public function rules(): array
     {
         return [
-
-            "postedBy" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
-            "approval" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
-            "approvedDate" => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE,"class" => self::class]],
-            "item" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
-            "amount" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
-            "address" => [self::$REQUIRED],
+            "item" => [self::$REQUIRED],
+            "amount" => [self::$REQUIRED],
             "urgency" => [self::$REQUIRED],
-            "postedDate" => [self::$REQUIRED],
             "notes" => [self::$REQUIRED],
+        ];
+    }
 
+    public function getCategories():array {
+        $stmnt = self::prepare('SELECT * FROM category');
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getSubcategories($category) {
+        $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = :category');
+        $stmnt->bindValue(':category',$category);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getUrgency():array {
+        return [
+            'Urgent' => 'Urgent',
+            'Not Urgent' => 'Not Urgent',
         ];
     }
 }

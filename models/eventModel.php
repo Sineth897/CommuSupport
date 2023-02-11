@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\core\Application;
 use app\core\DbModel;
 
 class eventModel extends DbModel
@@ -18,14 +19,16 @@ class eventModel extends DbModel
     public string $status = 'Upcoming';
     public int $participationCount = 0;
 
+    public string $ccID = '';
+
     public function rules(): array
     {
         return [
-            'eventCategory' => [self::$REQUIRED],
+            'eventCategoryID' => [self::$REQUIRED],
             'theme' => [self::$REQUIRED],
             'organizedBy' => [self::$REQUIRED],
             'contact' => [self::$REQUIRED,self::$CONTACT],
-            'date' => [self::$REQUIRED],
+            'date' => [self::$REQUIRED,self::$DATE],
             'time' => [self::$REQUIRED],
             'location' => [self::$REQUIRED],
             'description' => [self::$REQUIRED],
@@ -40,7 +43,7 @@ class eventModel extends DbModel
 
     public function attributes(): array
     {
-        return ['eventID', 'eventCategory', 'theme', 'organizedBy', 'contact', 'date', 'time', 'location', 'description', 'status', 'participationCount'];
+        return ['eventID', 'eventCategoryID', 'theme', 'organizedBy', 'contact', 'date', 'time', 'location', 'description', 'status', 'participationCount','ccID'];
     }
 
     public function primaryKey(): string
@@ -50,7 +53,9 @@ class eventModel extends DbModel
 
     public function save(): bool
     {
-        $this->eventID = uniqid('event',true);
+        $this->eventID = substr( uniqid('event',true),0,23);
+        $manager = managerModel::getModel(['employeeID' => Application::session()->get('user')]);
+        $this->ccID = $manager->ccID;
         return parent::save();
     }
 
