@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
@@ -10,20 +11,13 @@
 
 ?>
 
-    <div class="profile">
-        <div class="notif-box">
-            <i class="material-icons">notifications</i>
-        </div>
-        <div class="profile-box">
-            <div class="name-box">
-                <h4>Username</h4>
-                <p>Position</p>
-            </div>
-            <div class="profile-img">
-                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-            </div>
-        </div>
-    </div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -47,6 +41,12 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$searchDiv->search();
+$registerCho = \app\core\components\form\form::begin('./delivery/create', 'get');
 
-$searchDiv->end(); ?>
+$registerCho->button("Create a delivery", "submit");
+
+$registerCho->end();
+
+?>
+
+<?php $searchDiv->end(); ?>

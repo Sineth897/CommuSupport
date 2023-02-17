@@ -38,9 +38,9 @@ class donorModel extends DbModel
     {
         return [
             'ccID' => [self::$REQUIRED],
-            'email' => [self::$REQUIRED, self::$EMAIL],
-            'address' => [self::$REQUIRED],
-            'contactNumber' => [self::$REQUIRED, self::$CONTACT],
+            'email' => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE, 'class' => self::class]],
+            'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
         ];
     }

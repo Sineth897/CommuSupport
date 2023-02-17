@@ -25,18 +25,7 @@ use app\core\components\tables\table;
         <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
             <div class="heading">
-                <h1>Heading</h1>
-            </div>
-            <div class="pages">
-                <a href="#">
-                    <i class="material-icons">cached</i>
-                    Ongoing</a>
-                <a href="#">
-                    <i class="material-icons">check_circle_outline</i>
-                    Completed</a>
-                <a href="#">
-                    <i class="material-icons">block</i>
-                    Cancelled</a>
+                <h1>Drivers</h1>
             </div>
         </div>
 
@@ -60,7 +49,6 @@ use app\core\components\tables\table;
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
 <?php
             $userID = \app\core\Application::session()->get('user');
            // $user = $user->findOne(['adminId' => $userID]);
@@ -75,8 +63,6 @@ use app\core\components\tables\table;
            $driverTable->displayTable($driver);
 
 ?>
-
-            </div>
         </div>
 
     

@@ -44,4 +44,19 @@ class donationModel extends DbModel
 
         ];
     }
+
+    public function getCategories(): bool|array
+    {
+        $stmnt = self::prepare('SELECT * FROM category');
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getSubcategories($category): bool|array
+    {
+        $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = :category');
+        $stmnt->bindValue(':category',$category);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 }

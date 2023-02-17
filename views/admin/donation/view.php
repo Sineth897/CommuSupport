@@ -29,7 +29,7 @@ use app\core\components\tables\table;
         <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
             <div class="heading">
-                <h1>Heading</h1>
+                <h1>Donations</h1>
             </div>
             <div class="pages">
                 <a href="#">
@@ -38,9 +38,6 @@ use app\core\components\tables\table;
                 <a href="#">
                     <i class="material-icons">check_circle_outline</i>
                     Completed</a>
-                <a href="#">
-                    <i class="material-icons">block</i>
-                    Cancelled</a>
             </div>
         </div>
 
@@ -64,13 +61,12 @@ use app\core\components\tables\table;
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
 <?php
             $userID = \app\core\Application::session()->get('user');
            // $user = $user->findOne(['adminId' => $userID]);
            $donation = $model->retrieve();
 
-           $header = ["CreateBy", "Item", "Amount", "Date", "Address", "DonateTo","DeliveryStatus"];
+           $header = ["CreateBy", "Item", "Amount", "Date", "Address", "Donate To","DeliveryStatus"];
 
            $arrayKey = ["createBy", "item", "amount", "date", "address", "donateTo","deliveryStatus"];
 
@@ -79,8 +75,6 @@ use app\core\components\tables\table;
            $donationTable->displayTable($donation);
 
 ?>
-
-            </div>
         </div>
 
     

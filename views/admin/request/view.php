@@ -29,7 +29,7 @@ use app\core\components\tables\table;
         <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
             <div class="heading">
-                <h1>Heading</h1>
+                <h1>Requests</h1>
             </div>
             <div class="pages">
                 <a href="#">
@@ -64,7 +64,6 @@ use app\core\components\tables\table;
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
 <?php
           $userID = \app\core\Application::session()->get('user');
           // $user = $user->findOne(['adminId' => $userID]);
@@ -76,13 +75,9 @@ use app\core\components\tables\table;
           
           $requestTable = new table($header, $arrayKey);
           
-          $requestTable->displayTable($request);  
+          $requestTable->displayTable($request); ?> 
+</div>
 
-?>
 
-            </div>
-        </div>
-
-    
 
 

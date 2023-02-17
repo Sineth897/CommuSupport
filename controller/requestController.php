@@ -27,7 +27,14 @@ class requestController extends Controller
         ]);
     }
 
+    protected function postRequest(Request $request,Response $response) {
 
+        $requestmodel = new requestModel();
+
+        $this->render('donee/request/create','Post a request',[
+            'requestmodel' => $requestmodel,
+        ]);
+    }
     
 
 }

@@ -55,7 +55,7 @@
 
         <i class="material-icons back-to-login">arrow_back</i>
         <div class="forget-btns">
-            <button id="back-to-login" class="btn-secondary">Back to Login</button>
+            <a href="./login/user"><button id="back-to-login" class="btn-secondary">Back to Login</button></a>
         </div>
 
 </div>

@@ -30,7 +30,7 @@ class loginController extends  Controller
         $user = new userModel();
         if ($request->isPost()) {
             $user->getData($request->getBody());
-            if ($user->validate($request->getBody()) && $user->login()) {
+            if ($user->login()) {
                 if($this->isRememberMeClicked($request)) {
                     $this->rememberMe($user);
                 }
@@ -52,7 +52,7 @@ class loginController extends  Controller
         $user = new userModel();
         if ($request->isPost()) {
             $user->getData($request->getBody());
-            if ($user->validate($request->getBody()) && $user->login(true)) {
+            if ($user->login(true)) {
                 if($this->isRememberMeClicked($request)) {
                      $this->rememberMe($user);
                 }
