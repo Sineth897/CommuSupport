@@ -22,7 +22,7 @@ class requestModel extends DbModel
 
     public function attributes(): array
     {
-        return ["requestID","postedBy","approval","approvedDate","item","amount","address","urgency","postedDate", "notes"];
+        return ["requestID","postedBy","item","amount","address","urgency", "notes"];
     }
 
     public function primaryKey(): string
@@ -36,7 +36,7 @@ class requestModel extends DbModel
             "item" => [self::$REQUIRED],
             "amount" => [self::$REQUIRED],
             "urgency" => [self::$REQUIRED],
-            "notes" => [self::$REQUIRED],
+//            "notes" => [self::$REQUIRED],
         ];
     }
 
@@ -58,5 +58,25 @@ class requestModel extends DbModel
             'Urgent' => 'Urgent',
             'Not Urgent' => 'Not Urgent',
         ];
+    }
+
+    public function save(): bool
+    {
+        $this->requestID = substr(uniqid('request', true), 0, 23);
+        $this->postedBy = $_SESSION['user'];
+
+        if ($this->address === "") {
+            $user = doneeModel::getModel(['doneeID' => $_SESSION['user']]);
+            $this->address = $user->address;
+        }
+
+        return parent::save();
+    }
+
+    public function getRequestsUnderCC(string $ccID) {
+        $stmnt = self::prepare('SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID WHERE r.postedBy IN (SELECT doneeID FROM donee WHERE ccID = :ccID)');
+        $stmnt->bindValue(':ccID',$ccID);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

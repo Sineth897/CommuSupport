@@ -31,6 +31,15 @@ class requestController extends Controller
 
         $requestmodel = new requestModel();
 
+        if($request->isPost()) {
+            $requestmodel->getData($request->getBody());
+            if($requestmodel->validate($request->getBody()) && $requestmodel->save()) {
+                $this->setFlash('success','Request posted successfully');
+                $response->redirect('/donee/request');
+                return;
+            }
+        }
+
         $this->render('donee/request/create','Post a request',[
             'requestmodel' => $requestmodel,
         ]);

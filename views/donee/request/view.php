@@ -1,5 +1,12 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
+/** @var $model \app\models\requestModel */
+/** @var $user  \app\models\doneeModel*/
+
+use app\core\Application;
+
+$user = $user->findOne(['doneeID' => Application::$app->session->get('user')]);
+$requests = $model->retrieve(["postedBy" => $user->doneeID]);
 
 ?>
 
@@ -56,3 +63,15 @@ $creatEvent->end();
 
 $searchDiv->end();
 ?>
+
+
+<div class="content">
+
+    <?php
+        echo "<pre>";
+        print_r($requests);
+        echo "</pre>";
+    ?>
+
+
+</div>
