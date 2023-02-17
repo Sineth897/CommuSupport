@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/cards/eventcard.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -49,9 +50,11 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="main">
+<div class="content">
     <?php
     $eventCards = new \app\core\components\cards\eventcard();
     $eventCards->displayEvents($events);
     ?>
 </div>
+
+<script type="module" src="../public/JS/donee/event/view.js"></script>

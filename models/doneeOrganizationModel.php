@@ -12,6 +12,8 @@ class doneeOrganizationModel extends DbModel
     public string $representative = '';
     public string $representativeContact = '';
 
+    public int $capacity = 0;
+
     public function table(): string
     {
         return 'doneeorganization';
@@ -19,7 +21,7 @@ class doneeOrganizationModel extends DbModel
 
     public function attributes(): array
     {
-        return ['doneeID', 'organizationName', 'regNo','representative','representativeContact'];
+        return ['doneeID', 'organizationName', 'regNo','representative','representativeContact','capacity'];
     }
 
     public function primaryKey(): string
@@ -30,8 +32,8 @@ class doneeOrganizationModel extends DbModel
     public function rules(): array
     {
         return [
-            'organizationName' => [self::$REQUIRED],
-            'regNo' => [self::$REQUIRED],
+            'organizationName' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
+            'regNo' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
             'representative' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
             'representativeContact' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
         ];

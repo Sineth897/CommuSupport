@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
 <?php
 
 /**
@@ -15,7 +16,7 @@ $individualDonorHeaders = ['First Name','Last name','Age','Contact Number','Emai
 $individualDonorKeys = ['fname','lname','age','contactNumber','email','address'];
 
 $organizationDonorHeaders = ['Organization Name','Representative Name','Contact Number','Email','Address'];
-$organizationDonorKeys = ['organizationName','representativeName','contactNumber','email','address'];
+$organizationDonorKeys = ['organizationName','representative','contactNumber','email','address'];
 
 ?>
 
@@ -54,7 +55,7 @@ $searchDiv->search();
 $searchDiv->end(); ?>
 
 
-<div id="individualDonorDisplay">
+<div id="individualDonorDisplay" class="content">
 
     <?php $individualDonorTable =  new table($individualDonorHeaders,$individualDonorKeys); ?>
 
@@ -69,7 +70,7 @@ $searchDiv->end(); ?>
 
 </div>
 
-<div id="organizationDonorDisplay">
+<div id="organizationDonorDisplay" class="content" style="display: none">
 
         <?php $organizationDonorTable =  new table($organizationDonorHeaders,$organizationDonorKeys); ?>
 
@@ -82,3 +83,5 @@ $searchDiv->end(); ?>
         }
         ?>
 </div>
+
+<script type="module" src="../public/JS/manager/donors/view.js"

@@ -57,7 +57,7 @@ $searchDiv->filterDivEnd();?>
 
 <?php $searchDiv->end(); ?>
 
-<div id="driverDisplay"  class="main">
+<div id="driverDisplay"  class="content">
 
     <?php $driversTable = new table($headers,$arraykeys); ?>
 

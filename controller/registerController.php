@@ -137,7 +137,21 @@ class registerController extends Controller
         $doneeOrganization = new doneeOrganizationModel();
 
         if($request->isPost()) {
-
+            $data = $request->getBody();
+            $donee->getData($data);
+            $user->getData($data);
+            if($this->validateDonee($data,$user,$donee,$doneeIndividual,$doneeOrganization)) {
+                if($donee->saveOnALL($data)) {
+                    $this->setFlash('success', 'Donee registered successfully. Please verify your mobile number to complete registration');
+                    $donee->reset();
+                    $user->reset();
+                    $response->redirect('/login/user');
+                }
+                $this->setFlash('Error', 'Unable to save on database');
+            }
+            else {
+                $this->setFlash('Error', 'Validation failed');
+            }
         }
 
         $this->render('guest/register/donee',"Register as a Donee", [
@@ -147,6 +161,24 @@ class registerController extends Controller
             'doneeOrganization' => $doneeOrganization,
         ]);
 
+    }
+
+    private function validateDonee(array $data, userModel $user, doneeModel $donee, doneeIndividualModel $doneeIndividual, doneeOrganizationModel $doneeOrganization)
+    {
+        if($data['type'] === "Individual") {
+            $doneeIndividual->getData($data);
+            if($donee->validate($data) && $user->validate($data) && $doneeIndividual->validate($data)) {
+                return true;
+            }
+            return false;
+        }
+        else {
+            $doneeOrganization->getData($data);
+            if($donee->validate($data) && $user->validate($data) && $doneeOrganization->validate($data)) {
+                return true;
+            }
+            return false;
+        }
     }
 
     protected function verifyMobile(Request $request, Response $response)
@@ -165,7 +197,6 @@ class registerController extends Controller
         // TODO: Implement registerLogistic() method.
 
     }
-
 
 
 }

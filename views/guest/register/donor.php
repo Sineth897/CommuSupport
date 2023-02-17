@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/registration/reg-base.css">
 <?php
 
 /**
@@ -12,73 +13,109 @@ $CHOs = \app\models\choModel::getCHOs();
 
 ?>
 
+<div class="background">
+
+        <div class="reg-form-container">
 
 <?php $donorForm = \app\core\components\form\form::begin('','post') ?>
 
-<?php $donorForm->formHeader('Donor Sign Up'); ?>
-
     <?php $indOrOrg = new \app\core\components\layout\headerDiv();
+
+    $indOrOrg->heading('Donor Sign Up');
 
     $indOrOrg->pages(['individuals', 'organizations']);
 
     $indOrOrg->end(); ?>
 
-    <div style="display: none">
-        <?php $donorForm->inputField($donor, 'Donor Type','text','type','donorType'); ?>
-    </div>
+            <div class="login-grid-2">
 
-    <?php $donorForm->dropDownList($donor,'Choose District','district',$CHOs,'district'); ?>
+                <div>
 
-    <?php foreach ($CHOs as $key => $value) : ?>
-        <div id="<?php echo $key ?>" class="form-group" style="display: none">
-            <?php $donorForm->dropDownList($donor,'Choose City','ccID',\app\models\choModel::getCCsUnderCHO($key)); ?>
-        </div>
-    <?php endforeach; ?>
+                    <div style="display: none">
+                        <?php $donorForm->inputField($donor, 'Donor Type','text','type','donorType'); ?>
+                    </div>
 
-<div id="individualForm" style="display: none">
-    <?php $donorForm->inputField($donorIndividual, 'First Name','text','fname'); ?>
+                    <?php $donorForm->dropDownList($donor,'Choose District','district',$CHOs,'district'); ?>
 
-    <?php $donorForm->inputField($donorIndividual, 'Last Name','text','lname'); ?>
+                    <?php foreach ($CHOs as $key => $value) : ?>
+                        <div id="<?php echo $key ?>" class="form-group" style="display: none">
+                            <?php $donorForm->dropDownList($donor,'Choose City','ccID',\app\models\choModel::getCCsUnderCHO($key)); ?>
+                        </div>
+                    <?php endforeach; ?>
 
-    <?php $donorForm->inputField($donorIndividual, 'Age','number','age'); ?>
+                    <?php $donorForm->inputField($donor, 'Email','email','email'); ?>
 
-    <?php $donorForm->inputField($donorIndividual, 'NIC','text','nic'); ?>
-</div>
+                    <?php $donorForm->inputField($donor, 'Address','text','address'); ?>
 
-<div id="organizationForm" style="display: none">
-    <?php $donorForm->inputField($donorOrganization, 'Organization Name','text','organizationName'); ?>
+                    <?php $donorForm->inputField($donor, 'Contact Number','text','contactNumber'); ?>
 
-    <?php $donorForm->inputField($donorOrganization, 'Registration Number','text','regNo'); ?>
+                    <?php $donorForm->inputField($user, 'Username','text','username'); ?>
 
-    <?php $donorForm->inputField($donorOrganization, 'Representative Name','text','representative'); ?>
+                    <?php $donorForm->inputField($user, 'Password','password','password'); ?>
 
-    <?php $donorForm->inputField($donorOrganization, 'Representative Contact','text','representativeContact'); ?>
+                    <?php $donorForm->inputField($user, 'Confirm Password','password','confirmPassword'); ?>
 
-</div>
+                </div>
 
-    <?php $donorForm->inputField($donor, 'Email','email','email'); ?>
+                <div>
+                    <div id="individualForm" >
+                        <?php $donorForm->inputField($donorIndividual, 'First Name','text','fname'); ?>
 
-    <?php $donorForm->inputField($donor, 'Address','text','address'); ?>
+                        <?php $donorForm->inputField($donorIndividual, 'Last Name','text','lname'); ?>
 
-    <?php $donorForm->inputField($donor, 'Contact Number','text','contactNumber'); ?>
+                        <?php $donorForm->inputField($donorIndividual, 'Age','number','age'); ?>
 
-    <?php $donorForm->inputField($user, 'Username','text','username'); ?>
+                        <?php $donorForm->inputField($donorIndividual, 'NIC','text','nic'); ?>
+                    </div>
 
-    <?php $donorForm->inputField($user, 'Password','password','password'); ?>
+                    <div id="organizationForm" style="display: none">
+                        <?php $donorForm->inputField($donorOrganization, 'Organization Name','text','organizationName'); ?>
+
+                        <?php $donorForm->inputField($donorOrganization, 'Registration Number','text','regNo'); ?>
+
+                        <?php $donorForm->inputField($donorOrganization, 'Representative Name','text','representative'); ?>
+
+                        <?php $donorForm->inputField($donorOrganization, 'Representative Contact','text','representativeContact'); ?>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
 
 <?php $donorForm->button('Register'); ?>
 
 <?php $donorForm->end() ?>
 
+        </div>
+
+</div>
+
 
 <script type="module" src="../public/JS/guest/register/donor.js"></script>
+
+<script>
+    document.getElementById('donorType').value = 'Individual';
+</script>
 
 <?php if(isset($_POST['type'])) : ?>
     <script>
         <?php if($_POST['type'] == 'Individual') : ?>
-            document.getElementById('individualForm').style.display = 'block';
+        document.getElementById('doneeType').value = 'Individual';
+        document.getElementById('organizationForm').style.display = 'none';
+        document.getElementById('individualForm').style.display = 'block';
         <?php else : ?>
-            document.getElementById('organizationForm').style.display = 'block';
+        document.getElementById('doneeType').value = 'Organization';
+        document.getElementById('individualForm').style.display = 'none';
+        document.getElementById('organizationForm').style.display = 'block';
         <?php endif; ?>
     </script>
 <?php endif?>

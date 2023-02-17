@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="./public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="./public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="./public/CSS/form/form.css">
-<link rel="stylesheet" href="./public/CSS/registration/all-reg.css">
+<!--<link rel="stylesheet" href="./public/CSS/registration/all-reg.css">-->
 <link rel="stylesheet" href="./public/CSS/registration/reg-base.css">
 
 

@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/registration/reg-base.css">
 <?php
 
 /** @var $user \app\models\userModel */
@@ -10,63 +11,120 @@ $CHOs = \app\models\choModel::getCHOs();
 
 ?>
 
-<?php $doneeForm = \app\core\components\form\form::begin('','post') ?>
+<div class="background">
 
-<?php $doneeForm->formHeader('Donee Sign Up');
+    <div class="reg-form-container">
 
-$indOrOrg = new \app\core\components\layout\headerDiv();
+    <?php $doneeForm = \app\core\components\form\form::begin('','post') ?>
 
-$indOrOrg->pages(['individuals', 'organizations']);
+    <?php
+    $indOrOrg = new \app\core\components\layout\headerDiv();
 
-$indOrOrg->end(); ?>
+    $indOrOrg->heading('Donee Sign Up');
 
-    <div style="display: none">
-        <?php $doneeForm->inputField($donee, 'Donor Type','text','type','donorType'); ?>
-    </div>
+    $indOrOrg->pages(['individuals', 'organizations']);
 
-<?php $doneeForm->dropDownList($donee,'Choose District','',$CHOs,'district'); ?>
+    $indOrOrg->end(); ?>
 
-<?php foreach ($CHOs as $key => $value) : ?>
-    <div id="<?php echo $key ?>" class="form-group" style="display: none">
-        <?php $doneeForm->dropDownList($donee,'Choose City','ccID',\app\models\choModel::getCCsUnderCHO($key)); ?>
-    </div>
-<?php endforeach; ?>
+        <div class="login-grid-2">
 
+         <div>
 
-<div id="individualForm" style="display: none">
-    <?php $doneeForm->inputField($doneeIndividual, 'First Name','text','fname'); ?>
+             <div style="display: none">
+                 <?php $doneeForm->inputField($donee, 'Donor Type','text','type','doneeType'); ?>
+             </div>
 
-    <?php $doneeForm->inputField($doneeIndividual, 'Last Name','text','lname'); ?>
+             <?php $doneeForm->dropDownList($donee,'Choose District','district',$CHOs,'district'); ?>
 
-    <?php $doneeForm->inputField($doneeIndividual, 'Age','number','age'); ?>
+             <?php foreach ($CHOs as $key => $value) : ?>
+                 <div id="<?php echo $key ?>" class="form-group" style="display: none">
+                     <?php $doneeForm->dropDownList($donee,'Choose City','ccID',\app\models\choModel::getCCsUnderCHO($key)); ?>
+                 </div>
+             <?php endforeach; ?>
 
-    <?php $doneeForm->inputField($doneeIndividual, 'NIC','text','nic'); ?>
-</div>
+             <?php $doneeForm->inputField($donee, 'Email','email','email'); ?>
 
-<div id="organizationForm" style="display: none">
-    <?php $doneeForm->inputField($doneeOrganization, 'Organization Name','text','organizationName'); ?>
+             <?php $doneeForm->inputField($donee, 'Address','text','address'); ?>
 
-    <?php $doneeForm->inputField($doneeOrganization, 'Registration Number','text','regNo'); ?>
+             <?php $doneeForm->inputField($donee, 'Contact Number','text','contactNumber'); ?>
 
-    <?php $doneeForm->inputField($doneeOrganization, 'Representative Name','text','representative'); ?>
+             <?php $doneeForm->inputField($user, 'Username','text','username'); ?>
 
-    <?php $doneeForm->inputField($doneeOrganization, 'Representative Contact','text','representativeContact'); ?>
+             <?php $doneeForm->inputField($user, 'Password','password','password'); ?>
 
-</div>
+             <?php $doneeForm->inputField($user, 'Confirm Password','password','confirmPassword'); ?>
 
-<?php $doneeForm->inputField($donee, 'Email','email','email'); ?>
+         </div>
 
-<?php $doneeForm->inputField($donee, 'Address','text','address'); ?>
+        <div>
 
-<?php $doneeForm->inputField($donee, 'Contact Number','text','contactNumber'); ?>
+            <div id="individualForm" >
+                <?php $doneeForm->inputField($doneeIndividual, 'First Name','text','fname'); ?>
 
-<?php $doneeForm->inputField($user, 'Username','text','username'); ?>
+                <?php $doneeForm->inputField($doneeIndividual, 'Last Name','text','lname'); ?>
 
-<?php $doneeForm->inputField($user, 'Password','password','password'); ?>
+                <?php $doneeForm->inputField($doneeIndividual, 'Age','number','age'); ?>
+
+                <?php $doneeForm->inputField($doneeIndividual, 'NIC','text','nic'); ?>
+
+                <?php $doneeForm->fileInput($donee,'Upload your NIC Front','nicFront'); ?>
+
+                <?php $doneeForm->fileInput($donee,'Upload your NIC Back','nicBack'); ?>
+            </div>
+
+            <div id="organizationForm" style="display: none">
+                <?php $doneeForm->inputField($doneeOrganization, 'Organization Name','text','organizationName'); ?>
+
+                <?php $doneeForm->inputField($doneeOrganization, 'Registration Number','text','regNo'); ?>
+
+                <?php $doneeForm->fileInput($donee,'Upload your registration certificate front','certificateFront'); ?>
+
+                <?php $doneeForm->fileInput($donee,'Upload your NIC certificate back','certificateBack'); ?>
+
+                <?php $doneeForm->inputField($doneeOrganization, 'Representative Name','text','representative'); ?>
+
+                <?php $doneeForm->inputField($doneeOrganization, 'Representative Contact','text','representativeContact'); ?>
+
+                <?php $doneeForm->inputField($doneeOrganization, 'How many dependents are present? (If only applicable)','number','capacity'); ?>
+
+            </div>
+
+        </div>
+
+        </div>
 
 <?php $doneeForm->button('Register'); ?>
 
 <?php $doneeForm->end() ?>
 
+    </div>
+
+</div>
+
 
 <script type="module" src="../public/JS/guest/register/donee.js"></script>
+
+<script>
+    document.getElementById('doneeType').value = 'Individual';
+</script>
+
+<?php if(isset($_POST['type'])) : ?>
+    <script>
+        <?php if($_POST['type'] == 'Individual') : ?>
+        document.getElementById('doneeType').value = 'Individual';
+        document.getElementById('organizationForm').style.display = 'none';
+        document.getElementById('individualForm').style.display = 'block';
+        <?php else : ?>
+        document.getElementById('doneeType').value = 'Organization';
+        document.getElementById('individualForm').style.display = 'none';
+        document.getElementById('organizationForm').style.display = 'block';
+        <?php endif; ?>
+    </script>
+<?php endif?>
+
+<?php if(isset($_POST['district'])) : ?>
+    <script>
+        document.getElementById('district').value = '<?php echo $_POST['district'] ?>';
+        document.getElementById('<?php echo $_POST['district'] ?>').style.display = 'block';
+    </script>
+<?php endif?>

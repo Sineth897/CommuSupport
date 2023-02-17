@@ -1,15 +1,10 @@
 let district = document.getElementById('district');
-let activeCity = district.value;
+let activeCity = '';
 let citySelectDivs = [];
 let citySelect = [];
 
 prepareDistrictOptionArray();
 prepareCitySelectionArray();
-
-if(activeCity !== '') {
-    show(citySelectDivs[activeCity]);
-    citySelect[activeCity].removeAttribute("disabled");
-}
 
 function prepareDistrictOptionArray() {
     for(let i = 1; i < district.options.length; i++) {
@@ -29,22 +24,6 @@ district.addEventListener('change', function() {
     }
 });
 
-let individual = document.getElementById('individual');
-let organization = document.getElementById('organization');
-let doneeType = document.getElementById('doneeType');
-
-individual.addEventListener('click', function() {
-    document.getElementById('organizationForm').style.display = "none";
-    document.getElementById('individualForm').style.display = "block";
-    doneeType.value = "Individual";
-});
-
-organization.addEventListener('click', function() {
-    document.getElementById('individualForm').style.display = "none";
-    document.getElementById('organizationForm').style.display = "block";
-    doneeType.value = "Organization";
-});
-
 function prepareCitySelectionArray() {
     for( let key in citySelectDivs) {
         citySelect[key] = citySelectDivs[key].getElementsByTagName('select')[0];
@@ -52,10 +31,40 @@ function prepareCitySelectionArray() {
     }
 }
 
+let category = document.getElementById('category');
+let subcategories = [];
+
+for (let i = 0; i < category.length; i++) {
+    subcategories[category[i].value] = document.getElementById(category[i].value);
+}
+
+let activeSubcategory = '';
+let amountInput = document.getElementById('amountInput');
+
+category.addEventListener('change', toggleSubcategory);
+
+function toggleSubcategory() {
+    if (activeSubcategory !== '') {
+        hide(subcategories[activeSubcategory]);
+    }
+    else {
+        hide(amountInput);
+    }
+    activeSubcategory = category.value;
+    if(activeSubcategory !== '') {
+        show(subcategories[activeSubcategory]);
+        show(amountInput);
+    }
+    else {
+        hide(amountInput);
+    }
+
+}
+
 function hide(element) {
-    element.style.display = "none";
+    element.style.display = 'none';
 }
 
 function show(element) {
-    element.style.display = "flex";
+    element.style.display = 'block';
 }

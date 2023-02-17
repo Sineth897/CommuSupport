@@ -16,7 +16,8 @@ $profile->profile();
 
 $profile->end(); ?>
 
-<div class="content">
+<div class="content-form">
+    <div class="form-box">
     <h3>Publish Event</h3>
 
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
@@ -39,9 +40,9 @@ $profile->end(); ?>
 
     <?php $creatEventForm->textArea($model, 'Event description','description'); ?>
 
-    <?php $creatEventForm->button('Create');  ?>
+    <?php $creatEventForm->button('Publish');  ?>
 
 <?php $creatEventForm->end(); ?>
 
-
+    </div>
 </div>
