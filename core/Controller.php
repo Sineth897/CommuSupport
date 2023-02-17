@@ -129,4 +129,9 @@ class Controller
     protected function sendSMS(string $msg,userModel $user): bool {
         return Application::sms()->send($msg,$user);
     }
+
+    protected function file() : File
+    {
+        return Application::$app->file;
+    }
 }

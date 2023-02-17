@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /**
@@ -17,6 +20,7 @@ $individualDoneeArrayKeys = ["fname","lname","age","contactNumber","email","addr
 
 $organizationDoneeHeaders = ["Organization Name","Representative Name","Contact Number","Email","Address"];
 $organizationDoneeArrayKeys = ["organizationName","representative","contactNumber","email","address"];
+
 
 
 ?>
@@ -51,12 +55,37 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$searchDiv->search();
+//$searchDiv->search();
 
 $searchDiv->end(); ?>
 
+<div class="" id="pendingVerifications">
+    <?php
+        foreach($donees['individuals'] as $key => $donee) {
+            if($donee['verificationStatus'] == 0) {
+                echo "<div class='pendingVerification'>";
+                echo "<p>First Name: " . $donee['fname'] . ' ' .$donee['lname'] . "</p>";
+                echo "<button class='btn btn-primary verify' value=". $donee['doneeID'] . ">View</button>";
+                echo "</div>";
 
-<div id="individualDoneeDisplay">
+            }
+        }
+        foreach ($donees['organizations'] as $key => $donee) {
+            if($donee['verificationStatus'] == 0) {
+                echo "<div class='pendingVerification'>";
+                echo "<p>Organization Name: " . $donee['organizationName'] . "</p>";
+                echo "<p>Representative Name: " . $donee['representative'] . "</p>";
+                echo "<button class='btn btn-primary verify' value=". $donee['doneeID'] . " >View</button>";
+                echo "</div>";
+            }
+        }
+    ?>
+
+
+</div>
+
+
+<div id="individualDoneeDisplay" class="content">
 
     <?php $individualTable = new table($individualDoneeHeaders,$individualDoneeArrayKeys); ?>
 
@@ -70,7 +99,7 @@ $searchDiv->end(); ?>
 
 </div>
 
-<div id="organizationDoneeDisplay">
+<div id="organizationDoneeDisplay" style="display: none" class="content">
 
     <?php $organizationTable = new table($organizationDoneeHeaders,$organizationDoneeArrayKeys); ?>
 
@@ -83,3 +112,5 @@ $searchDiv->end(); ?>
     } ?>
 
 </div>
+
+<script type="module" src="../public/JS/manager/donees/view.js"></script>

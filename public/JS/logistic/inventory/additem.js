@@ -48,7 +48,6 @@ confirmBtn.addEventListener('click', async function() {
             subcategoryID: subcategorySelect[activeSubcategory].value,
             amount: amount.value };
         let array = await getData('./inventory/add', 'POST', { data:data });
-        console.log(array);
         if(array['success']) {
             resultMsg.innerHTML = "Item added to inventory";
             resultMsg.style.color = "green";

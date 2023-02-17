@@ -66,8 +66,8 @@ async function showPopUp(e) {
 
     popUpEvent.setBody(event,popUpArrayKeys,popUpArrayLabels);
     if(event['status'] !== 'Cancelled') {
-        popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc},
-            {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc}]);
+        popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc,cancel:true},
+            {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc,cancel:true}]);
     }
     popUpEvent.showPopUp();
 }

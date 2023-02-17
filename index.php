@@ -92,16 +92,16 @@ $app->router->get('/register/donor', function($request,$response){
 $app->router->post('/register/donor', function($request,$response){
     $controller = new registerController("registerDonor", $request, $response);
 });
-
-
-
-
-
-
-
-
-
-
+//mobile verification
+$app->router->get('/verify/mobile', function($request,$response){
+    $controller = new registerController("verifyMobile", $request, $response);
+});
+$app->router->get('/test', function($request,$response){
+    $controller = new redirectController("test", $request, $response);
+});
+$app->router->post('/test', function($request,$response){
+    $controller = new redirectController("test", $request, $response);
+});
 
 //*************************Manager get and post methods*************************//
 //manager home page
@@ -195,13 +195,13 @@ $app->router->get('/donee/events', function ($request, $response) {
     $controller = new \app\controller\eventController("viewEvents",$request,$response);
 });
 
+$app->router->post('/donee/events/popup', function ($request,$response) {
+    $controller = new eventController('eventPopUp',$request,$response);
+});
+
 $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
-
-
-
-
 
 
 
@@ -265,6 +265,11 @@ $app->router->get('/donor/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
 
+//Donor create donation
+$app->router->get('/donor/donations/create', function ($request, $response) {
+    $controller = new \app\controller\donationController("createDonation",$request,$response);
+});
+
 //Donor view requests
 $app->router->get('/donor/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
@@ -279,11 +284,6 @@ $app->router->get('/donor/events', function($request,$response) {
 $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
-
-
-
-
-
 
 
 

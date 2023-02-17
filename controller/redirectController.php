@@ -50,5 +50,15 @@ class redirectController extends Controller
         }
     }
 
+    protected  function test(Request $request,Response $response) {
+
+        if($request->isPost()) {
+            echo $this->file()->saveDonee('nicFront',uniqid('',true),'front');
+        }
+
+
+        $this->render('test/test','Test Page');
+    }
+
 
 }

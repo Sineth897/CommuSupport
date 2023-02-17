@@ -47,7 +47,7 @@ $searchDiv->search();
 
 $searchDiv->end(); ?>
 
-<div id="driverDisplay" class="main">
+<div id="driverDisplay" class="content">
 
     <?php $driversTable = new \app\core\components\tables\table($headers,$arraykeys); ?>
 

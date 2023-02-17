@@ -38,7 +38,7 @@ $headerDiv->end();
 
         <div id=<?php echo $category ?> style="display: none">
         <?php $requestForm->dropDownList($requestmodel, 'What item you need', 'item', $requestmodel->getSubcategories($category)); ?>
-    </div>
+        </div>
     <?php } ?>
 
     <div style="display: none" id="amountInput">

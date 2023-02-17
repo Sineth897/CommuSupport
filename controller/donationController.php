@@ -27,6 +27,16 @@ class donationController extends Controller
         ]);
     }
 
+    protected function createDonation(Request $request,Response $response) {
+        $userType = $this->getUserType();
+        $model = new donationModel();
+        $user = $this->getUserModel();
+        $this->render("donor/donation/create","Donate to a community center",[
+            'model' => $model,
+            'user' => $user
+        ]);
+    }
+
 
    
 }

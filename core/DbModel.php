@@ -86,16 +86,27 @@ abstract class DbModel extends Model
 
     public function update(array $where,array $data): bool
     {
-        $tableName = static::table();
-        $attributes = array_keys($where);
-        $setData = implode(", ", array_map(fn($key,$value) => "$key = '$value'", array_keys($data), $data));
-        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr ", $attributes));
-        $statement = self::prepare("UPDATE $tableName SET $setData WHERE $sql");
-        foreach ($where as $key => $item) {
-            $statement->bindValue(":$key", $item);
+        try {
+            $tableName = static::table();
+            $attributes = array_keys($where);
+            $setData = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
+            $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr ", $attributes));
+            $statement = self::prepare("UPDATE $tableName SET $setData WHERE $sql");
+            foreach ($where as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+            foreach ($data as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+            $statement->execute();
+            return true;
         }
-        $statement->execute();
-        return true;
+        catch (\PDOException $e) {
+            echo $e->getMessage();
+
+            return false;
+        }
+
     }
 
     public function getCC(string $userID): string {
