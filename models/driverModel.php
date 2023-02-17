@@ -56,7 +56,7 @@ class driverModel extends DbModel
     public function save(): bool
     {
         $this->employeeID = uniqid('driver',true);
-        $manager = managerModel::getUser(['employeeID' => Application::session()->get('user')]);
+        $manager = managerModel::getModel(['employeeID' => Application::session()->get('user')]);
         $this->ccID = $manager->ccID;
 
         if(parent::save()) {
@@ -64,7 +64,8 @@ class driverModel extends DbModel
                 return true;
             }
             else {
-                $this->deleteOne(['employeeID' => $this->employeeID]);
+                $this->delete(['employeeID' => $this->employeeID]);
+                return false;
             }
         }
         return false;
