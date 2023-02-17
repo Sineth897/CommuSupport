@@ -9,6 +9,7 @@ class requestMiddleware extends Middleware
     {
         return [
             'viewRequests' => [$this->ADMIN,$this->CHO,$this->MANAGER,$this->DONOR,$this->DONEE,$this->LOGISTIC],
+            'postRequest' => [$this->DONEE]
         ];
     }
 }

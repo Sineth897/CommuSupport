@@ -75,8 +75,9 @@ class headerDiv
     {
         echo "<div class='pages'>";
         foreach ($pages as $key) {
+            $class = ($key === $pages[0]) ? "active-heading-page": "";
             $page = $this->pages[$key];
-            echo sprintf("<a href='%s' id='%s'><i class='material-icons'>%s</i> %s</a>", $page['link'], $page['id'], $page['icon'], $page['name']);
+            echo sprintf("<a href='%s' id='%s' class='%s'><i class='material-icons'>%s</i> %s</a>", $page['link'], $page['id'],$class, $page['icon'], $page['name']);
         }
         echo "</div>";
     }

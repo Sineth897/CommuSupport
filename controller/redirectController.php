@@ -39,7 +39,7 @@ class redirectController extends Controller
                 $response->redirect('/cho/communitycenters');
                 break;
             case 'donee':
-                $response->redirect('/donee/requests');
+                $response->redirect('/donee/request');
                 break;
             case 'donor':
                 $response->redirect('/donor/donations');
@@ -48,6 +48,16 @@ class redirectController extends Controller
                 $this->render('/guest/home', 'Welcome to CommuSupport!');
                 break;
         }
+    }
+
+    protected  function test(Request $request,Response $response) {
+
+        if($request->isPost()) {
+            echo $this->file()->saveDonee('nicFront',uniqid('',true),'front');
+        }
+
+
+        $this->render('test/test','Test Page');
     }
 
 

@@ -6,10 +6,10 @@ class PopUp {
     }
 
     inputFields = [];
-    constructor() {
-        this.popUpBackgroud = document.getElementById("popUpBackground");
-        this.popUpContainer = document.getElementById("popUpContainer");
-        this.popUpInfo = document.getElementById("popUpInfo");
+    constructor(background = 'popUpBackground', container = 'popUpContainer', info = 'popUpInfo') {
+        this.popUpBackgroud = document.getElementById(background);
+        this.popUpContainer = document.getElementById(container);
+        this.popUpInfo = document.getElementById(info);
 
     }
 
@@ -73,7 +73,9 @@ class PopUp {
         this.popUpButtons = this.getDiv('popUpButtons',['popup-btns']);
         for(let i = 0; i < buttons.length; i++) {
             this.popUpButtons.append(this.getButton(buttons[i]));
-            this.popUpButtons.append(this.getCancelButton(buttons[i]));
+            if(buttons[i]['cancel'] ) {
+                this.popUpButtons.append(this.getCancelButton(buttons[i]));
+            }
         }
         this.popUpContainer.append(this.popUpButtons);
     }
@@ -237,6 +239,16 @@ class PopUp {
                 parent.children[i].style.display = 'block';
             }
         }
+    }
+
+    include (file) {
+        let pdfDiv = document.createElement('div');
+        let pdf = document.createElement('iframe');
+        pdf.setAttribute('src',file);
+        pdf.setAttribute('width','100%');
+        pdf.setAttribute('height','100%');
+        pdfDiv.append(pdf);
+        this.popUpContainer.append(pdfDiv);
     }
 }
 

@@ -22,6 +22,8 @@ class userModel extends  DbModel
     public string $userID = '';
     public string $username = '';
     public string $password = '';
+
+    public string $confirmPassword = '';
     public string $userType = '';
     public int $invalidAttempts = 0;
     public int $lockedStatus = 0;
@@ -41,8 +43,9 @@ class userModel extends  DbModel
     public function rules(): array
     {
         return [
-            'username' => [self::$REQUIRED],
+            'username' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'password' => [self::$REQUIRED],
+            'confirmPassword' => [self::$REQUIRED, [self::$MATCH, 'match' => 'password']],
         ];
     }
 
@@ -141,7 +144,7 @@ class userModel extends  DbModel
         }
 
         $newAttemptValue = $this->invalidAttempts + 1;
-        $this->update( ['username' => $this->username],["invalidAttempts = $newAttemptValue"]);
+        $this->update( ['username' => $this->username],["invalidAttempts" => $newAttemptValue]);
     }
 
     public function setRememberMe(string $selector, string $validator, $days): bool {
