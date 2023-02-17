@@ -68,11 +68,6 @@ ul{
     justify-content: space-evenly;
     align-items: center;
     border-radius: 12px;
-    gap: 20px;
-}
-
-.block ul{
-    margin: 0 20px;
 }
 
 .block ul li

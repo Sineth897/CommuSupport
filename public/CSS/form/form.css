@@ -73,10 +73,11 @@
     text-align: left;
 }
 
-#submit-form-group {
+#submit-form-group
+{
     display: flex;
-    align-items: end;
-    justify-content: end;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Form Containers */
@@ -87,8 +88,4 @@
     width: 100%;
     overflow-y: scroll;
     height: 100%;
-}
-
-.basic-check-box {
-
 }
