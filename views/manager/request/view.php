@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="../public/CSS/cards/request-card.css">
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
+
 <?php
 
 /** @var $model \app\models\requestModel */
@@ -62,12 +66,14 @@ $searchDiv->end();
 
 <div class="content" id="pendingRequests">
 
-    <?php
-    echo '<pre>';
-    print_r($pending);
-    echo '</pre>';
-    ?>
+    <div class="card-container">
+        <?php
+        $requsetCards = new \app\core\components\cards\requestcard();
 
+        $requsetCards->displayRequests($pending,[["View","pendingRequestView"]]);
+
+        ?>
+    </div>
 
 </div>
 
@@ -92,3 +98,5 @@ $searchDiv->end();
 
 
 </div>
+
+<script type="module" src="../public/JS/manager/requests/view.js"></script>

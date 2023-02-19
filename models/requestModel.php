@@ -8,7 +8,7 @@ class requestModel extends DbModel
     public string $requestID = "";
     public string $postedBy ="";
     public string $approval = "";
-    public string $approvedDate = "";
+    public ?string $approvedDate = "";
     public string $item = "";
     public string $amount = "";
     public string $address = "";
@@ -74,9 +74,23 @@ class requestModel extends DbModel
     }
 
     public function getRequestsUnderCC(string $ccID) {
-        $stmnt = self::prepare('SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID WHERE r.postedBy IN (SELECT doneeID FROM donee WHERE ccID = :ccID)');
+        $stmnt = self::prepare('SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy IN (SELECT doneeID FROM donee WHERE ccID = :ccID)');
         $stmnt->bindValue(':ccID',$ccID);
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function rejectRequest(string $rejectedReason) {
+        $cols = ['requestID','postedBy','item','amount','address','urgency','postedDate','notes'];
+        $colstring = implode(',', array_map(fn($col) => ":$col", $cols));
+        $sql = 'INSERT INTO rejectedrequest VALUES (' . $colstring . ',:rejectedDate,:rejectedReason)';
+        $stmnt = self::prepare($sql);
+        foreach ($cols as $attribute) {
+            $stmnt->bindValue(":$attribute", $this->{$attribute});
+        }
+        $stmnt->bindValue(':rejectedDate',date('Y-m-d'));
+        $stmnt->bindValue(':rejectedReason',$rejectedReason);
+        $stmnt->execute();
+        $this->delete(['requestID' => $this->requestID]);
     }
 }

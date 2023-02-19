@@ -78,6 +78,7 @@ class eventController extends Controller
     protected function updateEvent(Request $request,Response $response) {
         $data = $request->getJsonData();
         $func = $data['do'];
+        unset($data['do']);
         $data = $data['data'];
         try {
             switch ($func) {
