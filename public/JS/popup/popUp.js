@@ -1,6 +1,8 @@
 class PopUp {
 
     popInfoFlag = false;
+    splitFormFlag = false;
+    splitDiv = null;
     statusIcon = {
         Upcoming: 'status-green',
     }
@@ -46,7 +48,12 @@ class PopUp {
                 this.setField(arrKeys[i],arr[arrKeys[i]],arrKeys[i]);
             }
         }
-        this.popUpContainer.append(this.popUpDetails);
+        if(this.splitFormFlag) {
+            this.splitDiv.append(this.popUpDetails);
+        }
+        else {
+            this.popUpContainer.append(this.popUpDetails);
+        }
     }
 
     setField(label,value,id) {
@@ -80,6 +87,18 @@ class PopUp {
         this.popUpContainer.append(this.popUpButtons);
     }
 
+    insertHeading(heading) {
+        this.heading = document.createElement('h3');
+        this.heading.classList.add('form-heading');
+        this.heading.innerHTML = heading;
+        if(this.splitFormFlag) {
+            this.splitDiv.append(this.heading);
+        }
+        else {
+            this.popUpContainer.append(this.heading);
+        }
+    }
+
     getLabel(label,forId) {
         this.label = document.createElement('label');
         this.label.setAttribute('class','form-label');
@@ -103,7 +122,6 @@ class PopUp {
         this.field = document.createElement('textarea');
         this.field.setAttribute('class','basic-text-area description');
         this.field.setAttribute('disabled','');
-        this.field.setAttribute('rows','6');
         this.field.innerHTML = value;
         this.field.setAttribute('id',id);
         this.inputFields.push(this.field);
@@ -208,6 +226,17 @@ class PopUp {
     endPopUpInfo() {
         this.popUpContainer.append(this.popUpInfo);
         this.popInfoFlag = false;
+    }
+
+    startSplitDiv() {
+        this.splitDiv = this.getDiv('',['form-split']);
+        this.splitFormFlag = true;
+    }
+
+    endSplitDiv() {
+        this.popUpContainer.append(this.splitDiv);
+        this.splitDiv = null;
+        this.splitFormFlag = false;
     }
 
     showStatus(status) {
