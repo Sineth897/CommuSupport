@@ -24,30 +24,40 @@ class redirectController extends Controller
     {
         switch ($this->getUserType()) {
             case 'admin':
-                $response->redirect('/admin/communitycenters');
+                $response->redirect('/admin/communityheadoffices');
                 break;
             case 'manager':
                 $response->redirect('/manager/events');
                 break;
             case 'logistic':
-                $response->redirec('/logistic/deliveries');
+                $response->redirect('/logistic/deliveries');
                 break;
             case 'driver':
-                $response->redirec('/driver/deliveries');
+                $response->redirect('/driver/deliveries');
                 break;
             case 'cho':
-                $response->redirec('/cho/communitycenters');
+                $response->redirect('/cho/communitycenters');
                 break;
             case 'donee':
-                $response->redirec('/donee/request');
+                $response->redirect('/donee/request');
                 break;
             case 'donor':
-                $response->redirec('/donor/donations');
+                $response->redirect('/donor/donations');
                 break;
             default:
-                $this->render('/guest/home');
+                $this->render('/guest/home', 'Welcome to CommuSupport!');
                 break;
         }
+    }
+
+    protected  function test(Request $request,Response $response) {
+
+        if($request->isPost()) {
+            echo $this->file()->saveDonee('nicFront',uniqid('',true),'front');
+        }
+
+
+        $this->render('test/test','Test Page');
     }
 
 
