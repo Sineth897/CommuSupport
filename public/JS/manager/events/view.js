@@ -2,6 +2,9 @@ import {getData} from "../../request.js";
 import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
+import togglePages from "../../togglePages.js";
+
+let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'completedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}]);
 
 let filterOptions = document.getElementById('filterOptions');
 
@@ -66,8 +69,8 @@ async function showPopUp(e) {
 
     popUpEvent.setBody(event,popUpArrayKeys,popUpArrayLabels);
     if(event['status'] !== 'Cancelled') {
-        popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc},
-            {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc}]);
+        popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc,cancel:true},
+            {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc,cancel:true}]);
     }
     popUpEvent.showPopUp();
 }

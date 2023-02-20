@@ -1,5 +1,12 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
+/** @var $model \app\models\requestModel */
+/** @var $user  \app\models\doneeModel*/
+
+use app\core\Application;
+
+$user = $user->findOne(['doneeID' => Application::$app->session->get('user')]);
+$requests = $model->retrieve(["postedBy" => $user->doneeID]);
 
 ?>
 
@@ -31,6 +38,13 @@ $headerDiv->pages(["active", "completed"]);
 $headerDiv->end();
 ?>
 
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
+?>
 
 <!--        Search and filter boxes -->
 <?php
@@ -48,7 +62,7 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$creatEvent = \app\core\components\form\form::begin('./donations/create', 'get');
+$creatEvent = \app\core\components\form\form::begin('./request/create', 'get');
 
 echo "<button class='btn-cta-primary'> Request </button>";
 
@@ -56,3 +70,15 @@ $creatEvent->end();
 
 $searchDiv->end();
 ?>
+
+
+<div class="content">
+
+    <?php
+        echo "<pre>";
+        print_r($requests);
+        echo "</pre>";
+    ?>
+
+
+</div>

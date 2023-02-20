@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/cards/eventcard.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -8,22 +9,13 @@ $events = $model->retrieve();
 
 ?>
 
+<?php $profile = new \app\core\components\layout\profileDiv();
 
-<!--profile div-->
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
 <?php
@@ -34,6 +26,13 @@ $headerDiv->heading("Events");
 $headerDiv->end();
 ?>
 
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
+?>
 
 <!--        Search and filter boxes -->
 <?php
@@ -58,9 +57,11 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="main">
+<div class="content">
     <?php
     $eventCards = new \app\core\components\cards\eventcard();
     $eventCards->displayEvents($events);
     ?>
 </div>
+
+<script type="module" src="../public/JS/donee/event/view.js"></script>

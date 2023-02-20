@@ -13,7 +13,7 @@ class donorModel extends DbModel
     public string $address = '';
     public string $contactNumber = '';
     public string $type = '';
-    public string $mobileVerification = '';
+    public int $mobileVerification = 0;
 
     private userModel $user;
     private donorIndividualModel $donorIndividual;
@@ -38,9 +38,9 @@ class donorModel extends DbModel
     {
         return [
             'ccID' => [self::$REQUIRED],
-            'email' => [self::$REQUIRED, self::$EMAIL],
-            'address' => [self::$REQUIRED],
-            'contactNumber' => [self::$REQUIRED, self::$CONTACT],
+            'email' => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE, 'class' => self::class]],
+            'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
         ];
     }
@@ -136,6 +136,32 @@ class donorModel extends DbModel
             echo $e->getMessage();
             return false;
         }
+    }
+
+    public function createDonation($data): bool
+    {
+        $cols = ['donationID', 'createdBy', 'item', 'amount', 'address', 'donateTo'];
+        $data['donationID'] = substr(uniqid('donation',true),0,23);
+        $data['createdBy'] = $this->donorID;
+        if(empty($data['address'])) {
+            $data['address'] = $this->address;
+        }
+        if(empty($data['donateTo'])) {
+            $data['donateTo'] = $this->ccID;
+        }
+        try {
+            $sql = "INSERT INTO donation (donationID,createdBy,item,amount,address,donateTo) VALUES (:donationID,:createdBy,:item,:amount,:address,:donateTo)";
+            $statement = self::prepare($sql);
+            foreach ($cols as $attr) {
+                $statement->bindValue(":$attr", $data[$attr]);
+            }
+            return $statement->execute();
+        }
+        catch (\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+
     }
 
 }

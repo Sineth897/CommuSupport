@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
 <?php
 
 /**
@@ -15,24 +16,17 @@ $individualDonorHeaders = ['First Name','Last name','Age','Contact Number','Emai
 $individualDonorKeys = ['fname','lname','age','contactNumber','email','address'];
 
 $organizationDonorHeaders = ['Organization Name','Representative Name','Contact Number','Email','Address'];
-$organizationDonorKeys = ['organizationName','representativeName','contactNumber','email','address'];
+$organizationDonorKeys = ['organizationName','representative','contactNumber','email','address'];
 
 ?>
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -61,7 +55,7 @@ $searchDiv->search();
 $searchDiv->end(); ?>
 
 
-<div id="individualDonorDisplay">
+<div id="individualDonorDisplay" class="content">
 
     <?php $individualDonorTable =  new table($individualDonorHeaders,$individualDonorKeys); ?>
 
@@ -76,7 +70,7 @@ $searchDiv->end(); ?>
 
 </div>
 
-<div id="organizationDonorDisplay">
+<div id="organizationDonorDisplay" class="content" style="display: none">
 
         <?php $organizationDonorTable =  new table($organizationDonorHeaders,$organizationDonorKeys); ?>
 
@@ -89,3 +83,5 @@ $searchDiv->end(); ?>
         }
         ?>
 </div>
+
+<script type="module" src="../public/JS/manager/donors/view.js"

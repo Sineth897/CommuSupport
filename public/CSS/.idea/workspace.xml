@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5155fff4-100a-4c5f-b178-1bf410d5fe20" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../core/Router.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../core/Router.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../public/CSS/landingPage/landingpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/CSS/landingPage/landingpage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../public/src/landingpage/Load more-pana 1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/src/landingpage/01.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../public/src/landingpage/Take Away-pana 1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/src/landingpage/02.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../public/src/landingpage/World Humanitarian Day-rafiki (1) 1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/src/landingpage/03.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home.php" beforeDir="false" afterPath="$PROJECT_DIR$/home.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../layouts/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/../layouts/baseLayout.php" afterDir="false" />
-    </list>
+    <list default="true" id="4e6339ce-bbf6-4231-a262-3d151f5c3756" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,7 +13,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectId" id="2KMGIJPkQ8cqalqlphUH8HXETkX" />
+  <component name="ProjectId" id="2LRzmfQInXPYk6vqwAdyHf16O8G" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -41,13 +33,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5155fff4-100a-4c5f-b178-1bf410d5fe20" name="Changes" comment="" />
-      <created>1673776959508</created>
+      <changelist id="4e6339ce-bbf6-4231-a262-3d151f5c3756" name="Changes" comment="" />
+      <created>1675848843357</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1673776959508</updated>
-      <workItem from="1673776961348" duration="61000" />
-      <workItem from="1673853700450" duration="597000" />
+      <updated>1675848843357</updated>
+      <workItem from="1675848844717" duration="653000" />
     </task>
     <servers />
   </component>

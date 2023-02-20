@@ -30,10 +30,10 @@ class donorOrganizationModel extends DbModel
     public function rules(): array
     {
         return [
-            'organizationName' => [self::$REQUIRED],
-            'regNo' => [self::$REQUIRED],
+            'organizationName' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
+            'regNo' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
             'representative' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
-            'representativeContact' => [self::$REQUIRED,[self::$UNIQUE,'class'=>self::class]],
+            'representativeContact' => [self::$REQUIRED,self::$CONTACT,[self::$UNIQUE,'class'=>self::class]],
         ];
     }
 }
