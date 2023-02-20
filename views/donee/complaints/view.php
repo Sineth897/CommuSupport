@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
 
@@ -20,6 +21,14 @@ $headerDiv->heading("Complaints");
 $headerDiv->pages(['pending','completed']);
 
 $headerDiv->end();
+?>
+
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
 ?>
 
 

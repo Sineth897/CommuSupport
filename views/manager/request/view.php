@@ -40,7 +40,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Requests");
 
-$headerDiv->pages(["pending","published","history"]);
+$headerDiv->pages(["pending","posted","history"]);
 
 $headerDiv->end();
 ?>

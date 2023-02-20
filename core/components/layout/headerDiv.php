@@ -41,11 +41,11 @@ class headerDiv
             'icon' => 'business',
             'name' => 'Organization'
         ],
-        'published' => [
-            'id' => 'published',
+        'posted' => [
+            'id' => 'posted',
             'link' => '#',
             'icon' => 'publish',
-            'name' => 'Published'
+            'name' => 'Posted'
         ],
         'history' => [
             'id' => 'history',
@@ -58,6 +58,12 @@ class headerDiv
             'link' => '#',
             'icon' => 'broadcast_on_personal',
             'name' => 'Active'
+        ],
+        'upcoming' => [
+            'id' => 'upcoming',
+            'link' => '#',
+            'icon' => 'schedule',
+            'name' => 'Upcoming'
         ],
     ];
 

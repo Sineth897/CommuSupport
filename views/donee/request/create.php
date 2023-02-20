@@ -24,6 +24,14 @@ $headerDiv->heading("Post a request");
 $headerDiv->end();
 ?>
 
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
+?>
+
 <div class="content-form">
 
     <div class="form-box">

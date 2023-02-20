@@ -1,26 +1,9 @@
 import {getData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
+import togglePages from "../../togglePages.js";
 
-let individual = document.getElementById('individual');
-let organizations = document.getElementById('organization');
-
-let individualDoneeDisplay = document.getElementById('individualDoneeDisplay');
-let organizationDoneeDisplay = document.getElementById('organizationDoneeDisplay');
-
-individual.addEventListener('click', function() {
-    individual.classList.add('active-heading-page');
-    organizations.classList.remove('active-heading-page');
-    show(individualDoneeDisplay);
-    hide(organizationDoneeDisplay);
-});
-
-organizations.addEventListener('click', function() {
-    individual.classList.remove('active-heading-page');
-    organizations.classList.add('active-heading-page');
-   show(organizationDoneeDisplay);
-   hide(individualDoneeDisplay);
-});
+let toggle = new togglePages([{btnId:'individual',pageId:'individualDoneeDisplay'},{btnId:'organization',pageId:'organizationDoneeDisplay'}]);
 
 function toggleHidden(element) {
     if(element.style.display === "none") {
