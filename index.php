@@ -302,6 +302,9 @@ $app->router->get('/donor/donations', function ($request, $response) {
 $app->router->get('/donor/donations/create', function ($request, $response) {
     $controller = new \app\controller\donationController("createDonation",$request,$response);
 });
+$app->router->post('/donor/donations/create', function ($request, $response) {
+    $controller = new \app\controller\donationController("createDonation",$request,$response);
+});
 
 //Donor view requests
 $app->router->get('/donor/requests', function ($request, $response) {

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
 ?>
@@ -19,6 +20,13 @@ $headerDiv->heading("Community Centers");
 $headerDiv->end();
 ?>
 
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
+?>
 
 <!--        Search and filter boxes -->
 <?php

@@ -31,7 +31,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Events");
 
-$headerDiv->pages(["ongoing", "completed", "cancelled"]);
+$headerDiv->pages(["upcoming", "completed", "cancelled"]);
 
 $headerDiv->end();
 ?>
@@ -66,7 +66,7 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="content">
+<div class="content" id="upcomingEvents">
 <?php
 $eventCards = new \app\core\components\cards\eventcard();
 $eventCards->displayEvents($events);
@@ -74,9 +74,13 @@ $eventCards->displayEvents($events);
 ?>
 </div>
 
+<div class="content" id="completedEvents" style="display: none">
+    <h1>Completed Events</h1>
+</div>
 
-
-
+<div class="content" id="cancelledEvents" style="display: none">
+    <h1>Cancelled Events</h1>
+</div>
 
 
 

@@ -1,18 +1,21 @@
 import {getData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
+import togglePages from "../../togglePages.js";
+
+let toggle = new togglePages([{btnId:'pending',pageId:'pendingRequests'},{btnId:'posted',pageId:'postedRequests'},{btnId:'history',pageId:'completedRequests'}]);
 
 let requests = document.querySelectorAll('.pendingRequestView');
 requests = Array.from(requests);
 
 for(let i = 0; i < requests.length; i++) {
-    requests[i].addEventListener('click', (e) => showPopUp(e));
+    requests[i].addEventListener('click', (e) => showPendingReqPopUp(e));
 }
 
 
 let popUpRequest = new PopUp();
 
-async function showPopUp(e) {
+async function showPendingReqPopUp(e) {
 
     let request = await getData('./requests/popup', 'POST', {"r.requestID": e.target.value});
     console.log(request);
@@ -26,8 +29,16 @@ async function showPopUp(e) {
 
     popUpRequest.insertHeading('Posted by');
     popUpRequest.startSplitDiv();
-    popUpRequest.setBody(donee,['name','contactNumber'],['Name','Contact Number']);
-    popUpRequest.setBody(donee,['address','registeredDate'],['Address','Registered On']);
+    if(donee['type'] === 'Individual') {
+        popUpRequest.setBody(donee,['name','contactNumber'],['Name','Contact Number']);
+        popUpRequest.setBody(donee,['address','registeredDate'],['Address','Registered On']);
+    } else {
+        popUpRequest.setBody(donee,['organizationName','contactNumber','representativeName'],['Organization Name','Contact Number','Representative Name']);
+        popUpRequest.setBody(donee,['address','registeredDate','representativeContact'],['Address','Registered On','Representative Contact']);
+        if(donee['capacity']) {
+            popUpRequest.setBody(donee,['capacity'],['Dependants']);
+        }
+    }
     popUpRequest.endSplitDiv();
     popUpRequest.insertHeading('Request Details');
     popUpRequest.startSplitDiv();
@@ -98,8 +109,6 @@ let rejectFun = async (e) => {
         else {
             console.log(result);
         }
-
-
         popUpRequest.hidePopUp();
     }
 }

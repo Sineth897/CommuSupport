@@ -15,6 +15,7 @@ class doneeModel extends DbModel
     public string $address = '';
     public string $contactNumber = '';
     public string $type = '';
+    public int $mobileVerification = 0;
 
     public function table(): string
     {
