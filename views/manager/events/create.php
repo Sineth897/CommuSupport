@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
+
 <?php
 
 /** @var $model \app\models\eventModel */
@@ -6,43 +8,41 @@ echo \app\core\Application::session()->getFlash('result');
 
 ?>
 
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
+
+<div class="content-form">
+    <div class="form-box">
+    <h3>Publish Event</h3>
+
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
 
-<div>
-    <?php $creatEventForm->dropDownList($model, 'Event category', 'eventCategory', $model->getEventCategories()); ?>
-</div>
+    <?php $creatEventForm->dropDownList($model, 'Event category', 'eventCategoryID', $model->getEventCategories()); ?>
 
-<div>
     <?php $creatEventForm->inputField($model, 'Event Theme','text','theme'); ?>
-</div>
 
-<div>
     <?php $creatEventForm->inputField($model, 'Event organized by','text','organizedBy'); ?>
-</div>
 
-<div>
     <?php $creatEventForm->inputField($model, 'Contact number','text','contact'); ?>
-</div>
 
-<div>
-    <?php $creatEventForm->inputField($model, 'Event date','date','date'); ?>
-</div>
+    <div class="form-split">
+        <?php $creatEventForm->inputField($model, 'Event date','date','date'); ?>
 
-<div>
-    <?php $creatEventForm->inputField($model, 'Event time','time','time'); ?>
-</div>
+        <?php $creatEventForm->inputField($model, 'Event time','time','time'); ?>
+    </div>
 
-<div>
     <?php $creatEventForm->inputField($model, 'Event location','text','location'); ?>
-</div>
 
-<div>
     <?php $creatEventForm->textArea($model, 'Event description','description'); ?>
-</div>
 
-<?php $creatEventForm->submitButton('Create');  ?>
+    <?php $creatEventForm->button('Publish');  ?>
 
 <?php $creatEventForm->end(); ?>
 
-
-
+    </div>
+</div>
