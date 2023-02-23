@@ -15,21 +15,21 @@
                 <i class="material-icons">emoji_people</i>
                 <span class="links_name">Users</span>
             </a>
-            <span class="tooltip">Users</span>
+<!--            <span class="tooltip">Users</span>-->
         </li>
         <li>
             <a href="/CommuSupport/cho/communitycenters">
                 <i class="material-icons">emoji_transportation</i>
                 <span class="links_name">Community Centers</span>
             </a>
-            <span class="tooltip">Community Centers</span>
+<!--            <span class="tooltip">Community Centers</span>-->
         </li>
         <li>
             <a href="/CommuSupport/cho/complaints">
                 <i class="material-icons">report_gmailerrorred</i>
                 <span class="links_name">Complaints</span>
             </a>
-            <span class="tooltip">Complaints</span>
+<!--            <span class="tooltip">Complaints</span>-->
         </li>
     </ul>
     <div class="logout">

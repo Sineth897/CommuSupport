@@ -9,6 +9,7 @@ class donationMiddleware extends Middleware
     {
         return [
             'viewDonations' => [$this->ADMIN,$this->CHO,$this->MANAGER,$this->DONOR,$this->LOGISTIC],
+            'createDonation' => [$this->DONOR],
         ];
     }
 }

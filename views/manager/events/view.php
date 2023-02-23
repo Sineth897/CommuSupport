@@ -17,21 +17,13 @@ $ccID = $manager->ccID;
 $events = $model->retrieve(["ccID" => $ccID],["DESC" => ["date"]]);
 ?>
 
-<!--profile div-->
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
 <?php
@@ -39,7 +31,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Events");
 
-$headerDiv->pages(["ongoing", "completed", "cancelled"]);
+$headerDiv->pages(["upcoming", "completed", "cancelled"]);
 
 $headerDiv->end();
 ?>
@@ -74,7 +66,7 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="content">
+<div class="content" id="upcomingEvents">
 <?php
 $eventCards = new \app\core\components\cards\eventcard();
 $eventCards->displayEvents($events);
@@ -82,10 +74,13 @@ $eventCards->displayEvents($events);
 ?>
 </div>
 
+<div class="content" id="completedEvents" style="display: none">
+    <h1>Completed Events</h1>
+</div>
 
-
-
-
+<div class="content" id="cancelledEvents" style="display: none">
+    <h1>Cancelled Events</h1>
+</div>
 
 
 

@@ -18,12 +18,11 @@ class complaintController extends Controller
 
     protected function viewComplaints(Request $request, Response $response)
     {
-        $model = new complaintModel();
         $userType = $this->getUserType();
+        $complaints = new complaintModel();
         $user = $this->getUserModel();
-        $this->render($userType . "/complaints/view", 'Complaints', [
-            'complaints' => $model,
-            'user' => $user
-        ]);
+        $this->render($userType . '/complaints/view','Complaints',[
+            "complaints"=> $complaints,
+            "user"=>$user
     }
 }

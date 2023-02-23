@@ -8,23 +8,16 @@ echo \app\core\Application::session()->getFlash('result');
 
 ?>
 
-<!--profile div-->
+<?php $profile = new \app\core\components\layout\profileDiv();
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
-<div class="form-container event-manager">
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
+
+<div class="content-form">
+    <div class="form-box">
     <h3>Publish Event</h3>
 
 <?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
@@ -47,9 +40,9 @@ echo \app\core\Application::session()->getFlash('result');
 
     <?php $creatEventForm->textArea($model, 'Event description','description'); ?>
 
-    <?php $creatEventForm->button('Create');  ?>
+    <?php $creatEventForm->button('Publish');  ?>
 
 <?php $creatEventForm->end(); ?>
 
-
+    </div>
 </div>

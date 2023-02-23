@@ -21,20 +21,13 @@ for($i = 0; $i < count($items); $i++) {
 
 ?>
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -57,8 +50,8 @@ $searchDiv->filterEnd();
 $searchDiv->sortBegin();
 
 $sortForm = \app\core\components\form\form::begin('', '');
-$sortForm->inputField($inventory, "Last Updated", 'checkbox', "updatedTime", 'sortLastUpdated');
-$sortForm->inputField($inventory, "Amount", 'checkbox', "amount", 'sortAmount');
+$sortForm->checkBox($inventory,"Last Updated","updatedTime",'sortLastUpdated');
+$sortForm->checkBox($inventory, "Amount", "amount", 'sortAmount');
 $sortForm::end();
 
 $searchDiv->sortEnd();
@@ -110,7 +103,7 @@ $searchDiv->filterDivEnd(); ?>
 
 </div>
 
-<div id="inventoryDisplay">
+<div id="inventoryDisplay" class="content">
 
     <?php $inventoryTable = new \app\core\components\tables\table($tableHeaders, $arrayKeys); ?>
 

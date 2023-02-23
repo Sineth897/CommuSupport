@@ -4,8 +4,10 @@
 /** @var $user \app\models\choModel */
 
 $userID = \app\core\Application::session()->get('user');
+
 $user = $user->findOne(['choID' => $userID]);
 $CC = $model->retrieve(['choID' => $userID]);
+
 
 
 ?>
