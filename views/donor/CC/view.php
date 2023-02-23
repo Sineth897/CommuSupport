@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
 /** @var $model \app\models\ccModel */
@@ -29,6 +30,14 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 $headerDiv->heading("Community Centers");
 
 $headerDiv->end();
+?>
+
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
 ?>
 
 

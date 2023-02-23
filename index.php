@@ -161,11 +161,44 @@ $app->router->get('/manager/donors', function ($request, $response) {
 $app->router->get('/manager/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
-
+$app->router->post('/manager/requests/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+$app->router->post('/manager/request/approve', function ($request, $response) {
+    $controller = new \app\controller\requestController("setApproval",$request,$response);
+});
 //Manager view donation
 $app->router->get('/manager/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -267,6 +300,9 @@ $app->router->get('/donor/donations', function ($request, $response) {
 
 //Donor create donation
 $app->router->get('/donor/donations/create', function ($request, $response) {
+    $controller = new \app\controller\donationController("createDonation",$request,$response);
+});
+$app->router->post('/donor/donations/create', function ($request, $response) {
     $controller = new \app\controller\donationController("createDonation",$request,$response);
 });
 

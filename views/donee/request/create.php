@@ -19,12 +19,22 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Request your need");
+$headerDiv->heading("Post a request");
 
 $headerDiv->end();
 ?>
 
-<div class="content">
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
+?>
+
+<div class="content-form">
+
+    <div class="form-box">
 
     <?php $requestForm = \app\core\components\form\form::begin('','post') ?>
 
@@ -36,22 +46,24 @@ $headerDiv->end();
 
         <?php foreach ($categories as $category => $name)  {?>
 
-        <div id=<?php echo $category ?> style="display: none">
+        <div id='<?php echo $category ?>' style='display: none'>
         <?php $requestForm->dropDownList($requestmodel, 'What item you need', 'item', $requestmodel->getSubcategories($category)); ?>
         </div>
     <?php } ?>
+    </div>
 
-    <div style="display: none" id="amountInput">
+    <div style="display: none" id="amountInput" class="form-split">
         <?php $requestForm->inputField($requestmodel,'Amount','number','amount',); ?>
     </div>
 
-    </div>
 
     <?php $requestForm->formHeader('Delivery Details'); ?>
 
     <?php $requestForm->inputField($requestmodel,'Delivery Address (Optional)','text','address'); ?>
 
-    <?php $requestForm->dropDownList($requestmodel,'Urgency','urgency',$requestmodel->getUrgency()); ?>
+    <div class="form-split">
+        <?php $requestForm->dropDownList($requestmodel,'Urgency','urgency',$requestmodel->getUrgency()); ?>
+    </div>
 
     <?php $requestForm->textArea($requestmodel,"Additional Notes (optional)",'notes') ?>
 
@@ -59,6 +71,17 @@ $headerDiv->end();
 
     <?php $requestForm::end();?>
 
+    </div>
+
 </div>
 
 <script type="module" src="../../public/JS/donee/request/create.js"></script>
+
+<script>
+
+    <?php if(isset($_POST['requestCategoryID'])) { ?>
+        document.getElementById('<?php echo $_POST['requestCategoryID'] ?>').style.display = 'block';
+        document.getElementById('requestCategory').value = '<?php echo $_POST['requestCategoryID'] ?>';
+    <?php } ?>
+
+</script>

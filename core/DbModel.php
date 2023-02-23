@@ -118,10 +118,16 @@ abstract class DbModel extends Model
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = []): array {
+    public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = [],string $col =''): array {
         $table = static::table();
-        $primaryKey = static::getPrimaryKey();
-        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$onColumn = $tableName.$onColumn";
+        $sql = '';
+        if($col !== '') {
+            $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$col = $tableName.$onColumn";
+        }
+        else {
+            $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$onColumn = $tableName.$onColumn";
+        }
+
         if($whereCondition) {
             $attributes = array_keys($whereCondition);
             $where = implode("AND ", array_map(fn($attr) => "$attr = '$whereCondition[$attr]'", $attributes));

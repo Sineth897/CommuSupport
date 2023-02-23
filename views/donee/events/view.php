@@ -26,6 +26,13 @@ $headerDiv->heading("Events");
 $headerDiv->end();
 ?>
 
+<?php
+$checkVerification = new \app\core\components\layout\verificationDiv();
+
+if($checkVerification->notVerified()) {
+    return;
+}
+?>
 
 <!--        Search and filter boxes -->
 <?php
