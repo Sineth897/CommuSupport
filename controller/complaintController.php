@@ -7,17 +7,16 @@ use app\core\middlewares\complaintMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\complaintModel;
-use app\models\userModel;
 
 class complaintController extends Controller
 {
-    public function __construct($func, Request $request, Response $response)
+    public function __construct(string $func, Request $request, Response $response)
     {
         $this->middleware = new complaintMiddleware();
         parent::__construct($func, $request, $response);
     }
 
-    protected function viewComplaint(Request $request, Response $response)
+    protected function viewComplaints(Request $request, Response $response)
     {
         $userType = $this->getUserType();
         $complaints = new complaintModel();
@@ -25,8 +24,5 @@ class complaintController extends Controller
         $this->render($userType . '/complaints/view','Complaints',[
             "complaints"=> $complaints,
             "user"=>$user
-
-        ]);
-
     }
 }
