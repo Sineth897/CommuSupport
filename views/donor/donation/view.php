@@ -55,3 +55,14 @@ $creatEvent->end();
 
 $searchDiv->end();
 ?>
+
+
+<div class="content" id="activeDonations">
+    <h3>Ongoing Donations</h3>
+</div>
+
+<div class="content" id="completedDonations">
+    <h3>Completed Donations</h3>
+</div>
+
+<script type="module" src="../public/JS/donor/donation/view.js"></script>

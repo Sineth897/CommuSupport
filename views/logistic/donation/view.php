@@ -36,3 +36,13 @@ $searchDiv->filterDivEnd(); ?>
 
 
 <?php $searchDiv->end(); ?>
+
+<div class="content" id="ongoingDonations">
+    <h3>Ongoing Donations</h3>
+</div>
+
+<div class="content" id="completedDonations">
+    <h3>Completed Donations</h3>
+</div>
+
+<script type="module" src="../public/JS/logistic/donation/view.js"></script>

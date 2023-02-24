@@ -38,4 +38,9 @@ class ccController extends Controller
         ]);
     }
 
+    protected function getCoordinates(Request $request,Response $response) {
+        $model = new ccModel();
+        $this->sendJson($model->getCoordinates());
+    }
+
 }

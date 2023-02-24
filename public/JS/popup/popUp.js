@@ -62,6 +62,10 @@ class PopUp {
             if(label[1] === 'textarea') {
                 this.field = this.getTextArea(value,id);
             }
+            else if(label[1] === 'bool') {
+                value = (value === 1) ? 'Yes' : 'No';
+                this.field = this.getInputField('text', value,id);
+            }
             else {
                 this.field = this.getInputField(label[1], value,id);
             }
