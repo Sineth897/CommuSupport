@@ -57,7 +57,7 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$creatEvent = \app\core\components\form\form::begin('./events/create', 'get');
+$creatEvent = \app\core\components\form\form::begin('./event/create', 'get');
 
 echo "<button class='btn-cta-primary'> Publish event </button>";
 

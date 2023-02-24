@@ -15,7 +15,7 @@ $profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Create a delivery"); ?>
+<?php $headerDiv->heading("Create a deliveries"); ?>
 
 <?php $headerDiv->end(); ?>
 

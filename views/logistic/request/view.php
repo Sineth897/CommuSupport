@@ -16,7 +16,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Requests");
 
-$headerDiv->pages(["published","history"]);
+$headerDiv->pages(["posted","history"]);
 
 $headerDiv->end();
 ?>
@@ -40,7 +40,13 @@ $searchDiv->filterDivEnd();
 $searchDiv->end();
 ?>
 
-<div class="filler main">
-
+<div class="content" id="postedRequests">
+    <h3>Posted Requests</h3>
 </div>
+
+<div class="content" id="historyRequests">
+    <h3>History</h3>
+</div>
+
+<script type="module" src="../public/JS/logistic/request/view.js"></script>
 

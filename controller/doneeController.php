@@ -28,4 +28,25 @@ class doneeController extends Controller
         ]);
     }
 
+    protected function getData(Request $request, Response $response)
+    {
+        try {
+            $data = $request->getJsonData();
+            $this->sendJson($this->getDoneeDetails($data['doneeID'])[0]);
+        } catch (\Exception $e) {
+            $this->sendJson($e->getMessage());
+        }
+
+    }
+
+    private function getDoneeDetails($doneeID)
+    {
+        $donee = doneeModel::getModel(['doneeID' =>$doneeID]);
+        if($donee->type == "Individual") {
+            return $donee->retrieveWithJoin('doneeindividual','doneeID',['donee.doneeID' => $doneeID]);
+        } else {
+            return $donee->retrieveWithJoin('doneeorganization','doneeID',['donee.doneeID' => $doneeID]);
+        }
+    }
+
 }

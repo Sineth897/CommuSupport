@@ -40,7 +40,7 @@ class verificationDiv
         echo "<p>You haven't verify your mobile yet. Please verify your mobile to access services </p>";
         echo "</div>";
         echo "<div class='mobile-verification-div-content-body'>";
-        echo "<a href='#' class='btn btn-primary'>Proceed</a>";
+        echo "<a href='/CommuSupport/verifyMobile' class='btn btn-primary'>Proceed</a>";
         echo "</div>";
         echo "</div>";
     }

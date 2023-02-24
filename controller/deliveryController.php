@@ -34,7 +34,7 @@ class deliveryController extends Controller
         $delivery = new deliveryModel();
 
         $this->render('/logistic/deliveries/create','Create a Delivery',[
-                'delivery' => $delivery
+                'deliveries' => $delivery
         ]);
     }
 }

@@ -75,4 +75,44 @@ class eventModel extends DbModel
         }
         return $preparedIcons;
     }
+
+    public function isGoing($eventID) {
+        $sql = "SELECT * FROM eventparticipation WHERE eventID = :eventID AND userID = :doneeID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':eventID',$eventID);
+        $stmt->bindValue(':doneeID',Application::session()->get('user'));
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+
+    public static function markParticipation(string $eventID) {
+        $userID = Application::session()->get('user');
+        $sql = "INSERT INTO eventparticipation VALUES (:userID,:eventID)";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':userID',$userID);
+        $stmt->bindValue(':eventID',$eventID);
+        $stmt->execute();
+    }
+
+    public static function unmarkParticipation(string $eventID) {
+        $userID = Application::session()->get('user');
+        $sql = "DELETE FROM eventparticipation WHERE eventID = :eventID AND userID = :userID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':eventID',$eventID);
+        $stmt->bindValue(':userID',$userID);
+        $stmt->execute();
+    }
+
+    public static function setParticipation(string $eventID) {
+        $event = self::getModel(['eventID' => $eventID]);
+        if($event->isGoing($eventID)) {
+            self::unmarkParticipation($eventID);
+            $event->participationCount--;
+        }
+        else {
+            self::markParticipation($eventID);
+            $event->participationCount++;
+        }
+        $event->update(['eventID' => $eventID],['participationCount' => $event->participationCount]);
+    }
 }
