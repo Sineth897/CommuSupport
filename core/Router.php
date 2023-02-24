@@ -53,6 +53,13 @@ class Router
         return str_replace('{content}', $viewContent, $layout);
     }
 
+    public function renderWithoutNavbar($view, $title, $params = []):string {
+        $viewContent = $this->renderOnlyView($view, $params);
+        $layout = $this->layoutContent();
+        $layout = str_replace("{title}", $title, $layout);
+        return str_replace('{navbar}', $viewContent, $layout);
+    }
+
     public function renderOnlyView($view,$params = []): string
     {
         foreach ($params as $key => $value) {

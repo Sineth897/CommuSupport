@@ -42,4 +42,11 @@ class ccModel extends DbModel
 
         ];
     }
+
+    public function getCoordinates()
+    {
+        $stmnt = self::prepare("SELECT ccID,longitude,latitude FROM communitycenter");
+        $stmnt->execute();
+        return $stmnt->fetchALL(\PDO::FETCH_ASSOC);
+    }
 }

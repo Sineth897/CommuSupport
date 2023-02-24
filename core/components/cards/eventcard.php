@@ -14,7 +14,7 @@ class eventcard
     public function displayEvents(array $events = []) {
         echo "<div class='card-container' id='eventDisplay'>";
         if(!$events) {
-            echo "<h1>There are no events to display</h1>";
+            echo "<h1>There are no event to display</h1>";
         }
         else {
             foreach ($events as $event) {

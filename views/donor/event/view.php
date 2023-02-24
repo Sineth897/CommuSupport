@@ -9,6 +9,7 @@ $events = $model->retrieve();
 
 ?>
 
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
@@ -42,9 +43,17 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory");
+$filter->end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"By date","date",'sortByDate');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
@@ -57,11 +66,13 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="content">
+<div class='content'>
     <?php
     $eventCards = new \app\core\components\cards\eventcard();
     $eventCards->displayEvents($events);
     ?>
 </div>
 
-<script type="module" src="../public/JS/donee/event/view.js"></script>
+<script type="module" src="../public/JS/donor/event/view.js"></script>
+
+

@@ -37,6 +37,11 @@ class Controller
         echo Application::$app->router->render($view, $title, $params);
     }
 
+    public function renderOnlyView($view, $title, $params = []): void
+    {
+        echo Application::$app->router->renderWithoutNavbar($view,$title,$params);
+    }
+
     public function sendJson($data): void
     {
         Application::$app->router->sendData($data);
