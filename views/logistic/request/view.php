@@ -1,5 +1,8 @@
 <?php
 
+/** @var $model \app\models\requestModel */
+
+$requests = $model->retrieve();
 
 ?>
 
@@ -16,7 +19,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Requests");
 
-$headerDiv->pages(["published","history"]);
+$headerDiv->pages(["posted","history"]);
 
 $headerDiv->end();
 ?>
@@ -40,7 +43,17 @@ $searchDiv->filterDivEnd();
 $searchDiv->end();
 ?>
 
-<div class="filler main">
-
+<div class="content" id="postedRequests">
+    <?php
+        echo "<pre>";
+        print_r($requests);
+        echo "</pre>";
+    ?>
 </div>
+
+<div class="content" id="historyRequests">
+    <h3>History</h3>
+</div>
+
+<script type="module" src="../public/JS/logistic/request/view.js"></script>
 

@@ -33,7 +33,7 @@ filterBtn.addEventListener('click', async function() {
         filterValues['eventCategoryID'] = eventCategory.value;
     }
 
-    let array = await getData('./events/filter', 'POST', filterValues);
+    let array = await getData('./event/filter', 'POST', filterValues);
 
     filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);
@@ -55,7 +55,7 @@ async function showPopUp(e) {
     while(eventCard.className !== 'event-card') {
         eventCard = eventCard.parentNode;
     }
-    let event = await getData('./events/popup', 'POST', {"event.eventID": eventCard.id});
+    let event = await getData('./event/popup', 'POST', {"event.eventID": eventCard.id});
     let eventIcons = event['icons'];
     event = event['event'];
 
@@ -89,7 +89,7 @@ let updateFunc = async (e) => {
     else {
         let updateValues = popUpFunctions.getUpdatedValues(e.target,fieldsToUpdate);
         updateValues['eventID'] = e.target.value;
-        let result = await getData('./events/update', 'POST', {do:'update',data:updateValues});
+        let result = await getData('./event/update', 'POST', {do:'update',data:updateValues});
         if(result['status']) {
             console.log('updated');
         } else {
@@ -108,7 +108,7 @@ let cancelFunc = async (e) => {
         e.target.nextElementSibling.style.display = 'block';
     }
     else {
-        let result = await getData('./events/update', 'POST', {do:'cancel',data:e.target.value});
+        let result = await getData('./event/update', 'POST', {do:'cancel',data:e.target.value});
         if(result['status']) {
             console.log('Success');
         } else {

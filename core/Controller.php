@@ -28,6 +28,11 @@ class Controller
         }
     }
 
+    protected function checkLink($request): void {
+        if($request->getUser() !== $this->getUserType()) {
+            throw new \Exception('You do not have access to this page');
+        }
+    }
 
 
     //function to be called by the subclasses to render the view
@@ -35,6 +40,11 @@ class Controller
     public function render($view, $title, $params = []): void
     {
         echo Application::$app->router->render($view, $title, $params);
+    }
+
+    public function renderOnlyView($view, $title, $params = []): void
+    {
+        echo Application::$app->router->renderWithoutNavbar($view,$title,$params);
     }
 
     public function sendJson($data): void

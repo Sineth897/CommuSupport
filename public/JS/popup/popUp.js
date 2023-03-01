@@ -62,6 +62,10 @@ class PopUp {
             if(label[1] === 'textarea') {
                 this.field = this.getTextArea(value,id);
             }
+            else if(label[1] === 'bool') {
+                value = (value === 1) ? 'Yes' : 'No';
+                this.field = this.getInputField('text', value,id);
+            }
             else {
                 this.field = this.getInputField(label[1], value,id);
             }
@@ -270,14 +274,27 @@ class PopUp {
         }
     }
 
-    include (file) {
-        let pdfDiv = document.createElement('div');
-        let pdf = document.createElement('iframe');
-        pdf.setAttribute('src',file);
-        pdf.setAttribute('width','100%');
-        pdf.setAttribute('height','100%');
-        pdfDiv.append(pdf);
-        this.popUpContainer.append(pdfDiv);
+    include (files) {
+        let filesDiv = document.createElement('div');
+        for(let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let fileDiv = document.createElement('div');
+            let fileLabel = Object.assign(document.createElement('p'),{innerHTML:file['name']});
+            let fileBtn = document.createElement('button');
+            fileBtn.setAttribute('class','btn btn-primary');
+            let anchor = Object.assign(this.getaTag(file['url'],'View'),{target:'_blank'});
+            fileBtn.append(anchor);
+            fileDiv.append(fileLabel,fileBtn);
+            filesDiv.append(fileDiv);
+        }
+        this.popUpContainer.append(filesDiv);
+    }
+
+    getaTag(href,innerText) {
+        this.aTag = document.createElement('a');
+        this.aTag.setAttribute('href',href);
+        this.aTag.innerHTML = innerText;
+        return this.aTag;
     }
 }
 

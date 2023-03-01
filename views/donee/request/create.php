@@ -36,40 +36,40 @@ if($checkVerification->notVerified()) {
 
     <div class="form-box">
 
-    <?php $requestForm = \app\core\components\form\form::begin('','post') ?>
+    <?php $donationForm = \app\core\components\form\form::begin('','post') ?>
 
-    <?php $requestForm->formHeader("Request your need"); ?>
+    <?php $donationForm->formHeader("Request your need"); ?>
 
     <div class="form-split">
 
-        <?php $requestForm->dropDownList($requestmodel, 'What is the category of needed item', 'requestCategoryID', $categories,'requestCategory'); ?>
+        <?php $donationForm->dropDownList($requestmodel, 'What is the category of needed item', 'requestCategoryID', $categories,'requestCategory'); ?>
 
         <?php foreach ($categories as $category => $name)  {?>
 
         <div id='<?php echo $category ?>' style='display: none'>
-        <?php $requestForm->dropDownList($requestmodel, 'What item you need', 'item', $requestmodel->getSubcategories($category)); ?>
+        <?php $donationForm->dropDownList($requestmodel, 'What item you need', 'item', $requestmodel->getSubcategories($category)); ?>
         </div>
     <?php } ?>
     </div>
 
     <div style="display: none" id="amountInput" class="form-split">
-        <?php $requestForm->inputField($requestmodel,'Amount','number','amount',); ?>
+        <?php $donationForm->inputField($requestmodel,'Amount','number','amount',); ?>
     </div>
 
 
-    <?php $requestForm->formHeader('Delivery Details'); ?>
+    <?php $donationForm->formHeader('Delivery Details'); ?>
 
-    <?php $requestForm->inputField($requestmodel,'Delivery Address (Optional)','text','address'); ?>
+    <?php $donationForm->inputField($requestmodel,'Delivery Address (Optional)','text','address'); ?>
 
     <div class="form-split">
-        <?php $requestForm->dropDownList($requestmodel,'Urgency','urgency',$requestmodel->getUrgency()); ?>
+        <?php $donationForm->dropDownList($requestmodel,'Urgency','urgency',$requestmodel->getUrgency()); ?>
     </div>
 
-    <?php $requestForm->textArea($requestmodel,"Additional Notes (optional)",'notes') ?>
+    <?php $donationForm->textArea($requestmodel,"Additional Notes (optional)",'notes') ?>
 
-    <?php $requestForm->button('Create'); ?>
+    <?php $donationForm->button('Create'); ?>
 
-    <?php $requestForm::end();?>
+    <?php $donationForm::end();?>
 
     </div>
 
