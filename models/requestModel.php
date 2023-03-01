@@ -14,6 +14,7 @@ class requestModel extends DbModel
     public string $address = "";
     public string $urgency= "";
     public string $postedDate= "";
+    public string $expDate="";
     public string $notes= "";
     public function table(): string
     {
@@ -22,7 +23,7 @@ class requestModel extends DbModel
 
     public function attributes(): array
     {
-        return ["requestID","postedBy","item","amount","address","urgency", "notes"];
+        return ["requestID","postedBy","item","amount","address","urgency","postedDate","expDate", "notes"];
     }
 
     public function primaryKey(): string
@@ -33,8 +34,8 @@ class requestModel extends DbModel
     public function rules(): array
     {
         return [
-            "item" => [self::$REQUIRED],
-            "amount" => [self::$REQUIRED],
+            "item" => [self::$REQUIRED,],
+            "amount" => [self::$REQUIRED,self::$POSITIVE],
             "urgency" => [self::$REQUIRED],
 //            "notes" => [self::$REQUIRED],
         ];
@@ -55,8 +56,9 @@ class requestModel extends DbModel
 
     public function getUrgency():array {
         return [
-            'Urgent' => 'Urgent',
-            'Not Urgent' => 'Not Urgent',
+            'Within 7 days' => 'Within 7 days',
+            'Within a month' => 'Within a month',
+            'Within 3 month' => 'Within 3 month'
         ];
     }
 
@@ -64,6 +66,8 @@ class requestModel extends DbModel
     {
         $this->requestID = substr(uniqid('request', true), 0, 23);
         $this->postedBy = $_SESSION['user'];
+        $this->postedDate = date('Y-m-d');
+        $this->expDate = date('Y-m-d', strtotime("+" . $this->getDays() . " days"));
 
         if ($this->address === "") {
             $user = doneeModel::getModel(['doneeID' => $_SESSION['user']]);
@@ -71,6 +75,15 @@ class requestModel extends DbModel
         }
 
         return parent::save();
+    }
+
+    private function getDays():int {
+        return match ($this->urgency) {
+            'Within 7 days' => 7,
+            'Within a month' => 30,
+            'Within 3 month' => 90,
+            default => 0,
+        };
     }
 
     public function getRequestsUnderCC(string $ccID) {

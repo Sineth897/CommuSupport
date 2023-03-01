@@ -21,6 +21,8 @@ class eventController extends Controller
 
     protected function viewEvents(Request $request,Response $response) {
 
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $model = new eventModel();
 
@@ -30,6 +32,8 @@ class eventController extends Controller
     }
 
     protected function createEvent(Request $request,Response $response) {
+
+        $this->checkLink($request);
 
         $model = new eventModel();
 
@@ -121,6 +125,8 @@ class eventController extends Controller
     }
 
     protected function updateEvent(Request $request,Response $response) {
+        $this->checkLink($request);
+
         $data = $request->getJsonData();
         $func = $data['do'];
         unset($data['do']);

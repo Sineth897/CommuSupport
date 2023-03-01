@@ -1,5 +1,8 @@
 <?php
 
+/** @var $model \app\models\requestModel */
+
+$requests = $model->retrieve();
 
 ?>
 
@@ -41,7 +44,11 @@ $searchDiv->end();
 ?>
 
 <div class="content" id="postedRequests">
-    <h3>Posted Requests</h3>
+    <?php
+        echo "<pre>";
+        print_r($requests);
+        echo "</pre>";
+    ?>
 </div>
 
 <div class="content" id="historyRequests">

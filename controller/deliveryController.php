@@ -19,6 +19,8 @@ class deliveryController extends Controller
 
     protected function viewDeliveries($request, $response)
     {
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $deliveries = new deliveryModel();
         $user = $this->getUserModel();

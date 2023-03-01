@@ -10,6 +10,7 @@ class doneeMiddleware extends Middleware
             return [
                 'viewDonees' => [$this->MANAGER, $this->ADMIN],
                 'getData' => [$this->MANAGER, $this->ADMIN],
+                'verifyDonee' => [$this->MANAGER],
             ];
 
         }

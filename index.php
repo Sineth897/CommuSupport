@@ -168,6 +168,9 @@ $app->router->get('/manager/donees', function ($request, $response) {
 $app->router->post('/manager/donee/getdata', function ($request, $response) {
     $controller = new \app\controller\doneeController("getData",$request,$response);
 });
+$app->router->post('/manager/donee/verify', function ($request, $response) {
+    $controller = new \app\controller\doneeController("verifyDonee",$request,$response);
+});
 
 //Manager view donors
 $app->router->get('/manager/donors', function ($request, $response) {
@@ -188,9 +191,6 @@ $app->router->post('/manager/request/approve', function ($request, $response) {
 $app->router->get('/manager/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
-
-
-
 
 
 
@@ -405,15 +405,16 @@ $app->router->get('/logistic/requests', function ($request,$response) {
 });
 
 $app->router->get('/logistic/donations', function ($request,$response) {
-    $controller = new \app\controller\donationController("viewDonations",$request,$response);
+    $controller = new \app\controller\ccDonationController("viewCCDonations",$request,$response);
 });
 
+$app->router->get("/logistic/donations/create", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
+});
 
-
-
-
-
-
+$app->router->post("/logistic/donations/create", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
+});
 
 
 

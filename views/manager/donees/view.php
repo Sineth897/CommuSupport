@@ -64,7 +64,7 @@ $searchDiv->end(); ?>
         foreach($donees['individuals'] as $key => $donee) {
             if($donee['verificationStatus'] == 0) {
                 echo "<div class='pendingVerification'>";
-                echo "<p>First Name: " . $donee['fname'] . ' ' .$donee['lname'] . "</p>";
+                echo "<p>Name: " . $donee['fname'] . ' ' .$donee['lname'] . "</p>";
                 echo "<button class='btn btn-primary verify' value=". $donee['doneeID'] . ">View</button>";
                 echo "</div>";
 

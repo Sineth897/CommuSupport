@@ -19,6 +19,8 @@ class requestController extends Controller
 
     protected function viewRequests(Request $request,Response $response) {
 
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $model = new requestModel();
         $user = $this->getUserModel();
@@ -29,6 +31,8 @@ class requestController extends Controller
     }
 
     protected function postRequest(Request $request,Response $response) {
+
+        $this->checkLink($request);
 
         $requestmodel = new requestModel();
 
