@@ -2,13 +2,14 @@
 
 namespace app\models;
 
+use app\core\Application;
 use app\core\DbModel;
 
 class ccModel extends DbModel
 {
     public string $ccID = "";
-    public string $address ="";
-    public string $city ="";
+    public string $address = "";
+    public string $city = "";
     public string $email = "";
     public string $fax = "";
     public string $contactNumber = "";
@@ -21,7 +22,7 @@ class ccModel extends DbModel
 
     public function attributes(): array
     {
-        return ["ccID","address","city","email","fax","contactNumber","cho"];
+        return ["ccID", "address", "city", "email", "fax", "contactNumber", "cho"];
     }
 
     public function primaryKey(): string
@@ -35,7 +36,7 @@ class ccModel extends DbModel
 
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "city" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
-            "email" => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE,"class" => self::class]],
+            "email" => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE, "class" => self::class]],
             "fax" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             "contactNumber" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             "cho" => [self::$REQUIRED]
@@ -43,10 +44,29 @@ class ccModel extends DbModel
         ];
     }
 
+
     public function getCoordinates()
     {
         $stmnt = self::prepare("SELECT ccID,longitude,latitude FROM communitycenter");
         $stmnt->execute();
         return $stmnt->fetchALL(\PDO::FETCH_ASSOC);
     }
+
+    public function save(): bool
+    {
+        $this->ccID = uniqid('cc', true);
+        $cho = choModel::getUser(['choID' => Application::session()->get('user')]);
+        $this->cho = $cho->choID;
+        if (parent::save()) {
+            if ($this->user->save()) {
+                return true;
+            } else {
+                $this->delete(['choID' => $this->choID]);
+                return false;
+            }
+        }
+        return false;
+
+    }
+
 }
