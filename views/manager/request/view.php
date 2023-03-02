@@ -12,7 +12,7 @@ $user = $user->findOne(['employeeID' => \app\core\Application::session()->get('u
 $requests = $model->getRequestsUnderCC($user->ccID);
 
 $pending = array_filter($requests,function($request) {
-    return $request['approval'] === 0;
+    return $request['approval'] === 'Pending';
 });
 
 $published = array_filter($requests,function($request) {
@@ -68,9 +68,9 @@ $searchDiv->end();
 
     <div class="card-container">
         <?php
-        $requsetCards = new \app\core\components\cards\requestcard();
+        $requestCards = new \app\core\components\cards\requestcard();
 
-        $requsetCards->displayRequests($pending,[["View","pendingRequestView"]]);
+        $requestCards->displayRequests($pending,[["View","pendingRequestView"]]);
 
         ?>
     </div>

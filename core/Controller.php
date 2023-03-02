@@ -28,6 +28,11 @@ class Controller
         }
     }
 
+    protected function checkLink($request): void {
+        if($request->getUser() !== $this->getUserType()) {
+            throw new \Exception('You do not have access to this page');
+        }
+    }
 
 
     //function to be called by the subclasses to render the view

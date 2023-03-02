@@ -29,12 +29,16 @@ let donorType = document.getElementById('donorType');
 individual.addEventListener('click', function() {
     document.getElementById('organizationForm').style.display = "none";
     document.getElementById('individualForm').style.display = "block";
+    individual.classList.add('active-heading-page');
+    organization.classList.remove('active-heading-page');
     donorType.value = "Individual";
 });
 
 organization.addEventListener('click', function() {
-   document.getElementById('individualForm').style.display = "none";
+    document.getElementById('individualForm').style.display = "none";
     document.getElementById('organizationForm').style.display = "block";
+    individual.classList.remove('active-heading-page');
+    organization.classList.add('active-heading-page');
     donorType.value = "Organization";
 });
 

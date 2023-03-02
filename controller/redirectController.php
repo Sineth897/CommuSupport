@@ -52,12 +52,12 @@ class redirectController extends Controller
 
     protected  function test(Request $request,Response $response) {
 
-        if($request->isPost()) {
-            echo $this->file()->saveDonee('nicFront',uniqid('',true),'front');
-        }
+        $this->setFlash('success','Test Flash Message');
+        $this->setFlash('error','Test Flash Message');
 
-
-        $this->render('test/test','Test Page');
+        $this->render('test/test','Test Page',[
+            'request' => $request
+        ]);
     }
 
 

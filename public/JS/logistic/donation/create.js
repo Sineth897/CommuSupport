@@ -1,4 +1,4 @@
-let requestCategory = document.getElementById('requestCategory');
+let requestCategory = document.getElementById('category');
 let subcategories = [];
 
 for (let i = 1; i < requestCategory.length; i++) {
@@ -8,6 +8,8 @@ for (let i = 1; i < requestCategory.length; i++) {
 
 let activeSubcategory = requestCategory.value;
 let amountInput = document.getElementById('amountInput');
+
+amountInput.style.display = 'none';
 
 if (activeSubcategory !== '') {
     show(subcategories[activeSubcategory]);

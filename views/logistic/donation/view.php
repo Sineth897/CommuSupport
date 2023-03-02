@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
 
@@ -32,10 +33,15 @@ $searchDiv->sortBegin();
 
 $searchDiv->sortEnd();
 
-$searchDiv->filterDivEnd(); ?>
+$searchDiv->filterDivEnd();
 
+$donationBtn = \app\core\components\form\form::begin('./donations/create', 'get');
 
-<?php $searchDiv->end(); ?>
+$donationBtn->button("Request from another", "submit");
+
+$donationBtn->end();
+
+$searchDiv->end(); ?>
 
 <div class="content" id="ongoingDonations">
     <h3>Ongoing Donations</h3>

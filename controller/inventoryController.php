@@ -21,6 +21,8 @@ class inventoryController extends Controller
 
     protected function viewInventory(Request $request, Response $response) {
 
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $inventory = new inventoryModel();
         $user = $this->getUserModel();

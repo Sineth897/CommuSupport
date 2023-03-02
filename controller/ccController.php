@@ -17,6 +17,7 @@ class ccController extends Controller
     }
 
     protected function viewCC(Request $request,Response $response) {
+        $this->checkLink($request);
 
         $userType = $this->getUserType();
         $model = new ccModel();
