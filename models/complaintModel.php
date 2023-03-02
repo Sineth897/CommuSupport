@@ -18,11 +18,13 @@ class complaintModel extends DbModel
     public function table(): string
     {
         return "complaint";
+
     }
 
     public function attributes(): array
     {
         return ["complaintID","filedBy","filedDate","subject","status","solution","reviewedDate"];
+
     }
 
     public function primaryKey(): string
@@ -39,7 +41,7 @@ class complaintModel extends DbModel
             "status"=> [self::$REQUIRED],
             "solution"=> [self::$REQUIRED],
             "reviewedDate" => [self::$REQUIRED]
-
         ];
+
     }
 }

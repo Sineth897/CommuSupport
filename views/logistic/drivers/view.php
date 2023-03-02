@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
 <?php
 
 /** @var $model \app\models\driverModel */
@@ -7,27 +8,20 @@
 use app\core\Application;
 $logisticID = Application::$app->session->get('user');
 $user = $user->findOne(['employeeID' => $logisticID]);
-$drivers = $model->retrieve(["ccID" => $user->ccID],["age", "ASC"]);
+$drivers = $model->retrieve(["ccID" => $user->ccID]);
 
 $headers = ['Name','Contact Number','Address','Vehicle', 'Vehicle Number', 'Preference'];
 $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'preference'];
 
 ?>
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -35,23 +29,25 @@ $arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'prefe
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
-<?php $searchDiv->filters(); ?>
+$searchDiv->filterDivStart();
 
-<?php $searchDiv->search(); ?>
+$searchDiv->filterBegin();
 
-<?php $searchDiv->end(); ?>
+$searchDiv->filterEnd();
 
-<?php $creatEvent = \app\core\components\form\form::begin('./drivers/register', 'get'); ?>
+$searchDiv->sortBegin();
 
-<button> Register a driver </button>
+$searchDiv->sortEnd();
 
-<?php $creatEvent->end(); ?>
+$searchDiv->filterDivEnd();
 
-<button type="button"> Filter </button>
+$searchDiv->search();
 
-<div id="driverDisplay">
+$searchDiv->end(); ?>
+
+<div id="driverDisplay" class="content">
 
     <?php $driversTable = new \app\core\components\tables\table($headers,$arraykeys); ?>
 

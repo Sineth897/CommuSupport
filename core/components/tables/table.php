@@ -20,11 +20,11 @@ class table
     }
 
     private function displayTableHeaders() {
-        echo "<tr>";
+        echo "<thead><tr>";
         foreach ($this->tableHeaders as $tableHeader) {
             echo sprintf("<th>%s</th>",$tableHeader);
         }
-        echo "</tr>";
+        echo "</tr></thead>";
     }
 
     private function displayTableData(array $tableData) {

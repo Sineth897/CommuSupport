@@ -1,29 +1,23 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
 /** @var $user \app\models\logisticModel */
 
-echo "<pre>";
-var_dump($deliveries->retrieve());
-echo "</pre>";
+//echo "<pre>";
+//var_dump($deliveries->retrieve());
+//echo "</pre>";
 
 
 ?>
 
-    <div class="profile">
-        <div class="notif-box">
-            <i class="material-icons">notifications</i>
-        </div>
-        <div class="profile-box">
-            <div class="name-box">
-                <h4>Username</h4>
-                <p>Position</p>
-            </div>
-            <div class="profile-img">
-                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-            </div>
-        </div>
-    </div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -33,10 +27,38 @@ echo "</pre>";
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
-<?php $searchDiv->filters(); ?>
+$searchDiv->filterDivStart();
 
-<?php $searchDiv->search(); ?>
+$searchDiv->filterBegin();
 
-<?php $searchDiv->end(); ?>
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+$registerCho = \app\core\components\form\form::begin('./deliveries/create', 'get');
+
+$registerCho->button("Create a deliveries", "submit");
+
+$registerCho->end();
+
+$searchDiv->end(); ?>
+
+<div class="content" id="pendingDeliveries">
+
+    <h3>Pending Deliveries</h3>
+
+</div>
+
+<div class="content" id="completedDeliveries">
+
+    <h3>Completed Deliveries</h3>
+
+</div>
+
+<script type="module" src="../public/JS/logistic/deliveries/view.js"></script>

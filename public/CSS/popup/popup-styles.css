@@ -20,7 +20,9 @@ button {
     justify-content: center;
     align-items: center;
     background-color: var(--transparent-background);
-    position: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 1;
 }
 
@@ -122,4 +124,8 @@ button {
     align-items: center;
     width: 100%;
     gap: 10px;
+}
+
+#logistic-item-add-popup-form {
+
 }
