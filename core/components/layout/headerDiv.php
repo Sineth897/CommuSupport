@@ -6,34 +6,64 @@ class headerDiv
 {
     private array $pages = [
         'ongoing' => [
+            'id' => 'ongoing',
             'link' => '#',
             'icon' => 'cached',
             'name' => 'Ongoing'
         ],
         'pending' => [
+            'id' => 'pending',
             'link' => '#',
             'icon' => 'hourglass_empty',
             'name' => 'Pending'
         ],
         'completed' => [
+            'id' => 'completed',
             'link' => '#',
             'icon' => 'check_circle_outline',
             'name' => 'Completed'
         ],
         'cancelled' => [
+            'id' => 'cancelled',
             'link' => '#',
             'icon' => 'block',
             'name' => 'Cancelled'
         ],
         'individuals' => [
+            'id' => 'individual',
             'link' => '#',
             'icon' => 'person',
-            'name' => 'Individuals'
+            'name' => 'Individual'
         ],
         'organizations' => [
+            'id' => 'organization',
             'link' => '#',
             'icon' => 'business',
-            'name' => 'Organizations'
+            'name' => 'Organization'
+        ],
+        'posted' => [
+            'id' => 'posted',
+            'link' => '#',
+            'icon' => 'publish',
+            'name' => 'Posted'
+        ],
+        'history' => [
+            'id' => 'history',
+            'link' => '#',
+            'icon' => 'history',
+            'name' => 'History'
+        ],
+        'active' => [
+            'id' => 'active',
+            'link' => '#',
+            'icon' => 'broadcast_on_personal',
+            'name' => 'Active'
+        ],
+        'upcoming' => [
+            'id' => 'upcoming',
+            'link' => '#',
+            'icon' => 'schedule',
+            'name' => 'Upcoming'
         ],
     ];
 
@@ -51,8 +81,9 @@ class headerDiv
     {
         echo "<div class='pages'>";
         foreach ($pages as $key) {
+            $class = ($key === $pages[0]) ? "active-heading-page": "";
             $page = $this->pages[$key];
-            echo sprintf("<a href='%s' id='%s'><i class='material-icons'>%s</i> %s</a>", $page['link'], $page['name'], $page['icon'], $page['name']);
+            echo sprintf("<a href='%s' id='%s' class='page %s'><i class='material-icons'>%s</i> %s</a>", $page['link'], $page['id'],$class, $page['icon'], $page['name']);
         }
         echo "</div>";
     }

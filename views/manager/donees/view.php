@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /**
@@ -19,22 +22,16 @@ $organizationDoneeHeaders = ["Organization Name","Representative Name","Contact 
 $organizationDoneeArrayKeys = ["organizationName","representative","contactNumber","email","address"];
 
 
+
 ?>
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -44,16 +41,51 @@ $organizationDoneeArrayKeys = ["organizationName","representative","contactNumbe
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
-<?php $searchDiv->filters(); ?>
+$searchDiv->filterDivStart();
 
-<?php $searchDiv->search(); ?>
+$searchDiv->filterBegin();
 
-<?php $searchDiv->end(); ?>
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+//$searchDiv->search();
+
+$searchDiv->end(); ?>
+
+<div class="" id="pendingVerifications">
+    <?php
+        foreach($donees['individuals'] as $key => $donee) {
+            if($donee['verificationStatus'] == 0) {
+                echo "<div class='pendingVerification'>";
+                echo "<p>Name: " . $donee['fname'] . ' ' .$donee['lname'] . "</p>";
+                echo "<button class='btn btn-primary verify' value=". $donee['doneeID'] . ">View</button>";
+                echo "</div>";
+
+            }
+        }
+        foreach ($donees['organizations'] as $key => $donee) {
+            if($donee['verificationStatus'] == 0) {
+                echo "<div class='pendingVerification'>";
+                echo "<p>Organization Name: " . $donee['organizationName'] . "</p>";
+                echo "<p>Representative Name: " . $donee['representative'] . "</p>";
+                echo "<button class='btn btn-primary verify' value=". $donee['doneeID'] . " >View</button>";
+                echo "</div>";
+            }
+        }
+    ?>
 
 
-<div id="individualDoneeDisplay">
+</div>
+
+
+<div id="individualDoneeDisplay" class="content">
 
     <?php $individualTable = new table($individualDoneeHeaders,$individualDoneeArrayKeys); ?>
 
@@ -67,7 +99,7 @@ $organizationDoneeArrayKeys = ["organizationName","representative","contactNumbe
 
 </div>
 
-<div id="organizationDoneeDisplay">
+<div id="organizationDoneeDisplay" style="display: none" class="content">
 
     <?php $organizationTable = new table($organizationDoneeHeaders,$organizationDoneeArrayKeys); ?>
 
@@ -80,3 +112,5 @@ $organizationDoneeArrayKeys = ["organizationName","representative","contactNumbe
     } ?>
 
 </div>
+
+<script type="module" src="../public/JS/manager/donees/view.js"></script>

@@ -1,15 +1,17 @@
 class PopUp {
 
     popInfoFlag = false;
+    splitFormFlag = false;
+    splitDiv = null;
     statusIcon = {
         Upcoming: 'status-green',
     }
 
     inputFields = [];
-    constructor() {
-        this.popUpBackgroud = document.getElementById("popUpBackground");
-        this.popUpContainer = document.getElementById("popUpContainer");
-        this.popUpInfo = document.getElementById("popUpInfo");
+    constructor(background = 'popUpBackground', container = 'popUpContainer', info = 'popUpInfo') {
+        this.popUpBackgroud = document.getElementById(background);
+        this.popUpContainer = document.getElementById(container);
+        this.popUpInfo = document.getElementById(info);
 
     }
 
@@ -46,7 +48,12 @@ class PopUp {
                 this.setField(arrKeys[i],arr[arrKeys[i]],arrKeys[i]);
             }
         }
-        this.popUpContainer.append(this.popUpDetails);
+        if(this.splitFormFlag) {
+            this.splitDiv.append(this.popUpDetails);
+        }
+        else {
+            this.popUpContainer.append(this.popUpDetails);
+        }
     }
 
     setField(label,value,id) {
@@ -54,6 +61,10 @@ class PopUp {
             this.label = this.getLabel(label[0],id);
             if(label[1] === 'textarea') {
                 this.field = this.getTextArea(value,id);
+            }
+            else if(label[1] === 'bool') {
+                value = (value === 1) ? 'Yes' : 'No';
+                this.field = this.getInputField('text', value,id);
             }
             else {
                 this.field = this.getInputField(label[1], value,id);
@@ -73,9 +84,23 @@ class PopUp {
         this.popUpButtons = this.getDiv('popUpButtons',['popup-btns']);
         for(let i = 0; i < buttons.length; i++) {
             this.popUpButtons.append(this.getButton(buttons[i]));
-            this.popUpButtons.append(this.getCancelButton(buttons[i]));
+            if(buttons[i]['cancel'] ) {
+                this.popUpButtons.append(this.getCancelButton(buttons[i]));
+            }
         }
         this.popUpContainer.append(this.popUpButtons);
+    }
+
+    insertHeading(heading) {
+        this.heading = document.createElement('h3');
+        this.heading.classList.add('form-heading');
+        this.heading.innerHTML = heading;
+        if(this.splitFormFlag) {
+            this.splitDiv.append(this.heading);
+        }
+        else {
+            this.popUpContainer.append(this.heading);
+        }
     }
 
     getLabel(label,forId) {
@@ -101,7 +126,6 @@ class PopUp {
         this.field = document.createElement('textarea');
         this.field.setAttribute('class','basic-text-area description');
         this.field.setAttribute('disabled','');
-        this.field.setAttribute('rows','6');
         this.field.innerHTML = value;
         this.field.setAttribute('id',id);
         this.inputFields.push(this.field);
@@ -208,6 +232,17 @@ class PopUp {
         this.popInfoFlag = false;
     }
 
+    startSplitDiv() {
+        this.splitDiv = this.getDiv('',['form-split']);
+        this.splitFormFlag = true;
+    }
+
+    endSplitDiv() {
+        this.popUpContainer.append(this.splitDiv);
+        this.splitDiv = null;
+        this.splitFormFlag = false;
+    }
+
     showStatus(status) {
         this.statusDiv = this.getDiv('',['status']);
         this.statusDiv.append(this.getiTag('fiber_manual_record',['material-icons',this.statusIcon[status]]),this.getpTag(status,));
@@ -237,6 +272,29 @@ class PopUp {
                 parent.children[i].style.display = 'block';
             }
         }
+    }
+
+    include (files) {
+        let filesDiv = document.createElement('div');
+        for(let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let fileDiv = document.createElement('div');
+            let fileLabel = Object.assign(document.createElement('p'),{innerHTML:file['name']});
+            let fileBtn = document.createElement('button');
+            fileBtn.setAttribute('class','btn btn-primary');
+            let anchor = Object.assign(this.getaTag(file['url'],'View'),{target:'_blank'});
+            fileBtn.append(anchor);
+            fileDiv.append(fileLabel,fileBtn);
+            filesDiv.append(fileDiv);
+        }
+        this.popUpContainer.append(filesDiv);
+    }
+
+    getaTag(href,innerText) {
+        this.aTag = document.createElement('a');
+        this.aTag.setAttribute('href',href);
+        this.aTag.innerHTML = innerText;
+        return this.aTag;
     }
 }
 

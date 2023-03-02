@@ -14,6 +14,8 @@ abstract class Model
     public static string $PASSWORD = 'password';
     public static string $nic = 'nic';
     public static string $DATE = 'date';
+
+    public static string $POSITIVE = 'positive';
     public array $errors = [];
 
 
@@ -76,8 +78,11 @@ abstract class Model
                 if( $ruleName === self::$nic && !(preg_match('/^[0-9]{9}[vV]$/', $value) || preg_match('/^[0-9]{12}$/', $value)) ) {
                     $this->addRuleError($attribute, self::$nic);
                 }
-                if( $ruleName === self::$DATE && date('Y-m-d') <= $value ) {
+                if( $ruleName === self::$DATE && date('Y-m-d') >= $value ) {
                     $this->addRuleError($attribute, self::$DATE);
+                }
+                if( $ruleName === self::$POSITIVE && $value < 0 ) {
+                    $this->addRuleError($attribute, self::$POSITIVE);
                 }
             }
         }
@@ -108,6 +113,7 @@ abstract class Model
             self::$CONTACT => 'This field must be a valid contact number',
             self::$nic => 'This field must be a valid NIC number',
             self::$DATE => 'This field must be a future date',
+            self::$POSITIVE => 'This field must be a positive number'
         ];
     }
 
@@ -123,8 +129,18 @@ abstract class Model
         foreach ($this->rules() as $attribute => $rules) {
             if( is_int($this->{$attribute})) {
                 $this->{$attribute} = 0;
-            } else {
+            }
+            else if( is_float($this->{$attribute})) {
+                $this->{$attribute} = 0.0;
+            }
+            else if( is_string($this->{$attribute})) {
                 $this->{$attribute} = '';
+            }
+            else if( is_array($this->{$attribute})) {
+                $this->{$attribute} = [];
+            }
+            else {
+                $this->{$attribute} = null;
             }
         }
     }

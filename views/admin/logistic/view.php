@@ -59,27 +59,20 @@ use app\core\components\tables\table;
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
 <?php
-           $userID = \app\core\Application::session()->get('user');
+            $userID = \app\core\Application::session()->get('user');
            // $user = $user->findOne(['adminId' => $userID]);
            $logistic = $model->retrieve();
-           
-           $header = ["Name", "Age", "NIC", "Gender", "Address", "ContactNumber"];
-           
-                      $arrayKey = ["name", "age", "NIC", "gender", "address", "contactNumber"];
-           
-                      $logisticofficerTable = new table($header, $arrayKey);
-           
-                      $logisticofficerTable->displayTable($logistic);
-           
-           
+
+           $header = ["Name", "Age", "NIC", "Gender","Address", "ContactNumber"];
+
+           $arrayKey = ["name", "age", "NIC", "gender","address", "contactNumber"];
+
+           $logisticofficerTable = new table($header, $arrayKey);
+
+           $logisticofficerTable->displayTable($logistic);
 
 ?>
-
-            </div>
         </div>
 
-    
-
-
+ 

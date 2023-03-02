@@ -2,6 +2,19 @@ import {getData} from "../../request.js";
 import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
+import togglePages from "../../togglePages.js";
+
+let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'completedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}]);
+
+let filterOptions = document.getElementById('filterOptions');
+
+document.getElementById('filter').addEventListener('click', function(e) {
+   if(filterOptions.style.display === 'block') {
+       filterOptions.style.display = 'none';
+   } else {
+       filterOptions.style.display = 'block';
+   }
+});
 
 let filterBtn = document.getElementById('filterBtn');
 let eventsDiv = document.getElementById('eventDisplay')
@@ -20,15 +33,16 @@ filterBtn.addEventListener('click', async function() {
         filterValues['eventCategoryID'] = eventCategory.value;
     }
 
-    let array = await getData('./events/filter', 'POST', filterValues);
+    let array = await getData('./event/filter', 'POST', filterValues);
 
+    filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);
     updateEventCardOnClick();
 
 });
 
 function updateEventCardOnClick() {
-    let eventCards = document.getElementsByClassName('eventCard');
+    let eventCards = document.getElementsByClassName('event-card');
     for(let i = 0; i < eventCards.length; i++) {
         eventCards[i].addEventListener('click', (e) => showPopUp(e));
     }
@@ -38,10 +52,10 @@ let popUpEvent = new PopUp();
 
 async function showPopUp(e) {
     let eventCard = e.target;
-    while(eventCard.className !== 'eventCard') {
+    while(eventCard.className !== 'event-card') {
         eventCard = eventCard.parentNode;
     }
-    let event = await getData('./events/popup', 'POST', {"event.eventID": eventCard.id});
+    let event = await getData('./event/popup', 'POST', {"event.eventID": eventCard.id});
     let eventIcons = event['icons'];
     event = event['event'];
 
@@ -55,8 +69,8 @@ async function showPopUp(e) {
 
     popUpEvent.setBody(event,popUpArrayKeys,popUpArrayLabels);
     if(event['status'] !== 'Cancelled') {
-        popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc},
-            {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc}]);
+        popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc,cancel:true},
+            {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc,cancel:true}]);
     }
     popUpEvent.showPopUp();
 }
@@ -75,7 +89,7 @@ let updateFunc = async (e) => {
     else {
         let updateValues = popUpFunctions.getUpdatedValues(e.target,fieldsToUpdate);
         updateValues['eventID'] = e.target.value;
-        let result = await getData('./events/update', 'POST', {do:'update',data:updateValues});
+        let result = await getData('./event/update', 'POST', {do:'update',data:updateValues});
         if(result['status']) {
             console.log('updated');
         } else {
@@ -94,7 +108,7 @@ let cancelFunc = async (e) => {
         e.target.nextElementSibling.style.display = 'block';
     }
     else {
-        let result = await getData('./events/update', 'POST', {do:'cancel',data:e.target.value});
+        let result = await getData('./event/update', 'POST', {do:'cancel',data:e.target.value});
         if(result['status']) {
             console.log('Success');
         } else {

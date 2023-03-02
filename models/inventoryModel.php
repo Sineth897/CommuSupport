@@ -8,7 +8,7 @@ use app\core\DbModel;
 class inventoryModel extends DbModel
 {
     public string $ccID = '';
-    public string $itemID = '';
+    public string $subcategoryID = '';
     public int $amount = 0;
     public string $updatedDate = '';
 
@@ -19,7 +19,7 @@ class inventoryModel extends DbModel
 
     public function attributes(): array
     {
-        return ['ccID','itemID','amount'];
+        return ['ccID','subcategoryID','amount'];
     }
 
     public function primaryKey(): string
@@ -30,7 +30,7 @@ class inventoryModel extends DbModel
     public function rules(): array
     {
         return [
-            'itemID' => [self::$REQUIRED],
+            'subcategoryID' => [self::$REQUIRED],
             'amount' => [self::$REQUIRED],
         ];
     }

@@ -12,7 +12,6 @@ button {
     background-color: var(--primary-color);
 }
 
-
 .popup-background {
     height: 100vh;
     width: 100vw;
@@ -20,7 +19,9 @@ button {
     justify-content: center;
     align-items: center;
     background-color: var(--transparent-background);
-    position: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
     z-index: 1;
 }
 
@@ -32,7 +33,7 @@ button {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    z-index: 1000;
+    z-index: 2;
     padding: 20px 40px;
     position: fixed;
 }
@@ -122,4 +123,8 @@ button {
     align-items: center;
     width: 100%;
     gap: 10px;
+}
+
+#logistic-item-add-popup-form {
+
 }

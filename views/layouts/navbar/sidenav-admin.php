@@ -15,70 +15,70 @@
                 <i class="material-icons">summarize</i>
                 <span class="links_name">Requests</span>
             </a>
-            <span class="tooltip">Requests</span>
+<!--            <span class="tooltip">Requests</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/events">
                 <i class="material-icons">today</i>
                 <span class="links_name">Events</span>
             </a>
-            <span class="tooltip">Events</span>
+<!--            <span class="tooltip">Events</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/donations">
                 <i class="material-icons">inventory_2</i>
                 <span class="links_name">Donations</span>
             </a>
-            <span class="tooltip">Donations</span>
+<!--            <span class="tooltip">Donations</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/complaints">
                 <i class="material-icons">report_gmailerrorred</i>
                 <span class="links_name">Complaints</span>
             </a>
-            <span class="tooltip">Complaints</span>
+<!--            <span class="tooltip">Complaints</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/donees">
                 <i class="material-icons">emoji_people</i>
                 <span class="links_name">Donees</span>
             </a>
-            <span class="tooltip">Donees</span>
+<!--            <span class="tooltip">Donees</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/donors">
                 <i class="material-icons">accessibility_new</i>
                 <span class="links_name">Donors</span>
             </a>
-            <span class="tooltip">Donors</span>
+<!--            <span class="tooltip">Donors</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/drivers">
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Drivers</span>
             </a>
-            <span class="tooltip">Drivers</span>
+<!--            <span class="tooltip">Drivers</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/employees">
                 <i class="material-icons">badge</i>
                 <span class="links_name">Employees</span>
             </a>
-            <span class="tooltip">Employees</span>
+<!--            <span class="tooltip">Employees</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/communitycenters">
                 <i class="material-icons">emoji_transportation</i>
                 <span class="links_name">Community Centers</span>
             </a>
-            <span class="tooltip">Community Centers</span>
+<!--            <span class="tooltip">Community Centers</span>-->
         </li>
         <li>
             <a href="/CommuSupport/admin/communityheadoffices">
                 <i class="material-icons">home_work</i>
                 <span class="links_name">Community Head Offices</span>
             </a>
-            <span class="tooltip">Community Head Offices</span>
+<!--            <span class="tooltip">Community Head Offices</span>-->
         </li>
 
     </ul>

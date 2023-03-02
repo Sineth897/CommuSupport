@@ -21,6 +21,8 @@ class inventoryController extends Controller
 
     protected function viewInventory(Request $request, Response $response) {
 
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $inventory = new inventoryModel();
         $user = $this->getUserModel();
@@ -35,13 +37,19 @@ class inventoryController extends Controller
         $data = ($request->getJsonData())['data'];
 
         $inventory->getData($data);
-        if($inventory->validate($data) && $inventory->save()) {
-            $this->sendJson(['success' => 1]);
-            $inventory->reset();
-        }
-        else {
-            $this->sendJson(['success' => 0]);
-        }
+         try {
+             if($inventory->validate($data) && $inventory->save()) {
+                 $this->sendJson(['success' => 1]);
+                 $inventory->reset();
+             }
+             else {
+                 $this->sendJson(['success' => 0]);
+             }
+         }
+            catch (\Exception $e) {
+                $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
+            }
+
     }
 
     protected function filterInventory(Request $request, Response $response) {
@@ -49,10 +57,20 @@ class inventoryController extends Controller
 
         $logistic = logisticModel::getModel(['employeeID' =>Application::session()->get('user')]);
 
-        $filters = ($request->getJsonData())['filters'];
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sortBy = $data['sortBy'];
+        if(empty($sortBy['DESC'])) {
+            $sortBy = [];
+        }
         $filter['ccID'] = $logistic->ccID;
 
-        $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters));
+        try {
+            $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters, $sortBy));
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
+        }
     }
 
 }
