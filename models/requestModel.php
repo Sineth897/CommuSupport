@@ -22,7 +22,7 @@ class requestModel extends DbModel
 
     public function attributes(): array
     {
-        return ["requestID","postedBy","approval","approvedDate","item","amount","address","urgency","postedDate", "notes"];
+        return ["requestID","postedBy","approval","approvedDate","item","amount","postedDate", "notes"];
     }
 
     public function primaryKey(): string

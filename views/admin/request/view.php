@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
 
 
 
@@ -64,15 +64,14 @@ use app\core\components\tables\table;
 
         <!--        Content Block-->
         <div class="content">
-            <div class="filler">
 <?php
           $userID = \app\core\Application::session()->get('user');
           // $user = $user->findOne(['adminId' => $userID]);
           $request = $model->retrieve();
           
-          $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","Address", "Urgency", "PostedDate", "Notes"];
+          $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","PostedDate"];
           
-          $arrayKey = ["requestID","postedBy","approval",	"approvedDate",	"item",	"amount","address", "urgency", "postedDate", "notes"];
+          $arrayKey = ["requestID","postedBy","approval",	"approvedDate",	"item",	"amount", "postedDate"];
           
           $requestTable = new table($header, $arrayKey);
           
@@ -80,7 +79,7 @@ use app\core\components\tables\table;
 
 ?>
 
-            </div>
+        
         </div>
 
     
