@@ -16,9 +16,14 @@ abstract class DbModel extends Model
         return (new static())->primaryKey();
     }
 
-    public static function getUser($where): ?DbModel
+    public static function getModel($where)
     {
         return (new static())->findOne($where);
+    }
+
+    public static function getAllData($where = [], $orderBy = []) : array
+    {
+        return (new static())->retrieve($where, $orderBy);
     }
 
     public function save(): bool
@@ -35,7 +40,7 @@ abstract class DbModel extends Model
         return true;
     }
 
-    public static function prepare($sql)
+    public static function prepare($sql): \PDOStatement
     {
         return Application::$app->database->pdo->prepare($sql);
     }
@@ -53,7 +58,7 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
-    public function retrieve(array $where = [], array $order = []) : array
+    public function retrieve(array $where = [], array $orderBy = []): array
     {
         $tableName = static::table();
         $sql = "Select * from $tableName";
@@ -61,8 +66,9 @@ abstract class DbModel extends Model
             $attributes = array_keys($where);
             $sql .= " WHERE ".implode(" AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", $attributes));
         }
-        if($order) {
-            $sql .= " ORDER BY ".implode(" ", $order);
+        if($orderBy) {
+            $order = array_keys($orderBy)[0];
+            $sql .= " ORDER BY ". implode(",", $orderBy[$order]) . " " . $order;
         }
         $statement = self::prepare($sql);
         $statement->execute();
@@ -84,16 +90,25 @@ abstract class DbModel extends Model
 
     public function update(array $where,array $data): bool
     {
-        $tableName = static::table();
-        $attributes = array_keys($where);
-        $setData = implode(", ", array_map(fn($data) => "$data",$data));
-        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
-        $statement = self::prepare("UPDATE $tableName SET $setData WHERE $sql");
-        foreach ($where as $key => $item) {
-            $statement->bindValue(":$key", $item);
+        try {
+            $tableName = static::table();
+            $attributes = array_keys($where);
+            $setData = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
+            $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr ", $attributes));
+            $statement = self::prepare("UPDATE $tableName SET $setData WHERE $sql");
+            foreach ($where as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+            foreach ($data as $key => $item) {
+                $statement->bindValue(":$key", $item);
+            }
+            return $statement->execute();
+
         }
-        $statement->execute();
-        return true;
+        catch (\PDOException $e) {;
+            return $e->getMessage();
+        }
+
     }
 
     public function getCC(string $userID): string {
@@ -105,17 +120,24 @@ abstract class DbModel extends Model
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = []): array {
+    public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = [],string $col =''): array {
         $table = static::table();
-        $primaryKey = static::getPrimaryKey();
-        $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$primaryKey = $tableName.$onColumn";
+        $sql = '';
+        if($col !== '') {
+            $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$col = $tableName.$onColumn";
+        }
+        else {
+            $sql = "SELECT * FROM $table INNER JOIN $tableName ON $table.$onColumn = $tableName.$onColumn";
+        }
+
         if($whereCondition) {
             $attributes = array_keys($whereCondition);
             $where = implode("AND ", array_map(fn($attr) => "$attr = '$whereCondition[$attr]'", $attributes));
             $sql .= " WHERE $where";
         }
         if($orderBy) {
-            $sql .= " ORDER BY ".implode(" ", $orderBy);
+            $order = array_keys($orderBy)[0];
+            $sql .= " ORDER BY ". implode(",", $orderBy[$order]) . " " . $order;
         }
         $statement = self::prepare($sql);
         $statement->execute();

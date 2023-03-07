@@ -27,7 +27,7 @@ class deliveryModel extends DbModel
 
     public function table(): string
     {
-        return 'delivery';
+        return 'deliveries';
     }
 
     public function attributes(): array

@@ -1,12 +1,7 @@
-export default function table() {
-    return {
-        createTable: createTable
-    }
-}
 
 let tableKeys = [];
 
-function createTable(tableDiv, array) {
+function displayTable(tableDiv, array) {
     tableDiv.innerHTML = '';
     tableKeys = array['keys'];
     let table = document.createElement('table');
@@ -43,3 +38,5 @@ function createTableCell(cell) {
     tableCell.innerHTML = cell;
     return tableCell;
 }
+
+export { displayTable};

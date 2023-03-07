@@ -1,19 +1,70 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
 /** @var $user \app\models\logisticModel */
 
-echo "Hello, " . $_SESSION['username'];
+//should show direct donations
+//should show accepted requests
+//should show ccdonations
 
-echo "<pre>";
-var_dump($deliveries->retrieve());
-echo "</pre>";
+$deliveries = $user->getPendingDeliveries();
 
 
 ?>
 
-<?php $regForm = \app\core\components\form\form::begin('logout', 'post'); ?>
+<?php $profile = new \app\core\components\layout\profileDiv();
 
-    <button> logout </button>
+$profile->notification();
 
-<?php $regForm->end(); ?>
+$profile->profile();
+
+$profile->end(); ?>
+
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Deliveries"); ?>
+
+<?php $headerDiv->pages(["pending", "completed"]); ?>
+
+<?php $headerDiv->end(); ?>
+
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
+
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+$deliveryBtn = \app\core\components\form\form::begin('./deliveries/create', 'get');
+
+$deliveryBtn->button("Create a deliveries", "submit");
+
+$deliveryBtn->end();
+
+$searchDiv->end(); ?>
+
+<div class="content" id="pendingDeliveries">
+
+    <?php
+        echo "<pre>";
+        print_r($deliveries);
+        echo "</pre>";
+    ?>
+
+</div>
+
+<div class="content" id="completedDeliveries">
+
+    <h3>Completed Deliveries</h3>
+
+</div>
+
+<script type="module" src="../public/JS/logistic/deliveries/view.js"></script>

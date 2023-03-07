@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\core\Application;
 use app\core\DbModel;
 
 class doneeModel extends DbModel
@@ -14,6 +15,7 @@ class doneeModel extends DbModel
     public string $address = '';
     public string $contactNumber = '';
     public string $type = '';
+    public int $mobileVerification = 0;
 
     public function table(): string
     {
@@ -34,9 +36,9 @@ class doneeModel extends DbModel
     {
         return [
             'ccID' => [self::$REQUIRED],
-            'email' => [self::$REQUIRED, self::$EMAIL],
-            'address' => [self::$REQUIRED],
-            'contactNumber' => [self::$REQUIRED, self::$CONTACT],
+            'email' => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE, 'class' => self::class]],
+            'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
         ];
     }
@@ -60,5 +62,63 @@ class doneeModel extends DbModel
         $individuals = $this->getDoneeIndividuals($ccID);
         $organizations = $this->getDoneeOrganizations($ccID);
         return [ 'individuals' => $individuals, 'organizations' => $organizations];
+    }
+
+    public function saveOnALL(array $data) {
+        $data['doneeID'] = substr(uniqid('donee',true),0,23);
+        $data['registeredDate'] = date('Y-m-d');
+        $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
+        if($data['type'] === 'Individual') {
+            return $this->saveOnDoneeIndividual($data);
+        } else {
+            return $this->saveOnDoneeOrganization($data);
+        }
+    }
+
+    private function saveOnDoneeIndividual(array $data): bool {
+        try {
+            $nicFront = Application::file()->saveDonee('nicFront',$data['doneeID']);
+            $nicBack = Application::file()->saveDonee('nicBack',$data['doneeID'],'back');
+            if($nicFront !== true || $nicBack !== true) {
+                $this->addError('nicFront',$nicFront);
+                $this->addError('nicBack',$nicBack);
+                return false;
+            }
+            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','fname','lname','nic','age','username','password'];
+            $sql = 'CALL insertDoneeIndividual(' . implode(',', array_map((fn($attr) => ":$attr"), $cols)) . ')';
+            $stmt = self::prepare($sql);
+            foreach($cols as $key) {
+                $stmt->bindValue(":$key",$data[$key]);
+            }
+            echo $sql;
+            return $stmt->execute();
+        }
+        catch(\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    private function saveOnDoneeOrganization(array $data): bool {
+        try {
+            $certificateFront = Application::file()->saveDonee('certificateFront',$data['doneeID']);
+            $certificateBack = Application::file()->saveDonee('certificateBack',$data['doneeID'],'back');
+            if( $certificateFront !== true || $certificateBack !== true) {
+                $this->addError('certificateFront',$certificateFront);
+                $this->addError('certificateBack',$certificateBack);
+                return false;
+            }
+            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','organizationName','regNo','representative','representativeContact','capacity','username','password'];
+            $sql = 'CALL insertDoneeOrganization(' . implode(',', array_map((fn($attr) => ":$attr"), $cols)) . ')';
+            $stmt = self::prepare($sql);
+            foreach($cols as $key) {
+                $stmt->bindValue(":$key",$data[$key]);
+            }
+            return $stmt->execute();
+        }
+        catch(\PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 }

@@ -17,6 +17,7 @@ class ccController extends Controller
     }
 
     protected function viewCC(Request $request,Response $response) {
+        $this->checkLink($request);
 
         $userType = $this->getUserType();
         $model = new ccModel();
@@ -36,6 +37,11 @@ class ccController extends Controller
             'model' => $model,
             'user' => $user
         ]);
+    }
+
+    protected function getCoordinates(Request $request,Response $response) {
+        $model = new ccModel();
+        $this->sendJson($model->getCoordinates());
     }
 
 }

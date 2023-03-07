@@ -1,10 +1,10 @@
+<link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
 <?php
 /** @var $cho \app\models\choModel */
 /** @var $user \app\models\userModel */
 ?>
 
 <?php
-echo $_SESSION['user'];
 echo '<pre>';
 if(empty(\app\core\Application::session()->getFlash('success'))) {
     print_r(\app\core\Application::session()->getFlash('error'));
@@ -14,22 +14,52 @@ if(empty(\app\core\Application::session()->getFlash('success'))) {
 echo '</pre>';
 ?>
 
-<?php $choRegistrationForm = \app\core\components\form\form::begin('','post') ?>
+<!--        Profile Details-->
+<div class="profile">
+    <div class="notif-box">
+        <i class="material-icons">notifications</i>
+    </div>
+    <div class="profile-box">
+        <div class="name-box">
+            <h4>Username</h4>
+            <p>Position</p>
+        </div>
+        <div class="profile-img">
+            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
+        </div>
+    </div>
+</div>
 
-<?php $choRegistrationForm->dropDownList($cho, "District",'district',$cho->getDistricts()) ?>
+<!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
+<div class="heading-pages">
+    <div class="heading">
+        <h1>Create a Community Head Office</h1>
+    </div>
+</div>
 
-<?php $choRegistrationForm->inputField($cho,"Contact Number",'text','contactNumber') ?>
+<div class="content">
 
-<?php $choRegistrationForm->inputField($cho,"Email",'text','email') ?>
+    <?php $choRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 
-<?php $choRegistrationForm->inputField($cho,"Address",'text','address') ?>
+    <?php $choRegistrationForm->dropDownList($cho, "District",'district',$cho->getDistricts()) ?>
 
-<?php $choRegistrationForm->inputField($user, "Username",'text','username') ?>
+    <?php $choRegistrationForm->inputField($cho,"Contact Number",'text','contactNumber') ?>
 
-<?php $choRegistrationForm->inputField($user, "Password",'password','password') ?>
+    <?php $choRegistrationForm->inputField($cho,"Email",'text','email') ?>
 
-<?php $choRegistrationForm->button("Confirm") ?>
+    <?php $choRegistrationForm->inputField($cho,"Address",'text','address') ?>
 
-<?php $choRegistrationForm->end() ?>
+    <?php $choRegistrationForm->inputField($user, "Username",'text','username') ?>
+
+    <?php $choRegistrationForm->inputField($user, "Password",'password','password') ?>
+
+        <div>
+            <?php $choRegistrationForm->button("Confirm") ?>
+        </div>
+
+
+    <?php $choRegistrationForm->end() ?>
+</div>
+
 
 
