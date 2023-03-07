@@ -106,4 +106,35 @@ class requestModel extends DbModel
         $stmnt->execute();
         $this->delete(['requestID' => $this->requestID]);
     }
+
+    public function getOwnRequests(string $doneeID) {
+        $stmnt = self::prepare('SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID');
+        $stmnt->bindValue(':doneeID',$doneeID);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getAllRequests(array $where = []) {
+        $sql = 'SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID';
+        if (empty($where)) {
+            $stmnt = self::prepare($sql);
+            $stmnt->execute();
+            return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+        $sql .= ' WHERE ';
+        if(in_array('Approved',$where)) {
+            $sql .= "r.approval = 'Approved'";
+            unset($where['approval']);
+        }
+        $stmnt = self::prepare($sql);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function accept(): bool {
+        $acceptedRequest = new acceptedModel();
+        $acceptedRequest->getDataFromThePostedRequest($this);
+        return $acceptedRequest->saveAcceptedRequest();
+    }
+
 }

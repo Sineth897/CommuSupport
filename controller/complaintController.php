@@ -24,5 +24,6 @@ class complaintController extends Controller
         $this->render($userType . '/complaints/view','Complaints',[
             "complaints"=> $complaints,
             "user"=>$user
+        ]);
     }
 }
