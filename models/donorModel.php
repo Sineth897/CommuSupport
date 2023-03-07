@@ -174,4 +174,11 @@ class donorModel extends DbModel
         });
     }
 
+    public static function getDonorIDs(string $ccID): array {
+        $sql = self::prepare("SELECT donorID FROM donor WHERE ccID = :ccID");
+        $sql->bindValue(":ccID",$ccID);
+        $sql->execute();
+        return $sql->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
 }
