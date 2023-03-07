@@ -276,15 +276,18 @@ class PopUp {
 
     include (files) {
         let filesDiv = document.createElement('div');
+        filesDiv.classList.add('file-upload');
         for(let i = 0; i < files.length; i++) {
             let file = files[i];
             let fileDiv = document.createElement('div');
+            fileDiv.classList.add('file-upload-item');
             let fileLabel = Object.assign(document.createElement('p'),{innerHTML:file['name']});
-            let fileBtn = document.createElement('button');
-            fileBtn.setAttribute('class','btn btn-primary');
-            let anchor = Object.assign(this.getaTag(file['url'],'View'),{target:'_blank'});
-            fileBtn.append(anchor);
-            fileDiv.append(fileLabel,fileBtn);
+            let anchor = Object.assign(this.getaTag(file['url'],''),{target:'_blank'});
+            let icon = document.createElement('i');
+            icon.setAttribute('class','material-icons');
+            icon.innerHTML = 'visibility';
+            anchor.append(icon);
+            fileDiv.append(fileLabel,anchor);
             filesDiv.append(fileDiv);
         }
         this.popUpContainer.append(filesDiv);
