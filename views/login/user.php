@@ -76,7 +76,7 @@
                     <li><i class="material-icons">calendar_today</i>View and participate in charity events.</li>
                     <li><i class="material-icons">lock</i>Complete anonymity</li>
                 </ul>
-                <a href="../../register/donor">
+                <a href="../register/donor">
                     <button>Register as a Donor</button>
                 </a>
             </div>
@@ -93,7 +93,7 @@
                     <li><i class="material-icons">calendar_today</i>View and participate in charity events.</li>
                     <li><i class="material-icons">lock</i>Complete anonymity</li>
                 </ul>
-                <a href="../../register/donee">
+                <a href="../register/donee">
                     <button>Register as a Donee</button>
                 </a>
             </div>

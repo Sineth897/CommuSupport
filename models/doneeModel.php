@@ -79,7 +79,7 @@ class doneeModel extends DbModel
         try {
             $nicFront = Application::file()->saveDonee('nicFront',$data['doneeID']);
             $nicBack = Application::file()->saveDonee('nicBack',$data['doneeID'],'back');
-            if(!($nicFront || $nicBack)) {
+            if($nicFront !== true || $nicBack !== true) {
                 $this->addError('nicFront',$nicFront);
                 $this->addError('nicBack',$nicBack);
                 return false;
@@ -103,7 +103,9 @@ class doneeModel extends DbModel
         try {
             $certificateFront = Application::file()->saveDonee('certificateFront',$data['doneeID']);
             $certificateBack = Application::file()->saveDonee('certificateBack',$data['doneeID'],'back');
-            if(!( $certificateFront || $certificateBack)) {
+            if( $certificateFront !== true || $certificateBack !== true) {
+                $this->addError('certificateFront',$certificateFront);
+                $this->addError('certificateBack',$certificateBack);
                 return false;
             }
             $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','organizationName','regNo','representative','representativeContact','capacity','username','password'];

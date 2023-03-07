@@ -28,6 +28,11 @@ class Controller
         }
     }
 
+    protected function checkLink($request): void {
+        if($request->getUser() !== $this->getUserType()) {
+            throw new \Exception('You do not have access to this page');
+        }
+    }
 
 
     //function to be called by the subclasses to render the view
@@ -139,4 +144,21 @@ class Controller
     {
         return Application::$app->file;
     }
+
+    protected function startTransaction() : void
+    {
+        Application::$app->database->pdo->beginTransaction();
+    }
+
+    protected function commitTransaction() : void
+    {
+        Application::$app->database->pdo->commit();
+    }
+
+    protected function rollbackTransaction() : void
+    {
+        Application::$app->database->pdo->rollBack();
+    }
+
+
 }

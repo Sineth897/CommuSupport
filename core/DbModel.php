@@ -98,13 +98,11 @@ abstract class DbModel extends Model
             foreach ($data as $key => $item) {
                 $statement->bindValue(":$key", $item);
             }
-            $statement->execute();
-            return true;
-        }
-        catch (\PDOException $e) {
-            echo $e->getMessage();
+            return $statement->execute();
 
-            return false;
+        }
+        catch (\PDOException $e) {;
+            return $e->getMessage();
         }
 
     }

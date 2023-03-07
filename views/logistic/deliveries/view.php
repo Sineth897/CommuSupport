@@ -41,11 +41,11 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$registerCho = \app\core\components\form\form::begin('./deliveries/create', 'get');
+$deliveryBtn = \app\core\components\form\form::begin('./deliveries/create', 'get');
 
-$registerCho->button("Create a deliveries", "submit");
+$deliveryBtn->button("Create a deliveries", "submit");
 
-$registerCho->end();
+$deliveryBtn->end();
 
 $searchDiv->end(); ?>
 

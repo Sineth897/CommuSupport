@@ -1,4 +1,11 @@
+<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/request-card.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
+
+/** @var $model \app\models\requestModel */
+
+$requests = $model->getAllRequests(['Approved']);
 
 
 ?>
@@ -40,8 +47,12 @@ $searchDiv->filterDivEnd();
 $searchDiv->end();
 ?>
 
-<div class="content" id="postedRequests">
-    <h3>Posted Requests</h3>
+<div class="content card-container" id="postedRequests">
+    <?php
+    $requestCards = new \app\core\components\cards\requestcard();
+
+    $requestCards->displayRequests($requests,[["View","requestView"]]);
+    ?>
 </div>
 
 <div class="content" id="historyRequests">
