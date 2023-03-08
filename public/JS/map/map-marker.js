@@ -1,5 +1,6 @@
 let map, marker;
 
+
 // These values should be the default on the map.
 // When creating CC, default should be the CHO coordinates
 // When
@@ -34,3 +35,5 @@ function initMap() {
         document.getElementById('lng').value = lng;
     });
 }
+
+window.initMap = initMap;
