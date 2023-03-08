@@ -106,13 +106,47 @@ class requestController extends Controller
 
     private function approveRequest($data) {
         $requestmodel = new requestModel();
-        $requestmodel->update($data,['approval' => '1','approvedDate' => date('Y-m-d')]);
+        $requestmodel->update($data,['approval' => 'Approved','approvedDate' => date('Y-m-d')]);
     }
 
     private function rejectRequest($data) {
         $requestID = $data['requestID'];
         $req = requestModel::getModel(['requestID' => $requestID]);
         $req->rejectRequest($data['rejectedReason']);
+    }
+
+    protected function acceptRequest(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $reqID = $data['requestID'];
+        $acceptedAmount = $data['acceptedAmount'];
+        $amount = $data['amount'];
+        $req = requestModel::getModel(['requestID' => $reqID]);
+
+        try{
+            $this->startTransaction();
+            $req->amount = $acceptedAmount;
+            $result = $req->accept();
+
+            if(!$result) {
+                $this->rollbackTransaction();
+                $this->sendJson(["success"=> 0,"error" => "Error accepting request"]);
+                return;
+            }
+
+            if($acceptedAmount < $amount) {
+                $req->update(['requestID' => $reqID],['amount' => $amount - $acceptedAmount]);
+            }
+            else {
+                $req->delete(['requestID' => $reqID]);
+            }
+            $this->commitTransaction();
+        }
+        catch (\PDOException $e) {
+            $this->rollbackTransaction();
+            $this->sendJson(["status"=> 0,"error" => $e->getMessage()]);
+        }
+
+        $this->sendJson(["success"=> 1]);
     }
 
 }

@@ -298,8 +298,14 @@ $app->router->get('/donee/complaints', function($request,$response) {
 
 //*************************Donor get and post methods*************************//
 //Donor view request
-$app->router->get('/donor/request', function ($request, $response) {
+$app->router->get('/donor/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
+$app->router->post('/donor/requests/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+$app->router->post('/donor/requests/accept', function ($request, $response) {
+    $controller = new \app\controller\requestController("acceptRequest",$request,$response);
 });
 
 //donor view communitycenter
@@ -324,11 +330,6 @@ $app->router->post('/donor/donations/create', function ($request, $response) {
     $controller = new \app\controller\donationController("createDonation",$request,$response);
 });
 
-//Donor view requests
-$app->router->get('/donor/requests', function ($request, $response) {
-    $controller = new \app\controller\requestController("viewRequests",$request,$response);
-});
-
 //Donor view event
 $app->router->get('/donor/events', function($request,$response) {
     $controller = new eventController("viewEvents",$request,$response);
@@ -348,7 +349,6 @@ $app->router->post('/donor/event/markParticipation', function ($request, $respon
 $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
-
 
 
 
@@ -403,6 +403,12 @@ $app->router->post('/logistic/deliveries/create', function($request,$response) {
 $app->router->get('/logistic/requests', function ($request,$response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
+$app->router->post('/logistic/requests/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+$app->router->post('/logistic/requests/accept', function ($request, $response) {
+    $controller = new \app\controller\requestController("acceptRequest",$request,$response);
+});
 
 $app->router->get('/logistic/donations', function ($request,$response) {
     $controller = new \app\controller\ccDonationController("viewCCDonations",$request,$response);
@@ -415,12 +421,6 @@ $app->router->get("/logistic/donations/create", function ($request,$response) {
 $app->router->post("/logistic/donations/create", function ($request,$response) {
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
-
-
-
-
-
-
 
 
 

@@ -164,4 +164,21 @@ class donorModel extends DbModel
 
     }
 
+    public function filterRequests(array $requests): array {
+        $sql = acceptedModel::prepare("SELECT requestID FROM acceptedrequest WHERE acceptedBy = :donorID");
+        $sql->bindValue(":donorID",$this->donorID);
+        $sql->execute();
+        $acceptedRequests = $sql->fetchAll(\PDO::FETCH_COLUMN);
+        return array_filter($requests,function($request) use ($acceptedRequests) {
+            return !in_array($request['requestID'],$acceptedRequests);
+        });
+    }
+
+    public static function getDonorIDs(string $ccID): array {
+        $sql = self::prepare("SELECT donorID FROM donor WHERE ccID = :ccID");
+        $sql->bindValue(":ccID",$ccID);
+        $sql->execute();
+        return $sql->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
 }

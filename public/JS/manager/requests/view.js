@@ -3,7 +3,7 @@ import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
 
-let toggle = new togglePages([{btnId:'pending',pageId:'pendingRequests'},{btnId:'posted',pageId:'postedRequests'},{btnId:'history',pageId:'completedRequests'}]);
+let toggle = new togglePages([{btnId:'pending',pageId:'pendingRequests'},{btnId:'posted',pageId:'postedRequests'},{btnId:'history',pageId:'completedRequests'}],'grid');
 
 let requests = document.querySelectorAll('.pendingRequestView');
 requests = Array.from(requests);
@@ -25,7 +25,6 @@ async function showPendingReqPopUp(e) {
 
 
     popUpRequest.clearPopUp();
-    // popUpRequest.setHeader('requestID',reqDetails);
 
     popUpRequest.insertHeading('Posted by');
     popUpRequest.startSplitDiv();

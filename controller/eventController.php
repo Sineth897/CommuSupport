@@ -55,17 +55,27 @@ class eventController extends Controller
     }
 
     protected function filterEvents(Request $request,Response $response) {
-
-        $model = new eventModel();
-        $user = managerModel::getModel(['employeeID'=>Application::session()->get('user')]);
-        $filters = $request->getJsonData();
-        $filters['ccID'] = $user->ccID;
-        $events = $model->retrieve($filters);
-        $categoryIcons = eventModel::getEventCategoryIcons();
-        $this->sendJson([
-            'event' => $events,
-            'icons' => $categoryIcons
-        ]);
+        try {
+            $model = new eventModel();
+            $user = managerModel::getModel(['employeeID'=>Application::session()->get('user')]);
+            $filters = $request->getJsonData()['filters'];
+            $sortBy = $request->getJsonData()['sortBy'];
+            if(empty($sortBy['DESC'])) {
+                $sortBy = [];
+            }
+            $filters['ccID'] = $user->ccID;
+            $events = $model->retrieve($filters,$sortBy);
+            $categoryIcons = eventModel::getEventCategoryIcons();
+            $this->sendJson([
+                'event' => $events,
+                'icons' => $categoryIcons
+            ]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     protected function filterEventsUser(Request $request,Response $response) {

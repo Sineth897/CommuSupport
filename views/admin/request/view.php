@@ -69,9 +69,9 @@ use app\core\components\tables\table;
           // $user = $user->findOne(['adminId' => $userID]);
           $request = $model->retrieve();
           
-          $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","Address", "Urgency", "PostedDate", "Notes"];
+          $header = [	"PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","Address", "Urgency", "PostedDate", "Notes"];
           
-          $arrayKey = ["requestID","postedBy","approval",	"approvedDate",	"item",	"amount","address", "urgency", "postedDate", "notes"];
+          $arrayKey = [" postedBy","approval",	"approvedDate",	"item",	"amount","address", "urgency", "postedDate", "notes"];
           
           $requestTable = new table($header, $arrayKey);
           

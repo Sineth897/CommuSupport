@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="../public/CSS/unreg-user/unreg-bar.css">
 <?php
 
 /**
@@ -59,31 +60,14 @@ $searchDiv->filterDivEnd();
 
 $searchDiv->end(); ?>
 
-<div class="" id="pendingVerifications">
-    <?php
-        foreach($donees['individuals'] as $key => $donee) {
-            if($donee['verificationStatus'] == 0) {
-                echo "<div class='pendingVerification'>";
-                echo "<p>Name: " . $donee['fname'] . ' ' .$donee['lname'] . "</p>";
-                echo "<button class='btn btn-primary verify' value=". $donee['doneeID'] . ">View</button>";
-                echo "</div>";
-
-            }
-        }
-        foreach ($donees['organizations'] as $key => $donee) {
-            if($donee['verificationStatus'] == 0) {
-                echo "<div class='pendingVerification'>";
-                echo "<p>Organization Name: " . $donee['organizationName'] . "</p>";
-                echo "<p>Representative Name: " . $donee['representative'] . "</p>";
-                echo "<button class='btn btn-primary verify' value=". $donee['doneeID'] . " >View</button>";
-                echo "</div>";
-            }
-        }
-    ?>
-
-
+<div class="horizontal-scroll">
+    <div class="unver-user-container" id="pendingVerifications">
+        <?php
+        $unverified = new \app\core\components\cards\unverifiedDoneeCard();
+        $unverified->displayUnverifiedDonees($donees);
+        ?>
+    </div>
 </div>
-
 
 <div id="individualDoneeDisplay" class="content">
 
