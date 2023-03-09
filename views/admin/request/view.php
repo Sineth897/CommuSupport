@@ -68,6 +68,19 @@ use app\core\components\tables\table;
           $userID = \app\core\Application::session()->get('user');
           // $user = $user->findOne(['adminId' => $userID]);
           $request = $model->retrieve();
+            
+          foreach($request as $key => $r){
+                $res = $model->getSubC($r['item']);
+                $postedBy = $model->getPostedBy($r['postedBy']);
+                $r['item'] = $res['subcategoryName'];
+
+                if($res['scale'] != "items"){
+                    $r['amount'] = $r['amount'] . " " . $res['scale'];
+                }
+
+                $r['postedBy'] = $postedBy['username'];
+                $request[$key] = $r;
+            }
           
           $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","PostedDate"];
           
