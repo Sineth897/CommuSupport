@@ -6,12 +6,16 @@
 $userID = \app\core\Application::session()->get('user');
 
 $user = $user->findOne(['choID' => $userID]);
-$CC = $model->retrieve(['choID' => $userID]);
+//$CC = $model->retrieve(['cho' => $userID]);
+$CC = $model->getAll($userID);
+
+
 
 
 
 ?>
         <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
+        <link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
         <!--        Profile Details-->
         <div class="profile">
             <div class="notif-box">
@@ -28,11 +32,17 @@ $CC = $model->retrieve(['choID' => $userID]);
             </div>
         </div>
 
-        <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
+     <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
             <div class="heading">
-                <h1>Heading</h1>
+                <h1>Community Centers </h1>
             </div>
+            <div class="register">
+                <form method="get" action="./communitycenter/register">
+                    <button class="btn-cta-primary" > Register CC </button>
+                </form>
+
+            </div><!--
             <div class="pages">
                 <a href="#">
                     <i class="material-icons">cached</i>
@@ -43,7 +53,7 @@ Completed</a>
                 <a href="#">
                     <i class="material-icons">block</i>
 Cancelled</a>
-            </div>
+            </div>-->
         </div>
 
         <!--        Search and filter boxes -->
@@ -57,10 +67,11 @@ Cancelled</a>
                     <p><i class="material-icons">sort</i> <span>Sort</span></p>
                 </div>
             </div>
+            <!--
             <div class="search">
                 <input type="text" placeholder="Search">
                 <a href="#"><i class="material-icons">search</i></a>
-            </div>
+            </div> -->
 
         </div>
 
@@ -68,8 +79,8 @@ Cancelled</a>
         <div class="content">
             <?php
 
-            $headers=['City','Email','Fax','Contact Number','Manager Name','Logistic Manager Name'];
-            $arrayKeys=['city','email','fax','contactNumber'];
+            $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer'];
+            $arrayKeys=['city','email','fax','contactNumber','manager','logistic'];
             $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
             $ccTable->displayTable($CC);
             ?>

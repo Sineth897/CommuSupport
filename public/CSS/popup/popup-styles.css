@@ -128,3 +128,72 @@ button {
 #logistic-item-add-popup-form {
 
 }
+
+.file-upload{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+.file-upload-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 20px;
+}
+
+.file-upload-item a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-upload-item a i{
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+}
+
+
+.file-upload-item button{
+    color: white;
+
+    cursor: pointer;
+}
+
+.popup-map {
+    position: relative;
+    width: 70vw;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem;
+    background-color: transparent;
+}
+
+.close-map {
+    color: white;
+    z-index: 5;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.popup-description {
+    position: absolute;
+    top: 2rem;
+    color: white;
+}
+
+.map-styles {
+    width: 90%;
+    height: 90%;
+    border-radius: 0.5rem;
+}

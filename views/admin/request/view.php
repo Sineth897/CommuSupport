@@ -82,9 +82,11 @@ use app\core\components\tables\table;
                 $request[$key] = $r;
             }
           
+
           $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","PostedDate"];
           
           $arrayKey = ["requestID","postedBy","approval",	"approvedDate",	"item",	"amount", "postedDate"];
+
           
           $requestTable = new table($header, $arrayKey);
           

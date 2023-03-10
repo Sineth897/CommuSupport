@@ -16,17 +16,16 @@ abstract class Model
     public static string $DATE = 'date';
 
     public static string $POSITIVE = 'positive';
+    public static string $NOTZERO = 'notzero';
     public array $errors = [];
 
 
     public function getData($data): void {
-
         foreach ($data as $key => $value) {
             if( property_exists($this, $key) ) {
                 $this->{$key} = $value;
             }
         }
-
     }
 
     abstract public function rules(): array;
@@ -84,6 +83,9 @@ abstract class Model
                 if( $ruleName === self::$POSITIVE && $value < 0 ) {
                     $this->addRuleError($attribute, self::$POSITIVE);
                 }
+                if( $ruleName === self::$NOTZERO && $value == 0 ) {
+                    $this->addRuleError($attribute, self::$NOTZERO);
+                }
             }
         }
 
@@ -113,7 +115,8 @@ abstract class Model
             self::$CONTACT => 'This field must be a valid contact number',
             self::$nic => 'This field must be a valid NIC number',
             self::$DATE => 'This field must be a future date',
-            self::$POSITIVE => 'This field must be a positive number'
+            self::$POSITIVE => 'This field must be a positive number',
+            self::$NOTZERO => 'This field must be a non-zero number',
         ];
     }
 

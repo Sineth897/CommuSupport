@@ -7,6 +7,7 @@ import togglePages from "../../togglePages.js";
 let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'completedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}]);
 
 let filterOptions = document.getElementById('filterOptions');
+let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
    if(filterOptions.style.display === 'block') {
@@ -14,12 +15,25 @@ document.getElementById('filter').addEventListener('click', function(e) {
    } else {
        filterOptions.style.display = 'block';
    }
+    sortOptions.style.display = 'none';
+});
+
+document.getElementById('sort').addEventListener('click', function(e) {
+    if(sortOptions.style.display === 'block') {
+        sortOptions.style.display = 'none';
+    } else {
+        sortOptions.style.display = 'block';
+    }
+    filterOptions.style.display = 'none';
 });
 
 let filterBtn = document.getElementById('filterBtn');
 let eventsDiv = document.getElementById('eventDisplay')
 
 let eventCategory = document.getElementById('eventCategory');
+let sortByDate = document.getElementById('sortByDate');
+let sortByParticipation = document.getElementById('sortByParticipation');
+console.log(sortByParticipation);
 
 let popUpArrayKeys = ['organizedBy','date','time','location','description'];
 let popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
@@ -28,17 +42,31 @@ updateEventCardOnClick();
 filterBtn.addEventListener('click', async function() {
 
     let filterValues = {};
+    let sort = {DESC:[]};
 
     if (eventCategory.value) {
         filterValues['eventCategoryID'] = eventCategory.value;
     }
 
-    let array = await getData('./event/filter', 'POST', filterValues);
+    if (sortByDate.checked) {
+        sort['DESC'].push('date');
+    }
+
+    if (sortByParticipation.checked) {
+        sort['DESC'].push('participationCount');
+    }
+
+    let array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
 
     filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);
     updateEventCardOnClick();
 
+});
+
+document.getElementById('sortBtn').addEventListener('click', function() {
+    filterBtn.click();
+    sortOptions.style.display = 'none';
 });
 
 function updateEventCardOnClick() {

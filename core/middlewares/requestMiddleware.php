@@ -12,6 +12,7 @@ class requestMiddleware extends Middleware
             'postRequest' => [$this->DONEE],
             'requestPopup' => [$this->ADMIN,$this->CHO,$this->MANAGER,$this->DONOR,$this->DONEE,$this->LOGISTIC],
             'setApproval' => [$this->MANAGER],
+            'acceptRequest' => [$this->DONOR,$this->LOGISTIC],
         ];
     }
 }

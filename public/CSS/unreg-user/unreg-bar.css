@@ -1,14 +1,5 @@
-/*import inter font and add it into all fonts*/
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
-/*set the font family for all elements*/
-
-* {
-    font-family: 'Inter', sans-serif;
-}
-
-.unreg-user-container {
-    width: 100vw;
+.unver-user-container {
+    width: 90%;
     overflow-x: auto;
     gap: 20px;
     display: flex;
@@ -17,7 +8,7 @@
     padding: 8px 0;
 }
 
-.unreg-user-card {
+.unver-user-card {
     min-width: 300px;
     flex: 0 0 auto;
     background-color: #ffffff;

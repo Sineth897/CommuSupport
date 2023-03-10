@@ -63,7 +63,7 @@ class inventoryController extends Controller
         if(empty($sortBy['DESC'])) {
             $sortBy = [];
         }
-        $filter['ccID'] = $logistic->ccID;
+        $filters['ccID'] = $logistic->ccID;
 
         try {
             $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters, $sortBy));

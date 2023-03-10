@@ -94,7 +94,7 @@ filterBtn.addEventListener('click', async function() {
         sort['DESC'].push('amount');
     }
     let array = await getData('./inventory/filter', 'POST', { filters: filters, sortBy: sort });
-    console.log(array);
+
     let data = {
         headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
         keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],

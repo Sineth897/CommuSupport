@@ -144,4 +144,21 @@ class Controller
     {
         return Application::$app->file;
     }
+
+    protected function startTransaction() : void
+    {
+        Application::$app->database->pdo->beginTransaction();
+    }
+
+    protected function commitTransaction() : void
+    {
+        Application::$app->database->pdo->commit();
+    }
+
+    protected function rollbackTransaction() : void
+    {
+        Application::$app->database->pdo->rollBack();
+    }
+
+
 }
