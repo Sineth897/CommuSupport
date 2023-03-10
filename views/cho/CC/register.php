@@ -45,14 +45,7 @@
         <?php $ccRegistrationForm->inputField($cc,"ContactNumber",'text','contactNumber')?>
 
     </div>
-    <div class="form-split">
 
-
-        <?php $ccRegistrationForm->inputField($user, "Username",'text','username') ?>
-
-        <?php $ccRegistrationForm->inputField($user, "Password",'password','password') ?>
-
-    </div>
     <br>
     <div >
         <?php $ccRegistrationForm->button("Confirm") ?>

@@ -80,7 +80,7 @@ Cancelled</a>
             <?php
 
             $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer'];
-            $arrayKeys=['city','email','fax','contactNumber','manager','logistic'];
+            $arrayKeys=['city','email','fax','contactNumber',['manager','./communitycenters/register',['ccID']],'logistic'];
             $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
             $ccTable->displayTable($CC);
             ?>
