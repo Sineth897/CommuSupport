@@ -14,6 +14,7 @@ class requestModel extends DbModel
     public string $address = "";
     public string $urgency= "";
     public string $postedDate= "";
+    public string $expDate="";
     public string $notes= "";
     public function table(): string
     {
@@ -22,7 +23,7 @@ class requestModel extends DbModel
 
     public function attributes(): array
     {
-        return ["requestID","postedBy","item","amount","address","urgency", "notes"];
+        return ["requestID","postedBy","item","amount","address","urgency","postedDate","expDate", "notes"];
     }
 
     public function primaryKey(): string
@@ -33,8 +34,8 @@ class requestModel extends DbModel
     public function rules(): array
     {
         return [
-            "item" => [self::$REQUIRED],
-            "amount" => [self::$REQUIRED],
+            "item" => [self::$REQUIRED,],
+            "amount" => [self::$REQUIRED,self::$POSITIVE],
             "urgency" => [self::$REQUIRED],
 //            "notes" => [self::$REQUIRED],
         ];
@@ -46,6 +47,20 @@ class requestModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+    public function getSubC($item){
+        $stmnt = self::prepare('SELECT subcategoryName, scale FROM subcategory WHERE subcategoryID = :item');
+        $stmnt->bindValue(':item',$item);
+        $stmnt->execute();
+        return $stmnt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function getPostedBy($userID){
+        $stmnt = self::prepare('SELECT username FROM users WHERE userID = :userID');
+        $stmnt->bindValue(':userID',$userID);
+        $stmnt->execute();
+        return $stmnt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     public function getSubcategories($category) {
         $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = :category');
         $stmnt->bindValue(':category',$category);
@@ -55,8 +70,9 @@ class requestModel extends DbModel
 
     public function getUrgency():array {
         return [
-            'Urgent' => 'Urgent',
-            'Not Urgent' => 'Not Urgent',
+            'Within 7 days' => 'Within 7 days',
+            'Within a month' => 'Within a month',
+            'Within 3 month' => 'Within 3 month'
         ];
     }
 
@@ -64,6 +80,8 @@ class requestModel extends DbModel
     {
         $this->requestID = substr(uniqid('request', true), 0, 23);
         $this->postedBy = $_SESSION['user'];
+        $this->postedDate = date('Y-m-d');
+        $this->expDate = date('Y-m-d', strtotime("+" . $this->getDays() . " days"));
 
         if ($this->address === "") {
             $user = doneeModel::getModel(['doneeID' => $_SESSION['user']]);
@@ -71,6 +89,15 @@ class requestModel extends DbModel
         }
 
         return parent::save();
+    }
+
+    private function getDays():int {
+        return match ($this->urgency) {
+            'Within 7 days' => 7,
+            'Within a month' => 30,
+            'Within 3 month' => 90,
+            default => 0,
+        };
     }
 
     public function getRequestsUnderCC(string $ccID) {
@@ -93,4 +120,35 @@ class requestModel extends DbModel
         $stmnt->execute();
         $this->delete(['requestID' => $this->requestID]);
     }
+
+    public function getOwnRequests(string $doneeID) {
+        $stmnt = self::prepare('SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID');
+        $stmnt->bindValue(':doneeID',$doneeID);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getAllRequests(array $where = []) {
+        $sql = 'SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID';
+        if (empty($where)) {
+            $stmnt = self::prepare($sql);
+            $stmnt->execute();
+            return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+        $sql .= ' WHERE ';
+        if(in_array('Approved',$where)) {
+            $sql .= "r.approval = 'Approved'";
+            unset($where['approval']);
+        }
+        $stmnt = self::prepare($sql);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function accept(): bool {
+        $acceptedRequest = new acceptedModel();
+        $acceptedRequest->getDataFromThePostedRequest($this);
+        return $acceptedRequest->saveAcceptedRequest();
+    }
+
 }

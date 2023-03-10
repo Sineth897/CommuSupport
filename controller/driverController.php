@@ -18,6 +18,9 @@ class driverController extends Controller
 
     protected function viewDrivers(Request $request, Response $response)
     {
+
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $model = new driverModel();
         $user = $this->getUserModel();

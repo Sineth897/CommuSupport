@@ -21,15 +21,19 @@ class eventController extends Controller
 
     protected function viewEvents(Request $request,Response $response) {
 
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $model = new eventModel();
 
-        $this->render($userType . "/events/view", "View Events", [
+        $this->render($userType . "/event/view", "View Events", [
             'model' => $model
         ]);
     }
 
     protected function createEvent(Request $request,Response $response) {
+
+        $this->checkLink($request);
 
         $model = new eventModel();
 
@@ -44,22 +48,45 @@ class eventController extends Controller
             }
         }
 
-        $this->render("manager/events/create", "Create a Event" ,[
+        $this->render("manager/event/create", "Create a Event" ,[
             'model' => $model
         ]);
 
     }
 
     protected function filterEvents(Request $request,Response $response) {
+        try {
+            $model = new eventModel();
+            $user = managerModel::getModel(['employeeID'=>Application::session()->get('user')]);
+            $filters = $request->getJsonData()['filters'];
+            $sortBy = $request->getJsonData()['sortBy'];
+            if(empty($sortBy['DESC'])) {
+                $sortBy = [];
+            }
+            $filters['ccID'] = $user->ccID;
+            $events = $model->retrieve($filters,$sortBy);
+            $categoryIcons = eventModel::getEventCategoryIcons();
+            $this->sendJson([
+                'event' => $events,
+                'icons' => $categoryIcons
+            ]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    protected function filterEventsUser(Request $request,Response $response) {
 
         $model = new eventModel();
-        $user = managerModel::getModel(['employeeID'=>Application::session()->get('user')]);
-        $filters = $request->getJsonData();
-        $filters['ccID'] = $user->ccID;
-        $events = $model->retrieve($filters);
+        $filters = $request->getJsonData()['filters'];
+        $sortBy = $request->getJsonData()['sortBy'];
+        $events = $model->retrieve($filters,$sortBy);
         $categoryIcons = eventModel::getEventCategoryIcons();
         $this->sendJson([
-            'events' => $events,
+            'event' => $events,
             'icons' => $categoryIcons
         ]);
     }
@@ -75,7 +102,41 @@ class eventController extends Controller
         ]);
     }
 
+    protected function eventPopUpUser(Request $request,Response $response) {
+        $model = new eventModel();
+        $event = $model->retrieveWithJoin('eventCategory','eventCategoryID',$request->getJsonData())[0];
+        $eventCategoryIcons = eventModel::getEventCategoryIcons();
+        $eventID = $request->getJsonData()['event.eventID'];
+        $this->sendJson([
+            'event' => $event,
+            'icons' => $eventCategoryIcons,
+            'data' => $request->getJsonData(),
+            'isGoing' => $model->isGoing($eventID),
+            'test' => $eventID,
+        ]);
+    }
+
+    protected  function participate(Request $request,Response $response) {
+        $model = new eventModel();
+        $data = $request->getJsonData();
+        $data = $data['eventID'];
+        try {
+            eventModel::setParticipation($data);
+            $this->sendJson([
+                'status' => 1
+            ]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'status' => 0,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
     protected function updateEvent(Request $request,Response $response) {
+        $this->checkLink($request);
+
         $data = $request->getJsonData();
         $func = $data['do'];
         unset($data['do']);

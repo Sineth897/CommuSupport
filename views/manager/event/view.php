@@ -53,11 +53,16 @@ $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
 
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"By date","date",'sortByDate');
+$sortForm->checkBox($model,"By participation Count","participationCount",'sortByParticipation');
+$sortForm::end();
+
 $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$creatEvent = \app\core\components\form\form::begin('./events/create', 'get');
+$creatEvent = \app\core\components\form\form::begin('./event/create', 'get');
 
 echo "<button class='btn-cta-primary'> Publish event </button>";
 

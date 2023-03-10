@@ -15,6 +15,7 @@ class ccDonationModel extends DbModel
     public string $deliveryStatus = '';
     public string $item = '';
     public float $amount = 0.0;
+    public string $notes = '';
 
 
     public function table(): string
@@ -24,7 +25,7 @@ class ccDonationModel extends DbModel
 
     public function attributes(): array
     {
-        return ['ccDonationID', 'fromCC', 'toCC', 'createdDate', 'completedDate', 'deliveryID', 'deliveryStatus', 'item', 'amount'];
+        return ['ccDonationID', 'fromCC','item', 'amount','notes'];
     }
 
     public function primaryKey(): string
@@ -35,24 +36,46 @@ class ccDonationModel extends DbModel
     public function rules(): array
     {
         return [
-            'fromCC' => [self::$REQUIRED],
-            'toCC' => [self::$REQUIRED],
             'item' => [self::$REQUIRED],
-            'amount' => [self::$REQUIRED],
+            'amount' => [self::$REQUIRED,self::$POSITIVE],
+            'notes' => [self::$REQUIRED],
         ];
     }
 
     public function save(): bool
     {
-        $this->ccDonationID = uniqid('ccdonation',true);
+        $this->ccDonationID = substr(uniqid('ccdonation',true),0,23);
+        $user = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
+        $this->fromCC = $user->ccID;
         return parent::save();
     }
-
-    public function getSubcategories() : bool|array
+    public static function getSubcategories(string $categoryId) : bool|array
     {
-        $sql = "SELECT `subcategoryID`,`subcategoryName` FROM subcategory";
+        $sql = "SELECT `subcategoryID`,`subcategoryName` FROM subcategory WHERE `categoryID` = :categoryID";
         $stmt = self::prepare($sql);
+        $stmt->bindValue(':categoryID', $categoryId);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public static function getCategories():array {
+        $stmnt = self::prepare('SELECT * FROM category');
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getDonations(string $ccID) : array
+    {
+        $stmnt1 = self::prepare("SELECT * FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID WHERE cc.fromCC = :ccID");
+        $stmnt1->bindValue(':ccID', $ccID);
+        $stmnt1->execute();
+        $stmnt2 = self::prepare("SELECT * FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID WHERE cc.toCC = :ccID");
+        $stmnt2->bindValue(':ccID', $ccID);
+        $stmnt2->execute();
+
+        return [
+            'fromCC' => $stmnt1->fetchAll(\PDO::FETCH_ASSOC),
+            'toCC' => $stmnt2->fetchAll(\PDO::FETCH_ASSOC)
+        ];
     }
 }

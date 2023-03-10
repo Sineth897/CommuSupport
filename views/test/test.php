@@ -1,17 +1,17 @@
+<link rel="stylesheet" href="./public/CSS/flashMessages.css">
 <?php
 
+/** @var $request \app\core\Request */
 
-
-
-
-
-\app\core\Application::file()->getpdf('donee63ed83cd73a862.114back,pdf','donee/');
-
-//echo \app\core\Application::file()->getFile('donee/front.pdf');
 
 ?>
 
-<div class="content">
-    <iframe src="./src/donee/donee63ed83cd73a862.114back.pdf#view=fitH" title="Nic Back" width="100%" height="100%"></iframe>
+<div id="map" style="height: 400px; width:400px;" onload="initMap()"></div>
 
-</div>
+<input type="hidden" id="lat" >
+<input type="hidden" id="lng" >
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAl1ekIlhUhjhwMjrCqiZ5-fOWaxRIAKos&callback=initMap" async defer></script>
+<script type="module" src="./public/JS/map/map-marker.js"></script>
+

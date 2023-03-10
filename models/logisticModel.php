@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\core\Application;
 use app\core\DbModel;
 
 class logisticModel extends DbModel
@@ -40,5 +41,29 @@ class logisticModel extends DbModel
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "contactNumber" => [self::$REQUIRED,self::$CONTACT,[self::$UNIQUE, "class" => self::class]],
         ];
+    }
+
+    public function getPendingDeliveries() : array {
+        $logisticOfficer = $this->findOne(['employeeID' => Application::$app->session->get('user')]);
+        return $deliveries = [
+            "directDonations" => $this->getDirectDonations($logisticOfficer->ccID),
+            "acceptedRequests" => $this->getAcceptedRequests($logisticOfficer->ccID),
+            "ccDonations" => $this->getCCDonations($logisticOfficer->ccID)
+        ];
+    }
+
+    private function getDirectDonations(string $ccID): array {
+        return donationModel::getAllData(['donateTo' => $ccID,]);
+    }
+
+    private function getAcceptedRequests(string $ccID): array {
+        $sql = "SELECT * FROM acceptedrequest WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    private function getCCDonations(string $ccID): array {
+        return ccDonationModel::getAllData(['fromCC' => $ccID]);
     }
 }

@@ -228,6 +228,7 @@ a {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   padding: 20px;
   width: 180px;
+  z-index: 2;
 }
 
 .filters p {
@@ -277,7 +278,7 @@ a {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .form-box{

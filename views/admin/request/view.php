@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/table/table-styles.css">
 
 
 
@@ -68,16 +68,30 @@ use app\core\components\tables\table;
           $userID = \app\core\Application::session()->get('user');
           // $user = $user->findOne(['adminId' => $userID]);
           $request = $model->retrieve();
+            
+          foreach($request as $key => $r){
+                $res = $model->getSubC($r['item']);
+                $postedBy = $model->getPostedBy($r['postedBy']);
+                $r['item'] = $res['subcategoryName'];
+
+                if($res['scale'] != "items"){
+                    $r['amount'] = $r['amount'] . " " . $res['scale'];
+                }
+
+                $r['postedBy'] = $postedBy['username'];
+                $request[$key] = $r;
+            }
           
-          $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","Address", "Urgency", "PostedDate", "Notes"];
+
+          $header = [	"RequestID","PostedBy",	"Approval",	"ApprovedDate",	"Item",	"Amount","PostedDate"];
           
-          $arrayKey = ["requestID","postedBy","approval",	"approvedDate",	"item",	"amount","address", "urgency", "postedDate", "notes"];
+          $arrayKey = ["requestID","postedBy","approval",	"approvedDate",	"item",	"amount", "postedDate"];
+
           
           $requestTable = new table($header, $arrayKey);
           
           $requestTable->displayTable($request); ?> 
 </div>
-
 
 
 

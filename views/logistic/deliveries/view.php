@@ -4,9 +4,11 @@
 /** @var $deliveries \app\models\deliveryModel */
 /** @var $user \app\models\logisticModel */
 
-//echo "<pre>";
-//var_dump($deliveries->retrieve());
-//echo "</pre>";
+//should show direct donations
+//should show accepted requests
+//should show ccdonations
+
+$deliveries = $user->getPendingDeliveries();
 
 
 ?>
@@ -41,12 +43,28 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$registerCho = \app\core\components\form\form::begin('./delivery/create', 'get');
+$deliveryBtn = \app\core\components\form\form::begin('./deliveries/create', 'get');
 
-$registerCho->button("Create a delivery", "submit");
+$deliveryBtn->button("Create a deliveries", "submit");
 
-$registerCho->end();
+$deliveryBtn->end();
 
-?>
+$searchDiv->end(); ?>
 
-<?php $searchDiv->end(); ?>
+<div class="content" id="pendingDeliveries">
+
+    <?php
+        echo "<pre>";
+        print_r($deliveries);
+        echo "</pre>";
+    ?>
+
+</div>
+
+<div class="content" id="completedDeliveries">
+
+    <h3>Completed Deliveries</h3>
+
+</div>
+
+<script type="module" src="../public/JS/logistic/deliveries/view.js"></script>

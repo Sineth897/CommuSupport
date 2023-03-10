@@ -12,11 +12,11 @@ $user = $user->findOne(['employeeID' => \app\core\Application::session()->get('u
 $requests = $model->getRequestsUnderCC($user->ccID);
 
 $pending = array_filter($requests,function($request) {
-    return $request['approval'] === 0;
+    return $request['approval'] === 'Pending';
 });
 
-$published = array_filter($requests,function($request) {
-    return $request['approval'] === 1;
+$posted = array_filter($requests,function($request) {
+    return $request['approval'] === "Approved";
 });
 
 //$history = array_filter($requests,function($request) {
@@ -64,31 +64,27 @@ $searchDiv->filterDivEnd();
 $searchDiv->end();
 ?>
 
-<div class="content" id="pendingRequests">
+<div class="content card-container" id="pendingRequests">
 
-    <div class="card-container">
         <?php
-        $requsetCards = new \app\core\components\cards\requestcard();
+        $requestCards = new \app\core\components\cards\requestcard();
 
-        $requsetCards->displayRequests($pending,[["View","pendingRequestView"]]);
+        $requestCards->displayRequests($pending,[["View","pendingRequestView"]]);
 
         ?>
-    </div>
 
 </div>
 
-<div class="content" id="postedRequests">
+<div class="content card-container" id="postedRequests" style="display: none">
 
     <?php
-    echo '<pre>';
-    print_r($pending);
-    echo '</pre>';
+    $requestCards->displayRequests($posted,[["View","postedRequestView"]]);
     ?>
 
 
 </div>
 
-<div class="content" id="completedRequests">
+<div class="content" id="completedRequests" style="display: none">
 
     <?php
     echo '<pre>';

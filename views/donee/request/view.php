@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/request-card.css">
 <?php
 /** @var $model \app\models\requestModel */
 /** @var $user  \app\models\doneeModel*/
@@ -6,26 +7,19 @@
 use app\core\Application;
 
 $user = $user->findOne(['doneeID' => Application::$app->session->get('user')]);
-$requests = $model->retrieve(["postedBy" => $user->doneeID]);
+$requests = $model->getOwnRequests($_SESSION['user']);
 
 ?>
 
 
 <!--profile div-->
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
 <?php
@@ -72,13 +66,24 @@ $searchDiv->end();
 ?>
 
 
-<div class="content">
+<div class="content card-container" id="activeRequests">
 
     <?php
-        echo "<pre>";
-        print_r($requests);
-        echo "</pre>";
+    $requestCards = new \app\core\components\cards\requestcard();
+
+    $requestCards->displayRequests($requests,[['View','viewRequest']]);
     ?>
 
+</div>
+
+<div class="content card-container" id="completedRequests">
+
+    <?php
+    echo "<pre>";
+    echo "Completed Requests";
+    echo "</pre>";
+    ?>
 
 </div>
+
+<script type="module" src="../public/JS/donee/request/view.js"></script>

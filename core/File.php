@@ -12,7 +12,7 @@ class File
         $this->dir = getcwd().DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
     }
 
-    public function getpdf(string $file_name, string $relPath)
+    public function getpdf(string $file_name, string $relPath): void
     {
         $file = $this->dir.$relPath.$file_name.'.pdf';
         if(file_exists($file)) {
@@ -27,8 +27,11 @@ class File
     public function saveDonee(string $file_name, string $doneeID,string $side = 'front')
     {
         try {
+            if(empty($_FILES[$file_name]['name'])) {
+                return 'File not uploaded';
+            }
              $error = $this->validate($file_name, false, "pdf");
-            if ($error != null) {
+            if ($error !== null) {
                 return $error;
             }
             $fname = $side . ".pdf";
@@ -45,6 +48,10 @@ class File
         $file_name = basename($_FILES[$file_name]['name']);
         $file_name = str_replace(" ", "_", $file_name);
         $file_name = strtolower($file_name);
+
+//        if(!isset($_FILES[$file_name]) || !is_uploaded_file($_FILES[$file_name]['tmp_name'])) {
+//            return "File not uploaded";
+//        }
 
         if(isset($_FILES[$file_name]['error']) && $_FILES[$file_name]['error'] != 0) {
             return "Error uploading file";

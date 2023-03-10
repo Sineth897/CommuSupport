@@ -16,6 +16,8 @@ class doneeModel extends DbModel
     public string $contactNumber = '';
     public string $type = '';
     public int $mobileVerification = 0;
+    public string $longitude = '0';
+    public string $latitude = '0';
 
     public function table(): string
     {
@@ -24,7 +26,7 @@ class doneeModel extends DbModel
 
     public function attributes(): array
     {
-        return ['doneeID', 'ccID', 'registeredDate', 'verificationStatus', 'email', 'address', 'contactNumber', 'type'];
+        return ['doneeID', 'ccID', 'registeredDate', 'verificationStatus', 'email', 'address', 'contactNumber', 'type','mobileVerification','longitude','latitude'];
     }
 
     public function primaryKey(): string
@@ -40,31 +42,33 @@ class doneeModel extends DbModel
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
+            'longitude' => [self::$REQUIRED, self::$POSITIVE],
+            'latitude' => [self::$REQUIRED, self::$POSITIVE],
         ];
     }
 
-    public function getDoneeIndividuals(string $ccID = "") {
+    public function getDoneeIndividuals(string $ccID = "") : array {
         if($ccID == "") {
             return $this->retrieveWithJoin('doneeindividual','doneeID');
         }
         return $this->retrieveWithJoin('doneeindividual','doneeID',['donee.ccID' => $ccID]);
     }
 
-    public function getDoneeOrganizations(string $ccID = "") {
+    public function getDoneeOrganizations(string $ccID = "") : array {
         if($ccID == "") {
             return $this->retrieveWithJoin('doneeorganization','doneeID');
         }
         return $this->retrieveWithJoin('doneeorganization','doneeID',['donee.ccID' => $ccID]);
     }
 
-    public function getAllDonees(string $ccID = ''): array
+    public function getAllDonees(string $ccID = '') : array
     {
         $individuals = $this->getDoneeIndividuals($ccID);
         $organizations = $this->getDoneeOrganizations($ccID);
         return [ 'individuals' => $individuals, 'organizations' => $organizations];
     }
 
-    public function saveOnALL(array $data) {
+    public function saveOnALL(array $data) : bool {
         $data['doneeID'] = substr(uniqid('donee',true),0,23);
         $data['registeredDate'] = date('Y-m-d');
         $data['password'] = password_hash($data['password'],PASSWORD_DEFAULT);
@@ -79,12 +83,12 @@ class doneeModel extends DbModel
         try {
             $nicFront = Application::file()->saveDonee('nicFront',$data['doneeID']);
             $nicBack = Application::file()->saveDonee('nicBack',$data['doneeID'],'back');
-            if(!($nicFront || $nicBack)) {
+            if($nicFront !== true || $nicBack !== true) {
                 $this->addError('nicFront',$nicFront);
                 $this->addError('nicBack',$nicBack);
                 return false;
             }
-            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','fname','lname','nic','age','username','password'];
+            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','fname','lname','nic','age','username','password','longitude','latitude'];
             $sql = 'CALL insertDoneeIndividual(' . implode(',', array_map((fn($attr) => ":$attr"), $cols)) . ')';
             $stmt = self::prepare($sql);
             foreach($cols as $key) {
@@ -103,10 +107,12 @@ class doneeModel extends DbModel
         try {
             $certificateFront = Application::file()->saveDonee('certificateFront',$data['doneeID']);
             $certificateBack = Application::file()->saveDonee('certificateBack',$data['doneeID'],'back');
-            if(!( $certificateFront || $certificateBack)) {
+            if( $certificateFront !== true || $certificateBack !== true) {
+                $this->addError('certificateFront',$certificateFront);
+                $this->addError('certificateBack',$certificateBack);
                 return false;
             }
-            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','organizationName','regNo','representative','representativeContact','capacity','username','password'];
+            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','organizationName','regNo','representative','representativeContact','capacity','username','password','longitude','latitude'];
             $sql = 'CALL insertDoneeOrganization(' . implode(',', array_map((fn($attr) => ":$attr"), $cols)) . ')';
             $stmt = self::prepare($sql);
             foreach($cols as $key) {

@@ -20,6 +20,8 @@ class donationController extends Controller
 
     protected function viewDonations(Request $request,Response $response) {
 
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $model = new donationModel();
         $user = $this->getUserModel();
@@ -30,6 +32,8 @@ class donationController extends Controller
     }
 
     protected function createDonation(Request $request,Response $response) {
+        $this->checkLink($request);
+
         $model = new donationModel();
         $user = donorModel::getModel(['donorID' =>Application::session()->get('user')]);
 

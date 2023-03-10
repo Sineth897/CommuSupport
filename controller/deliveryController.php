@@ -19,6 +19,8 @@ class deliveryController extends Controller
 
     protected function viewDeliveries($request, $response)
     {
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $deliveries = new deliveryModel();
         $user = $this->getUserModel();
@@ -34,7 +36,7 @@ class deliveryController extends Controller
         $delivery = new deliveryModel();
 
         $this->render('/logistic/deliveries/create','Create a Delivery',[
-                'delivery' => $delivery
+                'deliveries' => $delivery
         ]);
     }
 }
