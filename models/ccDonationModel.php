@@ -63,4 +63,19 @@ class ccDonationModel extends DbModel
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    public function getDonations(string $ccID) : array
+    {
+        $stmnt1 = self::prepare("SELECT * FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID WHERE cc.fromCC = :ccID");
+        $stmnt1->bindValue(':ccID', $ccID);
+        $stmnt1->execute();
+        $stmnt2 = self::prepare("SELECT * FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID WHERE cc.toCC = :ccID");
+        $stmnt2->bindValue(':ccID', $ccID);
+        $stmnt2->execute();
+
+        return [
+            'fromCC' => $stmnt1->fetchAll(\PDO::FETCH_ASSOC),
+            'toCC' => $stmnt2->fetchAll(\PDO::FETCH_ASSOC)
+        ];
+    }
 }
