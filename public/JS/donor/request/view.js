@@ -1,9 +1,6 @@
-import togglePages from "../../togglePages.js";
 import {getData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
-
-let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'history',pageId:'historyRequests'}],'grid');
 
 let popUpRequest = new PopUp();
 

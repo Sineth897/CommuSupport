@@ -26,6 +26,8 @@ class registerController extends Controller
 
     protected function registerDriver(Request $request, Response $response)
     {
+        $this->checkLink($request);
+
         $driver = new driverModel();
         $user = new userModel();
 
@@ -57,7 +59,10 @@ class registerController extends Controller
         $cho = new \app\models\choModel();
         $user = new \app\models\userModel();
 
-        if ($request->isPost()) {
+        $this->checkLink($request);
+
+        if($request->isPost()) {
+
             $cho->getData($request->getBody());
             $user->getData($request->getBody());
             if ($cho->validate($request->getBody()) && $user->validate($request->getBody())) {

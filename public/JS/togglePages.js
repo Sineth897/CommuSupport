@@ -3,9 +3,10 @@ class TogglePages {
 
     pages = [];
     activePage = 0;
+    displayType = 'block';
 
 
-    constructor(pages) {
+    constructor(pages,displayType = 'block') {
          for(let i = 0; i < pages.length; i++) {
              let btn = document.getElementById(pages[i].btnId);
             this.pages.push(
@@ -18,7 +19,7 @@ class TogglePages {
                 this.togglePages(e);
             });
          }
-
+            this.displayType = displayType;
     }
 
     togglePages(e) {
@@ -33,7 +34,7 @@ class TogglePages {
             return page.btn === element;
         });
 
-        this.pages[this.activePage].page.style.display = 'block';
+        this.pages[this.activePage].page.style.display = this.displayType;
         this.pages[this.activePage].btn.classList.add('active-heading-page');
 
     }

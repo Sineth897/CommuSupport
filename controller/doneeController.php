@@ -19,6 +19,8 @@ class doneeController extends Controller
 
     protected function viewDonees(Request $request, Response $response)
     {
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $model = new doneeModel();
         $user = $this->getUserModel();
@@ -39,13 +41,25 @@ class doneeController extends Controller
 
     }
 
-    private function getDoneeDetails($doneeID)
+    private function getDoneeDetails($doneeID) : array
     {
         $donee = doneeModel::getModel(['doneeID' =>$doneeID]);
         if($donee->type == "Individual") {
             return $donee->retrieveWithJoin('doneeindividual','doneeID',['donee.doneeID' => $doneeID]);
         } else {
             return $donee->retrieveWithJoin('doneeorganization','doneeID',['donee.doneeID' => $doneeID]);
+        }
+    }
+
+    public function verifyDonee(Request $request, Response $response)
+    {
+        try {
+            $data = $request->getJsonData();
+            $donee = doneeModel::getModel(['doneeID' => $data['doneeID']]);
+            $donee->update(['doneeID' => $data['doneeID']],['verificationStatus' => 1]);
+            $this->sendJson(['status' => 1]);
+        } catch (\Exception $e) {
+            $this->sendJson(['status' => 0,'message' => $e->getMessage()]);
         }
     }
 

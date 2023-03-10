@@ -1,8 +1,8 @@
 class PopUp {
 
     popInfoFlag = false;
-    splitFormFlag = false;
-    splitDiv = null;
+    splitFormFlag = -1;
+    splitDiv = [];
     statusIcon = {
         Upcoming: 'status-green',
     }
@@ -12,7 +12,8 @@ class PopUp {
         this.popUpBackgroud = document.getElementById(background);
         this.popUpContainer = document.getElementById(container);
         this.popUpInfo = document.getElementById(info);
-
+        this.splitDiv.push(this.popUpContainer);
+        this.splitFormFlag++;
     }
 
     setHeader(heading,obj = {},subheading = '') {
@@ -48,12 +49,7 @@ class PopUp {
                 this.setField(arrKeys[i],arr[arrKeys[i]],arrKeys[i]);
             }
         }
-        if(this.splitFormFlag) {
-            this.splitDiv.append(this.popUpDetails);
-        }
-        else {
-            this.popUpContainer.append(this.popUpDetails);
-        }
+        this.splitDiv[this.splitFormFlag].append(this.popUpDetails);
     }
 
     setField(label,value,id) {
@@ -95,12 +91,7 @@ class PopUp {
         this.heading = document.createElement('h3');
         this.heading.classList.add('form-heading');
         this.heading.innerHTML = heading;
-        if(this.splitFormFlag) {
-            this.splitDiv.append(this.heading);
-        }
-        else {
-            this.popUpContainer.append(this.heading);
-        }
+        this.splitDiv[this.splitFormFlag].append(this.heading);
     }
 
     getLabel(label,forId) {
@@ -180,6 +171,14 @@ class PopUp {
         this.popUpBackgroud.style.display = "none";
     }
 
+    hidePopUpContainer() {
+        this.popUpContainer.style.display = "none";
+    }
+
+    showPopUpContainer() {
+        this.popUpContainer.style.display = "block";
+    }
+
     clearPopUp() {
         this.popUpContainer.innerHTML = "";
         this.setCloseButton();
@@ -233,14 +232,14 @@ class PopUp {
     }
 
     startSplitDiv() {
-        this.splitDiv = this.getDiv('',['form-split']);
-        this.splitFormFlag = true;
+        this.splitDiv.push(this.getDiv('',['form-split']));
+        this.splitFormFlag++;
     }
 
     endSplitDiv() {
-        this.popUpContainer.append(this.splitDiv);
-        this.splitDiv = null;
-        this.splitFormFlag = false;
+        this.splitDiv[this.splitFormFlag-1].append(this.splitDiv[this.splitFormFlag]);
+        this.splitDiv.pop();
+        this.splitFormFlag--;
     }
 
     showStatus(status) {
@@ -274,14 +273,30 @@ class PopUp {
         }
     }
 
-    include (file) {
-        let pdfDiv = document.createElement('div');
-        let pdf = document.createElement('iframe');
-        pdf.setAttribute('src',file);
-        pdf.setAttribute('width','100%');
-        pdf.setAttribute('height','100%');
-        pdfDiv.append(pdf);
-        this.popUpContainer.append(pdfDiv);
+    include (files) {
+        let filesDiv = document.createElement('div');
+        filesDiv.classList.add('file-upload');
+        for(let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let fileDiv = document.createElement('div');
+            fileDiv.classList.add('file-upload-item');
+            let fileLabel = Object.assign(document.createElement('p'),{innerHTML:file['name']});
+            let anchor = Object.assign(this.getaTag(file['url'],''),{target:'_blank'});
+            let icon = document.createElement('i');
+            icon.setAttribute('class','material-icons');
+            icon.innerHTML = 'visibility';
+            anchor.append(icon);
+            fileDiv.append(fileLabel,anchor);
+            filesDiv.append(fileDiv);
+        }
+        this.popUpContainer.append(filesDiv);
+    }
+
+    getaTag(href,innerText) {
+        this.aTag = document.createElement('a');
+        this.aTag.setAttribute('href',href);
+        this.aTag.innerHTML = innerText;
+        return this.aTag;
     }
 }
 

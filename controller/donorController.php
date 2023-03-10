@@ -19,6 +19,8 @@ class donorController extends Controller
 
     protected function viewDonors(Request $request, Response $response)
     {
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $model = new donorModel();
         $user = $this->getUserModel();

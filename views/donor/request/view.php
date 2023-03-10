@@ -1,12 +1,14 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/request-card.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /** @var $model \app\models\requestModel */
 /** @var $user \app\models\donorModel */
 
-$userID = \app\core\Application::session()->get('user');
-$user = $user->findOne(['donorID' => $userID]);
-$request = $model->retrieve();
+$requests = $model->getAllRequests(['Approved']);
+//$user = $user->findOne(['donorID' => $_SESSION['user']]);
+//$requests = $user->filterRequests($requests);
 
 ?>
 
@@ -54,3 +56,16 @@ $searchDiv->filterDivEnd();
 
 $searchDiv->end();
 ?>
+
+<div class="card-container content">
+
+    <?php
+    $requestCards = new \app\core\components\cards\requestcard();
+
+    $requestCards->displayRequests($requests,[["View","requestView"]]);
+    ?>
+
+</div>
+
+
+<script type="module" src="../public/JS/donor/request/view.js"></script>
