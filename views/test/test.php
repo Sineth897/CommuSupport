@@ -1,37 +1,47 @@
-<link rel="stylesheet" href="./public/CSS/flashMessages.css">
-<?php
+<link rel="stylesheet" href="./public/CSS/cards/delivery-card.css">
+<link rel="stylesheet" href="./public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="./public/CSS/button/request-card.css">
 
-/** @var $request \app\core\Request */
+<div class="scroll">
+    <div class="card-container"><h1>Delivery Card</h1>
+        <div class="delivery-card">
+            <div class="delivery-card-header">
 
-echo '<pre>';
-print_r($_SESSION['flashMessages']);
-echo '</pre>';
+                <!--One of these headers-->
+                <!--CC to CC Delivery-->
+                <h4>$startingCC to $endingCC</h4>
+                <!--Donor from Other CC to donee from another CC Delivery-->
+                <h4>$startingCC to $userCC</h4>
+                <!--inside same cc delivery-->
+                <h4>Within $userCC</h4>
+            </div>
+            <div class="map-div">
+                Map Here
+            </div>
+            <div class="card-content">
+                <div class="info-block">
+                        <span>
+                            Created:
+                        </span>
+                    <span>
+                            2023/01/02
+                        </span>
+                </div>
+                <div class="info-block">
+                    <span>Distance</span>
+                    <span>12.5 km</span>
+                </div>
+                <div class="info-block">
+                    <span>Category</span>
+                    <span>Dry Food</span>
+                </div>
+                <div class="info-block">
+                    <a href="" class="btn-primary">Assign</a>
+                </div>
+            </div>
+        </div>
 
-
-
-
-//\app\core\Application::file()->getpdf('donee63ed83cd73a862.114back','donee' . DIRECTORY_SEPARATOR);
-
-//echo \app\core\Application::file()->getFile('donee/front.pdf');
-
-?>
-
-<button id="btn" type="button">Click</button>
-
-<!--<div class="content">-->
-<!--    <iframe src="./src/donee/donee63ed83cd73a862.114back.pdf#view=fitH" title="Nic Back" width="100%" height="100%" style="overflow: hidden;pointer-events: none"></iframe>-->
-<!---->
-<!--</div>-->
-
-<script>
-    <?php if(!empty($_SESSION['flashMessages'])): ?>
-    let flashMsgs = <?php echo json_encode($_SESSION['flashMessages']); ?>;
-    <?php endif; ?>
-
-</script>
-
-<script type="module" src="./public/JS/flashMessages/flash.js"></script>
-
-<script>
-
-</script>
+<div></div>
+        <div></div>
+    </div>
+</div>
