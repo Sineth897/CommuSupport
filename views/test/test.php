@@ -6,7 +6,7 @@
 
 ?>
 
-<div id="map"></div>
+<div id="map" style="height: 400px; width:400px;" onload="initMap()"></div>
 
 <input type="hidden" id="lat" >
 <input type="hidden" id="lng" >

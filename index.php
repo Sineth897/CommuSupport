@@ -106,15 +106,15 @@ $app->router->post('/test', function($request,$response) {
 $app->router->get('/communitycenters', function($request,$response) {
     $controller = new \app\controller\ccController('getCoordinates',$request,$response);
 });
+$app->router->post('/communitycenters', function($request,$response) {
+    $controller = new \app\controller\ccController('getCoordinates',$request,$response);
+});
 $app->router->get('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
 $app->router->post('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
-
-
-
 
 
 //*************************Manager get and post methods*************************//
