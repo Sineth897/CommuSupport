@@ -191,10 +191,10 @@ $app->router->post('/manager/request/approve', function ($request, $response) {
 $app->router->get('/manager/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
-
-
-
-
+//Manager view donation
+$app->router->get('/manager/profile', function ($request, $response) {
+    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+});
 
 
 

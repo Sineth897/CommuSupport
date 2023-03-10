@@ -21,15 +21,16 @@ class profileDiv
 
     public function profile(): void
     {
-        echo "<div class='profile-box'>";
+        echo sprintf("<a class='profile-box' href='/CommuSupport/%s/profile'>", $_SESSION['userType']);
         echo "<div class='name-box'>";
-        echo sprintf("<h4>%s</h4>", $this->getUsername());
+        echo sprintf("<h4>%s</h4>",$this->getUsername());
         echo sprintf("<p>%s</p>", $this->getPosition());
         echo "</div>";
         echo "<div class='profile-img'>";
         echo "<img src='https://www.w3schools.com/howto/img_avatar.png' alt='profile'>";
         echo "</div>";
-        echo "</div>";
+//        echo "</div>";
+        echo "</a>";
     }
 
     public function end(): void
