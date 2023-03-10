@@ -218,14 +218,49 @@ class registerController extends Controller
 
     protected function registerManager(Request $request, Response $response)
     {
-        // TODO: Implement registerManager() method.
+        $manager = new \app\models\managerModel();
+        $user = new \app\models\userModel();
+
+        if($request->isPost()){
+            $manager->getData($request->getBody());
+            $user->getData($request->getBody());
+            if($manager->validate($request->getBody()) && $user->validate($request->getBody())){
+                if($manager->save()){
+                    $this->setFlash('success','Manager registered successfully');
+                    $manager->reset();
+                    $user->reset();
+                }
+                else{
+                    $this->setFlash('Error','Unable to save on the database');
+                }
+
+            }
+            else{
+                $this->setFlash('Error','Validation Failed');
+            }
+        }
 
     }
 
     protected function registerLogistic(Request $request, Response $response)
     {
-        // TODO: Implement registerLogistic() method.
+        $logistic = new \app\models\logisticModel();
+        $user = new \app\models\userModel();
+        if($request->getBody()){
+            if($logistic->validate($request->getBody()) && $user->validate($request->getBody())){
+                if($logistic->save()){
+                    $this->setFlash('success','Manager registered successfully');
+                    $logistic->reset();
+                    $user->reset();
+                }
+                else{
+                    $this->setFlash('Error','Unable to save on the database');
 
+                }
+            }else{
+                $this->setFlash('Error','Validation failed');
+            }
+        }
     }
 
 
