@@ -4,9 +4,12 @@
 <?php
 
 /** @var $model \app\models\requestModel */
+/** @var $accepted \app\models\acceptedModel */
+/** @var $user \app\models\logisticModel */
 
+$user = $user->findOne(['employeeID' => $_SESSION['user']]);
 $requests = $model->getAllRequests(['Approved']);
-
+$acceptedRequests = $accepted->getAcceptedRequests($user->ccID);
 
 ?>
 
@@ -52,6 +55,10 @@ $searchDiv->end();
     $requestCards = new \app\core\components\cards\requestcard();
 
     $requestCards->displayRequests($requests,[["View","requestView"]]);
+
+    echo "<pre>";
+    print_r($acceptedRequests);
+    echo "</pre>";
     ?>
 </div>
 

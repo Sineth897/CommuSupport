@@ -42,8 +42,8 @@ ul{
     /*overflow-y: scroll;*/
     /*width: 50%;*/
     background: white;
-    padding: 40px 40px;
-    border-radius: 12px;
+    padding: 1.5rem 1.5rem;
+    border-radius: 0.75rem;
     gap: 40px;
 }
 .login-grid-2

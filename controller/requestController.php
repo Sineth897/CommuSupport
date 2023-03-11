@@ -6,6 +6,7 @@ use app\core\Controller;
 use app\core\middlewares\requestMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\acceptedModel;
 use app\models\doneeModel;
 use app\models\requestModel;
 
@@ -23,9 +24,11 @@ class requestController extends Controller
 
         $userType = $this->getUserType();
         $model = new requestModel();
+        $accepted = new acceptedModel();
         $user = $this->getUserModel();
         $this->render($userType ."/request/view","View Requests",[
             'model' => $model,
+            'accepted' => $accepted,
             'user' => $user
         ]);
     }
