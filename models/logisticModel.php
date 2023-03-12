@@ -53,7 +53,10 @@ class logisticModel extends DbModel
     }
 
     private function getDirectDonations(string $ccID): array {
-        return donationModel::getAllData(['donateTo' => $ccID,]);
+        $sql = "SELECT * FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID WHERE d.donateTo = '$ccID'";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function getAcceptedRequests(string $ccID): array {

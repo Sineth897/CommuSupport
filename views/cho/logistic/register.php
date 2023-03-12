@@ -4,17 +4,6 @@
 /** @var $user \app\models\userModel */
 ?>
 
-<?php
-//echo $_SESSION=['user'];
-echo "<pre>";
-if(empty(\app\core\Application::session()->getFlash('success'))){
-    print_r(\app\core\Application::session()->getFlash('error'));
-}else if (empty(\app\core\Application::session()->getFlash('error'))){
-    print_r(\app\core\Application::session()->getFlash('success'));
-}
-echo '</pre>';
-?>
-
 <?php $logisticRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 <div class="login-grid-2">
     <div class="form-split">
@@ -30,13 +19,11 @@ echo '</pre>';
 
         <?php $logisticRegistrationForm->inputField($logistic, "Contact Number",'text','contactNumber') ?>
 
-
     </div>
 
     <div class="form-split">
         <?php $logisticRegistrationForm->button("Confirm") ?>
     </div>
-
 
 
 </div>
