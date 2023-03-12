@@ -1,5 +1,9 @@
+.horizontal-scroll{
+    padding: 0 20px;
+}
+
 .unver-user-container {
-    width: 90%;
+    width: 100%;
     overflow-x: auto;
     gap: 20px;
     display: flex;

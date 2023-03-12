@@ -11,6 +11,10 @@
     align-items: center;
 }
 
+.profile-picture img{
+    width: 100px;
+}
+
 .dashboard-link {
     display: flex;
     flex-direction: row;
@@ -38,38 +42,41 @@
 
 .parent {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas:
+"profile chart1 chart2"
+"profile donations calendar"
+"profile donations events";
     grid-column-gap: 20px;
     grid-row-gap: 20px;
     width: 100%;
     height: 100%;
 }
 
-.parent div{
+.parent>div{
     box-shadow: 0 0 10px #e1e5ee;
     padding: 20px;
     border-radius: 12px;
 }
 
-.div1 {
-    grid-area: 1 / 1 / 2 / 4;
-
+.profile-div{
+    grid-area: profile;
+}
+.chart-div-1{
+    grid-area: chart1;
+}
+.div3{
+    grid-area: chart2;
+}
+.div4{
+    grid-area: donations;
+}
+.div5{
+    grid-area: calendar;
+}
+.div6{
+    grid-area: events;
 }
 
-.div2 {
-    grid-area: 2 / 1 / 4 / 2;
-}
-
-.div3 {
-    grid-area: 2 / 2 / 4 / 4;
-}
-
-.div4 {
-    grid-area: 2 / 4 / 3 / 4;
-}
-
-.div5 {
-    grid-area: 3 / 4 / 4 / 4;
-}
 
