@@ -16,6 +16,7 @@ $manager = managerModel::getModel(['employeeID' => $user]);
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 
 <div class="parent">
+
     <div class="profile-div">
         <div class="profile-page-container">
             <div class="profile-content-top">
@@ -90,5 +91,6 @@ $manager = managerModel::getModel(['employeeID' => $user]);
     <div class="div5"></div>
 
     <div class="div6"></div>
+
 </div>
 

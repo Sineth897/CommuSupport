@@ -78,4 +78,5 @@ class choModel extends DbModel
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
 }

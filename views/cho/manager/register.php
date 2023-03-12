@@ -1,33 +1,31 @@
+<link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
 <?php
 /** @var $manager \app\models\managerModel */
 /** @var $user \app\models\userModel */
 ?>
 
-<?php
-echo $_SESSION=['user'];
-echo "<pre>";
-if(empty(\app\core\Application::session()->getFlash('success'))){
-    print_r(\app\core\Application::session()->getFlash('error'));
-}else if (empty(\app\core\Application::session()->getFlash('error'))){
-    print_r(\app\core\Application::session()->getFlash('success'));
-}
-echo '</pre>';
-?>
 
 <?php $managerRegistrationForm = \app\core\components\form\form::begin('','post') ?>
+<div class="form-split">
 
-<?php $managerRegistrationForm->inputField($manager,"Name",'text','name') ?>
+    <div class="login-grid-2">
+        <?php $managerRegistrationForm->inputField($manager,"Name",'text','name') ?>
 
-<?php $managerRegistrationForm->inputField($manager,"Age",'text','age') ?>
+        <?php $managerRegistrationForm->inputField($manager,"Age",'text','age') ?>
 
-<?php $managerRegistrationForm->inputField($manager,"NIC",'text','NIC') ?>
+        <?php $managerRegistrationForm->inputField($manager,"NIC",'text','NIC') ?>
 
-<?php $managerRegistrationForm->inputField($manager,"Gender",'text','gender') ?>
+        <?php $managerRegistrationForm->inputField($manager,"Gender",'text','gender') ?>
 
-<?php $managerRegistrationForm->inputField($manager, "Address",'text','address') ?>
+        <?php $managerRegistrationForm->inputField($manager, "Address",'text','address') ?>
 
-<?php $managerRegistrationForm->inputField($manager, "Contact Number",'text','contactNumber') ?>
+        <?php $managerRegistrationForm->inputField($manager, "Contact Number",'text','contactNumber') ?>
 
-<?php $managerRegistrationForm->button("Confirm") ?>
+    </div>
+    <div class="form-split">
+        <?php $managerRegistrationForm->button("Confirm") ?>
+    </div>
+
+</div>
 
 <?php $managerRegistrationForm->end() ?>
