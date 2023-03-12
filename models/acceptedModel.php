@@ -73,4 +73,13 @@ class acceptedModel extends DbModel
         $this->status = "Accepted";
         return $this->save();
     }
+
+    public function getAcceptedRequests(string $ID) : bool|array
+    {
+        $sql = "SELECT * FROM acceptedrequest a INNER JOIN subcategory s ON a.item = s.subcategoryID WHERE a.acceptedBy = :ID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':ID', $ID);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

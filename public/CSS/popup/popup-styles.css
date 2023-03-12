@@ -166,3 +166,34 @@ button {
 
     cursor: pointer;
 }
+
+.popup-map {
+    position: relative;
+    width: 70vw;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem;
+    background-color: transparent;
+}
+
+.close-map {
+    color: white;
+    z-index: 5;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.popup-description {
+    position: absolute;
+    top: 2rem;
+    color: white;
+}
+
+.map-styles {
+    width: 90%;
+    height: 90%;
+    border-radius: 0.5rem;
+}

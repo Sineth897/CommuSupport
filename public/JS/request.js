@@ -1,5 +1,5 @@
 
-async function getData(URL, method, data = {}) {
+async function getData(URL, method = 'get', data = {}) {
     return fetch(URL, {
         method: method,
         headers: {
