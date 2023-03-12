@@ -36,17 +36,17 @@ if($checkVerification->notVerified()) {
 
 <?php $donationForm = \app\core\components\form\form::begin('','post') ?>
 
-<?php $donationForm->formHeader('Select to donate any Community Center other than your own') ?>
-
-<div class="form-split">
-        <?php $donationForm->dropDownList($model,'Select a district','district',$CHOs,'district') ?>
-
-        <?php foreach ($CHOs as $key => $value) : ?>
-            <div id="<?php echo $key ?>" style="display: none">
-                <?php $donationForm->dropDownList($model,'Choose City','donateTo',\app\models\choModel::getCCsUnderCHO($key)); ?>
-            </div>
-        <?php endforeach; ?>
-</div>
+<?php //$donationForm->formHeader('Select to donate any Community Center other than your own') ?>
+<!---->
+<!--<div class="form-split">-->
+<!--        --><?php //$donationForm->dropDownList($model,'Select a district','district',$CHOs,'district') ?>
+<!---->
+<!--        --><?php //foreach ($CHOs as $key => $value) : ?>
+<!--            <div id="--><?php //echo $key ?><!--" style="display: none">-->
+<!--                --><?php //$donationForm->dropDownList($model,'Choose City','donateTo',\app\models\choModel::getCCsUnderCHO($key)); ?>
+<!--            </div>-->
+<!--        --><?php //endforeach; ?>
+<!--</div>-->
 
 <?php $donationForm->formHeader('Enter donation details') ?>
 
@@ -64,28 +64,28 @@ if($checkVerification->notVerified()) {
         <?php $donationForm->inputField($model, 'Amount','number','amount',); ?>
     </div>
 
-</div>
+<!--</div>-->
 
-<?php $donationForm->formHeader('Delivery pickup Details') ?>
-
-<p> If pickup is place other than your address please specify.</p>
-
-<?php $donationForm->inputField($model,'Delivery Address (Optional)','text','address'); ?>
-
-<?php $donationForm->button('Submit','submit','btn btn-primary'); ?>
-
-<?php $donationForm::end(); ?>
+<?php //$donationForm->formHeader('Delivery pickup Details') ?>
+<!---->
+<!--<p> If pickup is place other than your address please specify.</p>-->
+<!---->
+<?php //$donationForm->inputField($model,'Delivery Address (Optional)','text','address'); ?>
+<!---->
+<?php //$donationForm->button('Submit','submit','btn btn-primary'); ?>
+<!---->
+<?php //$donationForm::end(); ?>
 
 
 <script type="module" src="../../public/JS/donor/donation/create.js"></script>
 
 <script>
-    <?php
-        if(!empty($_POST['district'])) { ?>
-            document.getElementById('district').value = '<?php echo $_POST['district'] ?>';
-            document.getElementById('<?php echo $_POST['district'] ?>').style.display = 'block';
-            (document.getElementById('<?php echo $_POST['district'] ?>').getElementsByTagName('select')[0]).value = '<?php echo $_POST['donateTo'] ?>';
-    <?php }?>
+<!--    --><?php
+//        if(!empty($_POST['district'])) { ?>
+//            document.getElementById('district').value = '<?php //echo $_POST['district'] ?>//';
+//            document.getElementById('<?php //echo $_POST['district'] ?>//').style.display = 'block';
+//            (document.getElementById('<?php //echo $_POST['district'] ?>//').getElementsByTagName('select')[0]).value = '<?php //echo $_POST['donateTo'] ?>//';
+//    <?php //}?>
 
     <?php
         if(!empty($_POST['category'])) { ?>

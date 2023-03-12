@@ -44,8 +44,8 @@ class donorModel extends DbModel
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
-            'longitude' => [self::$REQUIRED, self::$POSITIVE],
-            'latitude' => [self::$REQUIRED, self::$POSITIVE],
+            'longitude' => [self::$REQUIRED, self::$LONGITUDE],
+            'latitude' => [self::$REQUIRED, self::$LATITUDE],
         ];
     }
 

@@ -1,39 +1,45 @@
-let district = document.getElementById('district');
-let activeCity = document.getElementById('district').value;
-let citySelectDivs = [];
-let citySelect = [];
+// let district = document.getElementById('district');
+// let activeCity = document.getElementById('district').value;
+// let citySelectDivs = [];
+// let citySelect = [];
+//
+// prepareDistrictOptionArray();
+// prepareCitySelectionArray();
+//
+// function prepareDistrictOptionArray() {
+//     for(let i = 1; i < district.options.length; i++) {
+//         citySelectDivs[district.options[i].value] = document.getElementById(district.options[i].value);
+//     }
+// }
+//
+// district.addEventListener('change', function() {
+//     if(activeCity !== '') {
+//         hide(citySelectDivs[activeCity]);
+//         citySelect[activeCity].setAttribute("disabled", "");
+//     }
+//     activeCity = district.value;
+//     if(activeCity !== '') {
+//         show(citySelectDivs[activeCity]);
+//         citySelect[activeCity].removeAttribute("disabled");
+//     }
+// });
+//
+// function prepareCitySelectionArray() {
+//     for( let key in citySelectDivs) {
+//         citySelect[key] = citySelectDivs[key].getElementsByTagName('select')[0];
+//         citySelect[key].setAttribute("disabled", "");
+//     }
+//
+//     if(activeCity !== '') {
+//         citySelect[activeCity].removeAttribute("disabled");
+//     }
+// }
 
-prepareDistrictOptionArray();
-prepareCitySelectionArray();
+const donationDiv = document.getElementById('donationDiv');
 
-function prepareDistrictOptionArray() {
-    for(let i = 1; i < district.options.length; i++) {
-        citySelectDivs[district.options[i].value] = document.getElementById(district.options[i].value);
-    }
-}
-
-district.addEventListener('change', function() {
-    if(activeCity !== '') {
-        hide(citySelectDivs[activeCity]);
-        citySelect[activeCity].setAttribute("disabled", "");
-    }
-    activeCity = district.value;
-    if(activeCity !== '') {
-        show(citySelectDivs[activeCity]);
-        citySelect[activeCity].removeAttribute("disabled");
-    }
+document.getElementById('createDonation').addEventListener('click', function() {
+    show(donationDiv);
 });
-
-function prepareCitySelectionArray() {
-    for( let key in citySelectDivs) {
-        citySelect[key] = citySelectDivs[key].getElementsByTagName('select')[0];
-        citySelect[key].setAttribute("disabled", "");
-    }
-
-    if(activeCity !== '') {
-        citySelect[activeCity].removeAttribute("disabled");
-    }
-}
 
 let category = document.getElementById('category');
 let subcategories = [];
@@ -81,5 +87,5 @@ function hide(element) {
 }
 
 function show(element) {
-    element.style.display = 'block';
+    element.style.display = 'flex';
 }

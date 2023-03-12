@@ -1,3 +1,4 @@
+import flash from "../flashmessages/flash.js";
 
 
 class MapMarker
@@ -54,6 +55,26 @@ class MapMarker
         MapMarker.marker.setPosition(new google.maps.LatLng(lat, lng));
         MapMarker.map.setCenter(new google.maps.LatLng(lat, lng));
         MapMarker.updateMap();
+    }
+
+    static async changeLocationByCity(city) {
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({address: city}, (results, status) => {
+            if(status === 'OK') {
+                MapMarker.map.setCenter(results[0].geometry.location);
+                MapMarker.marker.setPosition(results[0].geometry.location);
+                MapMarker.updateMap();
+                return true;
+            }
+            else {
+                flash.showMessage({
+                    type: "error",
+                    value: "Could not find location for the entered city"
+                });
+                return false;
+            }
+        });
+        return false;
     }
 
 }

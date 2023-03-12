@@ -1,57 +1,92 @@
 <link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../../public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="../../public/CSS/flashMessages.css">
 <?php
 /** @var $cc \app\models\ccModel */
-/** @var $user \app\models\userModel */
 
 ?>
 
 
 <!--        Profile Details-->
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
-<div class="heading-pages">
-    <div class="heading">
-        <h1>Create a Community Head Office</h1>
-    </div>
-</div>
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
 
-<div class="content">
+$headerDiv->heading("Register a Community Center");
+
+$headerDiv->end();
+?>
+
+<div class="content-form">
 
 <?php $ccRegistrationForm = \app\core\components\form\form::begin('','post') ?>
-<div class="login-grid-2">
-    <div class="form-split">
+<div class="form-box">
+
+    <?php $ccRegistrationForm->formHeader("Community Center Details") ?>
+
+    <div >
         <?php $ccRegistrationForm->inputField($cc,"Address",'text','address') ?>
-
-        <?php $ccRegistrationForm->inputField($cc,"City",'text','city') ?>
-
-        <?php $ccRegistrationForm->inputField($cc,"Email",'email','email') ?>
-
-        <?php $ccRegistrationForm->inputField($cc,"Fax",'text','fax')?>
 
         <?php $ccRegistrationForm->inputField($cc,"ContactNumber",'text','contactNumber')?>
 
+        <?php $ccRegistrationForm->inputField($cc,"Email",'email','email') ?>
+
+        <?php $ccRegistrationForm->inputField($cc,"City",'text','city','city') ?>
+
+        <div>
+            <p>  Mark the location on the map</p>
+            <button class="btn-primary" type="button" id="setLocation">Set location</button>
+            <input type="hidden" id="lat" name="latitude" value="0">
+            <input type="hidden" id="lng" name="longitude" value="0">
+        </div>
+
+
+        <?php $ccRegistrationForm->inputField($cc,"Fax",'text','fax')?>
     </div>
 
-    <br>
-    <div >
-        <?php $ccRegistrationForm->button("Confirm") ?>
+    <div style="padding: 2rem;display:flex;justify-content: center">
+        <?php $ccRegistrationForm->button("Confirm",'submit','confirm') ?>
     </div>
 
 </div>
+
+
 
 <?php $ccRegistrationForm->end() ?>
 </div>
+
+
+<div class="popup-background" id="mapDiv">
+    <div id="mapContainer" class="popup popup-map">
+        <p class="popup-description"> Please drag the marker to your location on the map to set your location</p>
+        <div id="map" class="map-styles" ></div>
+        <button id="confirmLocation" class="btn btn-cta-primary" type="button">Confirm Location</button>
+    </div>
+</div>
+
+<?php if(isset($_POST['latitude']) && isset($_POST['longitude'])) : ?>
+    <script>
+        document.getElementById('lat').value = '<?php echo $_POST['latitude'] ?>';
+        document.getElementById('lng').value = '<?php echo $_POST['longitude'] ?>';
+    </script>
+<?php endif?>
+
+<script type="module" src="../../public/JS/cho/cc/register.js"></script>
+<script type="module">
+    import MapMarker from "../../public/JS/map/map-marker.js";
+    function initMap()  {
+        MapMarker.initMap();
+    }
+    window.initMap = initMap;
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv492o7hlT-nKoy2WGWmnceYZLSw2UDWw&callback=initMap" async defer></script>
+
