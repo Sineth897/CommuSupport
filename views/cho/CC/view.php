@@ -5,11 +5,8 @@
 
 $userID = \app\core\Application::session()->get('user');
 
-$user = $user->findOne(['choID' => $userID]);
-//$CC = $model->retrieve(['cho' => $userID]);
-$CC = $model->getAll($userID);
 
-
+$CC = $model->retrieve(['cho' => $userID]);
 
 
 
