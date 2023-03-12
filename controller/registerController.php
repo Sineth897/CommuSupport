@@ -186,17 +186,15 @@ class registerController extends Controller
     protected function registerCC(Request $request, Response $response)
     {
         $cc = new \app\models\ccModel();
-        $user = new \app\models\userModel();
+
+
 
         if ($request->isPost()) {
             $cc->getData($request->getBody());
-            $user->getData($request->getBody());
-            if ($cc->validate($request->getBody()) && $user->validate($request->getBody())) {
-//                $cc->setUser($user);
+            if ($cc->validate($request->getBody())) {
                 if ($cc->save()) {
                     $this->setFlash('success', 'Community Center Registered successfully');
                     $cc->reset();
-                    $user->reset();
                 } else {
                     $this->setFlash('Error', 'Unable to save on database');
                 }
@@ -207,7 +205,6 @@ class registerController extends Controller
 
         $this->render("cho/CC/register","Register a Community Center",[
             'cc'=>$cc,
-            'user'=>$user
             ]);
     }
 
@@ -218,14 +215,49 @@ class registerController extends Controller
 
     protected function registerManager(Request $request, Response $response)
     {
-        // TODO: Implement registerManager() method.
+        $manager = new \app\models\managerModel();
+        $user = new \app\models\userModel();
+
+        if($request->isPost()){
+            $manager->getData($request->getBody());
+            $user->getData($request->getBody());
+            if($manager->validate($request->getBody()) && $user->validate($request->getBody())){
+                if($manager->save()){
+                    $this->setFlash('success','Manager registered successfully');
+                    $manager->reset();
+                    $user->reset();
+                }
+                else{
+                    $this->setFlash('Error','Unable to save on the database');
+                }
+
+            }
+            else{
+                $this->setFlash('Error','Validation Failed');
+            }
+        }
 
     }
 
     protected function registerLogistic(Request $request, Response $response)
     {
-        // TODO: Implement registerLogistic() method.
+        $logistic = new \app\models\logisticModel();
+        $user = new \app\models\userModel();
+        if($request->getBody()){
+            if($logistic->validate($request->getBody()) && $user->validate($request->getBody())){
+                if($logistic->save()){
+                    $this->setFlash('success','Manager registered successfully');
+                    $logistic->reset();
+                    $user->reset();
+                }
+                else{
+                    $this->setFlash('Error','Unable to save on the database');
 
+                }
+            }else{
+                $this->setFlash('Error','Validation failed');
+            }
+        }
     }
 
 

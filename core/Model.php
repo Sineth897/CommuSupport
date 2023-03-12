@@ -17,6 +17,9 @@ abstract class Model
 
     public static string $POSITIVE = 'positive';
     public static string $NOTZERO = 'notzero';
+
+    public static string $LONGITUDE = 'longitude';
+    public static string $LATITUDE = 'latitude';
     public array $errors = [];
 
 
@@ -86,6 +89,12 @@ abstract class Model
                 if( $ruleName === self::$NOTZERO && $value == 0 ) {
                     $this->addRuleError($attribute, self::$NOTZERO);
                 }
+                if( $ruleName === self::$LONGITUDE && ($value > 81.8914 || $value < 79.695) ) {
+                    $this->addRuleError($attribute, self::$LONGITUDE);
+                }
+                if( $ruleName === self::$LATITUDE && ($value > 9.8167 || $value < 5.9167) ) {
+                    $this->addRuleError($attribute, self::$LATITUDE);
+                }
             }
         }
 
@@ -117,6 +126,8 @@ abstract class Model
             self::$DATE => 'This field must be a future date',
             self::$POSITIVE => 'This field must be a positive number',
             self::$NOTZERO => 'This field must be a non-zero number',
+            self::$LONGITUDE => 'Longitude must belong to Sri Lanka',
+            self::$LATITUDE => 'Latitude must belong to Sri Lanka',
         ];
     }
 

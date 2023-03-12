@@ -5,11 +5,8 @@
 
 $userID = \app\core\Application::session()->get('user');
 
-$user = $user->findOne(['choID' => $userID]);
-//$CC = $model->retrieve(['cho' => $userID]);
-$CC = $model->getAll($userID);
 
-
+$CC = $model->retrieve(['cho' => $userID]);
 
 
 
@@ -38,7 +35,7 @@ $CC = $model->getAll($userID);
                 <h1>Community Centers </h1>
             </div>
             <div class="register">
-                <form method="get" action="./communitycenter/register">
+                <form method="get" action="../cho/communitycenter/register">
                     <button class="btn-cta-primary" > Register CC </button>
                 </form>
 
@@ -58,7 +55,7 @@ Cancelled</a>
 
         <!--        Search and filter boxes -->
         <div class="search-filter">
-
+        <!--
             <div class="filters">
                 <div class="filter">
                     <p><i class="material-icons">filter_list</i><span>Filter</span></p>
@@ -66,12 +63,12 @@ Cancelled</a>
                 <div class="sort">
                     <p><i class="material-icons">sort</i> <span>Sort</span></p>
                 </div>
-            </div>
-            <!--
+            </div>  -->
+
             <div class="search">
                 <input type="text" placeholder="Search">
                 <a href="#"><i class="material-icons">search</i></a>
-            </div> -->
+            </div>
 
         </div>
 
@@ -80,9 +77,13 @@ Cancelled</a>
             <?php
 
             $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer'];
-            $arrayKeys=['city','email','fax','contactNumber','manager','logistic'];
-            $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
-            $ccTable->displayTable($CC);
+            $arrayKeys=['city','email','fax','contactNumber',['manager','./communitycenters/register',['ccID']],'logistic'];
+//            $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
+//            $ccTable->displayTable($CC);
             ?>
 
         </div>
+
+<div>
+
+</div>
