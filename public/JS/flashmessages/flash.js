@@ -18,9 +18,9 @@
             msgDiv.innerHTML = '<p>' + msg['value'] + '</p>';
             msgDiv.style.setProperty('--flash-top',this.getPostion() + 'px');
             if(msg['type'] === 'success') {
-                msgDiv.classList.add('success');
+                msgDiv.classList.add('successFlash');
             }
-            else if(msg['type'] === 'error') {
+            else if(msg['type'] === 'errorFlash') {
                 msgDiv.classList.add('error');
             }
 
@@ -39,7 +39,7 @@
          msgDiv.classList.add('flash-messageOut');
          let h = msgDiv.getBoundingClientRect().height;
          let index = this.activeMessages.indexOf(msgDiv);
-         this.activeMessages.splice(index,1);
+         this.activeMessages = this.activeMessages.splice(index,1);
          msgDiv.remove();
          this.activeElements--;
          //this.moveUp();
@@ -63,11 +63,13 @@
      }
  }
 
- Flash.show(flashMsgs);
+ export default Flash;
 
- let countDown = setInterval(function () {
-     Flash.showMessage({
-         type: 'success',
-         value: 'Test Flash Message'
-     })
- }, 1500);
+ // Flash.show(flashMsgs);
+ //
+ // let countDown = setInterval(function () {
+ //     Flash.showMessage({
+ //         type: 'success',
+ //         value: 'Test Flash Message'
+ //     })
+ // }, 1500);
