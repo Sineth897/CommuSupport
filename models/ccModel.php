@@ -52,6 +52,14 @@ class ccModel extends DbModel
         return $stmnt->fetchALL(\PDO::FETCH_ASSOC);
     }
 
+    public function getAll(string $choID)
+    {
+        $stmnt = self::prepare("SELECT cc.*,m.name AS manager,l.name AS logistic FROM manager m INNER JOIN communitycenter cc ON m.ccID = cc.ccID INNER JOIN logisticofficer l ON l.ccID=cc.ccID WHERE cc.cho = :choID; ");
+        $stmnt->bindValue(':choID',$choID);
+        $stmnt ->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function save(): bool
     {
         $this->ccID = uniqid('cc', true);
