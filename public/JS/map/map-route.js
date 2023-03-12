@@ -44,6 +44,11 @@ class MapRoute {
         return result;
     }
 
+    static async calculateMultipleDistance(points) {
+
+        // const =
+    }
+
     static async showRoute(point1, point2,div) {
 
         const A = new google.maps.LatLng(point1.lat, point1.lng);
