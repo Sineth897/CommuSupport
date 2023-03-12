@@ -32,12 +32,14 @@ class table
             echo "<tr>";
             foreach ($this->arrayKeys as $key)   {
                 if(is_array($key)){
+                    //Here array format is [key, btnName ,url, [params]]
+                    //params is an array of query parameters with the format [param1,param2,...]
                     if(empty($data[$key[0]])){
-                        $url = $key[1];
+                        $url = $key[2];
                         if(!empty($key[2])) {
-                            $url .= '?' . implode('&',fn($param) => "$param=$data[$param]");
+                            $url .= '?' . implode("&", array_map(fn($param) => "$param=$data[$param]", $key[3]));
                         }
-                        echo sprintf("<td><a class='btn-primary' href='%s'>Register Manager</a></td>",$url);
+                        echo sprintf("<td><a class='btn-primary' href='%s'>%s</a></td>",$url, $key[1]);
                     }
                     else {
                         echo sprintf("<td>%s</td>", $data[$key[0]]);
