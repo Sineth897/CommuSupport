@@ -21,6 +21,8 @@ class inventoryController extends Controller
 
     protected function viewInventory(Request $request, Response $response) {
 
+        $this->checkLink($request);
+
         $userType = $this->getUserType();
         $inventory = new inventoryModel();
         $user = $this->getUserModel();
@@ -55,10 +57,20 @@ class inventoryController extends Controller
 
         $logistic = logisticModel::getModel(['employeeID' =>Application::session()->get('user')]);
 
-        $filters = ($request->getJsonData())['filters'];
-        $filter['ccID'] = $logistic->ccID;
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sortBy = $data['sortBy'];
+        if(empty($sortBy['DESC'])) {
+            $sortBy = [];
+        }
+        $filters['ccID'] = $logistic->ccID;
 
-        $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters));
+        try {
+            $this->sendJson($inventory->retrieveWithJoin('subcategory', 'subcategoryID', $filters, $sortBy));
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
+        }
     }
 
 }

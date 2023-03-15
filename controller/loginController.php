@@ -7,6 +7,7 @@ use app\core\Controller;
 use app\core\middlewares\loginMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\doneeModel;
 use app\models\userModel;
 use http\Exception;
 
@@ -30,7 +31,7 @@ class loginController extends  Controller
         $user = new userModel();
         if ($request->isPost()) {
             $user->getData($request->getBody());
-            if ($user->validate($request->getBody()) && $user->login()) {
+            if ($user->login()) {
                 if($this->isRememberMeClicked($request)) {
                     $this->rememberMe($user);
                 }
@@ -52,7 +53,7 @@ class loginController extends  Controller
         $user = new userModel();
         if ($request->isPost()) {
             $user->getData($request->getBody());
-            if ($user->validate($request->getBody()) && $user->login(true)) {
+            if ($user->login(true)) {
                 if($this->isRememberMeClicked($request)) {
                      $this->rememberMe($user);
                 }
@@ -144,6 +145,7 @@ class loginController extends  Controller
         }
         $user = userModel::getModel(['username' => $data['username']]);
         $isEmployee = $user->isEmployee($user->userType);
+        $this->unsetCookie('OTP');
         return ['success' => 1, 'message' => 'OTP is valid', 'isEmployee' => $isEmployee];
     }
 
@@ -202,6 +204,55 @@ class loginController extends  Controller
         } catch (\Exception $e) {
             return [];
         }
+    }
+
+    protected function verifyMobile(Request $request,Response $response) {
+        $model = new userModel();
+
+        if($request->isGet()) {
+            $this->renderOnlyView('/mobileVerification/mobileVerification','Verify your mobile',[
+                'user' => $model,
+            ]);
+        }
+        else {
+            try{
+                    $data = $request->getJsonData();
+                    $func = $data['do'];
+                    unset($data['do']);
+                    $data['username'] = Application::session()->get("username");
+                    $result = $this->$func($data);
+                    if($func === 'checkOTP' && $result['success'] === 1) {
+                        $result['success'] = $this->updateVerification();
+                    }
+                    $this->sendJson($result);
+            }
+            catch(\Exception $e) {
+                $this->sendJson(['success' => 0, 'message' => $e->getMessage()]);
+            }
+
+        }
+
+    }
+
+    private function updateVerification(): bool
+    {
+        $user = null;
+        try {
+            if($this->getUserType() === 'donee' ) {
+                $user = doneeModel::getModel(['doneeID' => Application::session()->get('user')]);
+                $user->update(['doneeID' => $user->doneeID],['mobileVerification' => 1]);
+            }
+            else {
+                $user = donorModel::getModel(['donorID' => Application::session()->get('user')]);
+                $user->update(['donorID' => $user->donorID],['mobileVerification' => 1]);
+            }
+            return 1;
+        }
+        catch(\Exception $e) {
+            return 0;
+        }
+
+
     }
 
 

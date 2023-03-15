@@ -14,6 +14,8 @@ class registerMiddleware extends Middleware
             'registerCho' => [$this->ADMIN],
             'registerDonor' => [$this->GUEST],
             'registerDonee' => [$this->GUEST],
+            'verifyMobile' => [$this->GUEST],
+            'registerCC' => [$this->CHO]
         ];
     }
 }

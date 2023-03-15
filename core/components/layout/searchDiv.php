@@ -9,26 +9,40 @@ class searchDiv
         echo "<div class='search-filter'>";
     }
 
-    public function filters(): void
+    public function filterDivStart(): void
     {
-        echo "<div class='filters'>";
-        $this->filter();
-        $this->sort();
+        echo "<div class='filters' >";
+    }
+
+    public function filterDivEnd(): void
+    {
         echo "</div>";
     }
 
-    public function filter(): void
+    public function filterBegin(): void
     {
-        echo "<div class='filter' id='sort'>";
-        echo "<p><i class='material-icons'>filter_list</i><span>Filter</span></p>";
-        echo "</div>";
+        echo "<div class='filter'>";
+        echo "<p id='filter'><i class='material-icons'>filter_list</i><span>Filter</span></p>";
+        echo "<div class='filter-box' id='filterOptions' style='display: none'>";
     }
 
-    public function sort(): void
+    public function filterEnd(): void
     {
-        echo "<div class='sort' id='sort'>";
-        echo "<p><i class='material-icons'>sort</i> <span>Sort</span></p>";
-        echo "</div>";
+        echo "<button type='button' id='filterBtn' class='btn-cta-primary'>Filter</button>";
+        echo "</div></div>";
+    }
+
+    public function sortBegin(): void
+    {
+        echo "<div class='sort'>";
+        echo "<p id='sort'><i class='material-icons'>sort</i> <span>Sort</span></p>";
+        echo "<div class='filter-box' id='sortOptions' style='display: none'>";
+    }
+
+    public function sortEnd(): void
+    {
+        echo "<button type='button' id='sortBtn' class='btn-cta-primary'>Sort</button>";
+        echo "</div></div>";
     }
 
     public function search(): void

@@ -8,7 +8,7 @@ class form
     public static function begin($action, $method,$cols =1) : form
     {
         $colClass = $cols == 1 ? "form-grid-1" : "form-grid-2-2";
-        echo sprintf("<form action='%s' method='%s' class='%s'>", $action, $method, $colClass);
+        echo sprintf("<form action='%s' method='%s' class='%s' enctype='multipart/form-data'>", $action, $method, $colClass);
         return new form();
     }
 
@@ -63,6 +63,19 @@ class form
         echo "</div>";
     }
 
+    public function checkBox($model,$label,$attribute,$id='') {
+        echo "<div>";
+        echo sprintf("<label>%s : </label>",$label);
+        if($id == '') {
+            echo sprintf("<input type='checkbox' name='%s' value='%s'>",$attribute,$model->{$attribute});
+        }
+        else {
+            echo sprintf("<input type='checkbox' name='%s' value='%s' id='%s'>",$attribute,$model->{$attribute},$id);
+        }
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
+        echo "</div>";
+    }
+
     public function button($label, $type = 'submit', $id = '') : void
     {
         if($id == ""){
@@ -75,6 +88,19 @@ class form
     public function formHeader($heading) : void
     {
         echo sprintf("<h3>%s</h3>", $heading);
+    }
+
+    public function fileInput($model,$label, $id = '') : void
+    {
+        echo "<div class='form-group'>";
+        echo sprintf('<label class="form-label">%s :</label>', $label);
+        if($id == "") {
+            echo sprintf('<input type="file" name="%s" class="basic-input-field" size="40">', $id);
+        } else {
+            echo sprintf('<input type="file" name="%s" id="%s" class="basic-input-field" size="40">', $id, $id);
+        }
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($id));
+        echo "</div>";
     }
 
 

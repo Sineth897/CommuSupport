@@ -21,20 +21,13 @@ for($i = 0; $i < count($items); $i++) {
 
 ?>
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -42,9 +35,28 @@ for($i = 0; $i < count($items); $i++) {
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv(); ?>
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
 
-<?php $searchDiv->filters(); ?>
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($inventory, "Select a Category", '', $categories, 'filterCategory');
+$filterForm::end();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($inventory,"Last Updated","updatedTime",'sortLastUpdated');
+$sortForm->checkBox($inventory, "Amount", "amount", 'sortAmount');
+$sortForm::end();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd(); ?>
 
 <button id="addBtn" class="btn-cta-primary">Add Item</button>
 
@@ -91,16 +103,7 @@ for($i = 0; $i < count($items); $i++) {
 
 </div>
 
-
-<?php $filterForm = \app\core\components\form\form::begin('', ''); ?>
-
-<?php $filterForm->dropDownList($inventory, "Select a Category", '', $categories, 'filterCategory'); ?>
-
-<?php $filterForm->button('Filter', 'button', 'filterBtn'); ?>
-
-<?php $filterForm::end(); ?>
-
-<div id="inventoryDisplay">
+<div id="inventoryDisplay" class="content">
 
     <?php $inventoryTable = new \app\core\components\tables\table($tableHeaders, $arrayKeys); ?>
 

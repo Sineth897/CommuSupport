@@ -17,6 +17,9 @@ let confirmBtn = document.getElementById('addToInventory');
 let amount = document.getElementById('amount');
 
 let filterCategory = document.getElementById('filterCategory');
+let sortLastUpdated = document.getElementById('sortLastUpdated');
+let sortAmount = document.getElementById('sortAmount');
+
 
 prepareCategoryOptionArray();
 prepareSubcategorySelectionArray();
@@ -45,7 +48,6 @@ confirmBtn.addEventListener('click', async function() {
             subcategoryID: subcategorySelect[activeSubcategory].value,
             amount: amount.value };
         let array = await getData('./inventory/add', 'POST', { data:data });
-        console.log(array);
         if(array['success']) {
             resultMsg.innerHTML = "Item added to inventory";
             resultMsg.style.color = "green";
@@ -58,18 +60,53 @@ confirmBtn.addEventListener('click', async function() {
     }
 });
 
+let filterOptions = document.getElementById('filterOptions');
+let sortOptions = document.getElementById('sortOptions');
+
+document.getElementById('filter').addEventListener('click', function(e) {
+    if(filterOptions.style.display === 'block') {
+        filterOptions.style.display = 'none';
+    } else {
+        filterOptions.style.display = 'block';
+    }
+    sortOptions.style.display = 'none';
+});
+
+document.getElementById('sort').addEventListener('click', function(e) {
+    if(sortOptions.style.display === 'block') {
+        sortOptions.style.display = 'none';
+    } else {
+        sortOptions.style.display = 'block';
+    }
+    filterOptions.style.display = 'none';
+});
+
 filterBtn.addEventListener('click', async function() {
     let filters = {};
+    let sort = {DESC:[]};
     if(filterCategory.value !== '') {
         filters['categoryID'] = filterCategory.value;
     }
-    let array = await getData('./inventory/filter', 'POST', { filters: filters });
+    if(sortLastUpdated.checked) {
+        sort['DESC'].push('updatedTime');
+    }
+    if(sortAmount.checked) {
+        sort['DESC'].push('amount');
+    }
+    let array = await getData('./inventory/filter', 'POST', { filters: filters, sortBy: sort });
+
     let data = {
         headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
         keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],
         data: array
     };
+    filterOptions.style.display = 'none';
     displayTable(inventoryDisplay, data);
+});
+
+document.getElementById('sortBtn').addEventListener('click', function() {
+    filterBtn.click();
+    sortOptions.style.display = 'none';
 });
 
 

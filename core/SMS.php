@@ -27,7 +27,7 @@ class SMS
         $msg = urlencode($msg);
         $url = $this->baseURL . "?id=" . $this->id . "&pw=" . $this->pw . "&to=$to&text=$msg";
         $returnMsg = file($url);
-        if (trim($returnMsg[0]) == "OK") {
+        if (trim($returnMsg[0]) === "OK") {
             return true;
         } else {
             return false;
