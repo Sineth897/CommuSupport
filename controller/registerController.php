@@ -36,14 +36,21 @@ class registerController extends Controller
             $user->getData($request->getBody());
             if ($driver->validate($request->getBody()) && $user->validate($request->getBody())) {
                 $driver->setUser($user);
-                if ($driver->save()) {
-                    $this->setFlash('success', 'Driver registered successfully');
-                    $driver->reset();
-                    $user->reset();
+                try {
+                    $this->startTransaction();
+                    if ($driver->save()) {
+                        $this->setFlash('success', 'Driver registered successfully');
+                        $driver->reset();
+                        $user->reset();
+                    }
+                    $this->commitTransaction();
                 }
-                $this->setFlash('Error', 'Unable to save on database');
+                catch (\Exception $e) {
+                    $this->rollbackTransaction();
+                    $this->setFlash('error', 'Unable to save on database');
+                }
             } else {
-                $this->setFlash('Error', 'Validation failed');
+                $this->setFlash('error', 'Validation failed');
             }
         }
 
@@ -67,14 +74,21 @@ class registerController extends Controller
             $user->getData($request->getBody());
             if ($cho->validate($request->getBody()) && $user->validate($request->getBody())) {
                 $cho->setUser($user);
-                if ($cho->save()) {
-                    $this->setFlash('success', 'Community Head Office registered successfully');
-                    $cho->reset();
-                    $user->reset();
+                try {
+                    $this->startTransaction();
+                    if ($cho->save()) {
+                        $this->setFlash('success', 'Community Head Office registered successfully');
+                        $cho->reset();
+                        $user->reset();
+                    }
+                    $this->commitTransaction();
                 }
-                $this->setFlash('Error', 'Unable to save on database');
+                catch (\Exception $e) {
+                    $this->rollbackTransaction();
+                    $this->setFlash('error', 'Unable to save on database');
+                }
             } else {
-                $this->setFlash('Error', 'Validation failed');
+                $this->setFlash('error', 'Validation failed');
             }
         }
 
@@ -96,14 +110,21 @@ class registerController extends Controller
             $donor->getData($data);
             $user->getData($data);
             if ($this->validateDonor($data, $user, $donor, $donorIndividual, $donorOrganization)) {
-                if ($donor->saveOnALL($data)) {
-                    $this->setFlash('success', 'Donor registered successfully. Please verify your mobile number to complete registration');
-                    $donor->reset();
-                    $user->reset();
+                try {
+                    $this->startTransaction();
+                    if ($donor->saveOnALL($data)) {
+                        $this->setFlash('success', 'Donor registered successfully. Please verify your mobile number to complete registration');
+                        $donor->reset();
+                        $user->reset();
+                    }
+                    $this->commitTransaction();
                 }
-                $this->setFlash('Error', 'Unable to save on database');
+                catch (\Exception $e) {
+                    $this->rollbackTransaction();
+                    $this->setFlash('error', 'Unable to save on database');
+                }
             } else {
-                $this->setFlash('Error', 'Validation failed');
+                $this->setFlash('error', 'Validation failed');
             }
 
         }
@@ -145,15 +166,22 @@ class registerController extends Controller
             $donee->getData($data);
             $user->getData($data);
             if ($this->validateDonee($data, $user, $donee, $doneeIndividual, $doneeOrganization)) {
-                if ($donee->saveOnALL($data)) {
-                    $this->setFlash('success', 'Donee registered successfully. Please verify your mobile number to complete registration');
-                    $donee->reset();
-                    $user->reset();
-                    $response->redirect('/login/user');
+                try {
+                    $this->startTransaction();
+                    if ($donee->saveOnALL($data)) {
+                        $this->setFlash('success', 'Donee registered successfully. Please verify your mobile number to complete registration');
+                        $donee->reset();
+                        $user->reset();
+                        $response->redirect('/login/user');
+                    }
+                    $this->commitTransaction();
                 }
-                $this->setFlash('Error', 'Unable to save on database');
+                catch (\Exception $e) {
+                    $this->rollbackTransaction();
+                    $this->setFlash('error', 'Unable to save on databse');
+                }
             } else {
-                $this->setFlash('Error', 'Validation failed');
+                $this->setFlash('error', 'Validation failed');
             }
         }
 

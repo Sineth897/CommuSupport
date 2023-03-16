@@ -82,16 +82,23 @@ $searchDiv->end();
             <?php $donationForm->dropDownList($model,"Select item category",'category',$categories,'category'); ?>
 
             <?php foreach ($categories as $category => $name)  {?>
-                <div id=<?php echo $category ?> style="display: none">
-                <?php $donationForm->dropDownList($model, 'What item you need', 'item', $model->getSubcategories($category)); ?>
-
+                <div id=<?php echo $category ?> class="form-group" style="display: none;">
+                <?php $donationForm->dropDownList($model, 'What item you will donate', 'item', $model->getSubcategories($category)); ?>
+                </div>
             <?php } ?>
 
             <div id="amountInput" style="display: none">
-                <?php $donationForm->inputField($model, 'Amount','number','amount',); ?>
+                <?php $donationForm->inputField($model, 'Amount','number','amount','amount'); ?>
             </div>
 
         </div>
+
+        <div class="form-split">
+            <?php $donationForm->button('Confirm','button','confirmDonation',['btn-primary']); ?>
+
+            <?php $donationForm->button('Cancel','button','cancelDonation',['btn-secondary']); ?>
+        </div>
+
 
         <?php $donationForm::end(); ?>
 

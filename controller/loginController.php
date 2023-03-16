@@ -72,6 +72,7 @@ class loginController extends  Controller
         $this->forgetMe();
         $user = new userModel();
         $user->logout();
+        $this->setFlash('success','Logout Successful');
         $response->redirect('/');
     }
 

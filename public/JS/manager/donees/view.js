@@ -2,6 +2,7 @@ import {getData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
+import flash from "../../flashmessages/flash.js";
 
 let toggle = new togglePages([{btnId:'individual',pageId:'individualDoneeDisplay'},{btnId:'organization',pageId:'organizationDoneeDisplay'}]);
 
@@ -82,6 +83,7 @@ let verifyFunc = async (e) => {
      else {
          let result = await getData('./donee/verify','post',{doneeID: id});
          if(result['status']) {
+                flash.showMessage({type:'success',value:`Donee's verification is marked successfully`},3000);
                 pendingVerifications[id].style.display = 'none';
                 popup.hidePopUp();
          }
