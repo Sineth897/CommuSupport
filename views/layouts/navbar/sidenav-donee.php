@@ -12,32 +12,32 @@
     <ul class="nav_list">
 
         <li>
-            <a href="/CommuSupport/donee/requests">
+            <a href="/CommuSupport/donee/request">
                 <i class="material-icons">summarize</i>
                 <span class="links_name">Requests</span>
             </a>
-            <span class="tooltip">Requests</span>
+<!--            <span class="tooltip">Requests</span>-->
         </li>
         <li>
             <a href="/CommuSupport/donee/events">
                 <i class="material-icons">today</i>
                 <span class="links_name">Events</span>
             </a>
-            <span class="tooltip">Events</span>
+<!--            <span class="tooltip">Events</span>-->
         </li>
         <li>
             <a href="/CommuSupport/donee/communitycenters">
                 <i class="material-icons">emoji_transportation</i>
                 <span class="links_name">Community Center</span>
             </a>
-            <span class="tooltip">Community Center</span>
+<!--            <span class="tooltip">Community Center</span>-->
         </li>
         <li>
             <a href="/CommuSupport/donee/complaints">
                 <i class="material-icons">report_gmailerrorred</i>
                 <span class="links_name">Complaints</span>
             </a>
-            <span class="tooltip">Complaints</span>
+<!--            <span class="tooltip">Complaints</span>-->
         </li>
 
     </ul>

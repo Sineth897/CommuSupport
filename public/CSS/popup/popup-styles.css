@@ -1,0 +1,199 @@
+button {
+    padding: 10px 20px;
+    outline: none;
+}
+
+.background {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+}
+
+.popup-background {
+    height: 100vh;
+    width: 100vw;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--transparent-background);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.popup {
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+    padding: 20px 40px;
+    position: fixed;
+}
+
+.popup-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.popup-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.popup-info div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+}
+
+.status-green {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #00d749;
+}
+
+.popup-img {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.popup-img img {
+    width: 200px;
+}
+
+.popup input:disabled {
+    background-color: white;
+    outline: none;
+    border: none;
+}
+
+.description {
+    width: 300px;
+    font-size: 0.8rem;
+    resize: none;
+}
+
+.description:disabled {
+    background-color: white;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    resize: none;
+    border: none;
+    outline: none;
+}
+
+.form-group label i {
+    font-size: 0.8rem;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.popup-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+#logistic-item-add-popup-form {
+
+}
+
+.file-upload{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+.file-upload-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 20px;
+}
+
+.file-upload-item a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.file-upload-item a i{
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+}
+
+
+.file-upload-item button{
+    color: white;
+
+    cursor: pointer;
+}
+
+.popup-map {
+    position: relative;
+    width: 70vw;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem;
+    background-color: transparent;
+}
+
+.close-map {
+    color: white;
+    z-index: 5;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.popup-description {
+    position: absolute;
+    top: 2rem;
+    color: white;
+}
+
+.map-styles {
+    width: 90%;
+    height: 90%;
+    border-radius: 0.5rem;
+}

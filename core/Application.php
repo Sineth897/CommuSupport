@@ -18,6 +18,9 @@ class Application
     public Database $database;
     public Session $session;
     public Cookie $cookie;
+    public SMS $sms;
+    public File $file;
+    public Notification $notification;
     public ?userModel $user;
     private array $rootInfo;
 
@@ -33,7 +36,10 @@ class Application
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
         $this->cookie = new Cookie();
+        $this->sms = new SMS($config['sms']);
+        $this->file = new File();
         $this->database = new Database($config['db']);
+        $this->notification = new Notification();
         $this->rootInfo = $config['root'];
 
         $this->settingLoggedData();
@@ -53,6 +59,21 @@ class Application
     public static function cookie() : Cookie
     {
         return self::$app->cookie;
+    }
+
+    public static function sms() : SMS
+    {
+        return self::$app->sms;
+    }
+
+    public static function file() : File
+    {
+        return self::$app->file;
+    }
+
+    public static function notification() : Notification
+    {
+        return self::$app->notification;
     }
 
     public function run() : void
@@ -88,6 +109,7 @@ class Application
     {
         $this->user = null;
         $this->session->remove('user');
+        $this->session->remove('username');
         $this->session->set('userType','guest');
     }
 

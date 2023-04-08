@@ -12,10 +12,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.0.7/css/boxicons.min.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/layout.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/form/form.css">
+    <link rel="stylesheet" href="/Commusupport/public/CSS/button/button-styles.css">
 <!--    {styles}-->
 </head>
 
 <body>
+
+
+    <div id="popUpBackground" class="popup-background">
+        <div id="popUpContainer" class="popup"></div>
+    </div>
 
     {navbar}
 
