@@ -10,9 +10,12 @@ class deliveryModel extends DbModel
     public string $deliveryID = '';
     public string $deliveredBy = '';
     public string $createdDate = '';
-    public string $createdTime = '';
     public string $status = '';
-    public string $city = '';
+    public string $fromto = '';
+    public float $fromLongitude = 0.0;
+    public float $fromLatitude = 0.0;
+    public float $toLongitude = 0.0;
+    public float $toLatitude = 0.0;
     public string $completedDate = '';
     public string $completedTime = '';
 
@@ -21,18 +24,18 @@ class deliveryModel extends DbModel
     public function rules(): array
     {
         return [
-            'city' => [self::$REQUIRED],
+
         ];
     }
 
     public function table(): string
     {
-        return 'deliveries';
+        return 'delivery';
     }
 
     public function attributes(): array
     {
-        return ['deliveryID','city'];
+        return ['deliveryID','fromto','fromLongitude','fromLatitude','toLongitude','toLatitude',];
     }
 
     public function primaryKey(): string

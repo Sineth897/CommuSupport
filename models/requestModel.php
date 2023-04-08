@@ -47,6 +47,20 @@ class requestModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+    public function getSubC($item){
+        $stmnt = self::prepare('SELECT subcategoryName, scale FROM subcategory WHERE subcategoryID = :item');
+        $stmnt->bindValue(':item',$item);
+        $stmnt->execute();
+        return $stmnt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function getPostedBy($userID){
+        $stmnt = self::prepare('SELECT username FROM users WHERE userID = :userID');
+        $stmnt->bindValue(':userID',$userID);
+        $stmnt->execute();
+        return $stmnt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     public function getSubcategories($category) {
         $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = :category');
         $stmnt->bindValue(':category',$category);

@@ -28,6 +28,7 @@ $NIC = $retrieved_data[0]['NIC'];
 <link rel="stylesheet" href="/CommuSupport/public/CSS/cards/delivery-card-log.css">
 
 <div class="parent">
+
     <div class="profile-div">
         <div class="profile-page-container">
             <div class="profile-content-top">
@@ -119,5 +120,6 @@ $NIC = $retrieved_data[0]['NIC'];
     <div class="div4"></div>
 
     <div class="div5"></div>
+
 </div>
 

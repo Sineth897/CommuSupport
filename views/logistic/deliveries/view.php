@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/cards/delivery-card-log.css">
+=======
+<link rel="stylesheet" href="../public/CSS/cards/delivery-card.css">
+>>>>>>> 305454cabc981b58ca921e4b99a6af337389d278
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
@@ -66,15 +70,28 @@ $searchDiv->end(); ?>
     <?php
     echo "<pre>";
     print_r($deliveries);
-
     echo "</pre>";
     ?>
 </div>
 
-<div class="content" id="completedDeliveries">
+<!--<div class="content" id="pendingDeliveries">-->
 
-    <h3>Completed Deliveries</h3>
+    <div class="scroll">
+        <div class="card-container">
+            <?php
+            $deliveryCard = new \app\core\components\cards\deliveryCard();
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($deliveries['ccDonations'],"ccDonations");
+            ?>
+        </div>
+    </div>
 
-</div>
+<!--</div>-->
+<!--<div class="content" id="completedDeliveries">-->
+<!---->
+<!--    <h3>Completed Deliveries</h3>-->
+<!---->
+<!--</div>-->
 
 <script type="module" src="../public/JS/logistic/deliveries/view.js"></script>
