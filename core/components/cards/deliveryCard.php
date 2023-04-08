@@ -41,7 +41,7 @@ class deliveryCard
         echo sprintf("<div class='info-block'><span>Created:</span><span>%s</span></div>", $type == "acceptedRequests" ? $data['acceptedDate'] : $data['createdDate']);
         echo "<div class='info-block'><span>Distance</span><span>12.5 km</span></div>";
         echo sprintf("<div class='info-block'><span>Item</span><span>%s</span></div>",$data['subcategoryName']);
-        echo sprintf("<div class='info-block'><a href='#' class='btn-primary' id='%s'>Assign</a></div>",'d3');
+        echo sprintf("<div class='info-block'><a href='#' class='btn-primary assign-btn' id='%s'>Assign</a></div>",$data['subdeliveryID']);
         echo "</div></div>";
 
     }

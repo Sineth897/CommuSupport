@@ -145,10 +145,11 @@ class requestModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function accept(): bool {
+    public function accept() {
         $acceptedRequest = new acceptedModel();
+        $acceptedRequest->acceptedID = substr(uniqid('accepted',true),0,23);
         $acceptedRequest->getDataFromThePostedRequest($this);
-        return $acceptedRequest->saveAcceptedRequest();
+        return $acceptedRequest;
     }
 
 }
