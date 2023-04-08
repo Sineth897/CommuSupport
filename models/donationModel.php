@@ -11,7 +11,6 @@ class donationModel extends DbModel
     public string $item ="";
     public string $amount = "";
     public string $date = "";
-    public string $address = "";
     public string $donateTo = "";
     public string $deliveryID = "";
     public string $deliveryStatus= "";
@@ -22,7 +21,7 @@ class donationModel extends DbModel
 
     public function attributes(): array
     {
-        return ["donationID","createdBy","item","amount","address","donateTo"];
+        return ["donationID","createdBy","item","amount","donateTo","deliveryId"];
     }
 
     public function primaryKey(): string
@@ -51,5 +50,11 @@ class donationModel extends DbModel
         $stmnt->bindValue(':category',$category);
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function save(): bool
+    {
+        $this->donationID = substr(uniqid('donation',true),0,23);
+        return parent::save();
     }
 }

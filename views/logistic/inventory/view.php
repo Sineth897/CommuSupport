@@ -68,8 +68,6 @@ $searchDiv->filterDivEnd(); ?>
 
     <div class="popup" id="logistic-item-add-popup-form">
 
-        <span id="resultMsg" class="error"></span>
-
         <?php $form = \app\core\components\form\form::begin('', ''); ?>
 
         <?php $form->formHeader('Add Item'); ?>

@@ -76,12 +76,18 @@ class form
         echo "</div>";
     }
 
-    public function button($label, $type = 'submit', $id = '') : void
+    public function button($label, $type = 'submit', $id = '',$classes =[]) : void
     {
+        if($classes) {
+            $classes = implode(' ',$classes);
+        }
+        else {
+            $classes = 'btn-cta-primary';
+        }
         if($id == ""){
-            echo sprintf("<button type='%s' class='btn-cta-primary'>%s</button>", $type, $label);
+            echo sprintf("<button type='%s' class='%s'>%s</button>", $type,$classes ,$label);
         }else{
-            echo sprintf("<button type='%s' id='%s' class='btn-cta-primary'>%s</button>", $type, $id, $label);
+            echo sprintf("<button type='%s' id='%s' class='%s'>%s</button>", $type, $id,$classes ,$label);
         }
     }
 

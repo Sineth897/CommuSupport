@@ -1,54 +1,56 @@
-.flash-messageIn {
-    --flash-top: 16px;
+.flash-message-div {
+    position: absolute;
+    z-index: 1000;
+    right: 1rem;
+    bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    max-width: 20vw;
+    /*padding: 0.5rem;*/
+}
+
+.flash-msg {
+    position: relative;
     background-color: #f2dede;
     color: #a94442;
-    padding: 15px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
     border: 1px solid transparent;
     border-radius: 4px;
-    z-index: 1000;
-    position: absolute;
-    top: var(--flash-top);
-    right: 1rem;
+    max-width: 20vw;
+}
 
+.flash-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    color: #1a1a1a;
+    font-size: 0.8rem;
+}
+
+
+.flash-messageIn {
     animation: flash-messageIn 0.5s ease-in-out forwards;
 }
 
 .flash-messageOut {
-    --flash-top: 16px;
-    background-color: #f2dede;
-    color: #a94442;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    z-index: 1000;
-    position: absolute;
-    top: var(--flash-top);
-    right: 1rem;
-
     animation: flash-messageOut 0.5s ease-in-out forwards;
 }
 
-.flash-messageUp {
-    --flash-top: 16px;
-    background-color: #f2dede;
-    color: #a94442;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    z-index: 1000;
-    position: absolute;
-    top: var(--flash-top);
-    right: 1rem;
-
-    animation: flash-messageUp 0.5s ease-in-out forwards;
+.flash-messageDown {
+    animation: flash-messageDown 0.3s ease-in-out forwards;
 }
 
 @keyframes flash-messageIn {
     0% {
         transform: translateX(100%);
         opacity: 0;
+    }
+    75% {
+        transform: translateX(-10%);
     }
     100% {
         transform: translateX(0);
@@ -61,17 +63,25 @@
         transform: translateX(0);
         opacity: 1;
     }
+    25% {
+        transform: translateX(-10%);
+    }
     100% {
         transform: translateX(100%);
         opacity: 0;
     }
 }
 
-@keyframes flash-messageUp {
+@keyframes flash-messageDown {
     0% {
-        transform: translateY(100%);
+        transform: translateY(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-10%);
     }
     100% {
-        transform: translateY(0);
+        transform: translateY(100%);
+        opacity: 1;
     }
 }
