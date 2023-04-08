@@ -121,12 +121,15 @@ class eventController extends Controller
         $data = $request->getJsonData();
         $data = $data['eventID'];
         try {
+            $this->startTransaction();
             eventModel::setParticipation($data);
+            $this->commitTransaction();
             $this->sendJson([
                 'status' => 1
             ]);
         }
         catch (\Exception $e) {
+            $this->rollbackTransaction();
             $this->sendJson([
                 'status' => 0,
                 'error' => $e->getMessage(),
@@ -142,6 +145,7 @@ class eventController extends Controller
         unset($data['do']);
         $data = $data['data'];
         try {
+            $this->startTransaction();
             switch ($func) {
                 case 'update':
                     $this->updateFields($data['eventID'],$data);
@@ -155,8 +159,10 @@ class eventController extends Controller
             $this->sendJson([
                 'status' => 1
             ]);
+            $this->commitTransaction();
         }
         catch (\Exception $e) {
+            $this->rollbackTransaction();
             $this->sendJson([
                 'status' => 0,
                 'error' => $e->getMessage()
