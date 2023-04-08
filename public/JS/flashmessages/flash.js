@@ -1,73 +1,74 @@
  class Flash {
+     static flashMsgDiv = document.querySelector('#flash-messages');
+     static activeMessages = [];
+     static activeElements = 0;
+     static closeBtn = `<i class='material-icons flash-close'>close</i>`;
+
      constructor() {
 
      }
 
-     static activeMessages = [];
-     static activeElements = 0;
      static show(obj) {
          for(let key in obj) {
              this.showMessage(obj[key]);
          }
      }
 
-     static showMessage(msg)    {
+     static showInit(flashMessages) {
+         setTimeout(() => {
+             if (flashMessages['success']) {
+                 Flash.showMessage({type: 'success', value: flashMessages['success'].value});
+             }
+             if (flashMessages['error']) {
+                 Flash.showMessage({type: 'error', value: flashMessages['error'].value});
+             }
+         }, 500);
+     }
 
-         const msgDiv = document.createElement('div');
-            msgDiv.classList.add('flash-messageIn');
-            msgDiv.innerHTML = '<p>' + msg['value'] + '</p>';
-            msgDiv.style.setProperty('--flash-top',this.getPostion() + 'px');
+        static showMessage(msg,timeout = 8000) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('flash-msg','flash-messageIn');
+            msgDiv.innerHTML = '<p>' + msg['value'] + '</p>' + Flash.closeBtn;
+
+            if(Flash.activeElements === 0) {
+                Flash.flashMsgDiv.appendChild(msgDiv);
+            }
+            else {
+                Flash.flashMsgDiv.insertBefore(msgDiv,Flash.flashMsgDiv.firstChild);
+            }
+            Flash.activeElements++;
+            Flash.activeMessages.push(msgDiv);
+
+
             if(msg['type'] === 'success') {
-                msgDiv.classList.add('success');
+                msgDiv.classList.add('successFlash');
             }
             else if(msg['type'] === 'error') {
-                msgDiv.classList.add('error');
+                msgDiv.classList.add('errorFlash');
             }
 
-            document.body.appendChild(msgDiv);
-            this.activeMessages.push(msgDiv);
-            this.activeElements++;
-            const {top,height} = msgDiv.getBoundingClientRect();
+            msgDiv.querySelector('.flash-close').addEventListener('click',function () {
+                Flash.removeMessage(msgDiv);
+            });
 
-            setTimeout(() => this.removeMessage(msgDiv),5000);
+            setTimeout(() => msgDiv.classList.remove('flash-messageIn'),500);
 
+            setTimeout(() => Flash.removeMessage(msgDiv),timeout);
 
-     }
+        }
 
-     static removeMessage(msgDiv) {
-         msgDiv.classList.remove('flash-messageIn');
-         msgDiv.classList.add('flash-messageOut');
-         let h = msgDiv.getBoundingClientRect().height;
-         let index = this.activeMessages.indexOf(msgDiv);
-         this.activeMessages.splice(index,1);
-         msgDiv.remove();
-         this.activeElements--;
-         //this.moveUp();
-         for(let i = 0; i < this.activeMessages.length; i++) {
-             this.activeMessages[i].style.setProperty('--flash-top', this.activeMessages[i].getBoundingClientRect().top - h -  16 + 'px');
-             //this.activeMessages[i].classList.add('flash-messageUp');
-         }
+        static removeMessage(msgDiv) {
+            msgDiv.classList.remove('flash-messageIn');
+            msgDiv.classList.add('flash-messageOut');
+            setTimeout(function () {
+                msgDiv.classList.remove('flash-messageOut');
+                msgDiv.remove();
+                let index = Flash.activeMessages.indexOf(msgDiv);
+                Flash.activeElements--;
+                Flash.activeMessages = Flash.activeMessages.splice(index,1);
+            },500);
+        }
 
-        let {top,height} = this.activeMessages[this.activeMessages.length - 1].getBoundingClientRect();
-
-     }
-
-     static getPostion() {
-         if(this.activeElements === 0) {
-             return 16;
-         }
-         else {
-             let {bottom} = this.activeMessages[this.activeMessages.length - 1].getBoundingClientRect();
-             return bottom + 16;
-         }
-     }
  }
 
- Flash.show(flashMsgs);
-
- let countDown = setInterval(function () {
-     Flash.showMessage({
-         type: 'success',
-         value: 'Test Flash Message'
-     })
- }, 1500);
+ export default Flash;

@@ -40,7 +40,7 @@ class ccDonationController extends Controller
             if($request->isPost()) {
                 $model->getData($request->getBody());
                 if($model->validate($request->getBody()) && $model->save()) {
-                    //$this->setFlash("success","Donation created successfully");
+                    $this->setFlash("success","Donation created successfully");
                     $model->reset();
                     $_POST['category'] = "";
                 }

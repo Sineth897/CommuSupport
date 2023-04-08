@@ -18,32 +18,40 @@ let popUpRequest = new PopUp();
 async function showPendingReqPopUp(e) {
 
     let request = await getData('./requests/popup', 'POST', {"r.requestID": e.target.value});
-    console.log(request);
 
     let reqDetails = request['requestDetails'];
-    let donee = request['donee'];
-
+    let donee = request['donee'][0];
 
     popUpRequest.clearPopUp();
 
+    popUpRequest.startSplitDiv();
+    popUpRequest.startSplitDiv();
     popUpRequest.insertHeading('Posted by');
+    popUpRequest.endSplitDiv();
+    popUpRequest.startSplitDiv();
+    popUpRequest.insertHeading('Request Details');
+    popUpRequest.endSplitDiv();
+    popUpRequest.endSplitDiv();
+    popUpRequest.startSplitDiv();
+
     popUpRequest.startSplitDiv();
     if(donee['type'] === 'Individual') {
         popUpRequest.setBody(donee,['name','contactNumber'],['Name','Contact Number']);
         popUpRequest.setBody(donee,['address','registeredDate'],['Address','Registered On']);
     } else {
-        popUpRequest.setBody(donee,['organizationName','contactNumber','representativeName'],['Organization Name','Contact Number','Representative Name']);
+        popUpRequest.setBody(donee,['organizationName','contactNumber','representative'],['Organization Name','Contact Number','Representative Name']);
         popUpRequest.setBody(donee,['address','registeredDate','representativeContact'],['Address','Registered On','Representative Contact']);
         if(donee['capacity']) {
             popUpRequest.setBody(donee,['capacity'],['Dependants']);
         }
     }
     popUpRequest.endSplitDiv();
-    popUpRequest.insertHeading('Request Details');
+
     popUpRequest.startSplitDiv();
     popUpRequest.setBody(reqDetails,['requestID','postedDate','subcategoryName'],['ID','Date Posted','Item']);
     popUpRequest.setBody(reqDetails,['address','urgency','amount'],['Address','Urgency','Amount']);
     popUpRequest.setBody(reqDetails,['notes'],['Additional Notes']);
+    popUpRequest.endSplitDiv();
     popUpRequest.endSplitDiv();
     popUpRequest.setButtons([{text:'Approve',classes:['btn-primary'],value:reqDetails['requestID'],func:approveFun,cancel:true},
         {text:'Reject',classes:['btn-danger'],value:reqDetails['requestID'],func:rejectFun,cancel:true}]);
