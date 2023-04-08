@@ -1,8 +1,8 @@
 class PopUp {
 
     popInfoFlag = false;
-    splitFormFlag = false;
-    splitDiv = null;
+    splitFormFlag = -1;
+    splitDiv = [];
     statusIcon = {
         Upcoming: 'status-green',
     }
@@ -12,7 +12,8 @@ class PopUp {
         this.popUpBackgroud = document.getElementById(background);
         this.popUpContainer = document.getElementById(container);
         this.popUpInfo = document.getElementById(info);
-
+        this.splitDiv.push(this.popUpContainer);
+        this.splitFormFlag++;
     }
 
     setHeader(heading,obj = {},subheading = '') {
@@ -48,12 +49,7 @@ class PopUp {
                 this.setField(arrKeys[i],arr[arrKeys[i]],arrKeys[i]);
             }
         }
-        if(this.splitFormFlag) {
-            this.splitDiv.append(this.popUpDetails);
-        }
-        else {
-            this.popUpContainer.append(this.popUpDetails);
-        }
+        this.splitDiv[this.splitFormFlag].append(this.popUpDetails);
     }
 
     setField(label,value,id) {
@@ -95,12 +91,7 @@ class PopUp {
         this.heading = document.createElement('h3');
         this.heading.classList.add('form-heading');
         this.heading.innerHTML = heading;
-        if(this.splitFormFlag) {
-            this.splitDiv.append(this.heading);
-        }
-        else {
-            this.popUpContainer.append(this.heading);
-        }
+        this.splitDiv[this.splitFormFlag].append(this.heading);
     }
 
     getLabel(label,forId) {
@@ -180,6 +171,14 @@ class PopUp {
         this.popUpBackgroud.style.display = "none";
     }
 
+    hidePopUpContainer() {
+        this.popUpContainer.style.display = "none";
+    }
+
+    showPopUpContainer() {
+        this.popUpContainer.style.display = "block";
+    }
+
     clearPopUp() {
         this.popUpContainer.innerHTML = "";
         this.setCloseButton();
@@ -233,14 +232,14 @@ class PopUp {
     }
 
     startSplitDiv() {
-        this.splitDiv = this.getDiv('',['form-split']);
-        this.splitFormFlag = true;
+        this.splitDiv.push(this.getDiv('',['form-split']));
+        this.splitFormFlag++;
     }
 
     endSplitDiv() {
-        this.popUpContainer.append(this.splitDiv);
-        this.splitDiv = null;
-        this.splitFormFlag = false;
+        this.splitDiv[this.splitFormFlag-1].append(this.splitDiv[this.splitFormFlag]);
+        this.splitDiv.pop();
+        this.splitFormFlag--;
     }
 
     showStatus(status) {

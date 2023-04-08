@@ -14,6 +14,8 @@ class donorModel extends DbModel
     public string $contactNumber = '';
     public string $type = '';
     public int $mobileVerification = 0;
+    public string $longitude = '0';
+    public string $latitude = '0';
 
     private userModel $user;
     private donorIndividualModel $donorIndividual;
@@ -26,7 +28,7 @@ class donorModel extends DbModel
 
     public function attributes(): array
     {
-        return ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','mobileVerification'];
+        return ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','mobileVerification','longitude','latitude'];
     }
 
     public function primaryKey(): string
@@ -42,6 +44,8 @@ class donorModel extends DbModel
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
+            'longitude' => [self::$REQUIRED, self::$LONGITUDE],
+            'latitude' => [self::$REQUIRED, self::$LATITUDE],
         ];
     }
 
@@ -103,7 +107,7 @@ class donorModel extends DbModel
 
     private function saveIndividualDonor($data): bool {
         try {
-            $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','fname','lname','nic','age','username','password'];
+            $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','fname','lname','nic','age','username','password','longitude','latitude'];
             $params = array_map((fn($attr) => ":$attr"), $cols);
             $sql = "CALL insertDonorIndividual(" . implode(',', $params) . ")";
             echo $sql;
@@ -122,7 +126,7 @@ class donorModel extends DbModel
 
     private function saveOrganizationDonor($data): bool {
         try {
-            $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','organizationName','regNo','representative','representativeContact','username','password'];
+            $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','organizationName','regNo','representative','representativeContact','username','password','longitude','latitude'];
             $params = array_map((fn($attr) => ":$attr"), $cols);
             $sql = "CALL insertDonorOrganization(" . implode(',', $params) . ")";
             $statement = self::prepare($sql);
@@ -162,6 +166,23 @@ class donorModel extends DbModel
             return false;
         }
 
+    }
+
+    public function filterRequests(array $requests): array {
+        $sql = acceptedModel::prepare("SELECT requestID FROM acceptedrequest WHERE acceptedBy = :donorID");
+        $sql->bindValue(":donorID",$this->donorID);
+        $sql->execute();
+        $acceptedRequests = $sql->fetchAll(\PDO::FETCH_COLUMN);
+        return array_filter($requests,function($request) use ($acceptedRequests) {
+            return !in_array($request['requestID'],$acceptedRequests);
+        });
+    }
+
+    public static function getDonorIDs(string $ccID): array {
+        $sql = self::prepare("SELECT donorID FROM donor WHERE ccID = :ccID");
+        $sql->bindValue(":ccID",$ccID);
+        $sql->execute();
+        return $sql->fetchAll(\PDO::FETCH_COLUMN);
     }
 
 }

@@ -9,7 +9,7 @@ class ccMiddleware extends Middleware
     {
         return [
             'viewCC' => [$this->ADMIN,$this->CHO,$this->DONOR,$this->DONEE],
-            'getCoordinates' => [$this->DONEE,$this->DONOR],
+            'getCoordinates' => [$this->DONEE,$this->DONOR,$this->GUEST],
         ];
     }
 }

@@ -1,6 +1,13 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <?php
 
+/**
+ * @var $model \app\models\ccdonationModel
+ * @var $user \app\models\logisticModel
+ */
+
+$user = $user->findOne(['employeeID' => $_SESSION['user']]);
+$donations = $model->getDonations($user->ccID);
 
 ?>
 
@@ -44,7 +51,11 @@ $donationBtn->end();
 $searchDiv->end(); ?>
 
 <div class="content" id="ongoingDonations">
-    <h3>Ongoing Donations</h3>
+    <?php
+    echo "<pre>";
+    print_r($donations);
+    echo "</pre>";
+    ?>
 </div>
 
 <div class="content" id="completedDonations">

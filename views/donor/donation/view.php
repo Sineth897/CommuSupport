@@ -1,6 +1,11 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
+/** @var $model \app\models\donationModel */
+/** @var  $user \app\models\donorModel */
+
+$categories = $model->getCategories();
 
 ?>
 
@@ -47,11 +52,9 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$creatEvent = \app\core\components\form\form::begin('./donations/create', 'get');
 
-echo "<button class='btn-cta-primary'> Donate </button>";
+echo "<button class='btn-cta-primary' type='button' id='createDonation'> Donate </button>";
 
-$creatEvent->end();
 
 $searchDiv->end();
 ?>
@@ -65,4 +68,43 @@ $searchDiv->end();
     <h3>Completed Donations</h3>
 </div>
 
+<div class="popup-background" id="donationDiv">
+
+    <div class="popup">
+
+        <?php $donationForm = \app\core\components\form\form::begin('','post') ?>
+
+        <?php $donationForm->formHeader('Enter donation details') ?>
+
+        <div class="form-grid-2-2">
+
+
+            <?php $donationForm->dropDownList($model,"Select item category",'category',$categories,'category'); ?>
+
+            <?php foreach ($categories as $category => $name)  {?>
+                <div id=<?php echo $category ?> class="form-group" style="display: none;">
+                <?php $donationForm->dropDownList($model, 'What item you will donate', 'item', $model->getSubcategories($category)); ?>
+                </div>
+            <?php } ?>
+
+            <div id="amountInput" style="display: none">
+                <?php $donationForm->inputField($model, 'Amount','number','amount','amount'); ?>
+            </div>
+
+        </div>
+
+        <div class="form-split">
+            <?php $donationForm->button('Confirm','button','confirmDonation',['btn-primary']); ?>
+
+            <?php $donationForm->button('Cancel','button','cancelDonation',['btn-secondary']); ?>
+        </div>
+
+
+        <?php $donationForm::end(); ?>
+
+    </div>
+
+</div>
+
 <script type="module" src="../public/JS/donor/donation/view.js"></script>
+<script type="module" src="../public/JS/donor/donation/create.js"></script>

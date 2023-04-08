@@ -1,11 +1,11 @@
 import { getData } from "../../request.js";
 import {displayTable} from "../../components/table.js";
+import flash from "../../flashmessages/flash.js";
 
 let addBtn = document.getElementById('addBtn');
 let filterBtn = document.getElementById('filterBtn');
 let closeBtn = document.getElementById('closeBtnDiv');
 let itemForm = document.getElementById('itemForm');
-let resultMsg = document.getElementById('resultMsg');
 let inventoryDisplay = document.getElementById('inventoryDisplay');
 
 let category = document.getElementById('category');
@@ -42,20 +42,17 @@ category.addEventListener('change', function() {
 });
 
 confirmBtn.addEventListener('click', async function() {
-    resultMsg.innerHTML = "";
     if(verifyForm()) {
         let data = {
             subcategoryID: subcategorySelect[activeSubcategory].value,
             amount: amount.value };
         let array = await getData('./inventory/add', 'POST', { data:data });
         if(array['success']) {
-            resultMsg.innerHTML = "Item added to inventory";
-            resultMsg.style.color = "green";
+            flash.showMessage({type: 'success', value: 'Item added to inventory'},3000);
             filterBtn.click();
         }
         else {
-            resultMsg.innerHTML = "Item not added to inventory";
-            resultMsg.style.color = "red";
+            flash.showMessage({type: 'error', value: 'Item could not be added to inventory'},3000);
         }
     }
 });
@@ -94,7 +91,7 @@ filterBtn.addEventListener('click', async function() {
         sort['DESC'].push('amount');
     }
     let array = await getData('./inventory/filter', 'POST', { filters: filters, sortBy: sort });
-    console.log(array);
+
     let data = {
         headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
         keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],

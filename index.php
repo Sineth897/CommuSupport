@@ -106,15 +106,15 @@ $app->router->post('/test', function($request,$response) {
 $app->router->get('/communitycenters', function($request,$response) {
     $controller = new \app\controller\ccController('getCoordinates',$request,$response);
 });
+$app->router->post('/communitycenters', function($request,$response) {
+    $controller = new \app\controller\ccController('getCoordinates',$request,$response);
+});
 $app->router->get('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
 $app->router->post('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
-
-
-
 
 
 //*************************Manager get and post methods*************************//
@@ -191,10 +191,10 @@ $app->router->post('/manager/request/approve', function ($request, $response) {
 $app->router->get('/manager/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
-
-
-
-
+//Manager view donation
+$app->router->get('/manager/profile', function ($request, $response) {
+    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+});
 
 
 
@@ -298,8 +298,14 @@ $app->router->get('/donee/complaints', function($request,$response) {
 
 //*************************Donor get and post methods*************************//
 //Donor view request
-$app->router->get('/donor/request', function ($request, $response) {
+$app->router->get('/donor/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
+});
+$app->router->post('/donor/requests/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+$app->router->post('/donor/requests/accept', function ($request, $response) {
+    $controller = new \app\controller\requestController("acceptRequest",$request,$response);
 });
 
 //donor view communitycenter
@@ -317,16 +323,8 @@ $app->router->get('/donor/donations', function ($request, $response) {
 });
 
 //Donor create donation
-$app->router->get('/donor/donations/create', function ($request, $response) {
+$app->router->post('/donor/donation/create', function ($request, $response) {
     $controller = new \app\controller\donationController("createDonation",$request,$response);
-});
-$app->router->post('/donor/donations/create', function ($request, $response) {
-    $controller = new \app\controller\donationController("createDonation",$request,$response);
-});
-
-//Donor view requests
-$app->router->get('/donor/requests', function ($request, $response) {
-    $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
 
 //Donor view event
@@ -348,6 +346,8 @@ $app->router->post('/donor/event/markParticipation', function ($request, $respon
 $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
+
+
 
 
 
@@ -403,6 +403,12 @@ $app->router->post('/logistic/deliveries/create', function($request,$response) {
 $app->router->get('/logistic/requests', function ($request,$response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
+$app->router->post('/logistic/requests/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+$app->router->post('/logistic/requests/accept', function ($request, $response) {
+    $controller = new \app\controller\requestController("acceptRequest",$request,$response);
+});
 
 $app->router->get('/logistic/donations', function ($request,$response) {
     $controller = new \app\controller\ccDonationController("viewCCDonations",$request,$response);
@@ -415,12 +421,6 @@ $app->router->get("/logistic/donations/create", function ($request,$response) {
 $app->router->post("/logistic/donations/create", function ($request,$response) {
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
-
-
-
-
-
-
 
 
 
@@ -529,10 +529,7 @@ $app->router->get("/cho/manager/register",function ($request,$response){
 $app->router->post("/cho/manager/register",function ($request,$response){
     $controller= new \app\controller\registerController("registerManager",$request,$response);
 });
-//cho views a manager
-$app->router->get("/cho/manager", function($request,$response){
-    $controller = new \app\controller\managerController('viewManager',$request,$response);
-});
+
 //cho add a logistic
 $app->router->get("/cho/logistic/register",function ($request,$response){
     $controller = new \app\controller\registerController("registerLogistic",$request,$response);
@@ -540,14 +537,16 @@ $app->router->get("/cho/logistic/register",function ($request,$response){
 $app->router->post("/cho/logistic/register",function ($request,$response){
     $controller = new \app\controller\registerController("registerLogistic",$request,$response);
 });
-//cho views a logistic manager
-$app->router->get("/cho/logistic",function ($request,$response){
-    $controller= new \app\controller\logisticController("viewLogistic",$request,$response);
-});
+
 //cho view a complaint
 $app->router->get("/cho/complaints",function($request,$response){
    $controller=new \app\controller\complaintController("viewComplaints",$request,$response);
 });
+
+
+
+
+
 
 
 

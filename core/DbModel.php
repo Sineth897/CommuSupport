@@ -21,6 +21,11 @@ abstract class DbModel extends Model
         return (new static())->findOne($where);
     }
 
+    public static function getAllData($where = [], $orderBy = []) : array
+    {
+        return (new static())->retrieve($where, $orderBy);
+    }
+
     public function save(): bool
     {
         $table = $this->table();
@@ -63,8 +68,7 @@ abstract class DbModel extends Model
         }
         if($orderBy) {
             $order = array_keys($orderBy)[0];
-            $columns = implode("','", $orderBy[$order]);
-            $sql .= " ORDER BY ". $columns . " " . $order;
+            $sql .= " ORDER BY ". implode(",", $orderBy[$order]) . " " . $order;
         }
         $statement = self::prepare($sql);
         $statement->execute();
@@ -98,13 +102,11 @@ abstract class DbModel extends Model
             foreach ($data as $key => $item) {
                 $statement->bindValue(":$key", $item);
             }
-            $statement->execute();
-            return true;
-        }
-        catch (\PDOException $e) {
-            echo $e->getMessage();
+            return $statement->execute();
 
-            return false;
+        }
+        catch (\PDOException $e) {;
+            return $e->getMessage();
         }
 
     }

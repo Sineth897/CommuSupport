@@ -35,6 +35,11 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', $model->getVehicleTypes(), 'filterCategory');
+$filterForm->dropDownList($model, "Select a Category", '', $model->getPreferences(), 'filterCategory');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
@@ -53,4 +58,6 @@ $searchDiv->end(); ?>
 
     <?php $driversTable->displayTable($drivers); ?>
 
-</div>
+
+
+    <script src="../public/JS//table.js"></script>

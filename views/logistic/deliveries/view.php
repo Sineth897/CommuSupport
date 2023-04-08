@@ -1,12 +1,14 @@
-<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/delivery-card.css">
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
 /** @var $user \app\models\logisticModel */
 
-//echo "<pre>";
-//var_dump($deliveries->retrieve());
-//echo "</pre>";
+//should show direct donations
+//should show accepted requests
+//should show ccdonations
+
+$deliveries = $user->getPendingDeliveries();
 
 
 ?>
@@ -49,16 +51,25 @@ $deliveryBtn->end();
 
 $searchDiv->end(); ?>
 
-<div class="content" id="pendingDeliveries">
+<!--<div class="content" id="pendingDeliveries">-->
 
-    <h3>Pending Deliveries</h3>
+    <div class="scroll">
+        <div class="card-container">
+            <?php
+            $deliveryCard = new \app\core\components\cards\deliveryCard();
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($deliveries['ccDonations'],"ccDonations");
+            ?>
+        </div>
+    </div>
 
-</div>
+<!--</div>-->
 
-<div class="content" id="completedDeliveries">
-
-    <h3>Completed Deliveries</h3>
-
-</div>
+<!--<div class="content" id="completedDeliveries">-->
+<!---->
+<!--    <h3>Completed Deliveries</h3>-->
+<!---->
+<!--</div>-->
 
 <script type="module" src="../public/JS/logistic/deliveries/view.js"></script>

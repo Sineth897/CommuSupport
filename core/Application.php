@@ -20,6 +20,7 @@ class Application
     public Cookie $cookie;
     public SMS $sms;
     public File $file;
+    public Notification $notification;
     public ?userModel $user;
     private array $rootInfo;
 
@@ -38,6 +39,7 @@ class Application
         $this->sms = new SMS($config['sms']);
         $this->file = new File();
         $this->database = new Database($config['db']);
+        $this->notification = new Notification();
         $this->rootInfo = $config['root'];
 
         $this->settingLoggedData();
@@ -67,6 +69,11 @@ class Application
     public static function file() : File
     {
         return self::$app->file;
+    }
+
+    public static function notification() : Notification
+    {
+        return self::$app->notification;
     }
 
     public function run() : void

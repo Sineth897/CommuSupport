@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/request-card.css">
 <?php
 /** @var $model \app\models\requestModel */
 /** @var $user  \app\models\doneeModel*/
@@ -6,7 +7,7 @@
 use app\core\Application;
 
 $user = $user->findOne(['doneeID' => Application::$app->session->get('user')]);
-$requests = $model->retrieve(["postedBy" => $user->doneeID]);
+$requests = $model->getOwnRequests($_SESSION['user']);
 
 ?>
 
@@ -65,18 +66,17 @@ $searchDiv->end();
 ?>
 
 
-<div class="content" id="activeRequests">
+<div class="content card-container" id="activeRequests">
 
     <?php
-        echo "<pre>";
-        print_r($requests);
-        echo "</pre>";
-    ?>
+    $requestCards = new \app\core\components\cards\requestcard();
 
+    $requestCards->displayRequests($requests,[['View','viewRequest']]);
+    ?>
 
 </div>
 
-<div class="content" id="completedRequests">
+<div class="content card-container" id="completedRequests">
 
     <?php
     echo "<pre>";
