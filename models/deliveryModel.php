@@ -39,4 +39,13 @@ class deliveryModel extends DbModel
     {
         return 'deliveryID';
     }
+
+    public static function getEventCategoryIcons() {
+        $categories = (new static())->getEventCategories();
+        $preparedIcons = [];
+        foreach ($categories as $key => $value) {
+            $preparedIcons[$key] = "/CommuSupport/public/src/icons/event/eventcategoryicons/" . $value . ".svg";
+        }
+        return $preparedIcons;
+    }
 }

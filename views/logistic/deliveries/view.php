@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/delivery-card-log.css">
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
@@ -52,13 +53,22 @@ $deliveryBtn->end();
 $searchDiv->end(); ?>
 
 <div class="content" id="pendingDeliveries">
-
+    <div class="card-container">
+        <div class="delivery-logistic-card">
+            <p>from</p>
+            <p>toCC</p>
+            <p>createdDate</p>
+            <p>completionDate</p>
+            <p>delivery status</p>
+            <p>subcategory</p>
+        </div>
+    </div>
     <?php
-        echo "<pre>";
-        print_r($deliveries);
-        echo "</pre>";
-    ?>
+    echo "<pre>";
+    print_r($deliveries);
 
+    echo "</pre>";
+    ?>
 </div>
 
 <div class="content" id="completedDeliveries">
