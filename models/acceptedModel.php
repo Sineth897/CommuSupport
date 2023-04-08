@@ -31,7 +31,7 @@ class acceptedModel extends DbModel
 
     public function attributes(): array
     {
-        return ["acceptedID","requestID","acceptedBy","acceptedDate","status","postedBy","approval","approvedDate","item","amount","address","urgency","postedDate","expDate","notes",];
+        return ["acceptedID","requestID","acceptedBy","postedBy","approval","approvedDate","item","amount","address","urgency","postedDate","expDate","notes",'deliveryID'];
     }
 
     public function primaryKey(): string
@@ -60,19 +60,6 @@ class acceptedModel extends DbModel
         $this->notes = $requestModel->notes;
     }
 
-    public function saveAcceptedRequest(): bool {
-        $this->acceptedID = substr(uniqid('accepted',true),0,23);
-        if($_SESSION['userType'] == 'donor')
-            $this->acceptedBy = $_SESSION['user'];
-        else {
-            $CC = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
-            $this->acceptedBy = $CC->ccID;
-        }
-
-        $this->acceptedDate = date('Y-m-d');
-        $this->status = "Accepted";
-        return $this->save();
-    }
 
     public function getAcceptedRequests(string $ID) : bool|array
     {

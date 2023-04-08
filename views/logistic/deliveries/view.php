@@ -7,7 +7,6 @@
 //should show direct donations
 //should show accepted requests
 //should show ccdonations
-
 $deliveries = $user->getPendingDeliveries();
 
 
@@ -43,17 +42,11 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$deliveryBtn = \app\core\components\form\form::begin('./deliveries/create', 'get');
-
-$deliveryBtn->button("Create a deliveries", "submit");
-
-$deliveryBtn->end();
-
 $searchDiv->end(); ?>
 
 <!--<div class="content" id="pendingDeliveries">-->
 
-    <div class="scroll">
+    <div class="scroll" id="pendingDeliveries">
         <div class="card-container">
             <?php
             $deliveryCard = new \app\core\components\cards\deliveryCard();
@@ -61,6 +54,12 @@ $searchDiv->end(); ?>
             $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
             $deliveryCard->showDeliveryCard($deliveries['ccDonations'],"ccDonations");
             ?>
+
+<!--            --><?php
+//            echo "<pre>";
+//            print_r($deliveries);
+//            echo "</pre>";
+//            ?>
         </div>
     </div>
 

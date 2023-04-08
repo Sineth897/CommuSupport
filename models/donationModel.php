@@ -21,7 +21,7 @@ class donationModel extends DbModel
 
     public function attributes(): array
     {
-        return ["donationID","createdBy","item","amount","donateTo","deliveryId"];
+        return ["donationID","createdBy","item","amount","donateTo","deliveryID"];
     }
 
     public function primaryKey(): string

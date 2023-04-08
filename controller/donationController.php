@@ -48,7 +48,10 @@ class donationController extends Controller
         //generate delivery id
         $deliveryID = substr(uniqid('delivery',true),0,23);
         //merge all needed data to one array
-        $data = array_merge($data,$this->donationDetails($donor,$cc),['deliveryID' => $deliveryID],$this->deliveryDetails($donor,$cc),$this->subdeliveryDetails($donor,$cc));
+        $data = array_merge($data,$this->donationDetails($donor,$cc),
+            ['deliveryID' => $deliveryID],
+            $this->deliveryDetails($donor,$cc),
+            $this->subdeliveryDetails($donor,$cc));
         //loading data to models
         $model->getData($data);
         $delivery->getData($data);
@@ -56,15 +59,15 @@ class donationController extends Controller
 
         try {
             $this->startTransaction();
-            $model->save();
             $delivery->save();
+            $model->save();
             $subdelivery->save();
             $this->commitTransaction();
             $this->sendJson(['status' => 1 , 'msg' => 'Donation created successfully']);
         }
         catch (\Exception $e) {
             $this->rollbackTransaction();
-            $this->sendJson((['status' => 0 , 'msg' => 'Donation creation failed']));
+            $this->sendJson((['status' => 0 , 'msg' => $e->getMessage()]));
         }
     }
 
