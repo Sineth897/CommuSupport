@@ -45,6 +45,7 @@ class logisticModel extends DbModel
 
     public function getPendingDeliveries() : array {
         $logisticOfficer = $this->findOne(['employeeID' => Application::$app->session->get('user')]);
+//        return subdeliveryModel::getAllData();
         return $deliveries = [
             "directDonations" => $this->getDirectDonations($logisticOfficer->ccID),
             "acceptedRequests" => $this->getAcceptedRequests($logisticOfficer->ccID),
@@ -53,14 +54,15 @@ class logisticModel extends DbModel
     }
 
     private function getDirectDonations(string $ccID): array {
-        $sql = "SELECT * FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID WHERE d.donateTo = '$ccID'";
+        $sql = "SELECT * FROM subdelivery sd INNER JOIN donation d ON d.deliveryID = sd.deliveryID INNER JOIN subcategory s ON d.item = s.subcategoryID WHERE d.donateTo = :ccID";
         $stmt = self::prepare($sql);
+        $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function getAcceptedRequests(string $ccID): array {
-        $sql = "SELECT * FROM acceptedrequest WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
+        $sql = "SELECT * FROM subdelivery sd INNER JOIN acceptedrequest a ON sd.deliveryID = a.deliveryID INNER JOIN subcategory s ON a.item = s.subcategoryID WHERE sd.start = '$ccID' OR sd.end = '$ccID'";
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);

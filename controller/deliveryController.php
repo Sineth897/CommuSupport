@@ -39,4 +39,11 @@ class deliveryController extends Controller
                 'deliveries' => $delivery
         ]);
     }
+
+    protected function deliveryPopup(Request $request,Response $response) {
+
+        $delivery = new deliveryModel();
+
+        $this->sendJson($request->getJsonData());
+    }
 }

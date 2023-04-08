@@ -422,9 +422,9 @@ $app->router->post("/logistic/donations/create", function ($request,$response) {
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
 
-
-
-
+$app->router->post('/logistic/delivery/popup', function ($request,$response) {
+    $controller = new \app\controller\deliveryController("deliveryPopup",$request,$response);
+});
 
 
 

@@ -1,6 +1,7 @@
 import {getData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
+import flash from "../../flashmessages/flash.js";
 
 let popUpRequest = new PopUp();
 
@@ -86,17 +87,16 @@ const confirm = async (e) => {
     const amount = acceptPopUp.querySelector('#amount').value;
     const reqId = acceptPopUp.querySelector('#confirm').value;
 
-    let result = await getData('./requests/accept', 'POST', {"requestID": reqId, "acceptedAmount": acceptedAmount, "amount": amount});
+    let result = await getData('./requests/accept', 'POST', {"requestID": reqId, "amount": acceptedAmount, "remaining": amount-acceptedAmount});
 
     if(result['success']) {
+        flash.showMessage({type:'success',value:'Request accepted successfully!'});
         popUpRequest.clearPopUp();
         popUpRequest.hidePopUp();
         acceptPopUp.remove();
         document.querySelector('#popUpContainer').style.display = 'block';
         document.getElementById(reqId).querySelector('button').click();
     } else {
-        console.log(result);
+        flash.showMessage({type:'error',vallue:'Something went wrong! Please try again later!'});
     }
-
-
 }
