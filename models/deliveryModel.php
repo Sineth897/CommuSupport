@@ -18,7 +18,6 @@ class deliveryModel extends DbModel
     public string $completedTime = '';
 
 
-
     public function rules(): array
     {
         return [

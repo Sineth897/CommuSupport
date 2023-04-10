@@ -53,7 +53,6 @@ $searchDiv->end(); ?>
 
 <!--<div class="content" id="pendingDeliveries">-->
 
-    <div class="scroll">
         <div class="card-container">
             <?php
             $deliveryCard = new \app\core\components\cards\deliveryCard();
@@ -62,7 +61,7 @@ $searchDiv->end(); ?>
             $deliveryCard->showDeliveryCard($deliveries['ccDonations'],"ccDonations");
             ?>
         </div>
-    </div>
+
 
 <!--</div>-->
 

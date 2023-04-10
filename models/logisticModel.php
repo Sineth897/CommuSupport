@@ -60,7 +60,8 @@ class logisticModel extends DbModel
     }
 
     private function getAcceptedRequests(string $ccID): array {
-        $sql = "SELECT * FROM acceptedrequest WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
+//        $sql = "SELECT * FROM acceptedrequest WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
+        $sql = "SELECT acceptedrequest.*, subcategory.subcategoryName FROM acceptedrequest INNER JOIN subcategory ON acceptedrequest.item = subcategory.subcategoryID WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
