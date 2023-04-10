@@ -613,6 +613,11 @@ $app->router->get('/admin/employees', function ($request, $response) {
 $app->router->get('/admin/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
 });
+
+$app->router->post('/admin/donations/filter', function ($request, $response) {
+    $controller = new \app\controller\donationController("filterDonations",$request,$response);
+});
+
 //Admin view request
 $app->router->get('/admin/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
@@ -637,6 +642,11 @@ $app->router->post('/admin/drivers/filter', function ($request, $response) {
 $app->router->get("/admin/events", function ($request, $response) {
     $controller = new eventController("viewEvents", $request, $response);
 });
+
+$app->router->post("/admin/events/filter", function ($request, $response) {
+    $controller = new eventController("filterEventsAdmin", $request, $response);
+});
+
 $app->router->get('/admin/donees', function($request,$response) {
     $controller = new \app\controller\doneeController('viewDonees',$request,$response);
 });

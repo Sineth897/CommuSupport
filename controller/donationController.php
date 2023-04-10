@@ -95,5 +95,42 @@ class donationController extends Controller
             'toLatitude' => $cc->latitude,
         ];
     }
+
+    protected function filterDonations(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sortBy'];
+        $search = $data['search'];
+
+        $cols = 'd.donationID,u.username,CONCAT(d.amount," ",s.scale) AS amount,d.date,s.subcategoryName,d.donateTo,d.deliveryStatus,c.city';
+        $sql = "SELECT " . $cols . " FROM donation d LEFT JOIN users u ON d.createdBy = u.userID LEFT JOIN subcategory s ON d.item = s.subcategoryID LEFT JOIN communitycenter c ON d.donateTo = c.ccID";
+
+        $where = " WHERE ";
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (username LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY age";
+        }
+
+        try {
+            $statement = donationModel::prepare($sql);
+            $statement->execute();
+            $this->sendJson(['status' => 1, 'donations' => $statement->fetchAll(\PDO::FETCH_ASSOC)]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
+        }
+
+    }
    
 }

@@ -57,4 +57,18 @@ class donationModel extends DbModel
         $this->donationID = substr(uniqid('donation',true),0,23);
         return parent::save();
     }
+
+    public function getDonationWithPostedBy() {
+        $cols = 'd.donationID,u.username,CONCAT(d.amount," ",s.scale) AS amount,d.date,s.subcategoryName,d.donateTo,d.deliveryStatus,c.city';
+        $sql = "SELECT " . $cols . " FROM donation d LEFT JOIN users u ON d.createdBy = u.userID LEFT JOIN subcategory s ON d.item = s.subcategoryID LEFT JOIN communitycenter c ON d.donateTo = c.ccID";
+        $stmnt = self::prepare($sql);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getAllSubcategories() {
+        $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory');
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 }

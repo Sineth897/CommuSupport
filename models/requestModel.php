@@ -47,20 +47,6 @@ class requestModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-    public function getSubC($item){
-        $stmnt = self::prepare('SELECT subcategoryName, scale FROM subcategory WHERE subcategoryID = :item');
-        $stmnt->bindValue(':item',$item);
-        $stmnt->execute();
-        return $stmnt->fetch(\PDO::FETCH_ASSOC);
-    }
-
-    public function getPostedBy($userID){
-        $stmnt = self::prepare('SELECT username FROM users WHERE userID = :userID');
-        $stmnt->bindValue(':userID',$userID);
-        $stmnt->execute();
-        return $stmnt->fetch(\PDO::FETCH_ASSOC);
-    }
-
     public function getSubcategories($category) {
         $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = :category');
         $stmnt->bindValue(':category',$category);
@@ -150,6 +136,16 @@ class requestModel extends DbModel
         $acceptedRequest->acceptedID = substr(uniqid('accepted',true),0,23);
         $acceptedRequest->getDataFromThePostedRequest($this);
         return $acceptedRequest;
+    }
+
+    public function getRequestWithPostedBy() {
+        $cols1 = "u.username,r.approval as status,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $sql1 = 'SELECT ' . $cols1 . ' FROM request r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
+
+        $cols2 = "u.username,r.status,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $stmnt = self::prepare($sql1 );
+        $stmnt->execute();
+        return $stmnt->fetchALL(\PDO::FETCH_ASSOC);
     }
 
 }
