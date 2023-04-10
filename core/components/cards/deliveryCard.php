@@ -31,8 +31,8 @@ class deliveryCard
                 echo sprintf("<p><strong>Start: </strong>%s</p>", $city);
                 echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
                 echo sprintf("<p><strong>Created: </strong>%s</p>", $data['date']);
-
                 break;
+
             case "acceptedRequests":
                 echo sprintf("<div class='delivery-card' id='%s'>", $data['acceptedID']);
                 echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "Accepted Request");
@@ -44,8 +44,8 @@ class deliveryCard
                 echo sprintf("<p><strong>Start: </strong>%s</p>", $city);
                 echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
                 echo sprintf("<p><strong>Created: </strong>%s</p>", $data['approvedDate']);
-
                 break;
+
             case "ccDonations":
                 echo sprintf("<div class='delivery-card' id='%s'>", $data['ccDonationID']);
                 echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "CCDonation");
@@ -55,6 +55,7 @@ class deliveryCard
                 echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
                 echo sprintf("<p><strong>Created: </strong>%s</p>", $data['date']);
                 break;
+
             default:
                 return;
         }
