@@ -8,8 +8,6 @@ $userID = \app\core\Application::session()->get('user');
 
 $CC = $model->getAll($userID);
 
-
-
 ?>
         <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
         <link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >

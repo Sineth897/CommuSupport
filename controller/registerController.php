@@ -265,6 +265,11 @@ class registerController extends Controller
             }
         }
 
+        $this->render("cho/manager/register","Register a Manager",[
+            'manager'=>$manager,
+            'user'=>$user,
+            ]);
+
     }
 
     protected function registerLogistic(Request $request, Response $response)
@@ -286,7 +291,11 @@ class registerController extends Controller
                 $this->setFlash('Error','Validation failed');
             }
         }
-    }
 
+        $this->render("cho/logistic/register","Register a Logistic Manager",[
+            'logistic'=>$logistic,
+            'user'=>$user,
+        ]);
+    }
 
 }
