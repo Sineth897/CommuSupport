@@ -6,6 +6,7 @@ use app\core\Controller;
 use app\core\middlewares\doneeMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\ccModel;
 use app\models\doneeModel;
 
 class doneeController extends Controller
@@ -51,7 +52,7 @@ class doneeController extends Controller
         }
     }
 
-    public function verifyDonee(Request $request, Response $response)
+    protected function verifyDonee(Request $request, Response $response)
     {
         try {
             $data = $request->getJsonData();
@@ -60,6 +61,43 @@ class doneeController extends Controller
             $this->sendJson(['status' => 1]);
         } catch (\Exception $e) {
             $this->sendJson(['status' => 0,'message' => $e->getMessage()]);
+        }
+    }
+
+    protected function doneesFilter(Request $request, Response $response)
+    {
+        try {
+            $data = $request->getJsonData();
+            $filters = $data['filters'];
+            $sort = $data['sortBy'];
+            $search = $data['search'];
+
+            $sql  = "SELECT * FROM donee INNER JOIN users ON donee.doneeID = users.userID";
+            $where = " WHERE ";
+
+            if(!empty($filters)) {
+                $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+            }
+
+            if(!empty($search)) {
+                $where = $where === " WHERE " ? $where : $where . " AND ";
+                $where .= " (email LIKE '%$search%' OR contactNumber LIKE '%$search%' OR username LIKE '%$search%' OR address LIKE '%$search%')";
+            }
+
+            $sql .= $where === " WHERE " ? "" : $where;
+
+            if(!empty($sort['DESC'])) {
+                $sql .= " ORDER BY age";
+            }
+
+//            $model = new doneeModel();
+//            $this->sendJson(['status' => 1,'donees' => $model->retrieveWithJoin('users','userID',$filters,$sort,'doneeID'),'CCs' => ccModel::getCCs()]);
+
+            $stmt = doneeModel::prepare($sql);
+            $stmt->execute();
+            $this->sendJson(['status'=> 1,'donees'=>$stmt->fetchAll(\PDO::FETCH_ASSOC), 'CCs' => ccModel::getCCs()]);
+        } catch (\Exception $e) {
+            $this->sendJson($e->getMessage());
         }
     }
 

@@ -41,7 +41,7 @@ for(let i = 0; i < verificationBtns.length; i++) {
 
         let data = await getData('./donee/getdata','post', {doneeID: id});
 
-        console.log(data);
+        // console.log(data);
 
         popup.clearPopUp();
         popup.setHeader('Donee Details')

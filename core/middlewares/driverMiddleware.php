@@ -8,6 +8,7 @@ class driverMiddleware extends Middleware
     {
         return [
             'viewDrivers' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC],
+            'filterDrivers' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC],
         ];
 
     }

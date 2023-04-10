@@ -583,10 +583,8 @@ $app->router->get("/cho/complaints",function($request,$response){
 $app->router->get('/admin/communityheadoffices', function ($request, $response) {
     $controller = new \app\controller\choController("viewCho",$request,$response);
 });
-
-//Admin view cc
-$app->router->get('/admin/communitycenters', function ($request, $response) {
-    $controller = new \app\controller\ccController("viewCC",$request,$response);
+$app->router->post('/admin/communityheadoffices/popup', function ($request, $response) {
+    $controller = new \app\controller\choController("choPopup",$request,$response);
 });
 
 //Admin register cho
@@ -596,6 +594,15 @@ $app->router->get('/admin/communityheadoffices/register', function ($request, $r
 
 $app->router->post('/admin/communityheadoffices/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerCho",$request,$response);
+});
+
+//Admin view cc
+$app->router->get('/admin/communitycenters', function ($request, $response) {
+    $controller = new \app\controller\ccController("viewCC",$request,$response);
+});
+
+$app->router->post('/admin/communitycenters/filter', function ($request, $response) {
+    $controller = new \app\controller\ccController("filterCC",$request,$response);
 });
 
 //Admin view employees
@@ -622,17 +629,29 @@ $app->router->get('/admin/managers', function ($request, $response) {
 $app->router->get('/admin/drivers', function ($request, $response) {
     $controller = new \app\controller\driverController("viewDrivers",$request,$response);
 });
-$app->router->get("/admin/event", function ($request, $response) {
+
+$app->router->post('/admin/drivers/filter', function ($request, $response) {
+    $controller = new \app\controller\driverController("filterDrivers",$request,$response);
+});
+
+$app->router->get("/admin/events", function ($request, $response) {
     $controller = new eventController("viewEvents", $request, $response);
 });
 $app->router->get('/admin/donees', function($request,$response) {
     $controller = new \app\controller\doneeController('viewDonees',$request,$response);
 });
+
+$app->router->post('/admin/donees/filter', function($request,$response) {
+    $controller = new \app\controller\doneeController('doneesFilter', $request, $response);
+});
+
 $app->router->get('/admin/donors', function($request,$response) {
     $controller = new \app\controller\donorController('viewDonors', $request,$response);
 });
 
-
+$app->router->post('/admin/donors/filter', function($request,$response) {
+    $controller = new \app\controller\donorController('donorsFilter', $request, $response);
+});
 
 
 
