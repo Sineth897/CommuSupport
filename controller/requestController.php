@@ -314,7 +314,7 @@ class requestController extends Controller
     }
 
     private function getAcceptedRequestsAdmin($filters,$sort,$search) : array {
-        $cols = "u.username,r.acceptedBy,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $cols = "u.username,r.acceptedBy,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount, r.deliveryStatus";
         $sql = 'SELECT ' . $cols . ' FROM acceptedrequest r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
 
         $where = " WHERE ";

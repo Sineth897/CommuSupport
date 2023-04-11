@@ -375,6 +375,10 @@ $app->router->get("/logistic/drivers", function ($request,$response) {
     $controller = new \app\controller\driverController("viewDrivers",$request,$response);
 });
 
+$app->router->post('/logistic/drivers/filter', function ($request,$response) {
+    $controller = new \app\controller\driverController("filterDrivers",$request,$response);
+});
+
 //logistic view inventory
 $app->router->get("/logistic/inventory", function ($request,$response) {
     $controller = new \app\controller\inventoryController("viewInventory",$request,$response);
@@ -425,10 +429,6 @@ $app->router->post("/logistic/donations/create", function ($request,$response) {
 $app->router->post('/logistic/delivery/popup', function ($request,$response) {
     $controller = new \app\controller\deliveryController("deliveryPopup",$request,$response);
 });
-
-
-
-
 
 
 

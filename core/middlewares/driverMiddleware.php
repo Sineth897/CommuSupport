@@ -9,7 +9,7 @@ class driverMiddleware extends Middleware
         return [
             'viewDrivers' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC],
             'filterDriversAdmin' => [$this->ADMIN],
-            'filterDrivers' => [$this->MANAGER],
+            'filterDrivers' => [$this->MANAGER,$this->LOGISTIC],
         ];
 
     }
