@@ -70,4 +70,11 @@ class ccModel extends DbModel
         return parent::save();
     }
 
+    public static function getCCs()
+    {
+        $stmnt = self::prepare("SELECT ccID,city FROM communitycenter");
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
 }

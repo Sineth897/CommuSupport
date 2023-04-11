@@ -5,66 +5,73 @@ use app\core\components\tables\table;
 /** @var $model \app\models\driverModel */
 /** @var $user \app\models\adminModel */
 
+$CCs = \app\models\ccModel::getCCs();
+
 ?>
         <!--        Profile Details-->
-        <div class="profile">
-            <div class="notif-box">
-                <i class="material-icons">notifications</i>
-            </div>
-            <div class="profile-box">
-                <div class="name-box">
-                    <h4>Username</h4>
-                    <p>Position</p>
-                </div>
-                <div class="profile-img">
-                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-                </div>
-            </div>
-        </div>
 
-        <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
-        <div class="heading-pages">
-            <div class="heading">
-                <h1>Drivers</h1>
-            </div>
-        </div>
+<?php $profile = new \app\core\components\layout\profileDiv();
 
-        <!--        Search and filter boxes -->
-        <div class="search-filter">
+$profile->notification();
 
-            <div class="filters">
-                <div class="filter">
-                    <p><i class="material-icons">filter_list</i><span>Filter</span></p>
-                </div>
-                <div class="sort">
-                    <p><i class="material-icons">sort</i> <span>Sort</span></p>
-                </div>
-            </div>
-            <div class="search">
-                <input type="text" placeholder="Search">
-                <a href="#"><i class="material-icons">search</i></a>
-            </div>
+$profile->profile();
 
-        </div>
+$profile->end(); ?>
+
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Drivers"); ?>
+
+<?php $headerDiv->end(); ?>
+
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
+
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Community center","cc",$CCs,"ccFilter");
+$filter->dropDownList($model,"Vehicle Type","vehicleType",$model->getVehicleTypes(),"vehicleTypeFilter");
+$filter->dropDownList($model,"Preference","preference",$model->getPreferences(),"preferenceFilter");
+$filter->end();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Age","age","ageSort");
+$sort->end();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+$searchDiv->search();
+
+$searchDiv->end(); ?>
 
         <!--        Content Block-->
-        <div class="content">
+        <div class="content" id="driverTable" >
 <?php
-            $userID = \app\core\Application::session()->get('user');
-           // $user = $user->findOne(['adminId' => $userID]);
-           $driver = $model->retrieve();
+           $drivers = $model->retrieve();
 
-           $header = ["Name", "Age", "NIC", "Gender", "Address", "ContactNumber","LicenseNo","VehicleNo"];
+           foreach ($drivers as $key => $driver) {
+               $drivers[$key]['cc'] = $CCs[$driver['ccID']];
+           }
 
-           $arrayKey = ["name", "age", "NIC", "gender", "address", "contactNumber","licenseNo","vehicleNo"];
+           $header = ["Name", "Age", "ContactNumber",'Vehicle',"Vehicle No","Community Center"];
+
+           $arrayKey = ["name", "age",  "contactNumber",'vehicleType','vehicleNo',"cc",['','View','#',[],'employeeID']];
 
            $driverTable = new table($header, $arrayKey);
 
-           $driverTable->displayTable($driver);
+           $driverTable->displayTable($drivers);
 
 ?>
         </div>
 
-    
+<script type="module" src="../public/JS/admin/driver/view.js"></script>
 
 

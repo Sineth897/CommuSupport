@@ -16,11 +16,11 @@ use app\models\managerModel;
 $manager = managerModel::getModel(['employeeID' => Application::session()->get('user')]);
 $donees = $model->getAllDonees($manager->ccID);
 
-$individualDoneeHeaders = ["First Name","Last Name","Age","Contact Number","Email","Address"];
-$individualDoneeArrayKeys = ["fname","lname","age","contactNumber","email","address"];
+$individualDoneeHeaders = ["First Name","Last Name","Is Verified","Contact Number","Email",];
+$individualDoneeArrayKeys = ["fname","lname",['verificationStatus','bool',['No','Yes']],"contactNumber","email",['','View','#',[],'doneeID']];
 
-$organizationDoneeHeaders = ["Organization Name","Representative Name","Contact Number","Email","Address"];
-$organizationDoneeArrayKeys = ["organizationName","representative","contactNumber","email","address"];
+$organizationDoneeHeaders = ["Organization Name","Representative Name",'Is Verified',"Contact Number","Email",];
+$organizationDoneeArrayKeys = ["organizationName","representative",['verificationStatus','bool',['No','Yes']],"contactNumber","email",['','View','#',[],'doneeID']];
 
 
 
@@ -48,15 +48,23 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Verification Status","",[ 0 => "Not Verified", 1 => "Verified"],"verificationStatusFilter");
+$filter->end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Registered Date","registeredDate","registeredDateSort");
+$sort->end();
 
 $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-//$searchDiv->search();
+$searchDiv->search();
 
 $searchDiv->end(); ?>
 
