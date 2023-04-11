@@ -1,31 +1,54 @@
 <link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../../public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="../../public/CSS/flashMessages.css">
 <?php
 /** @var $manager \app\models\managerModel */
 /** @var $user \app\models\userModel */
 ?>
 
 
-<?php $managerRegistrationForm = \app\core\components\form\form::begin('','post') ?>
-<div class="form-split">
+    <?php
+    $headerDiv = new \app\core\components\layout\headerDiv();
 
-    <div class="login-grid-2">
-        <?php $managerRegistrationForm->inputField($manager,"Name",'text','name') ?>
+    $headerDiv->heading("Register a Manager");
 
-        <?php $managerRegistrationForm->inputField($manager,"Age",'text','age') ?>
+    $headerDiv->end();
 
-        <?php $managerRegistrationForm->inputField($manager,"NIC",'text','NIC') ?>
+    ?>
+    <div class="content-form">
 
-        <?php $managerRegistrationForm->inputField($manager,"Gender",'text','gender') ?>
+        <?php $managerRegistrationForm = \app\core\components\form\form::begin('','post')?>
 
-        <?php $managerRegistrationForm->inputField($manager, "Address",'text','address') ?>
 
-        <?php $managerRegistrationForm->inputField($manager, "Contact Number",'text','contactNumber') ?>
+    <div class="form-box">
+
+        <?php $managerRegistrationForm->formHeader("Manger Details")?>
+
+        <div>
+
+            <?php $managerRegistrationForm->inputField($manager,"Name",'text','name') ?>
+
+            <?php $managerRegistrationForm->inputField($manager,"Age",'text','age') ?>
+
+            <?php $managerRegistrationForm->inputField($manager,"NIC",'text','NIC') ?>
+
+            <?php $managerRegistrationForm->inputField($manager,"Gender",'text','gender') ?>
+
+            <?php $managerRegistrationForm->inputField($manager, "Address",'text','address') ?>
+
+            <?php $managerRegistrationForm->inputField($manager, "Contact Number",'text','contactNumber') ?>
+
+
+        </div>
+
 
     </div>
     <div class="form-split">
-        <?php $managerRegistrationForm->button("Confirm") ?>
+        <?php $managerRegistrationForm->button("Confirm",'submit','confirm') ?>
     </div>
 
 </div>
 
 <?php $managerRegistrationForm->end() ?>
+
+</div>

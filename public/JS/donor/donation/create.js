@@ -82,6 +82,7 @@ document.getElementById('confirmDonation').addEventListener('click', async funct
         hide(donationDiv);
     }
     else {
+        console.log(result['msg']);
         flash.showMessage({type: 'error', value: result['msg']},5000);
     }
 });

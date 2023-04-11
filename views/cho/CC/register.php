@@ -50,6 +50,7 @@ $headerDiv->end();
 
 
         <?php $ccRegistrationForm->inputField($cc,"Fax",'text','fax')?>
+
     </div>
 
     <div style="padding: 2rem;display:flex;justify-content: center">

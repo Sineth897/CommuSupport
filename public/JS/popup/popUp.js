@@ -298,6 +298,15 @@ class PopUp {
         this.aTag.innerHTML = innerText;
         return this.aTag;
     }
+
+    insertElement(element) {
+        if(this.popInfoFlag) {
+            this.popUpInfo.append(element);
+        }
+        else {
+            this.popUpContainer.append(element);
+        }
+    }
 }
 
 export {PopUp};

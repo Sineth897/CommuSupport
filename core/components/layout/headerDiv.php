@@ -65,6 +65,12 @@ class headerDiv
             'icon' => 'schedule',
             'name' => 'Upcoming'
         ],
+        'accepted' => [
+            'id' => 'accepted',
+            'link' => '#',
+            'icon' => 'check_circle_outline',
+            'name' => 'Accepted'
+        ],
     ];
 
     public function __construct()

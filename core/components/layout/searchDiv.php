@@ -28,7 +28,7 @@ class searchDiv
 
     public function filterEnd(): void
     {
-        echo "<button type='button' id='filterBtn' class='btn-cta-primary'>Filter</button>";
+        echo "<button type='button' id='filterBtn' class='btn-primary'>Filter</button>";
         echo "</div></div>";
     }
 
@@ -41,13 +41,13 @@ class searchDiv
 
     public function sortEnd(): void
     {
-        echo "<button type='button' id='sortBtn' class='btn-cta-primary'>Sort</button>";
+        echo "<button type='button' id='sortBtn' class='btn-primary'>Sort</button>";
         echo "</div></div>";
     }
 
     public function search(): void
     {
-        echo "<div class='search'><input type='text' placeholder='Search' id='search'><a href='#'><i class='material-icons'>search</i></a></div>";
+        echo "<div class='search'><input type='text' placeholder='Search' id='searchInput'><a href='#' id='searchBtn'><i class='material-icons'>search</i></a></div>";
     }
 
     public function end(): void
