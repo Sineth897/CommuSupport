@@ -61,8 +61,11 @@ class logisticModel extends DbModel
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+//    Get data of the accepted requests from the relevant tables.
     private function getAcceptedRequests(string $ccID): array {
-        $sql = "SELECT * FROM subdelivery sd INNER JOIN acceptedrequest a ON sd.deliveryID = a.deliveryID INNER JOIN subcategory s ON a.item = s.subcategoryID WHERE sd.start = '$ccID' OR sd.end = '$ccID'";
+
+        $sql = "SELECT acceptedrequest.*, subcategory.subcategoryName FROM acceptedrequest INNER JOIN subcategory ON acceptedrequest.item = subcategory.subcategoryID WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
+
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
