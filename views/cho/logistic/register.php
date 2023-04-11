@@ -1,12 +1,28 @@
 <link rel="stylesheet" href="../../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../../public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="../../public/CSS/flashMessages.css">
+
 <?php
 /** @var $logistic \app\models\logisticModel */
 /** @var $user \app\models\userModel */
 ?>
 
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
+
+$headerDiv->heading("Register a Logistic Manager");
+
+$headerDiv->end();
+
+?>
+<div class="content-form">
+
 <?php $logisticRegistrationForm = \app\core\components\form\form::begin('','post') ?>
-<div class="login-grid-2">
-    <div class="form-split">
+
+<div class="form-box">
+    <?php $logisticRegistrationForm->formHeader("Logistic Manager Details") ?>
+
+    <div>
         <?php $logisticRegistrationForm->inputField($logistic,"Name",'text','name') ?>
 
         <?php $logisticRegistrationForm->inputField($logistic,"Age",'text','age') ?>
@@ -22,10 +38,12 @@
     </div>
 
     <div class="form-split">
-        <?php $logisticRegistrationForm->button("Confirm") ?>
+        <?php $logisticRegistrationForm->button("Confirm",'submit','confirm') ?>
     </div>
 
 
 </div>
 
 <?php $logisticRegistrationForm->end() ?>
+
+</div>

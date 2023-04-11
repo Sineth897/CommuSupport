@@ -3,26 +3,17 @@
 
 /** @var $model \app\models\doneeModel */
 
-$donees = $model->retrieve();
+$CCs = \app\models\ccModel::getCCs();
 
-$headers = ["ID",'Registered Date', 'Is verified','Email','Address',"Contact Number","Type"];
-$arrayKeys = ["doneeID",'registeredDate','verificationStatus','email','address','contactNumber','type'];
 ?>
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
@@ -36,9 +27,19 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Community center","cc",$CCs,"ccFilter");
+$filter->dropDownList($model,"Verification Status","verificationStatus",[ "No" => "Not Verified", "Yes" => "Verified"],"verificationStatusFilter");
+$filter->dropDownList($model,"Type","type",['Individual' => 'Individual','Organization' => 'Organization'],"typeFilter");
+$filter->end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Registered Date","registeredDate","registeredDateSort");
+$sort->end();
 
 $searchDiv->sortEnd();
 
@@ -49,14 +50,24 @@ $searchDiv->search();
 $searchDiv->end(); ?>
 
 
-<div id="doneeDisplay" class="content">
-
-    <?php $individualTable = new \app\core\components\tables\table($headers,$arrayKeys); ?>
+<div id="doneeTable" class="content">
 
     <?php
-        $individualTable->displayTable($donees);
-        ?>
+    $donees = $model->retrieveWithJoin('users','userID',[],[],'doneeID');
+    //adding relevant ceommunity center for each donee
+    foreach ($donees as $key => $donee) {
+        $donees[$key]['cc'] = $CCs[$donee['ccID']];
+    }
+
+    $headers = ["Username",'Registered Date', 'Verified','Community Center',"Contact Number","Type"];
+    $arrayKeys = ["username",'registeredDate',['verificationStatus','bool',['No','Yes']],'cc','contactNumber','type',['','View','#',[],'doneeID']];
+
+    $individualTable = new \app\core\components\tables\table($headers,$arrayKeys);
+
+
+    $individualTable->displayTable($donees); ?>
 
 </div>
 
 
+<script type="module" src="../public/JS/admin/donee/view.js"></script>

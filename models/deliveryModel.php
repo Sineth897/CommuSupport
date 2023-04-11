@@ -11,14 +11,11 @@ class deliveryModel extends DbModel
     public string $deliveredBy = '';
     public string $createdDate = '';
     public string $status = '';
-    public string $fromto = '';
-    public float $fromLongitude = 0.0;
-    public float $fromLatitude = 0.0;
-    public float $toLongitude = 0.0;
-    public float $toLatitude = 0.0;
+    public int $subdeliveryCount = 0;
+    public string $start = '';
+    public string $end = '';
     public string $completedDate = '';
     public string $completedTime = '';
-
 
 
     public function rules(): array
@@ -35,7 +32,7 @@ class deliveryModel extends DbModel
 
     public function attributes(): array
     {
-        return ['deliveryID','fromto','fromLongitude','fromLatitude','toLongitude','toLatitude',];
+        return ['deliveryID', 'subdeliveryCount', 'start', 'end',];
     }
 
     public function primaryKey(): string

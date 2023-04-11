@@ -12,11 +12,11 @@ use app\core\components\tables\table;
 $manager = \app\models\managerModel::getModel(['employeeID' => Application::session()->get('user')]);
 $donors = $model->getAllDonors($manager->ccID);
 
-$individualDonorHeaders = ['First Name','Last name','Age','Contact Number','Email','Address'];
-$individualDonorKeys = ['fname','lname','age','contactNumber','email','address'];
+$individualDonorHeaders = ['First Name','Last name','Contact Number','Email'];
+$individualDonorKeys = ['fname','lname','contactNumber','email',['','View','#',[],'donorID']];
 
-$organizationDonorHeaders = ['Organization Name','Representative Name','Contact Number','Email','Address'];
-$organizationDonorKeys = ['organizationName','representative','contactNumber','email','address'];
+$organizationDonorHeaders = ['Organization Name','Representative Name','Contact Number','Email',];
+$organizationDonorKeys = ['organizationName','representative','contactNumber','email',['','View','#',[],'donorID']];
 
 ?>
 
@@ -40,11 +40,15 @@ $profile->end(); ?>
 
 $searchDiv->filterDivStart();
 
-$searchDiv->filterBegin();
-
-$searchDiv->filterEnd();
+//$searchDiv->filterBegin();
+//
+//$searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Registered Date","registeredDate","registeredDateSort");
+$sort->end();
 
 $searchDiv->sortEnd();
 

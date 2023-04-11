@@ -9,42 +9,66 @@ class deliveryCard
         // code
     }
 
-    public function showDeliveryCard($data,$type = "") : void {
+    public function showDeliveryCard($data, $type = ""): void
+    {
         foreach ($data as $item) {
-            $this->showCard($item,$type);
+            $this->showCard($item, $type);
         }
     }
 
-    private function showCard($data,$type) : void {
+    private function showCard($data, $type): void
+    {
 
         switch ($type) {
             case "directDonations":
-                echo sprintf("<div class='delivery-card' id='%s'>",$data['donationID']);
-                echo sprintf("<div class='delivery-card-header'><h4>%s</h4></div>", "Donation");
+                echo sprintf("<div class='delivery-card' id='%s'>", $data['donationID']);
+                echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "Direct Donation");
+                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>Delivery Status</p></div>", $data['subcategoryName']);
+//                var_dump($data);
+                echo "<div class='log-del-details'>";
+                $addressParts = explode(",", $data['address']);
+                $city = trim(end($addressParts));
+                echo sprintf("<p><strong>Start: </strong>%s</p>", $city);
+                echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
+                echo sprintf("<p><strong>Created: </strong>%s</p>", $data['date']);
                 break;
+
             case "acceptedRequests":
-                echo sprintf("<div class='delivery-card' id='%s'>",$data['acceptedID']);
-                echo sprintf("<div class='delivery-card-header'><h4>%s</h4></div>", "Accepted Request");
-
+                echo sprintf("<div class='delivery-card' id='%s'>", $data['acceptedID']);
+                echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "Accepted Request");
+                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>Delivery Status</p></div>", $data['subcategoryName']);
+//                var_dump($data);
+                echo "<div class='log-del-details'>";
+                $addressParts = explode(",", $data['address']);
+                $city = trim(end($addressParts));
+                echo sprintf("<p><strong>Start: </strong>%s</p>", $city);
+                echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
+                echo sprintf("<p><strong>Created: </strong>%s</p>", $data['approvedDate']);
                 break;
+
             case "ccDonations":
-                echo sprintf("<div class='delivery-card' id='%s'>",$data['ccDonationID']);
-                echo sprintf("<div class='delivery-card-header'><h4>%s</h4></div>", "CCDonation");
-
+                echo sprintf("<div class='delivery-card' id='%s'>", $data['ccDonationID']);
+                echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "CCDonation");
+                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>Delivery Status</p></div>", $data['subcategoryName']);
+                echo "<div class='log-del-details'>";
+                echo "<p><strong>Start: </strong>(CC Name) CC</p>";
+                echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
+                echo sprintf("<p><strong>Created: </strong>%s</p>", $data['date']);
                 break;
+
             default:
                 return;
         }
 
-        echo "<div class='map-div'>Map Here</div>";
-        echo "<div class='card-content'>";
-        echo sprintf("<div class='info-block'><span>Created:</span><span>%s</span></div>", $type == "acceptedRequests" ? $data['acceptedDate'] : $data['createdDate']);
-        echo "<div class='info-block'><span>Distance</span><span>12.5 km</span></div>";
-        echo sprintf("<div class='info-block'><span>Item</span><span>%s</span></div>",$data['subcategoryName']);
-        echo sprintf("<div class='info-block'><a href='#' class='btn-primary' id='%s'>Assign</a></div>",'d3');
-        echo "</div></div>";
+
+        echo "</div>";
+        echo "<div class='log-del-btns'>";
+        echo "<button class='log-del-primary'>More Details</button>";
+        echo "<button class='log-del-primary'><i class='material-icons'>location_on</i>Route</button>
+        </div></div>";
 
     }
 
 
 }
+

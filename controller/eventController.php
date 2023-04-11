@@ -121,12 +121,15 @@ class eventController extends Controller
         $data = $request->getJsonData();
         $data = $data['eventID'];
         try {
+            $this->startTransaction();
             eventModel::setParticipation($data);
+            $this->commitTransaction();
             $this->sendJson([
                 'status' => 1
             ]);
         }
         catch (\Exception $e) {
+            $this->rollbackTransaction();
             $this->sendJson([
                 'status' => 0,
                 'error' => $e->getMessage(),
@@ -142,6 +145,7 @@ class eventController extends Controller
         unset($data['do']);
         $data = $data['data'];
         try {
+            $this->startTransaction();
             switch ($func) {
                 case 'update':
                     $this->updateFields($data['eventID'],$data);
@@ -155,8 +159,10 @@ class eventController extends Controller
             $this->sendJson([
                 'status' => 1
             ]);
+            $this->commitTransaction();
         }
         catch (\Exception $e) {
+            $this->rollbackTransaction();
             $this->sendJson([
                 'status' => 0,
                 'error' => $e->getMessage()
@@ -173,6 +179,47 @@ class eventController extends Controller
     private function cancelEvent($eventID) {
         $model = new eventModel();
         $model->update(['eventID'=>$eventID],['status'=>'Cancelled']);
+    }
+
+    protected function filterEventsAdmin(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sortBy'];
+        $search = $data['search'];
+
+        $sql = "SELECT * FROM event";
+
+        $where = " WHERE ";
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (theme LIKE '%$search%' OR description LIKE '%$search%' OR organizedBy LIKE '%$search%' OR location LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY " . implode(", ",$sort["DESC"]);
+        }
+
+        try {
+            $statement = eventModel::prepare($sql);
+            $statement->execute();
+            $this->sendJson([
+                'status' => 1,
+                'events' => $statement->fetchAll(),
+            ]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'status' => 0,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
 }

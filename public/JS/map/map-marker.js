@@ -59,11 +59,12 @@ class MapMarker
 
     static async changeLocationByCity(city) {
         const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({address: city}, (results, status) => {
+        await geocoder.geocode({address: city}, (results, status) => {
             if(status === 'OK') {
                 MapMarker.map.setCenter(results[0].geometry.location);
                 MapMarker.marker.setPosition(results[0].geometry.location);
                 MapMarker.updateMap();
+                document.getElementById('mapDiv').style.display = 'flex';
                 return true;
             }
             else {
@@ -74,7 +75,6 @@ class MapMarker
                 return false;
             }
         });
-        return false;
     }
 
 }

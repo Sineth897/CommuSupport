@@ -6,9 +6,7 @@
 $userID = \app\core\Application::session()->get('user');
 
 
-$CC = $model->retrieve(['cho' => $userID]);
-
-
+$CC = $model->getAll($userID);
 
 ?>
         <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
@@ -77,9 +75,9 @@ Cancelled</a>
             <?php
 
             $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer'];
-            $arrayKeys=['city','email','fax','contactNumber',['manager','./communitycenters/register',['ccID']],'logistic'];
-//            $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
-//            $ccTable->displayTable($CC);
+            $arrayKeys=['city','email','fax','contactNumber',['manager','Add','./communitycenters/register/manager',['ccID']],['logistic','Add','./communitycenters/register/logisitic',['ccID']]];
+            $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
+            $ccTable->displayTable($CC);
             ?>
 
         </div>

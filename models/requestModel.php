@@ -47,20 +47,6 @@ class requestModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-    public function getSubC($item){
-        $stmnt = self::prepare('SELECT subcategoryName, scale FROM subcategory WHERE subcategoryID = :item');
-        $stmnt->bindValue(':item',$item);
-        $stmnt->execute();
-        return $stmnt->fetch(\PDO::FETCH_ASSOC);
-    }
-
-    public function getPostedBy($userID){
-        $stmnt = self::prepare('SELECT username FROM users WHERE userID = :userID');
-        $stmnt->bindValue(':userID',$userID);
-        $stmnt->execute();
-        return $stmnt->fetch(\PDO::FETCH_ASSOC);
-    }
-
     public function getSubcategories($category) {
         $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory WHERE categoryID = :category');
         $stmnt->bindValue(':category',$category);
@@ -145,10 +131,50 @@ class requestModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function accept(): bool {
+    public function accept() : acceptedModel {
         $acceptedRequest = new acceptedModel();
+        $acceptedRequest->acceptedID = substr(uniqid('accepted',true),0,23);
         $acceptedRequest->getDataFromThePostedRequest($this);
-        return $acceptedRequest->saveAcceptedRequest();
+        return $acceptedRequest;
+    }
+
+    public function getPendingRequestWithPostedBy() :  array {
+        $cols = "u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $sql = 'SELECT ' . $cols . ' FROM request r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
+
+        $stmnt = self::prepare($sql );
+        $stmnt->execute();
+        return $stmnt->fetchALL(\PDO::FETCH_ASSOC);
+    }
+
+    public function getAcceptedRequestWithPostedBy() {
+        $cols1 = "r.acceptedID, u.username, r.acceptedBy, r.deliveryStatus, s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $sql1 = 'SELECT ' . $cols1 . ' FROM acceptedrequest r LEFT JOIN users u ON r.postedBy = u.userID LEFT JOIN subcategory s on r.item = s.subcategoryID';
+
+        $stmnt1 = self::prepare($sql1);
+        $stmnt1->execute();
+        $requests = $stmnt1->fetchALL(\PDO::FETCH_ASSOC);
+
+        $sql2 = "SELECT userID,username as acceptedBy FROM users WHERE userType = 'donor' UNION ALL SELECT ccID,CONCAT(city,' (CC)') as acceptedBY FROM communitycenter";
+
+        try {
+            $stmnt2 = self::prepare($sql2);
+            $stmnt2->execute();
+            $acceptedBy = $stmnt2->fetchALL(\PDO::FETCH_KEY_PAIR);
+            foreach ($requests as &$request) {
+                $request['acceptedBy'] = $acceptedBy[$request['acceptedBy']];
+            }
+        }
+        catch (\PDOException $e) {
+            echo $e->getMessage();
+        }
+        return $requests;
+    }
+
+    public static function getAllSubcategories() {
+        $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory');
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
 }

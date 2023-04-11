@@ -3,6 +3,7 @@ import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
+import flash from "../../flashmessages/flash.js";
 
 let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'completedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}]);
 
@@ -33,7 +34,7 @@ let eventsDiv = document.getElementById('eventDisplay')
 let eventCategory = document.getElementById('eventCategory');
 let sortByDate = document.getElementById('sortByDate');
 let sortByParticipation = document.getElementById('sortByParticipation');
-console.log(sortByParticipation);
+// console.log(sortByParticipation);
 
 let popUpArrayKeys = ['organizedBy','date','time','location','description'];
 let popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
@@ -119,9 +120,9 @@ let updateFunc = async (e) => {
         updateValues['eventID'] = e.target.value;
         let result = await getData('./event/update', 'POST', {do:'update',data:updateValues});
         if(result['status']) {
-            console.log('updated');
+            flash.showMessage({type:'success',value:'Event Updated Successfully'},3000);
         } else {
-            console.log(result);
+            flash.showMessage({type:'error',value:'Event Update Failed'},3000);
         }
         popUpEvent.hidePopUp();
         document.getElementById(e.target.value).click();
@@ -138,9 +139,9 @@ let cancelFunc = async (e) => {
     else {
         let result = await getData('./event/update', 'POST', {do:'cancel',data:e.target.value});
         if(result['status']) {
-            console.log('Success');
+            flash.showMessage({type:'success',value:'Event Cancel Successfully'},3000);
         } else {
-            console.log(result);
+            flash.showMessage({type:'error',value:'Event cancel Failed'},3000);
         }
         popUpEvent.hidePopUp();
         document.getElementById('filterBtn').click();

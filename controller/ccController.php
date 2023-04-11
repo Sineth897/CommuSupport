@@ -7,6 +7,7 @@ use app\core\middlewares\ccMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\ccModel;
+use app\models\choModel;
 
 class ccController extends Controller
 {
@@ -42,6 +43,24 @@ class ccController extends Controller
     protected function getCoordinates(Request $request,Response $response) {
         $model = new ccModel();
         $this->sendJson($model->getCoordinates());
+    }
+
+    protected function filterCC(Request $request,Response $response) {
+        $data = $request->getJsonData();
+
+        try {
+            if(empty($data['cho'])) {
+                $this->sendJson(['status' => 1, 'CCs' => ccModel::getAllData(), 'chos' => choModel::getCHOs()]);
+                return;
+            }
+            $this->sendJson(['status' => 1, 'CCs' => ccModel::getAllData($data), 'chos' => choModel::getCHOs()]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'status' => 0,
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
 }

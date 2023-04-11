@@ -31,13 +31,23 @@ class table
         foreach ($tableData as $data) {
             echo "<tr>";
             foreach ($this->arrayKeys as $key)   {
+
+                //Here check whether the key is an array , for displaying buttons or booleans or null
                 if(is_array($key)){
-                    if(empty($data[$key[0]])){
-                        $url = $key[1];
-                        if(!empty($key[2])) {
-                            $url .= '?' . implode('&',fn($param) => "$param=$data[$param]");
+
+                    if(count($key) == 3 && $key[1] == 'bool') {
+                        echo sprintf("<td>%s</td>", $key[2][$data[$key[0]]]);
+                    }
+
+                    //Here array format is [key, btnName ,url, [params],id]
+                    //params is an array of query parameters with the format [param1,param2,...]
+                    else if(empty($data[$key[0]])){
+                        $url = $key[2];
+                        if(!empty($key[3])) {
+                            $url .= '?' . implode("&", array_map(fn($param) => "$param=$data[$param]", $key[3]));
                         }
-                        echo sprintf("<td><a class='btn-primary' href='%s'>Register Manager</a></td>",$url);
+                        $id = !empty($key[4]) ? $data[$key[4]] : '';
+                        echo sprintf("<td><a id='%s' class='btn-primary' href='%s'>%s</a></td>",$id,$url, $key[1]);
                     }
                     else {
                         echo sprintf("<td>%s</td>", $data[$key[0]]);
