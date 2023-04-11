@@ -31,7 +31,7 @@ class donorController extends Controller
         ]);
     }
 
-    protected function donorsFilter(Request $request, Response $response)
+    protected function donorsFilterAdmin(Request $request, Response $response)
     {
         $data = $request->getJsonData();
 
@@ -64,5 +64,46 @@ class donorController extends Controller
         } catch (\Exception $e) {
             $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
         }
+    }
+
+    protected function filterDonors(Request $request,Response $response) {
+
+        $data = $request->getJsonData();
+
+        $sort = $data['sort'];
+        $search = $data['search'];
+
+        $user = $this->getUserModel();
+        $user = $user->findOne(['employeeID' => $_SESSION['user']]);
+
+        $sql1  = "SELECT * FROM donor INNER JOIN donorindividual d on donor.donorID = d.donorID";
+        $sql2  = "SELECT * FROM donor INNER JOIN donororganization d on donor.donorID = d.donorID";
+        $where1 = " WHERE ccID = '$user->ccID' AND ";
+        $where2 = " WHERE ccID = '$user->ccID' AND ";
+
+
+        if(!empty($search)) {
+            $where1 .= " (fname LIKE '%$search%' OR lname LIKE '%$search%' OR email LIKE '%$search%')";
+            $where2 .= " (email LIKE '%$search%' OR organizationName LIKE '%$search%' OR representative LIKE '%$search%')";
+        }
+
+        $sql1 .= $where1 === " WHERE " ? "" : $where1;
+        $sql2 .= $where2 === " WHERE " ? "" : $where2;
+
+        if(!empty($sort['DESC'])) {
+            $sql1 .= " ORDER BY registeredDate DESC";
+            $sql2 .= " ORDER BY registeredDate DESC";
+        }
+
+        try {
+            $statement1 = donorModel::prepare($sql1);
+            $statement1->execute();
+            $statement2 = donorModel::prepare($sql2);
+            $statement2->execute();
+            $this->sendJson(['status' => 1, 'individualDonors' => $statement1->fetchAll(\PDO::FETCH_ASSOC), 'organizationDonors' => $statement2->fetchAll(\PDO::FETCH_ASSOC)]);
+        } catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
+        }
+
     }
 }

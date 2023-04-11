@@ -32,7 +32,7 @@ $searchDiv->filterBegin();
 $filter = \app\core\components\form\form::begin('', '');
 $filter->dropDownList($model,"Community center","cc",\app\models\ccModel::getCCs(),"ccFilter");
 $filter->dropDownList($model,"Event Category","eventCategoryID",$model->getEventCategories(),"categoryFilter");
-//$filter->dropDownList($model,"Type","type",['Individual' => 'Individual','Organization' => 'Organization'],"typeFilter");
+$filter->dropDownList($model,"Status","",['Upcoming' => 'Upcoming','Ongoing' => 'Ongoing','Completed' => 'Completed'],"statusFilter");
 $filter->end();
 
 $searchDiv->filterEnd();

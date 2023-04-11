@@ -24,6 +24,8 @@ $profile->end(); ?>
 
 <?php $headerDiv->heading("Requests"); ?>
 
+<?php $headerDiv->pages(["pending",'accepted']) ?>
+
 <?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
@@ -33,8 +35,8 @@ $searchDiv->filterDivStart();
 $searchDiv->filterBegin();
 
 $filter = \app\core\components\form\form::begin('', '');
-//$filter->dropDownList($model,"Community center","cc",$CCs,"ccFilter");
-//$filter->dropDownList($model,"Verification Status","verificationStatus",[ "No" => "Not Verified", "Yes" => "Verified"],"verificationStatusFilter");
+$filter->dropDownList($model,"Subcategory","item",\app\models\requestModel::getAllSubcategories(),"subcategoryFilter");
+$filter->dropDownList($model,"Approval","",[ "Pending" => "Pending", "Approved" => "Approved"],"approvalFilter");
 //$filter->dropDownList($model,"Type","type",['Individual' => 'Individual','Organization' => 'Organization'],"typeFilter");
 $filter->end();
 
@@ -42,9 +44,10 @@ $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
 
-//$sort = \app\core\components\form\form::begin('', '');
-//$sort->checkBox($model,"Registered Date","registeredDate","registeredDateSort");
-//$sort->end();
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Posted Date","postedDate","postedDateSort");
+$sort->checkBox($model,"Amount","amount","amountSort");
+$sort->end();
 
 $searchDiv->sortEnd();
 
@@ -55,22 +58,33 @@ $searchDiv->search();
 $searchDiv->end(); ?>
 
         <!--        Content Block-->
-        <div class="content">
-<?php
+<div class="content" id="pendingRequestsTable">
+    <?php
+    $requests = $model->getPendingRequestWithPostedBy();
 
-          $requests = $model->getRequestWithPostedBy();
-
-//          echo "<pre>";
-//            print_r($request);
-//            echo "</pre>";
-
-          $header = ["PostedBy", "Status","Item",	"Amount","Posted Date"];
-          $arrayKey = ["username","status","subcategoryName","amount", "postedDate",['','View','#',[],'requestID']];
+    $header = ["PostedBy", "Approval","Item",	"Amount","Posted Date"];
+    $arrayKey = ["username","approval","subcategoryName","amount", "postedDate",['','View','#',[],'requestID']];
           
-          $requestTable = new table($header, $arrayKey);
+    $requestTable = new table($header, $arrayKey);
           
-          $requestTable->displayTable($requests); ?>
+    $requestTable->displayTable($requests);
+    ?>
 </div>
+
+<div class="content" id="acceptedRequestsTable">
+    <?php
+    $accepteRequests = $model->getAcceptedRequestWithPostedBy();
+
+    $header = ["Posted By", "Accepted By","Item",	"Amount","Delivery"];
+    $arrayKey = ["username","acceptedBy","subcategoryName","amount", "deliveryStatus",['','View','#',[],'acceptedID']];
+
+    $requestTable = new table($header, $arrayKey);
+
+    $requestTable->displayTable($accepteRequests);
+    ?>
+</div>
+
+<script type="module" src="../public/JS/admin/request/view.js"></script>
 
 
 

@@ -2,7 +2,7 @@ import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
 
-const eventTableDiv = document.getElementById('eventTable');
+const driverTableDiv = document.getElementById('driverTable');
 
 let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
@@ -29,65 +29,55 @@ const filterBtn = document.getElementById('filterBtn');
 const sortBtn = document.getElementById('sortBtn');
 const searchBtn = document.getElementById('searchBtn');
 
-const ccFilter = document.getElementById('ccFilter');
-const categoryFilter = document.getElementById('categoryFilter');
-const statusFilter = document.getElementById('statusFilter')
+const vehicleTypeFilter = document.getElementById('vehicleTypeFilter');
+const preferenceFilter = document.getElementById('preferenceFilter');
 
-const dateSort = document.getElementById('dateSort');
-const participationCountSort = document.getElementById('participationCountSort');
+const ageSort = document.getElementById('ageSort');
 
 const searchInput = document.getElementById('searchInput');
 
 filterBtn.addEventListener('click', async function() {
+
     let filters = {};
 
-    if(ccFilter.value) {
-        filters['ccID'] = ccFilter.value;
+    if(vehicleTypeFilter.value) {
+        filters['vehicleType'] = vehicleTypeFilter.value;
     }
 
-    if(categoryFilter.value) {
-        filters['category'] = categoryFilter.value;
-    }
-
-    if(statusFilter.value) {
-        filters['status'] = statusFilter.value;
+    if(preferenceFilter.value) {
+        filters['preference'] = preferenceFilter.value;
     }
 
     let sort = {DESC:[]};
 
-    if(dateSort.checked) {
-        sort['DESC'].push('date');
-    }
-
-    if(participationCountSort.checked) {
-        sort['DESC'].push('participationCount');
+    if(ageSort.checked) {
+        sort['DESC'].push('driver.age');
     }
 
     let search = '';
 
-    if(searchInput.value) {
+    if(searchInput.value !== '') {
         search = searchInput.value;
     }
 
-    let data = await getData('./events/filter', 'post',{filters:filters, sortBy:sort, search:search});
+    let result = await getData('./drivers/filter', 'POST', {filters:filters, sortBy:sort, search:search});
 
-    if(!data['status']) {
-        flash.showMessage({type:'error', value:data['message']});
-        return;
+    if(!result['status']) {
+        flash.showMessage({type:'error', value:result['msg']});
+        return
     }
+
+    // console.log(result['drivers']);
 
     const tableData = {
-        headings: ["Theme", "OrganizedBy", "Location", "Date", "Status",],
-        keys: ["theme","organizedBy", "location", "date", "status",['','View','#',[],'eventID']],
-        data: data['events']
+        headings: ['Name','Contact Number','Vehicle', 'Vehicle Number', 'Preference',],
+        keys: ['name','contactNumber','vehicleType', 'vehicleNo', 'preference',['','View','#',[],'driverID']],
+        data: result['drivers'],
     }
 
-    displayTable(eventTableDiv, tableData);
-
+    displayTable(driverTableDiv,tableData);
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
-
-    // console.log(data);
 
 });
 
@@ -97,4 +87,5 @@ sortBtn.addEventListener('click', async function() {
 
 searchBtn.addEventListener('click', async function() {
     filterBtn.click();
-});
+})
+

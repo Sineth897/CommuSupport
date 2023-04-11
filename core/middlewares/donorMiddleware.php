@@ -9,7 +9,8 @@ class donorMiddleware extends Middleware
     {
         return [
             'viewDonors' => [$this->MANAGER, $this->ADMIN],
-            'donorsFilter' => [$this->ADMIN,$this->MANAGER],
+            'donorsFilterAdmin' => [$this->ADMIN],
+            'filterDonors' => [$this->MANAGER],
         ];
 
     }

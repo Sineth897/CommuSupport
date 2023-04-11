@@ -270,4 +270,86 @@ class requestController extends Controller
         return $data;
     }
 
+    protected function filterRequestsAdmin(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+        $search = $data['search'];
+
+        try {
+            $this->sendJson(["status"=> 1,"pendingRequests" => $this->getPendingRequestsAdmin($filters,$sort,$search), "acceptedRequests" => $this->getAcceptedRequestsAdmin($filters,$sort,$search)]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+
+    }
+
+    private function getPendingRequestsAdmin($filters,$sort,$search) : array {
+        $cols = "u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $sql = 'SELECT ' . $cols . ' FROM request r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
+
+        $where = " WHERE ";
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (username LIKE '%$search%' OR notes LIKE '%$search%' OR address LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY " . implode(", ", $sort['DESC']) . " DESC";
+        }
+
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    private function getAcceptedRequestsAdmin($filters,$sort,$search) : array {
+        $cols = "u.username,r.acceptedBy,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $sql = 'SELECT ' . $cols . ' FROM acceptedrequest r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
+
+        $where = " WHERE ";
+
+        if(isset($filters['approval'])) {
+            unset($filters['approval']);
+        }
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (username LIKE '%$search%' OR notes LIKE '%$search%' OR address LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY " . implode(", ", $sort['DESC']) . " DESC";
+        }
+
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        $result =  $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $stmnt2 = requestModel::prepare("SELECT userID,username as acceptedBy FROM users WHERE userType = 'donor' UNION ALL SELECT ccID,CONCAT(city,' (CC)') as acceptedBY FROM communitycenter");
+        $stmnt2->execute();
+        $acceptedBy = $stmnt2->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+        foreach($result as &$row) {
+            $row['acceptedBy'] = $acceptedBy[$row['acceptedBy']];
+        }
+
+        return $result;
+    }
+
 }

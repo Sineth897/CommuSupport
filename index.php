@@ -152,6 +152,10 @@ $app->router->get('/manager/drivers', function ($request, $response) {
     $controller = new \app\controller\driverController("viewDrivers",$request,$response);
 });
 
+$app->router->post('/manager/drivers/filter', function ($request, $response) {
+    $controller = new \app\controller\driverController("filterDrivers",$request,$response);
+});
+
 //Manager driver registration
 $app->router->get('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
@@ -171,10 +175,17 @@ $app->router->post('/manager/donee/getdata', function ($request, $response) {
 $app->router->post('/manager/donee/verify', function ($request, $response) {
     $controller = new \app\controller\doneeController("verifyDonee",$request,$response);
 });
+$app->router->post('/manager/donees/filter', function ($request, $response) {
+    $controller = new \app\controller\doneeController("filterDonees",$request,$response);
+});
 
 //Manager view donors
 $app->router->get('/manager/donors', function ($request, $response) {
     $controller = new \app\controller\donorController("viewDonors",$request,$response);
+});
+
+$app->router->post('/manager/donors/filter', function ($request, $response) {
+    $controller = new \app\controller\donorController("filterDonors",$request,$response);
 });
 
 //Manager view request
@@ -195,17 +206,6 @@ $app->router->get('/manager/donations', function ($request, $response) {
 $app->router->get('/manager/profile', function ($request, $response) {
     $controller = new \app\controller\profileController("viewProfile",$request,$response);
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -622,6 +622,11 @@ $app->router->post('/admin/donations/filter', function ($request, $response) {
 $app->router->get('/admin/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
+
+$app->router->post('/admin/requests/filter', function ($request, $response) {
+    $controller = new \app\controller\requestController("filterRequestsAdmin",$request,$response);
+});
+
 //Admin view logistics
 $app->router->get('/admin/logistics', function ($request, $response) {
     $controller = new \app\controller\logisticController("viewLogistics",$request,$response);
@@ -636,7 +641,7 @@ $app->router->get('/admin/drivers', function ($request, $response) {
 });
 
 $app->router->post('/admin/drivers/filter', function ($request, $response) {
-    $controller = new \app\controller\driverController("filterDrivers",$request,$response);
+    $controller = new \app\controller\driverController("filterDriversAdmin",$request,$response);
 });
 
 $app->router->get("/admin/events", function ($request, $response) {
@@ -652,7 +657,7 @@ $app->router->get('/admin/donees', function($request,$response) {
 });
 
 $app->router->post('/admin/donees/filter', function($request,$response) {
-    $controller = new \app\controller\doneeController('doneesFilter', $request, $response);
+    $controller = new \app\controller\doneeController('doneesFilterAdmin', $request, $response);
 });
 
 $app->router->get('/admin/donors', function($request,$response) {
@@ -660,7 +665,7 @@ $app->router->get('/admin/donors', function($request,$response) {
 });
 
 $app->router->post('/admin/donors/filter', function($request,$response) {
-    $controller = new \app\controller\donorController('donorsFilter', $request, $response);
+    $controller = new \app\controller\donorController('donorsFilterAdmin', $request, $response);
 });
 
 

@@ -32,7 +32,7 @@ class driverController extends Controller
         ]);
     }
 
-    protected  function filterDrivers(Request $request, Response $response)
+    protected  function filterDriversAdmin(Request $request, Response $response)
     {
         $data = $request->getJsonData();
         $filters = $data['filters'];
@@ -61,6 +61,45 @@ class driverController extends Controller
             $stmt = driverModel::prepare($sql);
             $stmt->execute();
             $this->sendJson(['status'=> 1,'drivers'=>$stmt->fetchAll(\PDO::FETCH_ASSOC), 'CCs' => ccModel::getCCs()]);
+        } catch (\PDOException $e) {
+            $this->sendJson(['status'=> 0,'msg'=>$e->getMessage()]);
+        }
+
+    }
+
+    protected  function filterDrivers(Request $request, Response $response)
+    {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sortBy'];
+        $search = $data['search'];
+
+        $user = $this->getUserModel();
+        $user = $user->findOne(['employeeID' => $_SESSION['user']]);
+        $filters['ccID'] = $user->ccID;
+
+        $sql  = "SELECT * FROM driver";
+        $where = " WHERE ";
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (name LIKE '%$search%' OR contactNumber LIKE '%$search%' OR licenseNo LIKE '%$search%' OR vehicleNo LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY age";
+        }
+
+        try {
+            $stmt = driverModel::prepare($sql);
+            $stmt->execute();
+            $this->sendJson(['status'=> 1,'drivers'=>$stmt->fetchAll(\PDO::FETCH_ASSOC)]);
         } catch (\PDOException $e) {
             $this->sendJson(['status'=> 0,'msg'=>$e->getMessage()]);
         }
