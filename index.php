@@ -523,18 +523,18 @@ $app->router->get("/cho/communitycenters", function($request,$response) {
 });
 
 //cho add a manager
-$app->router->get("/cho/manager/register",function ($request,$response){
+$app->router->get("/cho/communitycenters/register/manager",function ($request,$response){
     $controller= new \app\controller\registerController("registerManager",$request,$response);
 });
-$app->router->post("/cho/manager/register",function ($request,$response){
+$app->router->post("/cho/communitycenters/register/manager",function ($request,$response){
     $controller= new \app\controller\registerController("registerManager",$request,$response);
 });
 
 //cho add a logistic
-$app->router->get("/cho/logistic/register",function ($request,$response){
+$app->router->get("/cho/communitycenters/register/logistic",function ($request,$response){
     $controller = new \app\controller\registerController("registerLogistic",$request,$response);
 });
-$app->router->post("/cho/logistic/register",function ($request,$response){
+$app->router->post("/cho/communitycenters/register/logistic",function ($request,$response){
     $controller = new \app\controller\registerController("registerLogistic",$request,$response);
 });
 
