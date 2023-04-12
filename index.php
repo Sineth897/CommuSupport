@@ -117,6 +117,37 @@ $app->router->post('/verifyMobile', function($request,$response) {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //*************************Manager get and post methods*************************//
 //manager home page
 $app->router->get('/manager', function($request,$response) {
@@ -221,6 +252,42 @@ $app->router->get('/manager/profile', function ($request, $response) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //*************************Donee get and post methods*************************//
 $app->router->get('/donee/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
@@ -257,6 +324,21 @@ $app->router->post('/donee/event/markParticipation', function ($request, $respon
 $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -369,6 +451,33 @@ $app->router->get('/donor/complaints', function($request,$response) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //*************************Logistic get and post methods*************************//
 //logistic view drivers
 $app->router->get("/logistic/drivers", function ($request,$response) {
@@ -429,6 +538,36 @@ $app->router->post("/logistic/donations/create", function ($request,$response) {
 $app->router->post('/logistic/delivery/popup', function ($request,$response) {
     $controller = new \app\controller\deliveryController("deliveryPopup",$request,$response);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -542,6 +681,37 @@ $app->router->post("/cho/communitycenters/register/logistic",function ($request,
 $app->router->get("/cho/complaints",function($request,$response){
    $controller=new \app\controller\complaintController("viewComplaints",$request,$response);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
