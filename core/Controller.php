@@ -3,6 +3,14 @@
 namespace app\core;
 
 use app\core\middlewares\Middleware;
+use app\models\adminModel;
+use app\models\choModel;
+use app\models\doneeModel;
+use app\models\donorModel;
+use app\models\driverModel;
+use app\models\logisticModel;
+use app\models\managerModel;
+use app\models\userModel;
 
 class Controller
 {
@@ -20,13 +28,23 @@ class Controller
         }
     }
 
+    protected function checkLink($request): void {
+        if($request->getUser() !== $this->getUserType()) {
+            throw new \Exception('You do not have access to this page');
+        }
+    }
 
 
     //function to be called by the subclasses to render the view
 
-    public function render($view, $params = []): void
+    public function render($view, $title, $params = []): void
     {
-        Application::$app->router->renderView($view, $params);
+        echo Application::$app->router->render($view, $title, $params);
+    }
+
+    public function renderOnlyView($view, $title, $params = []): void
+    {
+        echo Application::$app->router->renderWithoutNavbar($view,$title,$params);
     }
 
     public function sendJson($data): void
@@ -55,9 +73,92 @@ class Controller
         }
     }
 
+    protected function setSessionMsg($key, $value): void
+    {
+        Application::$app->session->set($key, $value);
+    }
+
+    protected function unsetSessionMsg($key): void
+    {
+        Application::$app->session->remove($key);
+    }
+
+    protected function getSessionMsg($key)
+    {
+        return Application::$app->session->get($key);
+    }
+
     protected function setFlash($key,$message): void
     {
         Application::$app->session->setFlash($key, $message);
     }
+
+    protected function getUserModel()
+    {
+        $user = $this->getUserType();
+        switch ($user) {
+            case 'donor':
+                return new donorModel();
+            case 'donee':
+                return new doneeModel();
+            case 'admin':
+                return new adminModel();
+            case 'manager':
+                return new managerModel();
+            case 'logistic':
+                return new logisticModel();
+            case 'driver':
+                return new driverModel();
+            case 'cho':
+                return new choModel();
+            default:
+                return null;
+        }
+    }
+
+    protected function setCookie($key, $value, $days = 30): void
+    {
+        Application::$app->cookie->setCookie($key, $value, $days);
+    }
+
+    protected function getCookie($key)
+    {
+        return Application::$app->cookie->getCookie($key);
+    }
+
+    protected function unsetCookie($key): void
+    {
+        Application::$app->cookie->unsetCookie($key);
+    }
+
+    protected function sendOTP(INT $otp,userModel $user): bool {
+        $msg = "Your OTP is $otp. Valid for 10 minutes only. Please do not share this with anyone.";
+        return Application::sms()->send($msg,$user);
+    }
+
+    protected function sendSMS(string $msg,userModel $user): bool {
+        return Application::sms()->send($msg,$user);
+    }
+
+    protected function file() : File
+    {
+        return Application::$app->file;
+    }
+
+    protected function startTransaction() : void
+    {
+        Application::$app->database->pdo->beginTransaction();
+    }
+
+    protected function commitTransaction() : void
+    {
+        Application::$app->database->pdo->commit();
+    }
+
+    protected function rollbackTransaction() : void
+    {
+        Application::$app->database->pdo->rollBack();
+    }
+
 
 }

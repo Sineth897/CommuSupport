@@ -1,11 +1,5 @@
 
-export default function request() {
-    return {
-        getData: getData
-    }
-}
-
-async function getData(URL, method, data = {}) {
+async function getData(URL, method = 'get', data = {}) {
     return fetch(URL, {
         method: method,
         headers: {
@@ -19,6 +13,6 @@ async function getData(URL, method, data = {}) {
         });
 }
 
-
+export {getData} ;
 
 
