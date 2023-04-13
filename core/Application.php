@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\models\userModel;
+use app\models\userTokenModel;
 
 class Application
 {
@@ -16,6 +17,10 @@ class Application
     public Response $response;
     public Database $database;
     public Session $session;
+    public Cookie $cookie;
+    public SMS $sms;
+    public File $file;
+    public Notification $notification;
     public ?userModel $user;
     private array $rootInfo;
 
@@ -30,30 +35,53 @@ class Application
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
         $this->session = new Session();
+        $this->cookie = new Cookie();
+        $this->sms = new SMS($config['sms']);
+        $this->file = new File();
         $this->database = new Database($config['db']);
+        $this->notification = new Notification();
         $this->rootInfo = $config['root'];
 
-        $primaryValue = $this->session->get('user');
-        if($primaryValue) {
-            $primaryKey = $this->userClass::getPrimaryKey();
-            $this->user = $this->userClass::getUser([$primaryKey => $primaryValue]);
-        } else {
-            $this->user = null;
-            if(!$this->session->get('userType')) {
-                $this->session->set('userType', 'guest');
+        $this->settingLoggedData();
+
+        if($this->cookie->isRememberMeSet()) {
+            if($this->rememberLogin()) {
+                $this->response->redirect('/');
             }
         }
     }
 
-    public static function session()
+    public static function session() : Session
     {
         return self::$app->session;
+    }
+
+    public static function cookie() : Cookie
+    {
+        return self::$app->cookie;
+    }
+
+    public static function sms() : SMS
+    {
+        return self::$app->sms;
+    }
+
+    public static function file() : File
+    {
+        return self::$app->file;
+    }
+
+    public static function notification() : Notification
+    {
+        return self::$app->notification;
     }
 
     public function run() : void
     {
         try {
+            ob_start();
             echo $this->router->resolve();
+            ob_end_flush();
         } catch (\Exception $e) {
             echo $e->getMessage();
             $this->response->setStatusCode($e->getCode());
@@ -68,18 +96,20 @@ class Application
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
-        $username = $user->username;
-        $userType = $user->userType();
-        $this->session->set('user', $primaryValue);
-        $this->session->set('username', $username);
-        $this->session->set('userType', $userType);
-        return true;
+        if(session_regenerate_id()) {
+            $this->session->set('user', $primaryValue);
+            $this->session->set('username', $user->username);
+            $this->session->set('userType', $user->userType());
+            return true;
+        }
+        return false;
     }
 
     public function logout(): void
     {
         $this->user = null;
         $this->session->remove('user');
+        $this->session->remove('username');
         $this->session->set('userType','guest');
     }
 
@@ -102,5 +132,43 @@ class Application
     public function isRootPassword(string $password): bool
     {
         return password_verify($password, $this->rootInfo['password']);
+    }
+
+    private function getSelectorNValidator(): array
+    {
+        $selectorNValidator = $this->cookie->getCookie('rememberMe');
+        return explode(':', $selectorNValidator);
+    }
+
+    private function settingLoggedData(): void {
+        $primaryValue = $this->session->get('user');
+        if($primaryValue) {
+            $primaryKey = $this->userClass::getPrimaryKey();
+            $this->user = $this->userClass::getModel([$primaryKey => $primaryValue]);
+        } else {
+            $this->user = null;
+            if(!$this->session->get('userType')) {
+                $this->session->set('userType', 'guest');
+            }
+        }
+    }
+
+    private function rememberLogin(): bool {
+        [$selector, $validator] = $this->getSelectorNValidator();
+        $userToken = userTokenModel::getModel(['selector' => $selector]);
+        if(!$userToken) {
+            $this->cookie->unsetCookie('rememberMe');
+            return false;
+        }
+        if(date('Y-m-d H:i:s') > $userToken->expiryDate) {
+            $this->cookie->unsetCookie('rememberMe');
+            $userToken->delete(['selector' => $selector]);
+            return false;
+        }
+        if(password_verify($validator, $userToken->validator)) {
+            echo 'remember login';
+            return $this->login(userModel::getModel(['userID' => $userToken->userID]));
+        }
+        return false;
     }
 }

@@ -1,10 +1,11 @@
-import request from "../../request.js";
-import table from "../../components/table.js";
+import { getData } from "../../request.js";
+import {displayTable} from "../../components/table.js";
+import flash from "../../flashmessages/flash.js";
 
 let addBtn = document.getElementById('addBtn');
 let filterBtn = document.getElementById('filterBtn');
+let closeBtn = document.getElementById('closeBtnDiv');
 let itemForm = document.getElementById('itemForm');
-let resultMsg = document.getElementById('resultMsg');
 let inventoryDisplay = document.getElementById('inventoryDisplay');
 
 let category = document.getElementById('category');
@@ -16,11 +17,18 @@ let confirmBtn = document.getElementById('addToInventory');
 let amount = document.getElementById('amount');
 
 let filterCategory = document.getElementById('filterCategory');
+let sortLastUpdated = document.getElementById('sortLastUpdated');
+let sortAmount = document.getElementById('sortAmount');
+
 
 prepareCategoryOptionArray();
 prepareSubcategorySelectionArray();
 addBtn.addEventListener('click', function() {
     show(itemForm);
+});
+
+closeBtn.addEventListener('click', function() {
+    hide(itemForm);
 });
 
 category.addEventListener('change', function() {
@@ -34,39 +42,68 @@ category.addEventListener('change', function() {
 });
 
 confirmBtn.addEventListener('click', async function() {
-    resultMsg.innerHTML = "";
     if(verifyForm()) {
         let data = {
-            itemID: subcategorySelect[activeSubcategory].value,
+            subcategoryID: subcategorySelect[activeSubcategory].value,
             amount: amount.value };
-        let array = await request().getData('./inventory/add', 'POST', { data:data });
-
-        console.log(array);
-
+        let array = await getData('./inventory/add', 'POST', { data:data });
         if(array['success']) {
-            resultMsg.innerHTML = "Item added to inventory";
-            resultMsg.style.color = "green";
+            flash.showMessage({type: 'success', value: 'Item added to inventory'},3000);
             filterBtn.click();
         }
         else {
-            resultMsg.innerHTML = "Item not added to inventory";
-            resultMsg.style.color = "red";
+            flash.showMessage({type: 'error', value: 'Item could not be added to inventory'},3000);
         }
     }
 });
 
+let filterOptions = document.getElementById('filterOptions');
+let sortOptions = document.getElementById('sortOptions');
+
+document.getElementById('filter').addEventListener('click', function(e) {
+    if(filterOptions.style.display === 'block') {
+        filterOptions.style.display = 'none';
+    } else {
+        filterOptions.style.display = 'block';
+    }
+    sortOptions.style.display = 'none';
+});
+
+document.getElementById('sort').addEventListener('click', function(e) {
+    if(sortOptions.style.display === 'block') {
+        sortOptions.style.display = 'none';
+    } else {
+        sortOptions.style.display = 'block';
+    }
+    filterOptions.style.display = 'none';
+});
+
 filterBtn.addEventListener('click', async function() {
     let filters = {};
+    let sort = {DESC:[]};
     if(filterCategory.value !== '') {
         filters['categoryID'] = filterCategory.value;
     }
-    let array = await request().getData('./inventory/filter', 'POST', { filters: filters });
+    if(sortLastUpdated.checked) {
+        sort['DESC'].push('updatedTime');
+    }
+    if(sortAmount.checked) {
+        sort['DESC'].push('amount');
+    }
+    let array = await getData('./inventory/filter', 'POST', { filters: filters, sortBy: sort });
+
     let data = {
         headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
         keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],
         data: array
     };
-    table().createTable(inventoryDisplay, data);
+    filterOptions.style.display = 'none';
+    displayTable(inventoryDisplay, data);
+});
+
+document.getElementById('sortBtn').addEventListener('click', function() {
+    filterBtn.click();
+    sortOptions.style.display = 'none';
 });
 
 
@@ -111,5 +148,5 @@ function hide(element) {
 }
 
 function show(element) {
-    element.style.display = "block";
+    element.style.display = "flex";
 }

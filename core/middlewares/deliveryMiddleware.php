@@ -8,7 +8,9 @@ class deliveryMiddleware extends Middleware
     protected function accessRules(): array
     {
         return [
-            'viewDeliveries' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC],
+            'viewDeliveries' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC,$this->DRIVER],
+            'createDelivery'=> [$this->LOGISTIC],
+            'deliveryPopup'=> [$this->LOGISTIC],
         ];
     }
 }

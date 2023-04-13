@@ -10,18 +10,18 @@ class deliveryModel extends DbModel
     public string $deliveryID = '';
     public string $deliveredBy = '';
     public string $createdDate = '';
-    public string $createdTime = '';
     public string $status = '';
-    public string $city = '';
+    public int $subdeliveryCount = 0;
+    public string $start = '';
+    public string $end = '';
     public string $completedDate = '';
     public string $completedTime = '';
-
 
 
     public function rules(): array
     {
         return [
-            'city' => [self::$REQUIRED],
+
         ];
     }
 
@@ -32,7 +32,7 @@ class deliveryModel extends DbModel
 
     public function attributes(): array
     {
-        return ['deliveryID','city'];
+        return ['deliveryID', 'subdeliveryCount', 'start', 'end',];
     }
 
     public function primaryKey(): string
