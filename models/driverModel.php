@@ -83,9 +83,8 @@ class driverModel extends DbModel
 
     public function getPreferences(): array {
         return [
-            'Short' => 'Short distances',
-            'Long' => 'Long distances',
-            'Both' => 'Both',
+            '< 10km' => 'Less than 10km',
+            '> 10km' => 'More than 10km',
         ];
     }
 

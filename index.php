@@ -18,6 +18,7 @@ $config = [
     "db" => [
         "dsn" => $_ENV['DB_DSN'],
         "user" => $_ENV['DB_USER'],
+        "password" => $_ENV['DB_PASS'],
         ],
     "root" => [
         "username"  =>  $_ENV['DB_ADMIN_USER'],
@@ -505,12 +506,12 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
     $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
 });
 
-$app->router->get('/logistic/deliveries/create', function($request,$response) {
-    $controller = new \app\controller\deliveryController("createDelivery",$request,$response);
+$app->router->post('/logistic/delivery/popup', function ($request,$response) {
+    $controller = new \app\controller\deliveryController("deliveryPopup",$request,$response);
 });
 
-$app->router->post('/logistic/deliveries/create', function($request,$response) {
-    $controller = new \app\controller\deliveryController("createDelivery",$request,$response);
+$app->router->post('/logistic/delivery/assign', function($request,$response) {
+    $controller = new \app\controller\deliveryController("assignDriver",$request,$response);
 });
 
 $app->router->get('/logistic/requests', function ($request,$response) {
@@ -535,9 +536,10 @@ $app->router->post("/logistic/donations/create", function ($request,$response) {
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
 
-$app->router->post('/logistic/delivery/popup', function ($request,$response) {
-    $controller = new \app\controller\deliveryController("deliveryPopup",$request,$response);
-});
+
+
+
+
 
 
 

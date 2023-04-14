@@ -88,6 +88,9 @@ abstract class DbModel extends Model
         return true;
     }
 
+    //to simplify update queries
+    // $where = ['id' => 1, 'name' => 'john']
+    // $data = ['name' => 'john', 'age' => 20]
     public function update(array $where,array $data): bool
     {
         try {

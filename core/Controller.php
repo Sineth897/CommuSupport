@@ -140,6 +140,10 @@ class Controller
         return Application::sms()->send($msg,$user);
     }
 
+    protected function sendSMSByUserID(string $msg,$user): bool {
+        return Application::sms()->sendSMSByUserID($msg,$user);
+    }
+
     protected function file() : File
     {
         return Application::$app->file;
