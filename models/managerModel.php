@@ -54,7 +54,7 @@ class managerModel extends DbModel
 
     public function save(): bool
     {
-        $this->employeeID = uniqid('manager',true);
+        $this->employeeID = substr(uniqid('manager',true),0,23);
         return parent::save();
     }
 

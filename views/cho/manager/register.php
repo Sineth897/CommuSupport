@@ -22,7 +22,7 @@
 
     <div class="form-box">
 
-        <?php $managerRegistrationForm->formHeader("Manger Details")?>
+        <?php $managerRegistrationForm->formHeader("Manager Details")?>
 
         <div>
 
@@ -38,6 +38,13 @@
 
             <?php $managerRegistrationForm->inputField($manager, "Contact Number",'text','contactNumber') ?>
 
+            <?php $managerRegistrationForm->inputField($user,"User Name",'text','username')?>
+
+            <?php $managerRegistrationForm->inputField($user,"Password",'password','password')?>
+
+            <?php $managerRegistrationForm->inputField($user,"Confirm Password",'password','confirmPassword')?>
+
+            <?php $managerRegistrationForm->inputField($manager,"CCID",'hidden','ccID') ?>
 
         </div>
 

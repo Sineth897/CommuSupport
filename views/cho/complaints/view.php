@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/cards/eventcard.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+
 <?php
 
 /** @var $model \app\models\complaintModel */
@@ -22,21 +27,29 @@ $complaintsTable->displayTable($complaint);
 
 ?>
 
-<?php $createComplaint = \app\core\components\form::begin('./cho/cc/complaint','get');?>
 
-<button> Make a complaint </button>
+<?php
 
-<?php $createComplaint->end(); ?>
+$profile = new \app\core\components\layout\profileDiv();
 
-<button type="button"> Filter </button>
+$profile->notification();
 
-<div id="complaintDisplay">
+$profile->profile();
 
-    <?php $complaintsTable = new table($headers,$arrayKeys); ?>
+$profile->end();
+?>
 
-    <?php $complaintsTable->displayTable($complaint); ?>
+<!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
 
-</div>
+$headerDiv->heading("Complaints");
+
+$headerDiv->pages(["Resolved", "To Reviewed"]);
+
+$headerDiv->end();
+?>
+
 
 
 

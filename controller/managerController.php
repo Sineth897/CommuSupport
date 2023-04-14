@@ -26,4 +26,6 @@ class managerController extends Controller
         ]);
     }
 
+
+
 }

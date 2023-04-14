@@ -16,6 +16,11 @@ class logisticModel extends DbModel
     public string $contactNumber = '';
     public string $ccID = '';
 
+    public function __construct(userModel $user =null)
+    {
+       //$this->user = $user;
+
+    }
     public function table(): string
     {
         return "logisticOfficer";
@@ -41,6 +46,18 @@ class logisticModel extends DbModel
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "contactNumber" => [self::$REQUIRED,self::$CONTACT,[self::$UNIQUE, "class" => self::class]],
         ];
+    }
+
+    public function save(): bool
+    {
+        $this->employeeID = substr(uniqid('logistic',true),0,23);
+        return parent::save();
+    }
+
+    public function userType():string
+    {
+        return 'logistic';
+
     }
 
     public function getPendingDeliveries() : array {

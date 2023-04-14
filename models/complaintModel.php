@@ -44,4 +44,11 @@ class complaintModel extends DbModel
         ];
 
     }
+
+    public function viewComplaints():array
+    {
+        return[
+
+        ];
+    }
 }

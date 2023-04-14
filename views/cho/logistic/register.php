@@ -35,6 +35,10 @@ $headerDiv->end();
 
         <?php $logisticRegistrationForm->inputField($logistic, "Contact Number",'text','contactNumber') ?>
 
+        <?php $logisticRegistrationForm->inputField($logistic,"User Name",'text','username')?>
+
+        <?php $logisticRegistrationForm->inputField($logistic,"Password",'password','password')?>
+
     </div>
 
     <div class="form-split">

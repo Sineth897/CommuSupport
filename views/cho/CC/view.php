@@ -64,7 +64,7 @@ Cancelled</a>
             </div>  -->
 
             <div class="search">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" name="find">
                 <a href="#"><i class="material-icons">search</i></a>
             </div>
 
@@ -75,7 +75,7 @@ Cancelled</a>
             <?php
 
             $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer'];
-            $arrayKeys=['city','email','fax','contactNumber',['manager','Add','./communitycenters/register/manager',['ccID']],['logistic','Add','./communitycenters/register/logisitic',['ccID']]];
+            $arrayKeys=['city','email','fax','contactNumber',['manager','Add','./communitycenters/register/manager',['ccID']],['logistic','Add','./communitycenters/register/logistic',['ccID']]];
             $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
             $ccTable->displayTable($CC);
             ?>
