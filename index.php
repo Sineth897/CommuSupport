@@ -35,7 +35,7 @@ $app = new Application(dirname(__DIR__) . "/CommuSupport", $config);
 
 
 //*************************Guest get and post methods*************************//
-//Guest landing page
+////Guest landing page
 $app->router->get('/', function($request, $response) {
     $controller = new redirectController("redirectHome", $request, $response);
 });
