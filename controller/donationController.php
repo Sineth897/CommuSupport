@@ -48,7 +48,10 @@ class donationController extends Controller
         //generate delivery id
         $deliveryID = substr(uniqid('delivery',true),0,23);
         //merge all needed data to one array
-        $data = array_merge($data,$this->donationDetails($donor,$cc),['deliveryID' => $deliveryID],$this->deliveryDetails($donor,$cc),$this->subdeliveryDetails($donor,$cc));
+        $data = array_merge($data,$this->donationDetails($donor,$cc),
+            ['deliveryID' => $deliveryID],
+            $this->deliveryDetails($donor,$cc),
+            $this->subdeliveryDetails($donor,$cc));
         //loading data to models
         $model->getData($data);
         $delivery->getData($data);
@@ -56,15 +59,15 @@ class donationController extends Controller
 
         try {
             $this->startTransaction();
-            $model->save();
             $delivery->save();
+            $model->save();
             $subdelivery->save();
             $this->commitTransaction();
             $this->sendJson(['status' => 1 , 'msg' => 'Donation created successfully']);
         }
         catch (\Exception $e) {
             $this->rollbackTransaction();
-            $this->sendJson((['status' => 0 , 'msg' => 'Donation creation failed']));
+            $this->sendJson((['status' => 0 , 'msg' => $e->getMessage()]));
         }
     }
 
@@ -91,6 +94,43 @@ class donationController extends Controller
             'toLongitude' => $cc->longitude,
             'toLatitude' => $cc->latitude,
         ];
+    }
+
+    protected function filterDonations(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sortBy'];
+        $search = $data['search'];
+
+        $cols = 'd.donationID,u.username,CONCAT(d.amount," ",s.scale) AS amount,d.date,s.subcategoryName,d.donateTo,d.deliveryStatus,c.city';
+        $sql = "SELECT " . $cols . " FROM donation d LEFT JOIN users u ON d.createdBy = u.userID LEFT JOIN subcategory s ON d.item = s.subcategoryID LEFT JOIN communitycenter c ON d.donateTo = c.ccID";
+
+        $where = " WHERE ";
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (username LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY age";
+        }
+
+        try {
+            $statement = donationModel::prepare($sql);
+            $statement->execute();
+            $this->sendJson(['status' => 1, 'donations' => $statement->fetchAll(\PDO::FETCH_ASSOC)]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
+        }
+
     }
    
 }

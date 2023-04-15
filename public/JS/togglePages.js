@@ -8,6 +8,7 @@ class TogglePages {
 
     constructor(pages,displayType = 'block') {
          for(let i = 0; i < pages.length; i++) {
+             // console.log(pages[i]);
              let btn = document.getElementById(pages[i].btnId);
             this.pages.push(
                 {
@@ -47,6 +48,9 @@ class TogglePages {
         page.style.display = 'none';
     }
 
+    getActivePage() {
+        return this.pages[this.activePage];
+    }
 }
 
 export default TogglePages;

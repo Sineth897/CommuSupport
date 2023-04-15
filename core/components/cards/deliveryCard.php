@@ -60,11 +60,13 @@ class deliveryCard
                 return;
         }
 
+
         echo "</div>";
         echo "<div class='log-del-btns'>";
         echo "<button class='log-del-primary'>More Details</button>";
         echo "<button class='log-del-primary'><i class='material-icons'>location_on</i>Route</button>
         </div></div>";
+
     }
 
 
