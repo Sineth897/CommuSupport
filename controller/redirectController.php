@@ -52,8 +52,6 @@ class redirectController extends Controller
 
     protected  function test(Request $request,Response $response) {
 
-        $this->setFlash('success','Test Flash Message');
-        $this->setFlash('error','Test Flash Message');
 
         $this->render('test/test','Test Page',[
             'request' => $request
