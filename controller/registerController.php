@@ -291,6 +291,9 @@ class registerController extends Controller
             $logistic->getData($request->getBody());
             $user->getData($request->getBody());
             $user->userType = 'logistic';
+            $logistic->employeeID = substr(uniqid('manager',true),0,23);
+            $user->userID=$logistic->employeeID;
+            $user->password=password_hash($user->password,PASSWORD_DEFAULT);
 
             if ($logistic->validate($request->getBody()) && $user->validate($request->getBody())) {
                 try {
