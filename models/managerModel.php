@@ -47,6 +47,7 @@ class managerModel extends DbModel
             'NIC' => [self::$REQUIRED, self::$nic, [self::$UNIQUE, 'class' => self::class]],
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            'ccID' =>[self::$REQUIRED],
             
         ];
     }
@@ -54,7 +55,7 @@ class managerModel extends DbModel
 
     public function save(): bool
     {
-        $this->employeeID = substr(uniqid('manager',true),0,23);
+
         return parent::save();
     }
 

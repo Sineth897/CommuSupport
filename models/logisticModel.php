@@ -28,7 +28,7 @@ class logisticModel extends DbModel
 
     public function attributes(): array
     {
-        return ["employeeID","name","age","NIC","gender","address","contactNumber","email","ccID"];
+        return ["employeeID","name","age","NIC","gender","address","contactNumber","ccID"];
     }
 
     public function primaryKey(): string
@@ -45,6 +45,7 @@ class logisticModel extends DbModel
             "gender" => [self::$REQUIRED],
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "contactNumber" => [self::$REQUIRED,self::$CONTACT,[self::$UNIQUE, "class" => self::class]],
+            'ccID' =>[self::$REQUIRED],
         ];
     }
 

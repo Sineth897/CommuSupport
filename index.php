@@ -539,7 +539,7 @@ $app->router->post("/cho/communitycenters/register/logistic",function ($request,
 });
 
 //cho view a complaint
-$app->router->get("/cho/communitycenters/complaints",function($request,$response){
+$app->router->get("/cho/complaints",function($request,$response){
    $controller=new \app\controller\complaintController("viewComplaints",$request,$response);
 });
 

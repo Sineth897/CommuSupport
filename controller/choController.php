@@ -22,4 +22,6 @@ class choController extends Controller
         $this->render('admin/communityheadoffices/view', 'View Cho', ['model' => $model,]);
     }
 
+
+
 }

@@ -11,21 +11,13 @@ $CC = $model->getAll($userID);
 ?>
         <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
         <link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
-        <!--        Profile Details-->
-        <div class="profile">
-            <div class="notif-box">
-                <i class="material-icons">notifications</i>
-            </div>
-            <div class="profile-box">
-                <div class="name-box">
-                    <h4>Username</h4>
-                    <p>Position</p>
-                </div>
-                <div class="profile-img">
-                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-                </div>
-            </div>
-        </div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
      <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">

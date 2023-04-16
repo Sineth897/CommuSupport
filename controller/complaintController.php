@@ -26,4 +26,6 @@ class complaintController extends Controller
             "user"=>$user
         ]);
     }
+
+
 }

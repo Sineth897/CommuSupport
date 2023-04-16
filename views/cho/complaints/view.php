@@ -45,8 +45,6 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Complaints");
 
-$headerDiv->pages(["Resolved", "To Reviewed"]);
-
 $headerDiv->end();
 ?>
 

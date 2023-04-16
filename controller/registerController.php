@@ -244,6 +244,9 @@ class registerController extends Controller
             $manager->getData($request->getBody());
             $user->getData($request->getBody());
             $user->userType = 'manager';
+            $manager->employeeID= substr(uniqid('manager',true),0,23);
+            $user->userID=$manager->employeeID;
+            $user->password=password_hash($user->password,PASSWORD_DEFAULT);
             if ($manager->validate($request->getBody()) && $user->validate($request->getBody())) {
                 try {
                     $this->startTransaction();
@@ -251,8 +254,10 @@ class registerController extends Controller
                         $this->setFlash('success', 'Manager registered successfully');
                         $manager->reset();
                         $user->reset();
+                        $this->commitTransaction();
+                        $response->redirect('/cho/communitycenters');
                     }
-                    $this->commitTransaction();
+
 
                 } catch (\Exception $e) {
                     $this->rollbackTransaction();
@@ -263,7 +268,11 @@ class registerController extends Controller
                 $this->setFlash('Error', 'Validation Failed');
             }
         }
+        if($request->isGet()){
 
+            $manager->ccID= $_GET['ccID'];
+
+        }
         $this->render("cho/manager/register", "Register a Manager", [
             'manager' => $manager,
             'user' => $user,
@@ -277,6 +286,7 @@ class registerController extends Controller
         $this->checkLink($request);
         $logistic = new \app\models\logisticModel();
         $user = new \app\models\userModel();
+
         if ($request->isPost()) {
             $logistic->getData($request->getBody());
             $user->getData($request->getBody());
@@ -285,22 +295,28 @@ class registerController extends Controller
             if ($logistic->validate($request->getBody()) && $user->validate($request->getBody())) {
                 try {
                     $this->startTransaction();
-                    if ($logistic->save()) {
-                        $this->setFlash('success', 'Manager registered successfully');
+                    if ($logistic->save() && $user->save()) {
+                        $this->setFlash('success', 'Logistic Manager registered successfully');
                         $logistic->reset();
                         $user->reset();
+                        $this > $this->commitTransaction();
+                        $response->redirect('/cho/communitycenters');
                     }
 
-                    $this > $this->commitTransaction();
+
                 } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('Error', 'Unable to save on the database');
+                    echo $e->getMessage();
                 }
             } else {
                 $this->setFlash('Error', 'Validation failed');
             }
         }
+        if($request->isGet()){
 
+            $logistic->ccID = $_GET['ccID'];
+        }
         $this->render("cho/logistic/register", "Register a Logistic Manager", [
             'logistic' => $logistic,
             'user' => $user,
