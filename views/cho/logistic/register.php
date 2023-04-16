@@ -5,6 +5,7 @@
 <?php
 /** @var $logistic \app\models\logisticModel */
 /** @var $user \app\models\userModel */
+/** @var $cc \app\models\ccModel */
 ?>
 
 <?php
@@ -35,14 +36,36 @@ $headerDiv->end();
 
         <?php $logisticRegistrationForm->inputField($logistic, "Contact Number",'text','contactNumber') ?>
 
+        <?php $logisticRegistrationForm->inputField($user,"User Name",'text','username')?>
+
+        <?php $logisticRegistrationForm->inputField($user,"Password",'password','password')?>
+
+        <?php $logisticRegistrationForm->inputField($user,"Confirm Password",'password','confirmPassword')?>
+
+        <div style="display:none">
+            <?php $logisticRegistrationForm->inputField($logistic,"CC ID ",'hidden','ccID')?>
+        </div>
+
     </div>
 
     <div class="form-split">
         <?php $logisticRegistrationForm->button("Confirm",'submit','confirm') ?>
+        <?php
+        if(isset($_POST['submit'])){
+            echo  'modaya';
+        }
+        else{
+            echo 'hayyosamini';
+        }
+
+        ?>
     </div>
 
 
+
+
 </div>
+
 
 <?php $logisticRegistrationForm->end() ?>
 
