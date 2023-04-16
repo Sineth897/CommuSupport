@@ -54,7 +54,7 @@ class logisticModel extends DbModel
     }
 
     private function getDirectDonations(string $ccID): array {
-        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID";
+        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID AND sd.status = 'Not Assigned'";
         $stmt = self::prepare($sql);
         $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
@@ -64,7 +64,7 @@ class logisticModel extends DbModel
 //    Get data of the accepted requests from the relevant tables.
     private function getAcceptedRequests(string $ccID): array {
 
-        $sql = "SELECT * FROM subdelivery LEFT JOIN acceptedrequest a on subdelivery.deliveryID = a.deliveryID  WHERE a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID')";
+        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND s.status = 'Not Assigned'";
 
         $stmt = self::prepare($sql);
         $stmt->execute();

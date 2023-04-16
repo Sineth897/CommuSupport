@@ -585,9 +585,9 @@ $app->router->get('/driver/deliveries', function($request,$response) {
     $controller = new \app\controller\deliveryController('viewDeliveries',$request,$response);
 });
 
-
-
-
+$app->router->get('/driver/deliveries/completed', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('completedDeliveries',$request,$response);
+});
 
 
 

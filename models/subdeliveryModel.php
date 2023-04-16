@@ -20,6 +20,8 @@ class subdeliveryModel extends DbModel
     public string $completedDate = '';
     public string $completedTime = '';
 
+    public string $deliveredBy = '';
+
     public function table(): string
     {
         return 'subdelivery';

@@ -12,6 +12,7 @@ class deliveryMiddleware extends Middleware
             'createDelivery'=> [$this->LOGISTIC],
             'deliveryPopup'=> [$this->LOGISTIC],
             'assignDriver'=> [$this->LOGISTIC],
+            'completedDeliveries'=> [$this->DRIVER],
         ];
     }
 }

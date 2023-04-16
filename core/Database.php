@@ -15,6 +15,6 @@ class Database
 
         $this->pdo = new \PDO('mysql:host=127.0.0.1;port=3306;dbname=commusupport_db;', 'root', '');
 //        $this->pdo = new \PDO($dsn, $user, $password);
-//        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 }

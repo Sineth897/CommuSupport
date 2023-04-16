@@ -97,13 +97,13 @@ async function assignDriver(e) {
     const selectedDriverDiv = document.getElementById('driverScroller').querySelector('div.selected');
 
     if(!selectedDriverDiv) {
-        document.getElementById( 'driverSelectionError').innerHTML = 'Please select a driver';
+        // document.getElementById( 'driverSelectionError').innerHTML = 'Please select a driver';
         flash.showMessage({value: 'Please select a driver', type: 'error'});
         return;
     }
 
     let data = {
-        deliveryID: ids[0],
+        subdeliveryID: ids[0],
         processID: ids[1],
         related: ids[2],
         driverID: selectedDriverDiv.id
@@ -115,6 +115,9 @@ async function assignDriver(e) {
         flash.showMessage({value: result['message'], type: 'error'});
         return;
     }
+
+    assignBtns[data['subdeliveryID']].remove();
+    deliveryPopUp.closePopUp();
 
     console.log(result);
 }

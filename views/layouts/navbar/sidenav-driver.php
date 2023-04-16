@@ -30,7 +30,7 @@
     </div>
 </div>
 <div class="main">
-
+    {content}
 </div>
 
 <script src="/CommuSupport/public/JS/navbar/sidebar-scripts.js"></script>

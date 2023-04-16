@@ -34,15 +34,6 @@ class deliveryController extends Controller
         ]);
     }
 
-    protected function createDelivery(Request $request,Response $response) {
-
-        $delivery = new deliveryModel();
-
-        $this->render('/logistic/deliveries/create','Create a Delivery',[
-                'deliveries' => $delivery
-        ]);
-    }
-
     protected function deliveryPopup(Request $request,Response $response) {
 
         $data = $request->getJsonData()['data'];
@@ -112,21 +103,22 @@ class deliveryController extends Controller
         try {
             $this->startTransaction();
             //update relavant subdelivery record
-            $subdelivery->update(['subdeliveryID' => $data['deliveryID']],['deliveredBy' => $data['driverID'],'status' => 'Ongoing']);
-//            //update relevant process using a private function defined in this controller
+            $subdelivery->update(['subdeliveryID' => $data['subdeliveryID']],['deliveredBy' => $data['driverID'],'status' => 'Ongoing']);
+            //update relevant process using a private function defined in this controller
             $this->updateProcess($data['related'],$data['processID']);
             //send sms to the driver
             $this->sendSMSByUserID("You have been assigned a delivery. Please check your dashboard for more details",$data['driverID']);
-//            //this line is for insite notification
-//            //notify the user
-            $subdelivery = subdeliveryModel::getModel(['subdeliveryID' => $data['subdeliveryID']]);
-            if(str_contains($subdelivery->start,'donee') || str_contains($subdelivery->start,'donor')) {
-                $this->sendSMSbyuserID("Your delivery has been assigned to a driver. Please check your dashboard for more details",$subdelivery->start);
+            $this->setNotification('Please check delivery dashboard for more details','You have been assigned a delivery.',$data['driverID'],'','delivery',$data['subdeliveryID']);
+            //notify the user
+            $subdelivery = $subdelivery->retrieve(['subdeliveryID' => $data['subdeliveryID']])[0];
+            if(str_contains($subdelivery['start'],'donee') || str_contains($subdelivery['start'],'donor')) {
+                $this->sendSMSbyuserID("Your delivery has been assigned to a driver. Please check your dashboard for more details",$subdelivery['start']);
+                $this->setNotification('Get package ready for pickup.','Your delivery has been assigned to a driver.',$subdelivery['start'],'',$data['related'],$data['processID']);
             }
-            if (str_contains($subdelivery->end,'donee') || str_contains($subdelivery->end,'donor')) {
-                $this->sendSMSbyuserID("Your delivery has been assigned to a driver. Please check your dashboard for more details",$subdelivery->end);
+            if (str_contains($subdelivery['end'],'donee') || str_contains($subdelivery['end'],'donor')) {
+                $this->sendSMSbyuserID("Your delivery has been assigned to a driver. Please check your dashboard for more details",$subdelivery['end']);
+                $this->setNotification('Expect delivery to be delivered very soon.','Your delivery has been assigned to a driver.',$subdelivery['end'],'',$data['related'],$data['processID']);
             }
-            //this line is for insite notification
 
             $this->commitTransaction();
             $this->sendJson(['status' => 1, 'message' => 'Delivery Assigned Successfully',]);
@@ -156,5 +148,9 @@ class deliveryController extends Controller
         $stmnt->execute();
         return true;
 
+    }
+
+    protected function completedDeliveries(Request $request,Response $response) {
+        $this->render('driver/completed/view','Completed Deliveries');
     }
 }

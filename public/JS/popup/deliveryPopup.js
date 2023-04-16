@@ -131,6 +131,11 @@ class DeliveryPopUp  {
         }
 
     }
+
+    static closePopUp() {
+        document.getElementById('popUpBackground').style.display = 'none';
+        document.getElementById('popUpContainer').innerHTML = '';
+    }
 }
 
 export default DeliveryPopUp;
