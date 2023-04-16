@@ -61,6 +61,7 @@ class acceptedModel extends DbModel
     }
 
 
+//    get requests accepted by user (Donor or CC)
     public function getAcceptedRequests(string $ID) : bool|array
     {
         $sql = "SELECT * FROM acceptedrequest a INNER JOIN subcategory s ON a.item = s.subcategoryID WHERE a.acceptedBy = :ID";

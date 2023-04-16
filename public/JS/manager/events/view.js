@@ -34,7 +34,7 @@ let eventsDiv = document.getElementById('eventDisplay')
 let eventCategory = document.getElementById('eventCategory');
 let sortByDate = document.getElementById('sortByDate');
 let sortByParticipation = document.getElementById('sortByParticipation');
-console.log(sortByParticipation);
+// console.log(sortByParticipation);
 
 let popUpArrayKeys = ['organizedBy','date','time','location','description'];
 let popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];

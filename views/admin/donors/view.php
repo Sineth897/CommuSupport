@@ -3,30 +3,21 @@
 
 /** @var $model \app\models\donorModel */
 
-$donors = $model->retrieve();
+$CCs = \app\models\ccModel::getCCs();
 
-$headers = ["ID",'Registered Date','Email','Address',"Contact Number","Type"];
-$arrayKeys = ["donorID",'registeredDate','email','address','contactNumber','type'];
 ?>
 
-<div class="profile">
-    <div class="notif-box">
-        <i class="material-icons">notifications</i>
-    </div>
-    <div class="profile-box">
-        <div class="name-box">
-            <h4>Username</h4>
-            <p>Position</p>
-        </div>
-        <div class="profile-img">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-        </div>
-    </div>
-</div>
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Donees"); ?>
+<?php $headerDiv->heading("Donors"); ?>
 
 <?php $headerDiv->end(); ?>
 
@@ -36,9 +27,18 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Community center","cc",$CCs,"ccFilter");
+$filter->dropDownList($model,"Type","type",['Individual' => 'Individual','Organization' => 'Organization'],"typeFilter");
+$filter->end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Registered Date","registeredDate","registeredDateSort");
+$sort->end();
 
 $searchDiv->sortEnd();
 
@@ -49,15 +49,25 @@ $searchDiv->search();
 $searchDiv->end(); ?>
 
 
-<div id="doneeDisplay" class="content">
-
-    <?php $individualTable = new \app\core\components\tables\table($headers,$arrayKeys); ?>
+<div id="donorTable" class="content">
 
     <?php
+    $donors = $model->retrieveWithJoin('users','userID',[],[],'donorID');
+
+    //adding relevant ceommunity center for each donee
+    foreach ($donors as $key => $donor) {
+        $donors[$key]['cc'] = $CCs[$donor['ccID']];
+    }
+
+    $headers = ["Username",'Registered Date','Community Center',"Contact Number","Type"];
+    $arrayKeys = ["username",'registeredDate','cc','contactNumber','type',['','View','#',[],'donorID']];
+
+    $individualTable = new \app\core\components\tables\table($headers,$arrayKeys);
+
+
     $individualTable->displayTable($donors);
     ?>
 
 </div>
 
-
-
+<script type="module" src="../public/JS/admin/donor/view.js"></script>

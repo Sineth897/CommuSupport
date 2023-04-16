@@ -9,6 +9,8 @@ use app\core\components\tables\table;
 /** @var $model \app\models\ccModel */
 /** @var $user \app\models\adminModel */
 
+$chos = \app\models\choModel::getCHOs();
+
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
@@ -20,40 +22,50 @@ $profile->profile();
 $profile->end(); ?>
 
         <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
-        <div class="heading-pages">
-            <div class="heading">
-                <h1>Community Centers</h1>
-            </div>
-        </div>
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
 
-        <!--        Search and filter boxes -->
-        <div class="search-filter">
+$headerDiv->heading("Community Centers");
 
-            <div class="filters">
-                <div class="filter">
-                    <p><i class="material-icons">filter_list</i><span>Filter</span></p>
-                </div>
-                <div class="sort">
-                    <p><i class="material-icons">sort</i> <span>Sort</span></p>
-                </div>
-            </div>
-            <div class="search">
-                <input type="text" placeholder="Search">
-                <a href="#"><i class="material-icons">search</i></a>
-            </div>
+$headerDiv->end();
+?>
 
-        </div>
+
+
+<?php
+$searchDiv = new \app\core\components\layout\searchDiv();
+
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Community Head Office","cho",$chos,"cho");
+$filter->end();
+
+$searchDiv->filterEnd();
+
+
+$searchDiv->filterDivEnd();
+
+$searchDiv->end();
+?>
 
         <!--        Content Block-->
-        <div class="content">
+        <div class="content" id="ccTable">
 <?php
             $userID = \app\core\Application::session()->get('user');
            // $user = $user->findOne(['adminId' => $userID]);
            $CC = $model->retrieve();
 
-           $header = ["Address", "City", "Email", "Fax", "Contact Number", "CommunityHeadOfficers"];
 
-           $arrayKey = ["address", "city", "email", "fax", "contactNumber", "cho"];
+           foreach ($CC as $key => $value) {
+               $CC[$key]['cho'] = $chos[$value['cho']];
+           }
+
+           $header = ["City", "Address", "Contact Number", "Community Head Office"];
+
+           $arrayKey = ["city", "address", "contactNumber", "cho",['',"View",'#',[],'ccID']];
 
            $ccTable = new table($header, $arrayKey);
 
@@ -63,6 +75,6 @@ $profile->end(); ?>
 
         </div>
 
-    
+  <script type="module" src="../public/JS/admin/cc/view.js"></script>
 
 

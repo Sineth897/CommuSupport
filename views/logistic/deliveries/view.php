@@ -46,11 +46,23 @@ $searchDiv->end(); ?>
 
 <!--<div class="content" id="pendingDeliveries">-->
 
-    <div class="scroll" id="pendingDeliveries">
+<div class="content">
+
         <div class="card-container">
             <?php
             $deliveryCard = new \app\core\components\cards\deliveryCard();
             $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
             $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
             $deliveryCard->showDeliveryCard($deliveries['ccDonations'],"ccDonations");
             ?>
@@ -61,7 +73,7 @@ $searchDiv->end(); ?>
 //            echo "</pre>";
 //            ?>
         </div>
-    </div>
+</div>
 
 <!--</div>-->
 
