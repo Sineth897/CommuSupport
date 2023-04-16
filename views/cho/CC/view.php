@@ -1,3 +1,5 @@
+<link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
+<link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
 <?php
 
 /** @var $model \app\models\ccModel */
@@ -9,8 +11,7 @@ $userID = \app\core\Application::session()->get('user');
 $CC = $model->getAll($userID);
 
 ?>
-        <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
-        <link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
