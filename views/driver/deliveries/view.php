@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/cards/driver-delivery-card.css">
+<link rel="stylesheet" href="../public/CSS/popup/delivery-popup-styles.css">
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
@@ -46,29 +47,12 @@ $searchDiv->end(); ?>
 
     <?php
 
-//    echo "<pre>";
-//    print_r($AssignedDeliveries);
-//    echo "</pre>";
-
     $deliveryCard = new \app\core\components\cards\driverDeliveryCard();
 
     $deliveryCard->showAssignedDeliveries($AssignedDeliveries);
 
-
-
     ?>
-
-<!--    <div class="driver-del-card">-->
-<!--        <div class="card-column subcategory"><strong>Sub Category</strong><p>Gas Cylinder</p></div>-->
-<!--        <div class="card-column pickupaddress"><strong>Pick up</strong><p>123/5, Colombo, Colombo</p></div>-->
-<!--        <div class="card-column deliveryaddress"><strong>Drop Off</strong><p>123/5, Colombo, Colombo</p></div>-->
-<!--        <div class="card-column assigneddate"><strong>Created Date</strong><p>2023-01-45</p></div>-->
-<!--        <div class="card-column route-complete-btns">-->
-<!--            <a class="del-route" href="#">Route</a>-->
-<!--            <a class="del-accept" href="#">Accept</a>-->
-<!--        </div>-->
-<!--        <div class="card-column delivery-btns">-->
-<!--            <a class="del-decline" href="#">Request to Re-Assign</a>-->
-<!--        </div>-->
-<!--    </div>-->
 </div>
+
+<script type="module" src="../public/JS/driver/deliveries/view.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv492o7hlT-nKoy2WGWmnceYZLSw2UDWw&callback=initMap" async defer></script>

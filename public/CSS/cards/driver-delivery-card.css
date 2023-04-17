@@ -70,7 +70,7 @@
     position: relative;
 }
 
-.del-accept{
+.del-finish{
     background-color: var(--secondary-color);
 }
 
@@ -78,7 +78,7 @@
     background-color: var(--primary-color);
 }
 
-.del-decline
+.del-reassign
 {
     background-color: var(--danger-color);
 }

@@ -136,6 +136,37 @@ class DeliveryPopUp  {
         document.getElementById('popUpBackground').style.display = 'none';
         document.getElementById('popUpContainer').innerHTML = '';
     }
+
+
+    static showRouteDiv(subdeliveryID) {
+        const popupContainer = document.getElementById('popUpContainer');
+        popupContainer.className = 'delivery-popup';
+        popupContainer.innerHTML = DeliveryPopUp.closeBtn + `<div class="delivery-map">
+            <h4>Route of the current stage</h4>
+            <div id="map"></div>
+            </div>`
+            + `<div class="delivery-details">
+            <div class="delivery-id">
+                <h2>` + subdeliveryID.substring(18,23) + `</h2>
+                <p>Delivery ID</p>
+            </div>
+            <div class="delivery-distance">
+                <h2 id="distance">Long</h2>
+                <p>Distance</p>
+            </div>
+            <div class="delivery-stage">
+                <h2 id='duration'>` + `deliveryStage` +`</h2>
+                <p>Estimated Time</p>
+            </div>
+        </div>`;
+        document.getElementById('popUpBackground').style.display = 'flex';
+        document.getElementById('closeBtnDiv').addEventListener('click', () => {
+            document.getElementById('popUpBackground').style.display = 'none';
+            document.getElementById('popUpContainer').innerHTML = '';
+        });
+
+        return popupContainer;
+    }
 }
 
 export default DeliveryPopUp;

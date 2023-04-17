@@ -153,4 +153,15 @@ class deliveryController extends Controller
     protected function completedDeliveries(Request $request,Response $response) {
         $this->render('driver/completed/view','Completed Deliveries');
     }
+
+    protected function getRouteDetails(Request $request,Response $response) {
+        $subdeliveryID = $request->getJsonData()['data']['subdeliveryID'];
+
+        try {
+            $this->sendJson(['status' => 1, 'data' => subdeliveryModel::getAllData(['subdeliveryID' => $subdeliveryID])[0]]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+    }
 }
