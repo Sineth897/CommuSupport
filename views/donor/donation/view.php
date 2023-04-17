@@ -7,6 +7,12 @@
 
 $categories = $model->getCategories();
 
+$donations = $model->retrieve(['createdBy' => $_SESSION['user']]);
+
+$activeDonations = array_filter($donations, function($donation) {
+    return $donation['deliveryStatus'] === 'Ongoing' || $donation['deliveryStatus'] === 'Not assigned';
+});
+
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
@@ -61,7 +67,18 @@ $searchDiv->end();
 
 
 <div class="content" id="activeDonations">
-    <h3>Ongoing Donations</h3>
+
+    <?php
+    foreach ($activeDonations as $donation) {
+        echo "<pre>";
+        echo "<p>Donation ID : {$donation['donationID']}</p>";
+        echo "<p>Item : {$donation['item']}</p>";
+        echo "<p>Amount : {$donation['amount']}</p>";
+        echo "<p>Delivery : {$donation['deliveryStatus']}</p>";
+        echo "<button id='{$donation['donationID']}' class='donation-view-btn vtn- primary'>View</button>";
+        echo "</pre>";
+    }
+    ?>
 </div>
 
 <div class="content" id="completedDonations">

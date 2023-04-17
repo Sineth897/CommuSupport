@@ -66,5 +66,34 @@ class SMS
         return $this->sendSMS($user->contactNumber, $msg);
     }
 
+    public function sendSMSByUserID(string $msg, $userID): bool
+    {
+        $user = $this->getModelByID($userID);
+        return $this->sendSMS($user->contactNumber, $msg);
+    }
+
+    public function getModelByID(string $id)
+    {
+        if(str_contains($id,'donee')){
+            return doneeModel::getModel(['doneeID' => $id]);
+        }
+        if(str_contains($id,'donor')){
+            return donorModel::getModel(['donorID' => $id]);
+        }
+        if(str_contains($id,'driver')){
+            return driverModel::getModel(['employeeID' => $id]);
+        }
+        if(str_contains($id,'logistic')){
+            return logisticModel::getModel(['employeeID' => $id]);
+        }
+        if(str_contains($id,'manager')){
+            return managerModel::getModel(['employeeID' => $id]);
+        }
+        if(str_contains($id,'cho')){
+            return choModel::getModel(['choID' => $id]);
+        }
+        return null;
+    }
+
 
 }

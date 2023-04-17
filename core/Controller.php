@@ -10,6 +10,7 @@ use app\models\donorModel;
 use app\models\driverModel;
 use app\models\logisticModel;
 use app\models\managerModel;
+use app\models\notificationModel;
 use app\models\userModel;
 
 class Controller
@@ -140,6 +141,10 @@ class Controller
         return Application::sms()->send($msg,$user);
     }
 
+    protected function sendSMSByUserID(string $msg,$user): bool {
+        return Application::sms()->sendSMSByUserID($msg,$user);
+    }
+
     protected function file() : File
     {
         return Application::$app->file;
@@ -158,6 +163,11 @@ class Controller
     protected function rollbackTransaction() : void
     {
         Application::$app->database->pdo->rollBack();
+    }
+
+    protected function setNotification($message,$title,$userID = '', $usertype='',$related = '',$relatedID = '') : void
+    {
+        notificationModel::setNotification($message,$title,$userID,$usertype,$related,$relatedID);
     }
 
 

@@ -49,7 +49,7 @@ abstract class DbModel extends Model
     {
         $tableName = static::table();
         $attributes = array_keys($where);
-        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $sql = implode("AND ", array_map(fn($attr) => "`$attr` = :$attr", $attributes));
         $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
         foreach ($where as $key => $item) {
             $statement->bindValue(":$key", $item);
@@ -88,6 +88,9 @@ abstract class DbModel extends Model
         return true;
     }
 
+    //to simplify update queries
+    // $where = ['id' => 1, 'name' => 'john']
+    // $data = ['name' => 'john', 'age' => 20]
     public function update(array $where,array $data): bool
     {
         try {

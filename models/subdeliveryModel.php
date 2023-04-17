@@ -20,6 +20,8 @@ class subdeliveryModel extends DbModel
     public string $completedDate = '';
     public string $completedTime = '';
 
+    public string $deliveredBy = '';
+
     public function table(): string
     {
         return 'subdelivery';
@@ -44,5 +46,12 @@ class subdeliveryModel extends DbModel
     {
         $this->subdeliveryID = substr(uniqid('sub',true),0,23);
         return parent::save();
+    }
+
+    public static function getDestinations() :  array {
+        $sql = "SELECT donorID,address FROM donor UNION SELECT ccID,CONCAT(city,' (CC)') as address FROM communitycenter UNION SELECT doneeID,address FROM donee";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 }

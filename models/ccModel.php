@@ -19,7 +19,7 @@ class ccModel extends DbModel
 
     public function table(): string
     {
-        return "communityCenter";
+        return "communitycenter";
     }
 
     public function attributes(): array

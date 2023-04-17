@@ -115,8 +115,9 @@ class registerController extends Controller
                         $this->setFlash('success', 'Donor registered successfully. Please verify your mobile number to complete registration');
                         $donor->reset();
                         $user->reset();
+                        $this->commitTransaction();
+                        $response->redirect('/login/user');
                     }
-                    $this->commitTransaction();
                 } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('error', 'Unable to save on database');
@@ -173,7 +174,6 @@ class registerController extends Controller
                         $this->commitTransaction();
                         $response->redirect('/login/user');
                     }
-
                 } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('error', 'Unable to save on database');
