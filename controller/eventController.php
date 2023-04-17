@@ -217,7 +217,7 @@ class eventController extends Controller
         catch (\Exception $e) {
             $this->sendJson([
                 'status' => 0,
-                'error' => $e->getMessage()
+                'message' => $e->getMessage()
             ]);
         }
     }

@@ -1,3 +1,5 @@
+<link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
+<link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
 <?php
 
 /** @var $model \app\models\ccModel */
@@ -9,23 +11,14 @@ $userID = \app\core\Application::session()->get('user');
 $CC = $model->getAll($userID);
 
 ?>
-        <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet" >
-        <link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
-        <!--        Profile Details-->
-        <div class="profile">
-            <div class="notif-box">
-                <i class="material-icons">notifications</i>
-            </div>
-            <div class="profile-box">
-                <div class="name-box">
-                    <h4>Username</h4>
-                    <p>Position</p>
-                </div>
-                <div class="profile-img">
-                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-                </div>
-            </div>
-        </div>
+
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end(); ?>
 
      <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
         <div class="heading-pages">
@@ -64,7 +57,7 @@ Cancelled</a>
             </div>  -->
 
             <div class="search">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" name="find">
                 <a href="#"><i class="material-icons">search</i></a>
             </div>
 
@@ -75,7 +68,7 @@ Cancelled</a>
             <?php
 
             $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer'];
-            $arrayKeys=['city','email','fax','contactNumber',['manager','Add','./communitycenters/register/manager',['ccID']],['logistic','Add','./communitycenters/register/logisitic',['ccID']]];
+            $arrayKeys=['city','email','fax','contactNumber',['manager','Add','./communitycenters/register/manager',['ccID']],['logistic','Add','./communitycenters/register/logistic',['ccID']]];
             $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
             $ccTable->displayTable($CC);
             ?>

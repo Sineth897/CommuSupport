@@ -30,6 +30,7 @@ class Application
         self::$ROOT_DIR = $rootPath;
         self::$app = $this;
 
+
         $this->userClass = $config['userClass'];
         $this->request = new Request();
         $this->response = new Response();

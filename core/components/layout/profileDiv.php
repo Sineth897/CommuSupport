@@ -3,19 +3,34 @@
 namespace app\core\components\layout;
 
 use app\core\Application;
+use app\models\notificationModel;
 
 class profileDiv
 {
+    private array $notifications = [];
+    private array $processByuserType = [
+        'logistic' => ['donation','employee'],
+        'manager' => ['donation', 'request','employee'],
+        'driver' => ['delivery','employee'],
+        'cho' => ['complain','employee'],
+        'donee' => ['request','user','event'],
+        'donor' => ['donation','user','event'],
+    ];
 
     public function __construct()
     {
+
         echo "<div class='profile'>";
+        $this->notifications = notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType'], 'related' => $this->processByuserType[$_SESSION['userType']]]);
+//        echo "<pre>";
+//        print_r($this->notifications);
+//        echo "</pre>";
     }
 
     public function notification(): void
     {
         echo "<div class='notif-box'>";
-        echo "<a href='#'><i class='material-icons'>notifications</i></a>";
+        echo "<a href='#' id='notification'><i class='material-icons'>notifications</i></a>";
         echo "</div>";
     }
 

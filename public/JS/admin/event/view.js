@@ -46,7 +46,7 @@ filterBtn.addEventListener('click', async function() {
     }
 
     if(categoryFilter.value) {
-        filters['category'] = categoryFilter.value;
+        filters['eventCategoryID'] = categoryFilter.value;
     }
 
     if(statusFilter.value) {
@@ -70,6 +70,8 @@ filterBtn.addEventListener('click', async function() {
     }
 
     let data = await getData('./events/filter', 'post',{filters:filters, sortBy:sort, search:search});
+
+    console.log(data);
 
     if(!data['status']) {
         flash.showMessage({type:'error', value:data['message']});

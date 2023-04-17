@@ -21,9 +21,61 @@ class complaintController extends Controller
         $userType = $this->getUserType();
         $complaints = new complaintModel();
         $user = $this->getUserModel();
+
         $this->render($userType . '/complaints/view','Complaints',[
             "complaints"=> $complaints,
             "user"=>$user
         ]);
     }
+
+    protected function donorfileComplaint(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+        //creating model to make new complaint
+        $model =new complaintModel();
+        if($request->isPost()){
+            $model ->getData($request->getBody());
+            if($model->validate($request->getBody()) && $model->save()){
+                $this->setFlash("result",'Complaint submitted');
+                $model->reset();
+            }
+            else {
+
+                $this->setFlash('result', 'Complaint failed to submitted');
+            }
+        }
+
+        $this->render("donor/complaint/create",'File a Complaint',[
+            'model'=>$model
+        ]);
+
+    }
+
+    protected function doneefileComplaint(Request $request, Response $response)
+    {
+        $this->checklink($request);
+
+        $model = new complaintModel();
+        if($request->isPost())
+        {
+            $model->getData($request->getBody());
+            if($model->validate($request->getBody()) && $model->save())
+            {
+                $this->setFlash('result','Complaint submitted');
+            }
+            else {
+
+                $this->setFlash('result', 'Complaint failed to submitted');
+            }
+        }
+
+        $this->render("donee/complaint/create",'File a Complaint',[
+            'model'=>$model
+        ]);
+
+        }
+
+
+
+
 }

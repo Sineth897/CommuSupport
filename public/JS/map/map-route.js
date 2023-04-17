@@ -1,8 +1,8 @@
 
 class MapRoute {
 
-    static init() {
-        console.log('MapRoute.init()');
+    static initMap() {
+        // console.log('MapRoute.initc()');
     }
 
     static async calculateDistance(point1, point2) {
