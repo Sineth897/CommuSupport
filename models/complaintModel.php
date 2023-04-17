@@ -50,10 +50,20 @@ class complaintModel extends DbModel
     public function save(): bool
     {
         $this->complaintID = substr(uniqid('complaint', true), 0, 23);
-        $this->cho = $_SESSION['user'];
         return parent::save();
 
     }
+
+    public function getComplaints(string $choID)
+    {
+        $statement= self::prepare("SELECT filedBy,filedDate,subject,status,solution,reviewedDate from complaint where choID=:choID");
+        $statement->bindValue(':choID',$choID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+
+    }
+
 
 
 }

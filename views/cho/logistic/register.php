@@ -49,16 +49,9 @@ $headerDiv->end();
     </div>
 
     <div class="form-split">
-        <?php $logisticRegistrationForm->button("Confirm",'submit','confirm') ?>
-        <?php
-        if(isset($_POST['submit'])){
-            echo  'modaya';
-        }
-        else{
-            echo 'hayyosamini';
-        }
 
-        ?>
+        <?php $logisticRegistrationForm->button("Confirm",'submit','confirm') ?>
+
     </div>
 
 
