@@ -44,10 +44,6 @@ catch(\Exception $e){
 
 //$complaints= $model->retrieve(['filedBy'=>'complaintID']);
 
-if(empty($complaint)){
-    echo "No Complaints has been filed.";
-}
-
 $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
 $arrayKeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'];
 
@@ -55,6 +51,9 @@ $arrayKeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'
 $complaintsTable = new table($headers,$arrayKeys);
 $complaintsTable ->displayTable($complaint);
 
+if(empty($complaint)){
+    echo "No Complaints has been filed.";
+}
 
 
 
