@@ -12,9 +12,12 @@ class PopUp {
         this.popUpBackgroud = document.getElementById(background);
         this.popUpContainer = document.getElementById(container);
         this.popUpInfo = document.getElementById(info);
+
         this.splitDiv.push(this.popUpContainer);
+
         this.splitFormFlag++;
     }
+
 
     setHeader(heading,obj = {},subheading = '') {
         this.popUpHeader = this.getDiv('popUpHeader',['popup-header']);
@@ -122,6 +125,7 @@ class PopUp {
         this.inputFields.push(this.field);
         return this.field;
     }
+
     setCloseButton() {
         this.closeIcon = document.createElement('i');
         this.closeIcon.setAttribute('class','material-icons');
@@ -134,6 +138,19 @@ class PopUp {
         });
         this.popUpContainer.append(this.closeButtonDiv);
     }
+
+    setComplaintIcon(processID, processName){
+        this.complaintHyper = document.createElement('a');
+        this.complaintHyper.setAttribute('href','./complaints/file?processID=' + processID +'&process=' + processName);
+        this.complaintIcon = document.createElement('i');
+        this.complaintIcon.setAttribute('class','material-icons');
+        this.complaintIcon.innerHTML = "report";
+        this.complaintIconDiv = this.getDiv('complaintIconDiv',['complaint-icon']);
+        this.complaintIconDiv.append(this.complaintHyper);
+        this.complaintHyper.append(this.complaintIcon);
+        this.popUpContainer.append(this.complaintIconDiv);
+    }
+
 
     getDiv(id = "", classes = []) {
         this.div = document.createElement('div');
