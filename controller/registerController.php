@@ -7,6 +7,7 @@ use app\core\Controller;
 use app\core\middlewares\registerMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\complaintModel;
 use app\models\doneeIndividualModel;
 use app\models\doneeModel;
 use app\models\doneeOrganizationModel;
@@ -44,8 +45,7 @@ class registerController extends Controller
                         $user->reset();
                     }
                     $this->commitTransaction();
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('error', 'Unable to save on database');
                 }
@@ -68,7 +68,7 @@ class registerController extends Controller
 
         $this->checkLink($request);
 
-        if($request->isPost()) {
+        if ($request->isPost()) {
 
             $cho->getData($request->getBody());
             $user->getData($request->getBody());
@@ -82,8 +82,7 @@ class registerController extends Controller
                         $user->reset();
                     }
                     $this->commitTransaction();
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('error', 'Unable to save on database');
                 }
@@ -119,8 +118,7 @@ class registerController extends Controller
                         $this->commitTransaction();
                         $response->redirect('/login/user');
                     }
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('error', 'Unable to save on database');
                 }
@@ -176,10 +174,9 @@ class registerController extends Controller
                         $this->commitTransaction();
                         $response->redirect('/login/user');
                     }
-                }
-                catch (\Exception $e) {
+                } catch (\Exception $e) {
                     $this->rollbackTransaction();
-                    $this->setFlash('error', 'Unable to save on databse');
+                    $this->setFlash('error', 'Unable to save on database');
                 }
             } else {
                 $this->setFlash('error', 'Validation failed');
@@ -217,7 +214,6 @@ class registerController extends Controller
         $cc = new \app\models\ccModel();
 
 
-
         if ($request->isPost()) {
             $cc->getData($request->getBody());
             if ($cc->validate($request->getBody())) {
@@ -232,70 +228,101 @@ class registerController extends Controller
             }
         }
 
-        $this->render("cho/CC/register","Register a Community Center",[
-            'cc'=>$cc,
-            ]);
+        $this->render("cho/CC/register", "Register a Community Center", [
+            'cc' => $cc,
+        ]);
     }
-
-
-
-
 
 
     protected function registerManager(Request $request, Response $response)
     {
+        $this->checkLink($request);
         $manager = new \app\models\managerModel();
         $user = new \app\models\userModel();
 
-        if($request->isPost()){
+        if ($request->isPost()) {
             $manager->getData($request->getBody());
             $user->getData($request->getBody());
-            if($manager->validate($request->getBody()) && $user->validate($request->getBody())){
-                if($manager->save()){
-                    $this->setFlash('success','Manager registered successfully');
-                    $manager->reset();
-                    $user->reset();
-                }
-                else{
-                    $this->setFlash('Error','Unable to save on the database');
-                }
+            $user->userType = 'manager';
+            $manager->employeeID= substr(uniqid('manager',true),0,23);
+            $user->userID=$manager->employeeID;
+            $user->password=password_hash($user->password,PASSWORD_DEFAULT);
+            if ($manager->validate($request->getBody()) && $user->validate($request->getBody())) {
+                try {
+                    $this->startTransaction();
+                    if ($manager->save() && $user->save()) {
+                        $this->setFlash('success', 'Manager registered successfully');
+                        $manager->reset();
+                        $user->reset();
+                        $this->commitTransaction();
+                        $response->redirect('/cho/communitycenters');
+                    }
 
-            }
-            else{
-                $this->setFlash('Error','Validation Failed');
+
+                } catch (\Exception $e) {
+                    $this->rollbackTransaction();
+                    $this->setFlash('Error', 'Unable to save on the database');
+                    echo $e->getMessage();
+                }
+            } else {
+                $this->setFlash('Error', 'Validation Failed');
             }
         }
+        if($request->isGet()){
 
-        $this->render("cho/manager/register","Register a Manager",[
-            'manager'=>$manager,
-            'user'=>$user,
-            ]);
+            $manager->ccID= $_GET['ccID'];
+
+        }
+        $this->render("cho/manager/register", "Register a Manager", [
+            'manager' => $manager,
+            'user' => $user,
+        ]);
 
     }
 
+
     protected function registerLogistic(Request $request, Response $response)
     {
+        $this->checkLink($request);
         $logistic = new \app\models\logisticModel();
         $user = new \app\models\userModel();
-        if($request->getBody()){
-            if($logistic->validate($request->getBody()) && $user->validate($request->getBody())){
-                if($logistic->save()){
-                    $this->setFlash('success','Manager registered successfully');
-                    $logistic->reset();
-                    $user->reset();
-                }
-                else{
-                    $this->setFlash('Error','Unable to save on the database');
 
+        if ($request->isPost()) {
+            $logistic->getData($request->getBody());
+            $user->getData($request->getBody());
+            $user->userType = 'logistic';
+            $logistic->employeeID = substr(uniqid('manager',true),0,23);
+            $user->userID=$logistic->employeeID;
+            $user->password=password_hash($user->password,PASSWORD_DEFAULT);
+
+            if ($logistic->validate($request->getBody()) && $user->validate($request->getBody())) {
+                try {
+                    $this->startTransaction();
+                    if ($logistic->save() && $user->save()) {
+                        $this->setFlash('success', 'Logistic Manager registered successfully');
+                        $logistic->reset();
+                        $user->reset();
+                        $this > $this->commitTransaction();
+                        $response->redirect('/cho/communitycenters');
+                    }
+
+
+                } catch (\Exception $e) {
+                    $this->rollbackTransaction();
+                    $this->setFlash('Error', 'Unable to save on the database');
+                    echo $e->getMessage();
                 }
-            }else{
-                $this->setFlash('Error','Validation failed');
+            } else {
+                $this->setFlash('Error', 'Validation failed');
             }
         }
+        if($request->isGet()){
 
-        $this->render("cho/logistic/register","Register a Logistic Manager",[
-            'logistic'=>$logistic,
-            'user'=>$user,
+            $logistic->ccID = $_GET['ccID'];
+        }
+        $this->render("cho/logistic/register", "Register a Logistic Manager", [
+            'logistic' => $logistic,
+            'user' => $user,
         ]);
     }
 

@@ -4,6 +4,7 @@
 <?php
 /** @var $manager \app\models\managerModel */
 /** @var $user \app\models\userModel */
+/** @var $cc \app\models\ccModel */
 ?>
 
 
@@ -22,7 +23,7 @@
 
     <div class="form-box">
 
-        <?php $managerRegistrationForm->formHeader("Manger Details")?>
+        <?php $managerRegistrationForm->formHeader("Manager Details")?>
 
         <div>
 
@@ -38,6 +39,15 @@
 
             <?php $managerRegistrationForm->inputField($manager, "Contact Number",'text','contactNumber') ?>
 
+            <?php $managerRegistrationForm->inputField($user,"User Name",'text','username')?>
+
+            <?php $managerRegistrationForm->inputField($user,"Password",'password','password')?>
+
+            <?php $managerRegistrationForm->inputField($user,"Confirm Password",'password','confirmPassword')?>
+
+            <div style="display:none">
+                <?php $managerRegistrationForm->inputField($manager,"CC ID ",'hidden','ccID')?>
+            </div>
 
         </div>
 

@@ -23,6 +23,7 @@ class choController extends Controller
         $this->render('admin/communityheadoffices/view', 'View Cho', ['model' => $model,]);
     }
 
+
     protected function choPopup(Request $request, Response $response)
     {
         $data = $request->getJsonData();
