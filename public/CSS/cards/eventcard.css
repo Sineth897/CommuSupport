@@ -1,0 +1,53 @@
+.card-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    width: 100%
+}
+
+.event-card{
+display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+}
+.event-card-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.event-participants{
+    display: flex;
+    align-items: center;
+}
+
+.event-title{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.event-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-location{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+.event-location i{
+    font-size: 1rem;
+}
+
+.event-details p{
+    text-align: left;
+}

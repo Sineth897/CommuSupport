@@ -1,0 +1,69 @@
+<?php
+
+namespace app\models;
+
+use app\core\DbModel;
+use app\core\Model;
+
+class complaintModel extends DbModel
+{
+    public string $complaintID = "";
+    public string $filledBy = "";
+    public string $filedDate = "";
+    public string $subject = "";
+    public string $status = "";
+    public string $solution = "";
+    public string $reviewedDate = "";
+
+    public string $cho = "";
+
+    public function table(): string
+    {
+        return "complaint";
+
+    }
+
+    public function attributes(): array
+    {
+        return ["complaintID", "filedBy", "filedDate", "subject", "status", "solution", "reviewedDate"];
+
+    }
+
+    public function primaryKey(): string
+    {
+        return "complaintID";
+    }
+
+    public function rules(): array
+    {
+        return [
+            "filedBy" => [self::$REQUIRED],
+            "filedDate" => [self::$REQUIRED],
+            "subject" => [self::$REQUIRED],
+            "status" => [self::$REQUIRED],
+            "solution" => [self::$REQUIRED],
+            "reviewedDate" => [self::$REQUIRED]
+        ];
+
+    }
+
+    public function save(): bool
+    {
+        $this->complaintID = substr(uniqid('complaint', true), 0, 23);
+        return parent::save();
+
+    }
+
+    public function getComplaints(string $choID)
+    {
+        $statement= self::prepare("SELECT filedBy,filedDate,subject,status,solution,reviewedDate from complaint where choID=:choID");
+        $statement->bindValue(':choID',$choID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+
+    }
+
+
+
+}
