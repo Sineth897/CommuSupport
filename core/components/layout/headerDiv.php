@@ -71,6 +71,12 @@ class headerDiv
             'icon' => 'check_circle_outline',
             'name' => 'Accepted'
         ],
+        'assigned' => [
+            'id' => 'assigned',
+            'link' => '#',
+            'icon' => 'assignment_ind',
+            'name' => 'Assigned'
+        ],
     ];
 
     public function __construct()

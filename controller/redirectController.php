@@ -7,6 +7,7 @@ use app\core\middlewares\loginMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\eventModel;
+use app\models\notificationModel;
 
 class redirectController extends Controller
 {
@@ -51,9 +52,8 @@ class redirectController extends Controller
     }
 
     protected  function test(Request $request,Response $response) {
-
-        $this->setFlash('success','Test Flash Message');
-        $this->setFlash('error','Test Flash Message');
+//        $this->setNotification("wade hhari",'some title','','','employee,delivery');
+//        $notifications = notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
 
         $this->render('test/test','Test Page',[
             'request' => $request

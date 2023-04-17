@@ -116,8 +116,9 @@ class registerController extends Controller
                         $this->setFlash('success', 'Donor registered successfully. Please verify your mobile number to complete registration');
                         $donor->reset();
                         $user->reset();
+                        $this->commitTransaction();
+                        $response->redirect('/login/user');
                     }
-                    $this->commitTransaction();
                 }
                 catch (\Exception $e) {
                     $this->rollbackTransaction();
@@ -172,9 +173,9 @@ class registerController extends Controller
                         $this->setFlash('success', 'Donee registered successfully. Please verify your mobile number to complete registration');
                         $donee->reset();
                         $user->reset();
+                        $this->commitTransaction();
                         $response->redirect('/login/user');
                     }
-                    $this->commitTransaction();
                 }
                 catch (\Exception $e) {
                     $this->rollbackTransaction();
