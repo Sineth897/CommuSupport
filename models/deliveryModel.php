@@ -42,9 +42,9 @@ class deliveryModel extends DbModel
 
     public function getAssignedDeliveries(string $driverID) : array {
         $cols = "s.subdeliveryID,s.start,s.end,s.createdDate,t.item";
-        $sql1 = "SELECT $cols from subdelivery s INNER JOIN acceptedrequest t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status = 'Ongoing'";
-        $sql2 = "SELECT $cols from subdelivery s INNER JOIN donation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status = 'Ongoing'";
-        $sql3 = "SELECT $cols from subdelivery s INNER JOIN ccdonation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status = 'Ongoing'";
+        $sql1 = "SELECT $cols,'acceptedRequest' AS type from subdelivery s INNER JOIN acceptedrequest t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status = 'Ongoing'";
+        $sql2 = "SELECT $cols,'donation' AS type from subdelivery s INNER JOIN donation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status = 'Ongoing'";
+        $sql3 = "SELECT $cols,'ccdonation' AS type from subdelivery s INNER JOIN ccdonation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status = 'Ongoing'";
         $stmt1 = self::prepare($sql1 . " UNION " . $sql2 . " UNION " . $sql3);
         $stmt1->execute();
         return $stmt1->fetchAll(\PDO::FETCH_ASSOC);

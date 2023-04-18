@@ -18,8 +18,9 @@ let reassignBtns = document.querySelectorAll('a.del-reassign');
 
 for(let i=0;i<routeBtns.length;i++) {
     routeBtns[i].addEventListener('click', showRoute);
+}
 
-
+//function to show route
 async function showRoute(e) {
     const parent = getDeliveryID(e.target);
 
@@ -39,8 +40,27 @@ async function showRoute(e) {
 
     const map = await MapRoute.showRoute(from, to, popupContainer.querySelector('#map'));
 
+    // distance and duration
     popupContainer.querySelector('#distance').innerHTML = map['routes'][0]['legs'][0]['distance']['text'];
     popupContainer.querySelector('#duration').innerHTML = map['routes'][0]['legs'][0]['duration']['text'];
 
 }
+
+for(let i=0;i<finishBtns.length;i++) {
+    finishBtns[i].addEventListener('click', finishDelivery);
+}
+
+//function to finish delivery
+async function finishDelivery(e) {
+    const parent = getDeliveryID(e.target);
+
+    // const finishData = await getData('./delivery/finish', 'POST', { data: {subdeliveryID: parent.id} });
+
+    // if(!finishData['status']) {
+    //     flash.showMessage({value: finishData['message'], type: 'error'});
+    //     return;
+    // }
+    //
+    // flash.showMessage({value: finishData['message'], type: 'success'});
+
 }

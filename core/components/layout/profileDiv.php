@@ -73,6 +73,8 @@ class profileDiv
                 return 'CHO';
                 case 'admin':
                 return 'Admin';
+                case 'driver':
+                return 'Driver';
 
             default:
                 return 'User';
