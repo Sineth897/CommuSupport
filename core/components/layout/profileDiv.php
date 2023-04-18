@@ -21,7 +21,7 @@ class profileDiv
     {
 
         echo "<div class='profile'>";
-        $this->notifications = notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType'], 'related' => $this->processByuserType[$_SESSION['userType']]]);
+//        $this->notifications = notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType'], 'related' => $this->processByuserType[$_SESSION['userType']]]);
 //        echo "<pre>";
 //        print_r($this->notifications);
 //        echo "</pre>";
