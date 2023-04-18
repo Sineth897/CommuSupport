@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
+
 <?php
 
 
