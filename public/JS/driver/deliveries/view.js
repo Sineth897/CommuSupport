@@ -1,4 +1,4 @@
-import {getData} from "../../request.js";
+import {getData,getTextData} from "../../request.js";
 import deliveryPopup from "../../popup/deliveryPopup.js";
 import flash from "../../flashmessages/flash.js";
 import MapRoute from "../../map/map-route.js";
@@ -24,7 +24,7 @@ for(let i=0;i<routeBtns.length;i++) {
 async function showRoute(e) {
     const parent = getDeliveryID(e.target);
 
-    const routeData = await getData('./delivery/route', 'POST', { data: {subdeliveryID: parent.id} });
+    const routeData = await getData('./delivery/route', 'POST', { data: {subdeliveryID: parent.id.split(',')[0]} });
 
     if(!routeData['status']) {
         flash.showMessage({value: routeData['message'], type: 'error'});
@@ -54,13 +54,42 @@ for(let i=0;i<finishBtns.length;i++) {
 async function finishDelivery(e) {
     const parent = getDeliveryID(e.target);
 
-    // const finishData = await getData('./delivery/finish', 'POST', { data: {subdeliveryID: parent.id} });
+    const stringSplit = parent.id.split(",");
 
-    // if(!finishData['status']) {
-    //     flash.showMessage({value: finishData['message'], type: 'error'});
-    //     return;
-    // }
-    //
-    // flash.showMessage({value: finishData['message'], type: 'success'});
+    // console.log(parent.id)
 
+    const finishData = await getData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
+
+    console.log(finishData);
+
+    if(!finishData['status']) {
+        flash.showMessage({value: finishData['message'], type: 'error'});
+        return;
+    }
+
+    flash.showMessage({value: finishData['message'], type: 'success'});
+    parent.remove();
+
+}
+
+for(let i=0;i<reassignBtns.length;i++) {
+    reassignBtns[i].addEventListener('click', reassignDelivery);
+}
+
+async function reassignDelivery(e) {
+    const parent = getDeliveryID(e.target);
+
+    const stringSplit = parent.id.split(",");
+
+    const reassignData = await getData('./delivery/reassign', 'POST', { data: {subdeliveryID: stringSplit[0]}});
+
+    console.log(reassignData);
+
+    if(!reassignData['status']) {
+        flash.showMessage({value: reassignData['message'], type: 'error'});
+        return;
+    }
+
+    flash.showMessage({value: reassignData['message'], type: 'success'});
+    e.target.removeEventListener('click', reassignDelivery);
 }

@@ -22,7 +22,7 @@ $profile->end(); ?>
 
 <?php $headerDiv->heading("Deliveries"); ?>
 
-<?php $headerDiv->pages(["assigned", "completed"]); ?>
+<?php //$headerDiv->pages(["assigned", "completed"]); ?>
 
 <?php $headerDiv->end(); ?>
 

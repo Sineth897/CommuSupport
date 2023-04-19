@@ -589,13 +589,17 @@ $app->router->post('/driver/delivery/route', function ($request,$response) {
     $controller = new \app\controller\deliveryController('getRouteDetails',$request,$response);
 });
 
+$app->router->post('/driver/delivery/finish', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('completeDelivery',$request,$response);
+});
+
+$app->router->post('/driver/delivery/reassign', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('requestToReassign',$request,$response);
+});
+
 $app->router->get('/driver/deliveries/completed', function ($request,$response) {
     $controller = new \app\controller\deliveryController('completedDeliveries',$request,$response);
 });
-
-
-
-
 
 
 

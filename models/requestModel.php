@@ -139,7 +139,7 @@ class requestModel extends DbModel
     }
 
     public function getPendingRequestWithPostedBy() :  array {
-        $cols = "u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $cols = "r.requestID,u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
         $sql = 'SELECT ' . $cols . ' FROM request r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
 
         $stmnt = self::prepare($sql );

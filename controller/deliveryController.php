@@ -6,8 +6,12 @@ use app\core\Controller;
 use app\core\middlewares\deliveryMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\acceptedModel;
+use app\models\ccDonationModel;
 use app\models\deliveryModel;
+use app\models\donationModel;
 use app\models\driverModel;
+use app\models\inventorylog;
 use app\models\logisticModel;
 use app\models\subdeliveryModel;
 
@@ -73,7 +77,6 @@ class deliveryController extends Controller
         $user = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
 
         $sql1 = "SELECT * FROM driver WHERE ccID = :ccID ";
-//        $sql1 = "SELECT * FROM driver ";
 
         $stmt1 = deliveryModel::prepare($sql1);
         $stmt1->bindValue(':ccID',$user->ccID);
@@ -81,7 +84,6 @@ class deliveryController extends Controller
         $drivers = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
 
         $sql2 = "SELECT deliveredBy,COUNT(*) as count FROM subdelivery WHERE deliveredBy IN (SELECT employeeID FROM driver WHERE ccID = :ccID) AND status = 'Ongoing'";
-//        $sql2 = "SELECT deliveredBy,COUNT(*) as count FROM subdelivery WHERE deliveredBy IN (SELECT employeeID FROM driver) AND status = 'Ongoing'";
         $stmt2 = deliveryModel::prepare($sql2);
         $stmt2->bindValue(':ccID',$user->ccID);
         $stmt2->execute();
@@ -151,7 +153,14 @@ class deliveryController extends Controller
     }
 
     protected function completedDeliveries(Request $request,Response $response) {
-        $this->render('driver/completed/view','Completed Deliveries');
+
+        $deliveryModel = new deliveryModel();
+        $user = new driverModel();
+
+        $this->render('driver/completed/view','Completed Deliveries',[
+            'deliveryModel' => $deliveryModel,
+            'user' => $user
+        ]);
     }
 
     protected function getRouteDetails(Request $request,Response $response) {
@@ -164,4 +173,106 @@ class deliveryController extends Controller
             $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
         }
     }
+
+    protected function completeDelivery(Request $request,Response $response) {
+        $data = $request->getJsonData()['data'];
+
+        try {
+            $this->startTransaction();
+            $this->calculateNextDeliveryStage($data['subdeliveryID'],$data['process']);
+            $this->commitTransaction();
+            $this->sendJson(['status' => 1, 'message' => 'Delivery Completed Successfully']);
+        }
+        catch (\PDOException $e) {
+            $this->rollbackTransaction();
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+    }
+
+    private function calculateNextDeliveryStage(string $subdeliveryID,string $process) {
+        $subdelivery = subdeliveryModel::getModel(['subdeliveryID' => $subdeliveryID]);
+
+        if($subdelivery->deliveryStage === 1) {
+            $this->complete($subdelivery,$process);
+        }
+        else {
+            $this->setNextProcess($subdelivery,$process);
+        }
+    }
+
+    private function complete(subdeliveryModel $subdelivery,string $process) {
+        $completedDate = date('Y-m-d');
+        $completedTime = date('H:i:s');
+        $subdelivery->update(['subdeliveryID' => $subdelivery->subdeliveryID],['status' => 'Completed' ,'completedDate' => $completedDate,'completedTime' => $completedTime]);
+        $delivery = new deliveryModel();
+        $delivery->update(['deliveryID' => $subdelivery->deliveryID],['status' => 'Completed','completedDate' => $completedDate,'completedTime' => $completedTime]);
+        $this->completeProcess($subdelivery,$process,$completedDate);
+        $this->sendSMSByUserID($process === "acceptedRequest" ? "Your delivery has been completed. Please check your dashboard for more details" : "Your donation has been delivered. Please check your dashboard for more details",$process === 'donation' ? $subdelivery->start : $subdelivery->end);
+        $this->setNotification('Delivery Completed',$process === 'acceptedRequest' ? 'Your delivery has been completed. For any complaint please report via system or contact your community center' : 'Your donation has been delivered',$process === 'donation' ? $subdelivery->start : $subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
+    }
+
+    private function completeProcess(subdeliveryModel $subdelivery,string $process,string $completedDate) {
+        $sql = "";
+        switch ($process) {
+            case "donation":
+                $sql = "UPDATE donation SET deliveryStatus = 'Completed' WHERE deliveryID = :deliveryID";
+                break;
+            case "acceptedRequest":
+                $sql = "UPDATE acceptedrequest SET deliveryStatus = 'Completed' WHERE deliveryID = :deliveryID";
+                break;
+            case "ccDonation":
+                $sql = "UPDATE ccdonation SET deliveryStatus = 'Completed',completedDate = '$completedDate' WHERE deliveryID = :deliveryID";
+                break;
+        }
+        $stmnt = deliveryModel::prepare($sql);
+        $stmnt->bindValue(':deliveryID',$subdelivery->deliveryID);
+        $stmnt->execute();
+        return true;
+    }
+
+    private function setNextProcess(subdeliveryModel $subdelivery,string $process) {
+        $completedDate = date('Y-m-d');
+        $completedTime = date('H:i:s');
+        $subdelivery->update(['subdeliveryID' => $subdelivery->subdeliveryID],['status' => 'Completed' ,'completedDate' => $completedDate,'completedTime' => $completedTime]);
+        $nextSubdelivery = new subdeliveryModel();
+
+        if($subdelivery->deliveryStage === 2) {
+            $nextSubdelivery->saveFinalStagedetails($subdelivery);
+            $this->sendSMSByUserID('Your delivery arrived at your community center. Please expect delivery soon',$nextSubdelivery->end);
+            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center. Please expect delivery soon',$nextSubdelivery->end,'','delivery',$nextSubdelivery->subdeliveryID);
+        }
+        else {
+            $nextSubdelivery->save2ndStagedetails($subdelivery);
+            $this->sendSMSByUserID('Your delivery arrived at your community center. Please expect delivery soon',$subdelivery->start);
+            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center. Please expect delivery soon',$subdelivery->start,'','delivery',$nextSubdelivery->subdeliveryID);
+        }
+        return true;
+    }
+
+    protected function requestToReassign(Request $request,Response $response) {
+        $data = $request->getJsonData()['data'];
+        $subdelivery = new subdeliveryModel();
+
+        try {
+            $this->startTransaction();
+            $subdelivery->update(['subdeliveryID' => $data['subdeliveryID']],['status' => 'Reassign Requested']);
+
+            $sql = "SELECT l.employeeID,d.name FROM subdelivery s INNER JOIN driver d ON s.deliveredBy = d.employeeID INNER JOIN logisticofficer l on d.ccID = l.ccID WHERE s.subdeliveryID = :subdeliveryID";
+            $stmnt = deliveryModel::prepare($sql);
+            $stmnt->bindValue(':subdeliveryID',$data['subdeliveryID']);
+            $stmnt->execute();
+            $result = $stmnt->fetch(\PDO::FETCH_ASSOC);
+
+            $this->setNotification("{$result['name']} requested reassign on delivery with id {$data['subdeliveryID']}",'Delivery Reassign Requested',$result['employeeID'],'','delivery',$subdelivery->subdeliveryID);
+            $this->commitTransaction();
+
+            $this->sendJson(['status' => 1, 'message' => 'Delivery Reassign Requested Successfully',]);
+        }
+        catch (\PDOException $e) {
+            $this->rollbackTransaction();
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+
+    }
+
 }

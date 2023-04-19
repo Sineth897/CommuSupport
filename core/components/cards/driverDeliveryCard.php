@@ -22,7 +22,7 @@ class driverDeliveryCard
     }
 
     private function showDeliveryCard($data) : void {
-        echo sprintf("<div class='driver-del-card' id='%s' value='%s'>", $data['subdeliveryID'],$data['type']);
+        echo sprintf("<div class='driver-del-card' id='%s'>", $data['subdeliveryID'] . ',' . $data['type']);
         echo sprintf("<div class='card-column subcategory'><strong>Sub Category</strong><p>%s</p></div>", $this->deliveryDetails[$data['item']]);
         echo sprintf("<div class='card-column pickupaddress'><strong>Pick up Address</strong><p>%s</p></div>", $this->deliveryDetails[$data['start']]);
         echo sprintf("<div class='card-column deliveryaddress'><strong>Drop Off</strong><p>%s</p></div>",$this->deliveryDetails[$data['end']]);

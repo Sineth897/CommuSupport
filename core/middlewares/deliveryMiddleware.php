@@ -14,6 +14,8 @@ class deliveryMiddleware extends Middleware
             'assignDriver'=> [$this->LOGISTIC],
             'completedDeliveries'=> [$this->DRIVER],
             'getRouteDetails'=> [$this->DRIVER],
+            'completeDelivery'=> [$this->DRIVER],
+            'requestToReassign' => [$this->DRIVER],
         ];
     }
 }

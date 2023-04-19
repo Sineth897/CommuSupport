@@ -82,7 +82,7 @@ class logisticModel extends DbModel
 //    Get data of the accepted requests from the relevant tables.
     private function getAcceptedRequests(string $ccID): array {
 
-        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND s.status = 'Not Assigned'";
+        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') OR a.acceptedBy = '$ccID') AND s.status = 'Not Assigned'";
 
         $stmt = self::prepare($sql);
         $stmt->execute();
