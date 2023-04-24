@@ -38,7 +38,7 @@ class deliveryCard
             case "directDonations":
                 echo sprintf("<div class='delivery-card' id='%s'>", $data['donationID']);
                 echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "Direct Donation");
-                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>%s</p></div>", $data['subcategoryName'], $data['deliveryStatus']);
+                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>%s</p></div>", $data['subcategoryName'], $data['status']);
 //                var_dump($data);
                 echo "<div class='log-del-details'>";
                 echo sprintf("<p><strong>Start: </strong>%s</p>", $data['startCity']);

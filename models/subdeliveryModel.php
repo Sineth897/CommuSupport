@@ -97,4 +97,13 @@ class subdeliveryModel extends DbModel
         $this->save();
         inventorylog::logCollectionFromDonor($result['acceptedID'],$result['ccID']);
     }
+
+    public static function updateAsCompleted(string $subdeliveryID,string $completed) {
+        $sql = "UPDATE subdelivery SET status = 'Completed', completedDate = :completedDate, completedTime = :completedTime WHERE subdeliveryID = :subdeliveryID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(":completedDate",$completed);
+        $stmt->bindValue(":completedTime",$completed);
+        $stmt->bindValue(":subdeliveryID",$subdeliveryID);
+        $stmt->execute();
+    }
 }

@@ -22,6 +22,12 @@ class DeliveryPopUp  {
                 + DeliveryPopUp.getDeliveryContent(data)
 
                 +
+            `<div class="delivery-details">
+                <div class="delivery-id" id="reassignedDriver" style="display: none">
+                <h2></h2>
+                 <p>Assigned Driver</p>
+                </div>
+            </div>` +
 
         `<div class="driver-selection">
             <h4>Select a Driver</h4>
@@ -31,6 +37,7 @@ class DeliveryPopUp  {
             </div>
             <div class="driver-selection-btns">
                 <a class="driver-assign-btn" id='` + data['subdeliveryID'] + `,` + data[this.#getProcessIDkey(type)] + `,` + type + `'>Assign</a>
+            </div>
         </div>`;
         this.background.style.display = 'flex';
 
@@ -167,6 +174,7 @@ class DeliveryPopUp  {
 
         return popupContainer;
     }
+
 }
 
 export default DeliveryPopUp;

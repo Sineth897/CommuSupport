@@ -52,6 +52,7 @@ for(let i=0;i<finishBtns.length;i++) {
 
 //function to finish delivery
 async function finishDelivery(e) {
+
     const parent = getDeliveryID(e.target);
 
     const stringSplit = parent.id.split(",");
@@ -59,7 +60,7 @@ async function finishDelivery(e) {
     // console.log(parent.id)
 
     const finishData = await getData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
-
+    // const finishData = await getTextData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
     console.log(finishData);
 
     if(!finishData['status']) {
@@ -81,9 +82,10 @@ async function reassignDelivery(e) {
 
     const stringSplit = parent.id.split(",");
 
-    const reassignData = await getData('./delivery/reassign', 'POST', { data: {subdeliveryID: stringSplit[0]}});
+    const reassignData = await getData('./delivery/reassign', 'POST', { data: {subdeliveryID: stringSplit[0],do: e.target.innerHTML}});
+    // const reassignData = await getTextData('./delivery/reassign', 'POST', { data: {subdeliveryID: stringSplit[0],do: e.target.innerHTML}});
 
-    console.log(reassignData);
+    // console.log(reassignData);
 
     if(!reassignData['status']) {
         flash.showMessage({value: reassignData['message'], type: 'error'});
@@ -91,5 +93,5 @@ async function reassignDelivery(e) {
     }
 
     flash.showMessage({value: reassignData['message'], type: 'success'});
-    e.target.removeEventListener('click', reassignDelivery);
+    e.target.innerHTML = reassignData['innerHTML'];
 }

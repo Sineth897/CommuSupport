@@ -52,7 +52,7 @@ class form
         echo "<option value=''>Select</option>";
         foreach ($options as $key => $value) {
             if($attribute){
-                $selected = $model->{$attribute} == $key ? 'selected' : '';
+                $selected = $model->{$attribute} === $key ? 'selected' : '';
             }else{
                 $selected = '';
             }
@@ -64,13 +64,14 @@ class form
     }
 
     public function checkBox($model,$label,$attribute,$id='') {
+        $attributeValue = $attribute ? $model->{$attribute} : '';
         echo "<div>";
         echo sprintf("<label>%s : </label>",$label);
         if($id == '') {
-            echo sprintf("<input type='checkbox' name='%s' value='%s'>",$attribute,$model->{$attribute});
+            echo sprintf("<input type='checkbox' name='%s' value='%s'>",$attribute,$attributeValue);
         }
         else {
-            echo sprintf("<input type='checkbox' name='%s' value='%s' id='%s'>",$attribute,$model->{$attribute},$id);
+            echo sprintf("<input type='checkbox' name='%s' value='%s' id='%s'>",$attribute,$attributeValue,$id);
         }
         echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
         echo "</div>";

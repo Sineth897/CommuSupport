@@ -50,7 +50,7 @@ $searchDiv->filterEnd();
 $searchDiv->sortBegin();
 
 $sortForm = \app\core\components\form\form::begin('', '');
-$sortForm->checkBox($inventory,"Last Updated","updatedTime",'sortLastUpdated');
+$sortForm->checkBox($inventory,"Last Updated","",'sortLastUpdated');
 $sortForm->checkBox($inventory, "Amount", "amount", 'sortAmount');
 $sortForm::end();
 

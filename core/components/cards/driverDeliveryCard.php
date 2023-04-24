@@ -31,9 +31,9 @@ class driverDeliveryCard
             <a class='del-route' href=#'>Route</a>
             <a class='del-finish' href='#'>Finish</a>
         </div>";
-        echo "<div class='card-column delivery-btns'>
-            <a class='del-reassign' href='#'>Request to Re-Assign</a>
-            </div></div>";
+        echo sprintf("<div class='card-column delivery-btns'>
+            <a class='del-reassign' href='#'>%s</a>
+            </div></div>", $data['status'] === 'Ongoing' ? 'Request to Re-Assign' : 'Cancel Re-assign request');
 
     }
 
