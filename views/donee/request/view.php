@@ -15,9 +15,9 @@ $requests = $model->getOwnRequests($_SESSION['user']);
 <!--profile div-->
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 

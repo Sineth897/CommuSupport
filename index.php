@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('Asia/Kolkata');
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 
@@ -585,17 +587,21 @@ $app->router->get('/driver/deliveries', function($request,$response) {
     $controller = new \app\controller\deliveryController('viewDeliveries',$request,$response);
 });
 
+$app->router->post('/driver/delivery/route', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('getRouteDetails',$request,$response);
+});
+
+$app->router->post('/driver/delivery/finish', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('completeDelivery',$request,$response);
+});
+
+$app->router->post('/driver/delivery/reassign', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('requestToReassign',$request,$response);
+});
+
 $app->router->get('/driver/deliveries/completed', function ($request,$response) {
     $controller = new \app\controller\deliveryController('completedDeliveries',$request,$response);
 });
-
-
-
-
-
-
-
-
 
 
 

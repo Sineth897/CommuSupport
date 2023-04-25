@@ -4,9 +4,8 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    width: 75%;
-    margin-top: 20px;
-    margin-left: 100px;
+    width: 100%;
+    padding: 20px 20px;
 }
 
 .driver-del-card {
@@ -15,7 +14,6 @@
     width: 100%;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-
 }
 
 .card-column {
@@ -37,7 +35,7 @@
 
 .route-complete-btns {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -49,13 +47,16 @@
     border-radius: 4px;
     color: white;
     width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .delivery-btns {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
 }
 
@@ -70,7 +71,7 @@
     position: relative;
 }
 
-.del-accept{
+.del-finish{
     background-color: var(--secondary-color);
 }
 
@@ -78,7 +79,7 @@
     background-color: var(--primary-color);
 }
 
-.del-decline
+.del-reassign
 {
     background-color: var(--danger-color);
 }

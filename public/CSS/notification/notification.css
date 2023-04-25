@@ -1,0 +1,138 @@
+
+button {
+    padding: 10px 20px;
+    outline: none;
+}
+
+.background
+{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary-color);
+
+}
+
+.notification{
+    background-color: white;
+    border-radius: 10px;
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    width: 700%;
+    /*height: 600px;*/
+    height: auto;
+    position: absolute;
+    right : 0;
+    top: 70px;
+    padding-right: 5%;
+    max-height: 600px;
+    overflow-y: hidden;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+}
+
+.empty-notification-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 100px;
+}
+
+.notif-header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 20px;
+    border-bottom: 2px solid #e3e3e3;
+}
+
+.notif-header, .notif-header div, .notif-header p{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header-right-block{
+    justify-content: space-between;
+    height: 100%;
+    gap: 20px;
+}
+
+.header-right-block p{
+    font-size: 0.8rem;
+    gap: 4px;
+    color: #0059ff;
+    cursor: pointer;
+}
+
+.header-right-block p i{
+    font-size: 1rem;
+}
+
+.notif-box-scroller{
+    display: block;
+    overflow-y: scroll;
+    height: auto;
+}
+
+.notif-card{
+    /*height: 100px;*/
+    border-bottom: 1px solid #e3e3e3;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.notif-left-block
+{
+    width: 400px;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.notif-date-time{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #9b9b9b;
+}
+
+.notif-right-block{
+    /*width: 100px;*/
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notif-right-block i{
+    padding: 10px;
+    border-radius: 100%;
+    background-color: #00D749;
+    color: white;
+}
+
+h5{
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.notif-message small{
+    font-size: 0.75rem;
+}

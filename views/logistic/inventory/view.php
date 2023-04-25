@@ -23,9 +23,9 @@ for($i = 0; $i < count($items); $i++) {
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -50,7 +50,7 @@ $searchDiv->filterEnd();
 $searchDiv->sortBegin();
 
 $sortForm = \app\core\components\form\form::begin('', '');
-$sortForm->checkBox($inventory,"Last Updated","updatedTime",'sortLastUpdated');
+$sortForm->checkBox($inventory,"Last Updated","",'sortLastUpdated');
 $sortForm->checkBox($inventory, "Amount", "amount", 'sortAmount');
 $sortForm::end();
 
