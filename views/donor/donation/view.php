@@ -86,7 +86,7 @@ $searchDiv->end();
     <h3>Completed Donations</h3>
 </div>
 
-<div class="popup-background" id="donationDiv">
+<div class="popup-background" id="donationDiv" style="position: fixed">
 
     <div class="popup">
 

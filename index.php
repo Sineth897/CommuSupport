@@ -392,6 +392,9 @@ $app->router->post('/donor/requests/popup', function ($request, $response) {
 $app->router->post('/donor/requests/accept', function ($request, $response) {
     $controller = new \app\controller\requestController("acceptRequest",$request,$response);
 });
+$app->router->post('/donor/requests/filter', function ($request, $response) {
+    $controller = new \app\controller\requestController("filterRequests",$request,$response);
+});
 
 //donor view communitycenter
 $app->router->get('/donor/communitycenters', function ($request, $response) {
@@ -431,9 +434,6 @@ $app->router->post('/donor/event/markParticipation', function ($request, $respon
 $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
-
-
-
 
 
 
@@ -525,6 +525,9 @@ $app->router->post('/logistic/requests/popup', function ($request, $response) {
 $app->router->post('/logistic/requests/accept', function ($request, $response) {
     $controller = new \app\controller\requestController("acceptRequest",$request,$response);
 });
+$app->router->post('/logistic/requests/filter', function ($request, $response) {
+    $controller = new \app\controller\requestController("filterRequests",$request,$response);
+});
 
 $app->router->get('/logistic/donations', function ($request,$response) {
     $controller = new \app\controller\ccDonationController("viewCCDonations",$request,$response);
@@ -538,12 +541,9 @@ $app->router->post("/logistic/donations/create", function ($request,$response) {
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
 
-
-
-
-
-
-
+$app->router->post('/logistic/inventory/getcurrentinventory', function ($request,$response) {
+    $controller = new \app\controller\inventoryController("getCurrentInventory",$request,$response);
+});
 
 
 

@@ -165,13 +165,13 @@ abstract class DbModel extends Model
     // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause
     // $sort = ['ASC' => ['id', 'name']]; <- ORDER BY clause
     // $search = ['search' , ['name' => 'John']]; <- LIKE clause
-    public static function runCutomQuery(string $sql,array $where,array $sort,array $search) {
+    public static function runCutomQuery(string $sql,array $where = [],array $sort = [],array $search = [], string $fetchMode = \PDO::FETCH_ASSOC): array {
 
         $wherestmnt = ' WHERE ';
 
         if($where) {
             $where = implode("AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", array_keys($where)));
-            $wherestmnt .= " WHERE $where";
+            $wherestmnt .= " $where";
         }
 
         if(!empty($search)) {
@@ -181,14 +181,14 @@ abstract class DbModel extends Model
 
         $sql .= $wherestmnt;
 
-        if($sort) {
+        if(!empty($sort['ASC']) && !empty($sort['DESC'])) {
             $order = array_keys($sort)[0];
             $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
         }
 
         $statement = self::prepare($sql);
         $statement->execute();
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAll($fetchMode);
     }
 
 }

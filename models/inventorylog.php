@@ -63,5 +63,11 @@ class inventorylog extends DbModel
         $statement->execute();
     }
 
+    public static function logInventoryAcceptingRequest(string $acceptedID) {
+        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark) SELECT acceptedID,amount,item,acceptedBy,CONCAT('Donation was accepted by ', c.city,' CC on ',CURRENT_DATE) FROM acceptedrequest a INNER JOIN communitycenter c ON a.acceptedBy = c.ccID WHERE a.acceptedID = '$acceptedID'";
+        $statement = self::prepare($sql);
+        $statement->execute();
+    }
+
 
 }
