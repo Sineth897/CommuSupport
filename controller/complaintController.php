@@ -35,8 +35,11 @@ class complaintController extends Controller
         $this->checkLink($request);
         //creating model to make new complaint from donor
         $model =new complaintModel();
+
+
         if($request->isPost()){
             $model ->getData($request->getBody());
+
             if($model->validate($request->getBody()) && $model->save()){
                 $this->setFlash("result",'Complaint submitted');
                 $model->reset();
@@ -46,9 +49,15 @@ class complaintController extends Controller
                 $this->setFlash('result', 'Complaint failed to submitted');
             }
         }
+        if($request->isGet()){
+
+            $model->subject=$_GET['processID'];
+
+        }
 
         $this->render("./donor/complaints/file",'File a Complaint',[
-            'model'=>$model,
+            'complaint'=>$model,
+
 
         ]);
 
@@ -72,8 +81,8 @@ class complaintController extends Controller
             }
         }
 
-        $this->render("donee/complaint/create",'File a Complaint',[
-            'model'=>$model
+        $this->render("./donee/complaint/create",'File a Complaint',[
+            'complaint'=>$model
         ]);
 
         }

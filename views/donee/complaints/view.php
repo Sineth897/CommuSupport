@@ -1,8 +1,4 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
-<?php
-
-
-?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
@@ -48,3 +44,36 @@ $searchDiv->sortEnd();
 
 $searchDiv->end();
 ?>
+
+
+<?php
+
+/** @var $complaint \app\models\complaintModel */
+/** @var $user \app\models\donorModel */
+
+use app\core\components\tables\table;
+
+$userID = \app\core\Application::session()->get('user');
+try{
+    $complaint = $complaint->ownComplaints($userID);
+
+}
+catch(\Exception $e){
+    echo $e->getMessage();
+}
+
+//$complaints= $model->retrieve(['filedBy'=>'complaintID']);
+
+$headers = ['Filed Date','Subject','Status','Solution','Reviewed Date'];
+$arrayKeys = ['filedDate','subject','status','solution','reviewedDate'];
+
+
+$complaintsTable = new table($headers,$arrayKeys);
+$complaintsTable ->displayTable($complaint);
+
+if(empty($complaint)){
+    echo "No Complaints has been filed by the user. ";
+}
+
+?>
+
