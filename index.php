@@ -682,9 +682,10 @@ $app->router->post("/cho/communitycenters/register/logistic",function ($request,
 $app->router->get("/cho/complaints",function($request,$response){
    $controller=new \app\controller\complaintController("viewComplaints",$request,$response);
 });
-
-
-
+//cho view an user
+$app->router->get("/cho/users",function ($request,$response){
+    $controller = new \app\controller\choController("viewUsers",$request,$response);
+});
 
 
 

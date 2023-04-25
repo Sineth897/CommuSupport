@@ -27,7 +27,7 @@ class complaintModel extends DbModel
 
     public function attributes(): array
     {
-        return ["complaintID","complaint","filedBy", "filedDate", "subject", "choID"];
+        return ["complaintID","complaint","filedBy", "subject", "choID"];
 
     }
 
@@ -48,18 +48,27 @@ class complaintModel extends DbModel
     {
         $this->complaintID = substr(uniqid('complaint', true), 0, 23);
         $this->filedBy=$_SESSION['user'];
-//        protected function getchoIDforComplaints($donorID)
-//    {
-//
-//        $statement= self::prepare("SELECT choID.cc from donor INNER JOIN communitycenter ON donor.ccID = communitycenter.ccID where donorID=:$donorID");
-//        $statement->bindValue(':userID',$donorID);
-//        $statement->execute();
-//        return $statement->fetchAll(\PDO::FETCH_ASSOC);
-//
-//    }
-//        $this->choID=$_SESSION['user'];
+
+
+        $this->choID = $this->getchoIDofDonor($_SESSION['user'])['cho'];
+
+//        echo "<pre>";
+//        print_r($this->getchoIDofDonor($_SESSION['user']));
+//        echo $_SESSION['user'];
+//        echo "</pre>";
 
         return parent::save();
+//        return 0;
+
+    }
+
+    private function getchoIDofDonor($donorID)
+    {
+        $statement = self ::prepare("SELECT c.cho from communitycenter c INNER JOIN donor d ON c.ccID = d.ccID WHERE d.donorID=:donorID ");
+        $statement -> bindValue(':donorID',$donorID);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+
 
     }
 

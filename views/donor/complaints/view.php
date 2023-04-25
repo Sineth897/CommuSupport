@@ -62,19 +62,36 @@ catch(\Exception $e){
     echo $e->getMessage();
 }
 
-
-$headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'];
-
-
-$complaintsTable = new table($headers,$arrayKeys);
-$complaintsTable ->displayTable($complaint);
-
-if(empty($complaint)){
-    echo "No Complaints has been filed.";
-}
-
 ?>
+
+<div>
+
+    <?php
+    $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
+    $arrayKeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'];
+
+
+    $complaintsTable = new table($headers,$arrayKeys);
+    $complaintsTable ->displayTable($complaint);
+
+    ?>
+
+
+</div>
+
+
+
+<div>
+    <?php
+    if(empty($complaint)){
+        echo "No Complaints has been filed.";
+    }
+    ?>
+</div>
+
+
+
+
 
 
 
