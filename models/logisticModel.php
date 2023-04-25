@@ -16,14 +16,19 @@ class logisticModel extends DbModel
     public string $contactNumber = '';
     public string $ccID = '';
 
+    public function __construct(userModel $user =null)
+    {
+       //$this->user = $user;
+
+    }
     public function table(): string
     {
-        return "logisticOfficer";
+        return "logisticofficer";
     }
 
     public function attributes(): array
     {
-        return ["employeeID","name","age","NIC","gender","address","contactNumber","email","ccID"];
+        return ["employeeID","name","age","NIC","gender","address","contactNumber","ccID"];
     }
 
     public function primaryKey(): string
@@ -40,7 +45,20 @@ class logisticModel extends DbModel
             "gender" => [self::$REQUIRED],
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "contactNumber" => [self::$REQUIRED,self::$CONTACT,[self::$UNIQUE, "class" => self::class]],
+            'ccID' =>[self::$REQUIRED],
         ];
+    }
+
+    public function save(): bool
+    {
+        $this->employeeID = substr(uniqid('logistic',true),0,23);
+        return parent::save();
+    }
+
+    public function userType():string
+    {
+        return 'logistic';
+
     }
 
     public function getPendingDeliveries() : array {
@@ -54,7 +72,7 @@ class logisticModel extends DbModel
     }
 
     private function getDirectDonations(string $ccID): array {
-        $sql = "SELECT * FROM subdelivery sd INNER JOIN donation d ON d.deliveryID = sd.deliveryID INNER JOIN subcategory s ON d.item = s.subcategoryID WHERE d.donateTo = :ccID";
+        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID AND sd.status IN ('Not Assigned','Reassign Requested')";
         $stmt = self::prepare($sql);
         $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
@@ -64,7 +82,7 @@ class logisticModel extends DbModel
 //    Get data of the accepted requests from the relevant tables.
     private function getAcceptedRequests(string $ccID): array {
 
-        $sql = "SELECT acceptedrequest.*, subcategory.subcategoryName FROM acceptedrequest INNER JOIN subcategory ON acceptedrequest.item = subcategory.subcategoryID WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
+        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') OR a.acceptedBy = '$ccID') AND s.status IN ('Not Assigned','Reassign Requested')";
 
         $stmt = self::prepare($sql);
         $stmt->execute();

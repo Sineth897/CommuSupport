@@ -11,6 +11,11 @@ class deliveryMiddleware extends Middleware
             'viewDeliveries' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC,$this->DRIVER],
             'createDelivery'=> [$this->LOGISTIC],
             'deliveryPopup'=> [$this->LOGISTIC],
+            'assignDriver'=> [$this->LOGISTIC],
+            'completedDeliveries'=> [$this->DRIVER],
+            'getRouteDetails'=> [$this->DRIVER],
+            'completeDelivery'=> [$this->DRIVER],
+            'requestToReassign' => [$this->DRIVER],
         ];
     }
 }

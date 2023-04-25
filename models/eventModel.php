@@ -61,7 +61,7 @@ class eventModel extends DbModel
 
     public function getEventCategories(): bool|array
     {
-        $sql = "SELECT * FROM eventCategory";
+        $sql = "SELECT * FROM eventcategory";
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);

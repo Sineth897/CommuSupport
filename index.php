@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('Asia/Kolkata');
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 
@@ -18,6 +20,7 @@ $config = [
     "db" => [
         "dsn" => $_ENV['DB_DSN'],
         "user" => $_ENV['DB_USER'],
+        "password" => $_ENV['DB_PASS'],
         ],
     "root" => [
         "username"  =>  $_ENV['DB_ADMIN_USER'],
@@ -34,7 +37,7 @@ $app = new Application(dirname(__DIR__) . "/CommuSupport", $config);
 
 
 //*************************Guest get and post methods*************************//
-//Guest landing page
+////Guest landing page
 $app->router->get('/', function($request, $response) {
     $controller = new redirectController("redirectHome", $request, $response);
 });
@@ -115,6 +118,37 @@ $app->router->get('/verifyMobile', function($request,$response) {
 $app->router->post('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //*************************Manager get and post methods*************************//
@@ -221,6 +255,42 @@ $app->router->get('/manager/profile', function ($request, $response) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //*************************Donee get and post methods*************************//
 $app->router->get('/donee/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
@@ -257,6 +327,23 @@ $app->router->post('/donee/event/markParticipation', function ($request, $respon
 $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
+
+$app->router->post('/donee/complaints/files',function($request,$response){
+    $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -344,8 +431,32 @@ $app->router->post('/donor/event/markParticipation', function ($request, $respon
 
 //Donor view complaints
 $app->router->get('/donor/complaints', function($request,$response) {
-    $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
+    $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
+
+//Donor file complaint
+
+$app->router->post('/donor/complaints/file', function ($request,$response){
+   $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
+});
+
+$app->router->get('/donor/complaints/file', function ($request,$response){
+    $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -396,12 +507,12 @@ $app->router->get('/logistic/deliveries', function ($request,$response) {
     $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
 });
 
-$app->router->get('/logistic/deliveries/create', function($request,$response) {
-    $controller = new \app\controller\deliveryController("createDelivery",$request,$response);
+$app->router->post('/logistic/delivery/popup', function ($request,$response) {
+    $controller = new \app\controller\deliveryController("deliveryPopup",$request,$response);
 });
 
-$app->router->post('/logistic/deliveries/create', function($request,$response) {
-    $controller = new \app\controller\deliveryController("createDelivery",$request,$response);
+$app->router->post('/logistic/delivery/assign', function($request,$response) {
+    $controller = new \app\controller\deliveryController("assignDriver",$request,$response);
 });
 
 $app->router->get('/logistic/requests', function ($request,$response) {
@@ -426,9 +537,40 @@ $app->router->post("/logistic/donations/create", function ($request,$response) {
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
 
-$app->router->post('/logistic/delivery/popup', function ($request,$response) {
-    $controller = new \app\controller\deliveryController("deliveryPopup",$request,$response);
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -444,17 +586,21 @@ $app->router->get('/driver/deliveries', function($request,$response) {
     $controller = new \app\controller\deliveryController('viewDeliveries',$request,$response);
 });
 
+$app->router->post('/driver/delivery/route', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('getRouteDetails',$request,$response);
+});
 
+$app->router->post('/driver/delivery/finish', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('completeDelivery',$request,$response);
+});
 
+$app->router->post('/driver/delivery/reassign', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('requestToReassign',$request,$response);
+});
 
-
-
-
-
-
-
-
-
+$app->router->get('/driver/deliveries/completed', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('completedDeliveries',$request,$response);
+});
 
 
 
@@ -542,6 +688,41 @@ $app->router->post("/cho/communitycenters/register/logistic",function ($request,
 $app->router->get("/cho/complaints",function($request,$response){
    $controller=new \app\controller\complaintController("viewComplaints",$request,$response);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -667,9 +848,6 @@ $app->router->get('/admin/donors', function($request,$response) {
 $app->router->post('/admin/donors/filter', function($request,$response) {
     $controller = new \app\controller\donorController('donorsFilterAdmin', $request, $response);
 });
-
-
-
 
 
 

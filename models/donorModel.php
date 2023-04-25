@@ -144,17 +144,14 @@ class donorModel extends DbModel
 
     public function createDonation($data): bool
     {
-        $cols = ['donationID', 'createdBy', 'item', 'amount', 'address', 'donateTo'];
+        $cols = ['donationID', 'createdBy', 'item', 'amount', 'donateTo'];
         $data['donationID'] = substr(uniqid('donation',true),0,23);
         $data['createdBy'] = $this->donorID;
-        if(empty($data['address'])) {
-            $data['address'] = $this->address;
-        }
         if(empty($data['donateTo'])) {
             $data['donateTo'] = $this->ccID;
         }
         try {
-            $sql = "INSERT INTO donation (donationID,createdBy,item,amount,address,donateTo) VALUES (:donationID,:createdBy,:item,:amount,:address,:donateTo)";
+            $sql = "INSERT INTO donation (donationID,createdBy,item,amount,donateTo) VALUES (:donationID,:createdBy,:item,:amount,:donateTo)";
             $statement = self::prepare($sql);
             foreach ($cols as $attr) {
                 $statement->bindValue(":$attr", $data[$attr]);

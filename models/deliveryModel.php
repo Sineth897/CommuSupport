@@ -39,4 +39,23 @@ class deliveryModel extends DbModel
     {
         return 'deliveryID';
     }
+
+    public function getAssignedDeliveries(string $driverID) : array {
+        $cols = "s.subdeliveryID,s.start,s.end,s.createdDate,t.item,s.status";
+        $sql1 = "SELECT $cols,'acceptedRequest' AS type from subdelivery s INNER JOIN acceptedrequest t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status IN ('Ongoing','Reassign Requested')";
+        $sql2 = "SELECT $cols,'donation' AS type from subdelivery s INNER JOIN donation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status IN ('Ongoing','Reassign Requested')";
+        $sql3 = "SELECT $cols,'ccdonation' AS type from subdelivery s INNER JOIN ccdonation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status IN ('Ongoing','Reassign Requested')";
+        $stmt1 = self::prepare($sql1 . " UNION " . $sql2 . " UNION " . $sql3);
+        $stmt1->execute();
+        return $stmt1->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function updateDeliveryAsCompleted(string $deliveryID, string $completed) {
+        $sql = "UPDATE delivery SET status = 'Completed', completedDate =:completedDate, completedTime = :completedTime WHERE deliveryID = :deliveryID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':deliveryID', $deliveryID);
+        $stmt->bindValue(':completedDate', $completed);
+        $stmt->bindValue(':completedTime', $completed);
+        $stmt->execute();
+    }
 }

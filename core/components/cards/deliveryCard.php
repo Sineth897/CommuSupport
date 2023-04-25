@@ -2,16 +2,31 @@
 
 namespace app\core\components\cards;
 
+use app\models\donationModel;
+use app\models\subdeliveryModel;
+
 class deliveryCard
 {
+    private array $subcategories = [];
+    private array $destinations = [];
+
     public function __construct()
     {
-        // code
+        $this->subcategories = donationModel::getAllSubcategories();
+        $this->destinations = subdeliveryModel::getDestinations();
+        foreach ($this->destinations as $key => $destination) {
+            $address = explode(",", $destination);
+            $this->destinations[$key] = trim(end($address));
+        }
+
     }
 
     public function showDeliveryCard($data, $type = ""): void
     {
         foreach ($data as $item) {
+            $item['startCity'] = $this->destinations[$item['start']];
+            $item['endCity'] = $this->destinations[$item['end']];
+            $item['subcategoryName'] = $this->subcategories[$item['item']];
             $this->showCard($item, $type);
         }
     }
@@ -23,36 +38,32 @@ class deliveryCard
             case "directDonations":
                 echo sprintf("<div class='delivery-card' id='%s'>", $data['donationID']);
                 echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "Direct Donation");
-                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>Delivery Status</p></div>", $data['subcategoryName']);
+                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>%s</p></div>", $data['subcategoryName'], $data['status']);
 //                var_dump($data);
                 echo "<div class='log-del-details'>";
-                $addressParts = explode(",", $data['address']);
-                $city = trim(end($addressParts));
-                echo sprintf("<p><strong>Start: </strong>%s</p>", $city);
-                echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
+                echo sprintf("<p><strong>Start: </strong>%s</p>", $data['startCity']);
+                echo sprintf("<p><strong>Dest: </strong>%s</p>", $data['endCity']);
                 echo sprintf("<p><strong>Created: </strong>%s</p>", $data['date']);
                 break;
 
             case "acceptedRequests":
                 echo sprintf("<div class='delivery-card' id='%s'>", $data['acceptedID']);
                 echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "Accepted Request");
-                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>Delivery Status</p></div>", $data['subcategoryName']);
+                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>%s</p></div>", $data['subcategoryName'], $data['deliveryStatus']);
 //                var_dump($data);
                 echo "<div class='log-del-details'>";
-                $addressParts = explode(",", $data['address']);
-                $city = trim(end($addressParts));
-                echo sprintf("<p><strong>Start: </strong>%s</p>", $city);
-                echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
+                echo sprintf("<p><strong>Start: </strong>%s</p>", $data['startCity']);
+                echo sprintf("<p><strong>Dest: </strong>%s</p>", $data['endCity']);
                 echo sprintf("<p><strong>Created: </strong>%s</p>", $data['approvedDate']);
                 break;
 
             case "ccDonations":
                 echo sprintf("<div class='delivery-card' id='%s'>", $data['ccDonationID']);
                 echo sprintf("<div class='delivery-card-type'><h4>%s</h4></div>", "CCDonation");
-                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>Delivery Status</p></div>", $data['subcategoryName']);
+                echo sprintf("<div class='delivery-card-header'><h4>%s</h4><p class='log-del-status-cancelled'>%s</p></div>", $data['subcategoryName'], $data['deliveryStatus']);
                 echo "<div class='log-del-details'>";
-                echo "<p><strong>Start: </strong>(CC Name) CC</p>";
-                echo "<p><strong>Dest: </strong>(CC Name) CC</p>";
+                echo sprintf("<p><strong>Start: </strong>%s</p>", $data['startCity']);
+                echo sprintf("<p><strong>Dest: </strong>%s</p>", $data['endCity']);
                 echo sprintf("<p><strong>Created: </strong>%s</p>", $data['date']);
                 break;
 
@@ -63,9 +74,9 @@ class deliveryCard
 
         echo "</div>";
         echo "<div class='log-del-btns'>";
-        echo "<button class='log-del-primary'>More Details</button>";
-        echo "<button class='log-del-primary'><i class='material-icons'>location_on</i>Route</button>
-        </div></div>";
+        echo sprintf("<button class='log-del-primary view-btn' value='%s' id='%s' >More Details</button>",$type,$data['subdeliveryID']);
+//        echo "<button class='log-del-primary'><i class='material-icons'>location_on</i>Route</button>
+        echo "</div></div>";
 
     }
 

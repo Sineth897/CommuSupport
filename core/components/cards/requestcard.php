@@ -29,7 +29,7 @@ class requestcard
 
     private function requestCard(array $request): void
     {
-        echo "<div class='rq-card' id='${request['requestID']}'>";
+        echo sprintf("<div class='rq-card' id='%s'>",$request['requestID']);
         echo "<div class='rq-card-header'>";
         echo sprintf("<h1>%s</h1>",$request['subcategoryName']);
         echo "</div>";

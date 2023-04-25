@@ -28,9 +28,9 @@ $posted = array_filter($requests,function($request) {
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 

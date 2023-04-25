@@ -77,6 +77,7 @@ a {
 /*profile and notificationModel box layout */
 
 .notif-box {
+    position: relative;
     border-radius: 1rem;
     background-color: #fff;
     padding: 1rem;

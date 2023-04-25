@@ -49,7 +49,7 @@ abstract class DbModel extends Model
     {
         $tableName = static::table();
         $attributes = array_keys($where);
-        $sql = implode("AND ", array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $sql = implode("AND ", array_map(fn($attr) => "`$attr` = :$attr", $attributes));
         $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
         foreach ($where as $key => $item) {
             $statement->bindValue(":$key", $item);
@@ -58,6 +58,9 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
+    //to simplify select queries which get all matching columns with option to order them
+    // $where = ['id' => 1, 'name' => 'john']
+    // $orderBy = ['ASC' => ['id', 'name']]
     public function retrieve(array $where = [], array $orderBy = []): array
     {
         $tableName = static::table();
@@ -75,6 +78,8 @@ abstract class DbModel extends Model
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    //to simplify delete queries
+    // $where = ['id' => 1, 'name' => 'john']
     public function delete($where): bool
     {
         $tableName = static::table();
@@ -88,6 +93,10 @@ abstract class DbModel extends Model
         return true;
     }
 
+    //to simplify update queries
+    // $where = ['id' => 1, 'name' => 'john']
+    // $data = ['name' => 'john', 'age' => 20]
+    // but the thing is we cannot use the same column for where and set
     public function update(array $where,array $data): bool
     {
         try {
@@ -120,6 +129,12 @@ abstract class DbModel extends Model
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
+    //to retrieve data from two tables
+    //example: $tableName = 'users'; <- table name
+    // $onColumn = 'id'; <- column name of the first table to join on. if on both tables is same , only have to specify here
+    // $whereCondition = ['id' => 1, 'name' => 'John']; <- WHERE clause
+    // $orderBy = ['ASC' => ['id', 'name']]; <- ORDER BY clause
+    // $col = 'id'; <- column name of the second table to join on. only have to specify if they differ
     public function retrieveWithJoin(string $tableName, string $onColumn, array $whereCondition = [], array $orderBy = [],string $col =''): array {
         $table = static::table();
         $sql = '';
@@ -139,6 +154,38 @@ abstract class DbModel extends Model
             $order = array_keys($orderBy)[0];
             $sql .= " ORDER BY ". implode(",", $orderBy[$order]) . " " . $order;
         }
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+    //to run custom queries
+    //example: $sql = "SELECT * FROM users INNER JOIN ..."; <- without WHERE, ORDER and LIKE clauses
+    // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause
+    // $sort = ['ASC' => ['id', 'name']]; <- ORDER BY clause
+    // $search = ['search' , ['name' => 'John']]; <- LIKE clause
+    public static function runCutomQuery(string $sql,array $where,array $sort,array $search) {
+
+        $wherestmnt = ' WHERE ';
+
+        if($where) {
+            $where = implode("AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", array_keys($where)));
+            $wherestmnt .= " WHERE $where";
+        }
+
+        if(!empty($search)) {
+            $wherestmnt = $wherestmnt === " WHERE " ? $wherestmnt : $wherestmnt . " AND ";
+            $wherestmnt .= implode(" OR ", array_map(fn($attr) => "$attr LIKE '%$search[0]%' ", $search[1]));
+        }
+
+        $sql .= $wherestmnt;
+
+        if($sort) {
+            $order = array_keys($sort)[0];
+            $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
+        }
+
         $statement = self::prepare($sql);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);

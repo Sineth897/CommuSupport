@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/cards/delivery-card.css">
+<link rel="stylesheet" href="../public/CSS/popup/delivery-popup-styles.css">
 <?php
 
 /** @var $deliveries \app\models\deliveryModel */
@@ -14,9 +15,9 @@ $deliveries = $user->getPendingDeliveries();
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -44,43 +45,20 @@ $searchDiv->filterDivEnd();
 
 $searchDiv->end(); ?>
 
-<!--<div class="content" id="pendingDeliveries">-->
-
 <div class="content">
 
         <div class="card-container">
             <?php
             $deliveryCard = new \app\core\components\cards\deliveryCard();
             $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
-            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
-            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
-            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
             $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
             $deliveryCard->showDeliveryCard($deliveries['ccDonations'],"ccDonations");
             ?>
 
-<!--            --><?php
-//            echo "<pre>";
-//            print_r($deliveries);
-//            echo "</pre>";
-//            ?>
+
         </div>
 </div>
 
-<!--</div>-->
-
-<!--<div class="content" id="completedDeliveries">-->
-<!---->
-<!--    <h3>Completed Deliveries</h3>-->
-<!---->
-<!--</div>-->
 
 <script type="module" src="../public/JS/logistic/deliveries/view.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv492o7hlT-nKoy2WGWmnceYZLSw2UDWw&callback=initMap" async defer></script>
