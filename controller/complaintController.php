@@ -14,6 +14,7 @@ class complaintController extends Controller
     {
         $this->middleware = new complaintMiddleware();
         parent::__construct($func, $request, $response);
+
     }
 
     protected function viewComplaints(Request $request, Response $response)
@@ -28,13 +29,17 @@ class complaintController extends Controller
         ]);
     }
 
-    protected function donorfileComplaint(Request $request, Response $response)
+    public function donorFileComplaint(Request $request, Response $response)
     {
+
         $this->checkLink($request);
-        //creating model to make new complaint
+        //creating model to make new complaint from donor
         $model =new complaintModel();
+
+
         if($request->isPost()){
             $model ->getData($request->getBody());
+
             if($model->validate($request->getBody()) && $model->save()){
                 $this->setFlash("result",'Complaint submitted');
                 $model->reset();
@@ -44,17 +49,24 @@ class complaintController extends Controller
                 $this->setFlash('result', 'Complaint failed to submitted');
             }
         }
+        if($request->isGet()){
 
-        $this->render("donor/complaint/create",'File a Complaint',[
-            'model'=>$model
+            $model->subject=$_GET['processID'];
+
+        }
+
+        $this->render("./donor/complaints/file",'File a Complaint',[
+            'complaint'=>$model,
+
+
         ]);
 
     }
 
-    protected function doneefileComplaint(Request $request, Response $response)
+    protected function doneeFileComplaint(Request $request, Response $response)
     {
         $this->checklink($request);
-
+       //creating model to make a new complaint from donee
         $model = new complaintModel();
         if($request->isPost())
         {
@@ -69,8 +81,8 @@ class complaintController extends Controller
             }
         }
 
-        $this->render("donee/complaint/create",'File a Complaint',[
-            'model'=>$model
+        $this->render("./donee/complaint/create",'File a Complaint',[
+            'complaint'=>$model
         ]);
 
         }

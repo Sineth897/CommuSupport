@@ -125,4 +125,14 @@ class doneeModel extends DbModel
             return false;
         }
     }
+
+    private function ownComplaints($userID)
+    {
+        $statement = self::prepare("SELECT filedDate,subject,status,solution,reviewedDate from complaint where filedBy=:userID");
+        $statement->bindValue(":userID", $userID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+
 }

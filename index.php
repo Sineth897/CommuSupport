@@ -328,7 +328,9 @@ $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
 
-
+$app->router->post('/donee/complaints/files',function($request,$response){
+    $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
+});
 
 
 
@@ -429,21 +431,18 @@ $app->router->post('/donor/event/markParticipation', function ($request, $respon
 
 //Donor view complaints
 $app->router->get('/donor/complaints', function($request,$response) {
-    $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
+    $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 
+//Donor file complaint
 
+$app->router->post('/donor/complaints/file', function ($request,$response){
+   $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
-
+$app->router->get('/donor/complaints/file', function ($request,$response){
+    $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
+});
 
 
 
@@ -756,6 +755,10 @@ $app->router->get("/cho/complaints",function($request,$response){
 
 
 
+
+
+
+
 //*************************Admin get and post methods*************************//
 //Admin view cho
 $app->router->get('/admin/communityheadoffices', function ($request, $response) {
@@ -845,9 +848,6 @@ $app->router->get('/admin/donors', function($request,$response) {
 $app->router->post('/admin/donors/filter', function($request,$response) {
     $controller = new \app\controller\donorController('donorsFilterAdmin', $request, $response);
 });
-
-
-
 
 
 
