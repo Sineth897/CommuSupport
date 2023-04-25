@@ -11,15 +11,15 @@ $user = $user->findOne(['employeeID' => $logisticID]);
 $drivers = $model->retrieve(["ccID" => $user->ccID]);
 
 $headers = ['Name','Contact Number','Vehicle', 'Vehicle Number', 'Preference'];
-$arraykeys= ['name','contactNumber','vehicleType', 'vehicleNo', 'preference',['','View','#',[],'driverID']];
+$arraykeys= ['name','contactNumber','vehicleType', 'vehicleNo', 'preference',['','View','#',[],'employeeID']];
 
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 

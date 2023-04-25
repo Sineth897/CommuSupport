@@ -17,20 +17,59 @@ class profileDiv
         'donor' => ['donation','user','event'],
     ];
 
+    private array $notificationIcon = [
+        'event' => 'event',
+        'directDonations' => 'local_shipping',
+        'request' => 'local_shipping',
+        'acceptedRequest' => 'local_shipping',
+        'delivery' => 'local_shipping',
+    ];
+
     public function __construct()
     {
 
         echo "<div class='profile'>";
-//        $this->notifications = notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType'], 'related' => $this->processByuserType[$_SESSION['userType']]]);
+        $this->notifications = notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType'], 'related' => $this->processByuserType[$_SESSION['userType']]]);
 //        echo "<pre>";
 //        print_r($this->notifications);
 //        echo "</pre>";
     }
 
+
+//<div class='header-right-block' id='close-notification'><i class='material-icons' >close</i></div>
     public function notification(): void
     {
-        echo "<div class='notif-box'>";
-        echo "<a href='#' id='notification'><i class='material-icons'>notifications</i></a>";
+        echo "<div class='notif-box' id='notif-btn'>";
+        echo "<a href='#'><i class='material-icons'>notifications</i></a>";
+        echo "<div class='notification' id='notification' style='display: none'>
+        <div class='notif-header'>
+            <div class='header-left-block'><h3>Notifications</h3></div>
+            
+        </div>";
+        $this->showNotificationCards();
+        echo "</div></div>";
+    }
+
+    private function showNotificationCards() : void {
+        if(empty($this->notifications)) {
+            echo "<div class='empty-notification-div'><h5>Nothing to show here</h5></div>";
+            return;
+        }
+        echo "<div class='notif-box-scroller'>";
+        foreach ($this->notifications as $notification) {
+            echo "<div class='notif-card'><div class='notif-left-block'>";
+            echo sprintf("<div class='notif-message'>
+                            <h5>%s</h5>
+                            <p><small>%s</small></p>
+                        </div>",$notification['title'],$notification['message']);
+            echo sprintf("<div class='notif-date-time'>
+                            <p class='date'>%s</p>
+                            <p class='time'>%s</p>
+                        </div>",date('M d',strtotime($notification['dateCreated'])),date('g:i a',strtotime($notification['dateCreated'])));
+            echo    sprintf("</div><div class='notif-right-block'>
+                    <i class='material-icons'>%s</i></div>
+            </div>", $this->notificationIcon[$notification['related']]);
+        }
         echo "</div>";
     }
 

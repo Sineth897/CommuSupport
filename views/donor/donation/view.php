@@ -18,9 +18,9 @@ $activeDonations = array_filter($donations, function($donation) {
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();;
 
 $profile->end(); ?>
 

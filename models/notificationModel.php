@@ -65,12 +65,12 @@ class notificationModel extends DbModel
             $pattern .= $pattern ? " OR " : "";
             $pattern .= "`usertype` LIKE '%$where[usertype]%'";
         }
-        if(!empty($where['related'])) {
-            foreach ( $where['related'] as $value) {
-                $pattern .= $pattern ? " OR " : "";
-                $pattern .= "`related` LIKE '%$value%'";
-            }
-        }
+//        if(!empty($where['related'])) {
+//            foreach ( $where['related'] as $value) {
+//                $pattern .= $pattern ? " OR " : "";
+//                $pattern .= "`related` LIKE '%$value%'";
+//            }
+//        }
         $sql = "SELECT *,TIMEDIFF(CURRENT_TIMESTAMP,dateCreated) as timeDifference FROM notification WHERE " . $pattern . " ORDER BY dateCreated DESC";
 //        echo $sql;
         $statement = self::prepare($sql);

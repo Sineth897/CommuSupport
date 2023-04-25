@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/Commusupport/public/CSS/button/button-styles.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/flashMessages.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/statistics/stat.css">
+    <link rel="stylesheet" href="/Commusupport/public/CSS/notification/notification.css">
 <!--    {styles}-->
 </head>
 
@@ -35,6 +36,23 @@
         const flashMessages = <?php echo json_encode($_SESSION['flashMessages']); ?>;
         flash.showInit(flashMessages);
     <?php endif; ?>
+
+    const notificationBtn = document.getElementById('notif-btn');
+    // const notification = document.getElementById('notification');
+
+    if(notificationBtn){
+        notificationBtn.addEventListener('click', () => {
+            if(notification.style.display === 'none'){
+                notification.style.display = 'block';
+            }else{
+                notification.style.display = 'none';
+            }
+        });
+        // document.getElementById('close-notification').addEventListener('click', () => {
+        //     notification.style.display = 'none';
+        //     console.log(notification.style.display);
+        // });
+    }
 
 
 </script>
