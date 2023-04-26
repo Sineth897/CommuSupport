@@ -27,7 +27,6 @@ class eventcard
     private function eventCard(array $event) {
         echo sprintf("<div class='event-card' id='%s'>",$event['eventID']);
         echo "<div class='event-card-header'>";
-        echo sprintf("<img src='%s' alt='Blood' class='event-icon'>",$this->eventCategoryIcons[$event['eventCategoryID']]);
         echo "<div class='event-participants'><i class='material-icons'>people</i>";
         echo sprintf("<p class='participant-count'>%s</p></div>",$event['participationCount']);
         echo "</div>";
