@@ -19,7 +19,7 @@ class donationCard
         $this->showRelevantDestination($donation);
         echo  sprintf("<p><strong>Created:</strong>  %s</p>",$donation['date']);
         echo  "</div><div class='don-del-btns'>";
-        echo  "<button class='don-del-primary'>More Details</button>";
+        echo  "<button class='don-del-primary " . ($donation['deliveryStatus'] === "Completed" ? '':'')."'>More Details</button>";
         echo  "</div></div>";
     }
 
