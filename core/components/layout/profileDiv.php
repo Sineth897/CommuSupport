@@ -41,7 +41,7 @@ class profileDiv
     {
         echo "<div class='notif-box' id='notif-btn'>";
         echo "<a href='#'><i class='material-icons'>notifications</i></a>";
-        echo "<div class='notification' id='notification' style='display: none'>
+        echo "<div class='notification-popup' id='notification' style='display: none'>
         <div class='notif-header'>
             <div class='header-left-block'><h3>Notifications</h3></div>
             

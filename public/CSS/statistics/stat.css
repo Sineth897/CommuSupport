@@ -1,7 +1,7 @@
 .info-container {
     width: 100%;
     display: grid;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:1fr 2fr;
     gap: 20px;
     padding: 0 20px;
 }
@@ -15,7 +15,7 @@
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     position: relative;
-    height: 200px;
+    height: 300px;
 }
 
 .stat-box{
