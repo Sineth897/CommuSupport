@@ -80,7 +80,7 @@ class inventoryController extends Controller
         $sql = "SELECT s.subcategoryName,CONCAT(i.amount,' ',s.scale) as stock FROM inventory i INNER JOIN subcategory s ON i.subcategoryID = s.subcategoryID";
 
         try {
-            $this->sendJson(['status' => 1, 'inventory' => inventoryModel::runCutomQuery($sql,['ccID' => $logistic->ccID],[],[],\PDO::FETCH_KEY_PAIR)]);
+            $this->sendJson(['status' => 1, 'inventory' => inventoryModel::runCustomQuery($sql,['ccID' => $logistic->ccID],[],[],\PDO::FETCH_KEY_PAIR)]);
         }
         catch (\Exception $e) {
             $this->sendJson(['status' => 0, 'error' => $e->getMessage()]);

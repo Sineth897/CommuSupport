@@ -1,6 +1,7 @@
 import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
+import {PopUp} from "../../popup/popUp.js";
 
 const driverTableDiv = document.getElementById('driverTable');
 
@@ -79,6 +80,12 @@ filterBtn.addEventListener('click', async function() {
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 
+    let viewBtns = document.querySelectorAll('a.btn-primary');
+
+    for(let i=0;i<viewBtns.length;i++) {
+        viewBtns[i].addEventListener('click', showDriverPopup);
+    }
+
 });
 
 sortBtn.addEventListener('click', async function() {
@@ -88,4 +95,62 @@ sortBtn.addEventListener('click', async function() {
 searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 })
+
+let viewBtns = document.querySelectorAll('a.btn-primary');
+
+for(let i=0;i<viewBtns.length;i++) {
+    viewBtns[i].addEventListener('click', showDriverPopup);
+}
+
+const popup = new PopUp();
+
+async function showDriverPopup(e) {
+    const employeeID = e.target.id;
+
+    const result = await getData('./driver/popup', 'POST', {employeeID:employeeID});
+
+    // console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error', value:result['msg']});
+        return
+    }
+
+    const data = result["data"];
+
+
+    popup.clearPopUp();
+    popup.setHeader('Driver Details');
+
+    // popup.startSplitDiv();
+    popup.startDiv()
+    popup.setSubHeading('Personal Details');
+    popup.startSplitDiv();
+    popup.setBody(data['driver'],['name','gender','preference'],['Name','Gender','Preference']);
+    popup.setBody(data['driver'],['age','contactNumber'],['Age','Contact Number']);
+    popup.endSplitDiv();
+    popup.endDiv();
+
+    popup.startDiv();
+
+    popup.startSplitDiv();
+    popup.startDiv();
+    popup.setSubHeading('Vehicle Details');
+    popup.setBody(data['driver'],['vehicleType','vehicleNo'],['Vehicle Type','Vehicle Number']);
+    popup.endDiv();
+
+    popup.startDiv();
+    popup.setSubHeading('Assigned Delivery Details');
+    popup.setBody(data['deliveryInfo'],['Ongoing','Completed'],['Ongoing','Completed']);
+    popup.endDiv();
+    popup.endSplitDiv();
+    popup.endDiv();
+
+    // popup.endSplitDiv();
+
+    popup.showPopUp();
+
+}
+
+
 

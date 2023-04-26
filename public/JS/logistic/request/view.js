@@ -207,6 +207,12 @@ filterBtn.addEventListener('click', async function(e) {
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 
+    const requestCards = document.querySelectorAll('.requestView');
+
+    for(let i = 0; i < requestCards.length; i++) {
+        requestCards[i].addEventListener('click',showReqPopUp);
+    }
+
 });
 
 sortBtn.addEventListener('click', async function(e) {

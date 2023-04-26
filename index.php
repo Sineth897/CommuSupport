@@ -199,6 +199,10 @@ $app->router->post('/manager/drivers/register', function ($request, $response) {
     $controller = new \app\controller\registerController("registerDriver",$request,$response);
 });
 
+$app->router->post('/manager/driver/popup', function ($request,$response) {
+    $controller = new \app\controller\driverController("driverPopup",$request,$response);
+});
+
 //Manager view donees
 $app->router->get('/manager/donees', function ($request, $response) {
     $controller = new \app\controller\doneeController("viewDonees",$request,$response);
@@ -212,14 +216,19 @@ $app->router->post('/manager/donee/verify', function ($request, $response) {
 $app->router->post('/manager/donees/filter', function ($request, $response) {
     $controller = new \app\controller\doneeController("filterDonees",$request,$response);
 });
+$app->router->post('/manager/donee/popup', function ($request,$response) {
+    $controller = new \app\controller\doneeController("doneePopup",$request,$response);
+});
 
 //Manager view donors
 $app->router->get('/manager/donors', function ($request, $response) {
     $controller = new \app\controller\donorController("viewDonors",$request,$response);
 });
-
 $app->router->post('/manager/donors/filter', function ($request, $response) {
     $controller = new \app\controller\donorController("filterDonors",$request,$response);
+});
+$app->router->post('/manager/donor/popup', function ($request,$response) {
+    $controller = new \app\controller\donorController("donorPopup",$request,$response);
 });
 
 //Manager view request
@@ -240,15 +249,6 @@ $app->router->get('/manager/donations', function ($request, $response) {
 $app->router->get('/manager/profile', function ($request, $response) {
     $controller = new \app\controller\profileController("viewProfile",$request,$response);
 });
-
-
-
-
-
-
-
-
-
 
 
 
@@ -489,6 +489,10 @@ $app->router->get("/logistic/drivers", function ($request,$response) {
 
 $app->router->post('/logistic/drivers/filter', function ($request,$response) {
     $controller = new \app\controller\driverController("filterDrivers",$request,$response);
+});
+
+$app->router->post('/logistic/driver/popup', function ($request,$response) {
+    $controller = new \app\controller\driverController("driverPopup",$request,$response);
 });
 
 //logistic view inventory

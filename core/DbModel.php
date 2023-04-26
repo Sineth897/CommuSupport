@@ -165,7 +165,7 @@ abstract class DbModel extends Model
     // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause
     // $sort = ['ASC' => ['id', 'name']]; <- ORDER BY clause
     // $search = ['search' , ['name' => 'John']]; <- LIKE clause
-    public static function runCutomQuery(string $sql,array $where = [],array $sort = [],array $search = [], string $fetchMode = \PDO::FETCH_ASSOC): array {
+    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [], string $fetchMode = \PDO::FETCH_ASSOC): array {
 
         $wherestmnt = ' WHERE ';
 

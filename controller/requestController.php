@@ -366,7 +366,7 @@ class requestController extends Controller
 
         try {
             $sql = 'Select * FROM request INNER JOIN subcategory s on request.item = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID';
-            $this->sendJson(['status' => 1,'requests' => requestModel::runCutomQuery($sql,$filters,$sort)]);
+            $this->sendJson(['status' => 1,'requests' => requestModel::runCustomQuery($sql,$filters,$sort)]);
         }
         catch (\PDOException $e) {
             $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
