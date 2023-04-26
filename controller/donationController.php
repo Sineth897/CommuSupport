@@ -96,7 +96,7 @@ class donationController extends Controller
         ];
     }
 
-    protected function filterDonations(Request $request,Response $response) {
+    protected function filterDonationsAdmin(Request $request,Response $response) {
         $data = $request->getJsonData();
         $filters = $data['filters'];
         $sort = $data['sortBy'];
@@ -130,6 +130,28 @@ class donationController extends Controller
         catch (\Exception $e) {
             $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
         }
+
+    }
+
+    protected function filterDonationsEmployee(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        $user = $this->getUserModel();
+        $user = $user->findOne(['employeeID' => $_SESSION['user']]);
+
+        $filters = array_merge($filters,['d.donateTo' => $user->ccID]);
+
+        $sql = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount FROM donation d INNER JOIN users u on d.createdBy = u.userID INNER JOIN subcategory s ON s.subcategoryID = d.item ";
+
+        try {
+            $this->sendJson(['status' => 1, 'donations' => donationModel::runCustomQuery($sql,$filters,$sort),'filters' => $filters]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
+        }
+
 
     }
    

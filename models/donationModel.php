@@ -71,4 +71,18 @@ class donationModel extends DbModel
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    public function retrieveDonationsForManager(string $ccID) {
+        $sql = " SELECT *,CONCAT(d.amount,' ',s.scale) AS amount FROM donation d INNER JOIN users u on d.createdBy = u.userID INNER JOIN subcategory s ON s.subcategoryID = d.item WHERE donateTo = :ccID";
+        $stmnt = self::prepare($sql);
+        $stmnt->bindValue(':ccID',$ccID);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getDonationsFromDonorsToViewByEmployees(string $ccID) : array {
+
+        $sql = "SELECT * FROM donation d INNER JOIN users u ON d.createdBy = u.userID INNER JOIN subcategory s ON d.item = s.subcategoryID";
+        return self::runCustomQuery($sql,['d.donateTo' => $ccID]);
+    }
 }
