@@ -56,6 +56,7 @@ class Router
         $navbar = $this->renderNavbar($active);
         $layout = str_replace("{title}", $title, $layout);
         $layout = str_replace("{navbar}", $navbar, $layout);
+        echo str_replace('{content}', $viewContent, $layout);
         return str_replace('{content}', $viewContent, $layout);
     }
 
@@ -101,6 +102,11 @@ class Router
         $this->response->setStatusCode($status);
         $this->response->setJsonData($data);
         $this->response->send();
+    }
+
+    public function sayHello($name): string
+    {
+        return "Hello $name";
     }
 
 

@@ -12,6 +12,7 @@ use app\models\ccModel;
 use app\models\deliveryModel;
 use app\models\doneeModel;
 use app\models\donorModel;
+use app\models\inventorylog;
 use app\models\logisticModel;
 use app\models\requestModel;
 use app\models\subdeliveryModel;
@@ -152,19 +153,25 @@ class requestController extends Controller
 
             $result = $delivery->save() && $acceptedRequest->save() && $subdelivery->save();
 
-            if(!$result) {
-                $this->rollbackTransaction();
-                $this->sendJson(["success"=> 0,"error" => "Error accepting request"]);
-                return;
-            }
+            inventorylog::logInventoryAcceptingRequest($acceptedRequest->acceptedID);
+            $this->setNotification('Your request has been accepted','request',$req->postedBy,'donee','request',$acceptedRequest->acceptedID);
+
+            $remove = 0;
 
             if($data['remaining']) {
                 $req->update(['requestID' => $reqID],['amount' => $data['remaining']]);
             }
             else {
                 $req->delete(['requestID' => $reqID]);
+                $remove = 1;
             }
             $this->commitTransaction();
+
+            if(!$result) {
+                $this->rollbackTransaction();
+                $this->sendJson(["success"=> 0,"error" => "Error accepting request","remove" => $remove]);
+                return;
+            }
         }
         catch (\PDOException $e) {
             $this->rollbackTransaction();
@@ -350,6 +357,22 @@ class requestController extends Controller
         }
 
         return $result;
+    }
+
+    protected function filterRequests(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+            $sql = 'Select * FROM request INNER JOIN subcategory s on request.item = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID';
+            $this->sendJson(['status' => 1,'requests' => requestModel::runCustomQuery($sql,$filters,$sort)]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+
     }
 
 }

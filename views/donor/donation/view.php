@@ -1,5 +1,7 @@
-<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
-<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/cards/donor-donation-card.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 
 <?php
 
@@ -8,10 +10,16 @@
 
 $categories = $model->getCategories();
 
-$donations = $model->retrieve(['createdBy' => $_SESSION['user']]);
+//$user = $user->findOne(['donorID' => $_SESSION['user']]);
+
+$donations = $model->getDonationsFromDonorsToViewByDonors($_SESSION['user']);
 
 $activeDonations = array_filter($donations, function($donation) {
     return $donation['deliveryStatus'] === 'Ongoing' || $donation['deliveryStatus'] === 'Not assigned';
+});
+
+$completedDonations = array_filter($donations, function($donation) {
+    return $donation['deliveryStatus'] === 'Completed';
 });
 
 ?>
@@ -67,26 +75,28 @@ $searchDiv->end();
 ?>
 
 
-<div class="content" id="activeDonations">
+<div class="content">
 
-    <?php
-    foreach ($activeDonations as $donation) {
-        echo "<pre>";
-        echo "<p>Donation ID : {$donation['donationID']}</p>";
-        echo "<p>Item : {$donation['item']}</p>";
-        echo "<p>Amount : {$donation['amount']}</p>";
-        echo "<p>Delivery : {$donation['deliveryStatus']}</p>";
-        echo "<button id='{$donation['donationID']}' class='donation-view-btn vtn- primary'>View</button>";
-        echo "</pre>";
-    }
-    ?>
+    <div class="card-container" id="activeDonations">
+
+        <?php $donationCards = new \app\core\components\cards\donationCard();
+
+        $donationCards->displayCards($activeDonations); ?>
+
+
+    </div>
+
+    <div class="card-container" id="completedDonations" style="display: none">
+
+        <?php $donationCards->displayCards($completedDonations); ?>
+
+    </div>
+
 </div>
 
-<div class="content" id="completedDonations">
-    <h3>Completed Donations</h3>
-</div>
 
-<div class="popup-background" id="donationDiv">
+
+<div class="popup-background" id="donationDiv" style="position: fixed">
 
     <div class="popup">
 

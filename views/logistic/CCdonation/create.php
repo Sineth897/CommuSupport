@@ -53,7 +53,7 @@ $profile->end(); ?>
 
 </div>
 
-<script type="module" src="../../public/JS/logistic/donation/create.js"></script>
+<script type="module" src="../../public/JS/logistic/CCdonation/create.js"></script>
 
 <script>
 

@@ -106,4 +106,18 @@ class donorController extends Controller
         }
 
     }
+
+    protected function donorPopup(Request $request, Response $response)
+    {
+        $data = $request->getJsonData();
+        $sql = " SELECT * FROM donor d INNER JOIN users u ON d.donorID = u.userID";
+        $sql .= $data['donorType'] === 'organization' ? " INNER JOIN donororganization o ON o.donorID = d.donorID" : ' INNER JOIN donorindividual i ON i.donorID = d.donorID';
+        $donorID = $data['donorID'];
+        try {
+//            $donor = new donorModel();
+            $this->sendJson(['status' => 1, 'donor' => donorModel::runCustomQuery($sql,['d.donorID' => $donorID])[0]]);
+        } catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage(), 'sql' => $sql]);
+        }
+    }
 }

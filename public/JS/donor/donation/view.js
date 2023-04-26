@@ -1,7 +1,7 @@
 import togglePages from "../../togglePages.js";
 import {PopUp} from "../../popup/popUp.js";
 
-let toggle = new togglePages([{btnId:'active',pageId:'activeDonations'},{btnId:'completed',pageId:'completedDonations'}]);
+let toggle = new togglePages([{btnId:'active',pageId:'activeDonations'},{btnId:'completed',pageId:'completedDonations'}],'grid');
 
 const popup = new PopUp();
 

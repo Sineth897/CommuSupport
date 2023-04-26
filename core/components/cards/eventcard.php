@@ -11,8 +11,8 @@ class eventcard
         $this->eventCategoryIcons = eventModel::getEventCategoryIcons();
     }
 
-    public function displayEvents(array $events = []) {
-        echo "<div class='card-container' id='eventDisplay'>";
+    public function displayEvents(array $events = [],string $id = "eventDisplay") {
+        echo sprintf("<div class='card-container' id='%s'>",$id);
         if(!$events) {
             echo "<h1>There are no event to display</h1>";
         }
@@ -31,7 +31,7 @@ class eventcard
         echo "<div class='event-participants'><i class='material-icons'>people</i>";
         echo sprintf("<p class='participant-count'>%s</p></div>",$event['participationCount']);
         echo "</div>";
-        echo sprintf("<div class='event-title'><h3>%s</h3></div>",$event['theme']);
+        echo sprintf("<div class='event-title'><h2>%s</h2></div>",$event['theme']);
         echo "<div class='event-details'>";
         echo "<div class='event-location'><i class='material-icons'>location_on</i>";
         echo sprintf("<p>%s</p> </div>",$event['location']);

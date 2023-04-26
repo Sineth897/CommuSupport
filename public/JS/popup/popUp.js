@@ -42,6 +42,12 @@ class PopUp {
         this.popUpContainer.append(this.popUpHeader);
     }
 
+    setSubHeading(subheading) {
+        this.subheading = document.createElement('h4');
+        this.subheading.innerHTML = subheading;
+        this.splitDiv[this.splitFormFlag].append(this.subheading);
+    }
+
     setBody(arr, arrKeys, labels =[]) {
         this.popUpDetails = this.getDiv('',['popup-details']);
         for(let i = 0; i < arrKeys.length; i++) {
@@ -246,6 +252,17 @@ class PopUp {
     endPopUpInfo() {
         this.popUpContainer.append(this.popUpInfo);
         this.popInfoFlag = false;
+    }
+
+    startDiv() {
+        this.splitDiv.push(this.getDiv(document.createElement('div')));
+        this.splitFormFlag++;
+    }
+
+    endDiv() {
+        this.splitDiv[this.splitFormFlag-1].append(this.splitDiv[this.splitFormFlag]);
+        this.splitDiv.pop();
+        this.splitFormFlag--;
     }
 
     startSplitDiv() {

@@ -1,4 +1,4 @@
-import {getData} from "../../request.js";
+import {getData,getTextData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
@@ -63,8 +63,65 @@ sortBtn.addEventListener('click', async function(e) {
 
     sortOptions.style.display = 'none';
 
+    let viewBtns = document.querySelectorAll('a.btn-primary');
+
+    for(let i=0;i<viewBtns.length;i++) {
+        viewBtns[i].addEventListener('click', showDonorPopup);
+    }
+
 });
 
 searchBtn.addEventListener('click', async function(e) {
     sortBtn.click();
 });
+
+let viewBtns = document.querySelectorAll('a.btn-primary');
+
+for(let i=0;i<viewBtns.length;i++) {
+    viewBtns[i].addEventListener('click', showDonorPopup);
+}
+
+const popup = new PopUp();
+
+async function showDonorPopup(e) {
+    const donorID = e.target.id;
+    const donorType = toggle.getActivePage()['btn'].id;
+
+    const result = await getData('./donor/popup','post',{donorID:donorID,donorType:donorType});
+
+    // console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['msg']},3000);
+        return;
+    }
+
+    popup.clearPopUp();
+    popup.setHeader("Donor Details");
+
+    popup.setSubHeading('User Account Details');
+    popup.startSplitDiv();
+    popup.setBody(result['donor'], ['username', 'registeredDate'], ['Username', 'Registered Date']);
+    popup.setBody(result['donor'], ['lockedStatus','mobileVerification'], [['Account Locked','bool'],['Mobile Verified','bool']]);
+    popup.endSplitDiv();
+
+
+    if(donorType === 'organization') {
+        popup.setSubHeading('Organization Details');
+        popup.startSplitDiv();
+        popup.setBody(result['donor'], ['organizationName', 'contactNumber', 'regNo'], ['Organization Name', 'Contact Number', 'Registration Number']);
+        popup.setBody(result['donor'], ['representative', 'representativeContact', 'email'], ['Representive', 'Representative contact', 'Email']);
+        popup.endSplitDiv();
+    } else {
+        popup.setSubHeading('Personal Details');
+        popup.startSplitDiv();
+        popup.setBody(result['donor'], ['fname','age', 'contactNumber',], ['First Name', 'Age','Contact Number']);
+        popup.setBody(result['donor'],['lname','email'],['Last Name','Email']);
+        popup.endSplitDiv();
+
+    }
+
+
+    popup.showPopUp();
+
+}

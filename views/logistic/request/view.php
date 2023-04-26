@@ -39,9 +39,19 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', \app\models\requestModel::getAllSubcategories(), 'filterCategory');
+$filterForm->dropDownList($model, "Select urgency", '', $model->getUrgency(), 'filterUrgency');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"Date Posted","",'sortByDatePosted');
+$sortForm->checkBox($model, "Amount", "amount", 'sortByAmount');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
