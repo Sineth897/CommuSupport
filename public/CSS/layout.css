@@ -76,6 +76,7 @@ a {
     justify-content: flex-end;
     gap: 10px;
     font-size: 0.8rem;
+    height: 60px;
 }
 
 /* Define styles for the heading pages panel */
@@ -91,6 +92,15 @@ a {
     font-size: 0.8rem;
 }
 
+/* Define styles for the statistics div if needed */
+.info-container {
+    display: grid;
+    grid-template-columns:1fr 2fr;
+    gap: 20px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+}
+
 /* ------------------- intricate CSS for each block -------------------*/
 
 /* 1. profile, notification block */
@@ -99,7 +109,7 @@ a {
     position: relative;
     border-radius: 12px;
     background-color: #fff;
-    padding: 12px;
+    padding: 18px;
     display: flex;
     align-items: center;
     box-shadow: 0 0 10px #e1e5ee;
@@ -107,9 +117,8 @@ a {
 }
 
 .notif-box i {
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
-
 .notification-popup {
     position: absolute;
     top: 50px;

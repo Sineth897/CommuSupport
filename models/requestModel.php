@@ -199,4 +199,25 @@ class requestModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+
+    public function getRequestDataMonthly() : array {
+        // Create an array with all 12 months of the year
+        $monthsOfYear = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        // Get the count of requests published on each month for urgency = "Within 7 days"
+        $sql = "SELECT COUNT(*) as count, MONTHNAME(postedDate) as month FROM request WHERE urgency = 'Within 7 days' GROUP BY MONTH(postedDate)";
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Loop through the result and update the corresponding value in the new array
+        $counts = array_fill_keys($monthsOfYear, 0);
+        foreach ($result as $row) {
+            $counts[$row['month']] = $row['count'];
+        }
+//        var_dump($counts);
+
+        // Return the counts array
+        return $counts;
+    }
+
 }

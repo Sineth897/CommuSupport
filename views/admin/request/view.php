@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
-
+<link rel="stylesheet" href="../public/CSS/statistics/stat.css">
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 
 <?php
 
@@ -21,20 +24,37 @@ $profile->profile();
 $profile->end(); ?>
 
 <!-- Inforgraphic Cards Layout -->
-<?php //$infoDiv = new \app\core\components\layout\infoDiv();
+<?php $infoDiv = new \app\core\components\layout\infoDiv();
 
 // First Block of Statistics
-//$infoDiv->statDivStart();
+$infoDiv->statDivStart();
 //?>
 <!-- Summary of ALl Statistics in this div-->
 <?php
-//$infoDiv->statDivEnd(); ?>
+$infoDiv->statDivEnd(); ?>
 
 <!--Second Long Div with Bar Chart-->
-<?php //$infoDiv->chartDivStart(); ?>
-<?php //$infoDiv->chartCanvas("myChart"); ?>
-<?php //$infoDiv->chartDivEnd();
-//$infoDiv->end(); ?>
+<?php $infoDiv->chartDivStart(); ?>
+<?php $infoDiv->chartCanvas("myChart"); ?>
+<?php $data = $model->getRequestDataMonthly();
+$json_data = json_encode($data);
+?>
+
+<script>
+    var extractedData = JSON.parse('<?php echo $json_data; ?>');
+    console.log(extractedData);
+    var chartData = [];
+    for (var month in extractedData) {
+        chartData.push({
+            label: month,
+            data: extractedData[month]
+        });
+    }
+</script>
+<script src="/CommuSupport/public/JS/charts/bar.js"></script>
+
+<?php $infoDiv->chartDivEnd();
+$infoDiv->end(); ?>
 
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
