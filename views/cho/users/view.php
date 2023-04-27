@@ -43,21 +43,22 @@ $headerDiv->end();
 
 </div>
 
-<!--<div class="content">-->
-<!--  --><?php
-//
-//    $userID = \app\core\Application::session()->get('user');
-//    $userData = $model->retrieve();
-//
-//  $header = ["Name", "User Type"];
-//
-//  $arrayKey = ["userName", "userType"];
-//
-//  $userTable = new Table($header,$arrayKey);
-//  $userTable->displayTable($userData);
-//
-//    ?>
-<!---->
-<!--</div>-->
+<div class="content">
+  <?php
+
+    $userID = \app\core\Application::session()->get('user');
+    $userData = $user->retrieve();
+
+
+  $header = ["Name", "User Type"];
+
+  $arrayKey = ["userName", "userType"];
+
+  $userTable = new \app\core\components\tables\table($header,$arrayKey);
+  $userTable->displayTable($userData);
+
+    ?>
+
+</div>
 
 

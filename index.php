@@ -321,11 +321,11 @@ $app->router->post('/donee/event/filter', function ($request, $response) {
 $app->router->post('/donee/event/markParticipation', function ($request, $response) {
     $controller = new \app\controller\eventController("participate",$request,$response);
 });
-
+//donee file complaints
 $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
-
+//donee view complaints
 $app->router->post('/donee/complaints/files',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
@@ -442,6 +442,9 @@ $app->router->get('/donor/complaints/file', function ($request,$response){
     $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
 });
 
+//$app->router->get('/donor/complaints/file',function ($request,$response){
+//   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
+//});
 
 
 
@@ -686,8 +689,10 @@ $app->router->get("/cho/complaints",function($request,$response){
 $app->router->get("/cho/users",function ($request,$response){
     $controller = new \app\controller\choController("viewUsers",$request,$response);
 });
-
-
+//cho add a solution
+$app->router->get("/cho/complaints/solution",function ($request,$response){
+    $controller = new \app\controller\complaintController("addSolution",$request,$response);
+});
 
 
 

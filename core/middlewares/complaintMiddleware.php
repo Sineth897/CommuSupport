@@ -11,6 +11,7 @@ class complaintMiddleware extends Middleware
             'viewComplaints' =>[$this->ADMIN,$this->CHO,$this->DONOR,$this->DONEE],
             'donorFileComplaint'=>[$this->DONOR],
             'doneeFileComplaint'=>[$this->DONEE],
+            'addSolution'=>[$this->CHO],
 
         ];
     }

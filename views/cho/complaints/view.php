@@ -45,7 +45,7 @@ catch(\Exception $e){
 //$complaints= $model->retrieve(['filedBy'=>'complaintID']);
 
 $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'];
+$arrayKeys = ['filedBy','filedDate','subject','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
 
 
 $complaintsTable = new table($headers,$arrayKeys);

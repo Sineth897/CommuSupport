@@ -71,4 +71,12 @@ class donationModel extends DbModel
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    public function  getDonationDetails(string $donationID)
+    {
+        $statement = self::prepare("SELECT createdBy,item,amount,date,amount,deliveryStatus FROM donation where donationID=:donationID");
+        $statement->bindValue(':donationID',$donationID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

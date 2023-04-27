@@ -43,7 +43,8 @@ $headerDiv->end();
         </div>
 
         <div style="padding: 2rem;display:flex;justify-content: center">
-            <?php $complaintRegistrationForm->button("File",'submit','confirm') ?>
+            <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
+            <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
         </div>
 
 
