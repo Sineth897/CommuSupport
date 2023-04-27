@@ -56,7 +56,6 @@ class Router
         $navbar = $this->renderNavbar($active);
         $layout = str_replace("{title}", $title, $layout);
         $layout = str_replace("{navbar}", $navbar, $layout);
-        echo str_replace('{content}', $viewContent, $layout);
         return str_replace('{content}', $viewContent, $layout);
     }
 
