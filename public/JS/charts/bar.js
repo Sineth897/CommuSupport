@@ -44,7 +44,7 @@ const myChart = new Chart(canvas, {
                 },
                 ticks: {
                     autoSkip: true,
-                    autoSkipPadding: 40
+                    autoSkipPadding: 20
                 }
             }]
         },
