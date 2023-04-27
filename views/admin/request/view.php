@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
-<link rel="stylesheet" href="../public/CSS/statistics/stat.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/statistics/charts/charts.css">
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
@@ -36,20 +36,14 @@ $infoDiv->statDivEnd(); ?>
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
 <?php $infoDiv->chartCanvas("myChart"); ?>
-<?php $data = $model->getRequestDataMonthly();
-$json_data = json_encode($data);
+<?php
+$urgencies = array("Within 7 days", "Within a month");
+$results = $model->getRequestDataMonthly();
 ?>
 
 <script>
-    var extractedData = JSON.parse('<?php echo $json_data; ?>');
-    console.log(extractedData);
-    var chartData = [];
-    for (var month in extractedData) {
-        chartData.push({
-            label: month,
-            data: extractedData[month]
-        });
-    }
+    const weekData = <?php echo json_encode($results[$urgencies[0]]); ?>;
+    const monthData = <?php echo json_encode($results[$urgencies[1]]); ?>;
 </script>
 <script src="/CommuSupport/public/JS/charts/bar.js"></script>
 

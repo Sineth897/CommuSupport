@@ -44,4 +44,3 @@ var_dump($results[$urgencies[0]]);
 </script>
 
 <script src="/CommuSupport/public/js/charts/bar.js"></script>
-

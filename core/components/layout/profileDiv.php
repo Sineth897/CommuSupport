@@ -9,6 +9,7 @@ class profileDiv
 {
     private array $notifications = [];
     private array $processByuserType = [
+        'admin' => [],
         'logistic' => ['donation','employee'],
         'manager' => ['donation', 'request','employee'],
         'driver' => ['delivery','employee'],
