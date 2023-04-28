@@ -44,6 +44,12 @@ $headerDiv->end();
 
         </div>
 
+        <div style="display:none;">
+
+            <?php $solutionForm->inputField($solution,'ComplaintID','text','complaintID') ?>
+        </div>
+
+
         <div style="padding: 2rem;display:flex;justify-content: center">
             <?php $solutionForm->button("Submit",'submit','confirm') ?>
         </div>

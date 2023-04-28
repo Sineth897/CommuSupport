@@ -68,7 +68,7 @@ class complaintModel extends DbModel
 
     }
 
-    public function getComplaints(string $choID)
+    public function getAllComplaints(string $choID)
     {
         $statement = self::prepare("SELECT * from complaint where choID=:choID");
         $statement->bindValue(':choID', $choID);
@@ -85,9 +85,14 @@ class complaintModel extends DbModel
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-       public function submitSolution(string $solution)
+       public function submitSolution(string $solution,string $complaintID)
    {
-       $statement = self::prepare("UPDATE complaint SET solution=:solution");
+       echo "ginna";
+       $statement = self::prepare("UPDATE complaint SET solution=:solution WHERE complaintID=:complaintID");
+       $statement->bindValue(':solution',$solution);
+       $statement->bindValue(':complaintID',$complaintID);
+       $statement->execute();
+       return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
    }
 

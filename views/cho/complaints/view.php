@@ -35,14 +35,13 @@ use app\core\components\tables\table;
 $userID = \app\core\Application::session()->get('user');
 //
 try{
-    $complaint = $complaints->getComplaints($userID);
+    $complaint = $complaints->getAllComplaints($userID);
 
 }
 catch(\Exception $e){
     echo $e->getMessage();
 }
 
-//$complaints= $model->retrieve(['filedBy'=>'complaintID']);
 
 $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
 $arrayKeys = ['filedBy','filedDate','subject','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
@@ -51,13 +50,16 @@ $arrayKeys = ['filedBy','filedDate','subject','status',['solution','Add Solution
 $complaintsTable = new table($headers,$arrayKeys);
 $complaintsTable ->displayTable($complaint);
 
-if(empty($complaint)){
-    echo "No Complaints has been filed.";
-}
-
-
-
 ?>
+<div style="text-align: center;padding: 250px">
+    <?php
+    if(empty($complaint)){
+        echo "No Complaints has been filed.";
+    }
+    ?>
+
+</div>
+
 
 
 
