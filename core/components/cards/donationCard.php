@@ -25,7 +25,7 @@ class donationCard
 
     private function showRelevantDestination($donation) : void {
         if($_SESSION['userType'] === "donor") {
-            echo "<p><strong>Donated To:</strong> Colombo CC</p>";
+            echo "<p><strong>Donated To:</strong> ". $donation['city'] . " CC</p>";
         } else {
             echo "<p><strong>Donated By: </strong> ".$donation['username']."</p>";
         }

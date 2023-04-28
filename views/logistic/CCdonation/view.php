@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="../public/CSS/cards/cc-donation-card.css">
 <?php
 
 /**
@@ -24,7 +25,7 @@ $profile->end(); ?>
 
 <?php $headerDiv->heading("Donations"); ?>
 
-<?php $headerDiv->pages(["ongoing","completed"]); ?>
+<?php $headerDiv->pages(["posted","ongoing","completed"]); ?>
 
 <?php $headerDiv->end(); ?>
 
@@ -50,15 +51,35 @@ $donationBtn->end();
 
 $searchDiv->end(); ?>
 
-<div class="content" id="ongoingDonations">
-    <?php
-    echo "<pre>";
-    print_r($donations);
-    echo "</pre>";
-    ?>
+<div class="content" >
+
+    <div class="card-container" id="postedDonations">
+
+        <?php
+            $ccDonationCards = new \app\core\components\cards\ccDonationCard();
+
+            $ccDonationCards->showCCDonationCards($donations['toCC']);
+        ?>
+
+<!--        --><?php
+//        echo "<pre>";
+//        print_r($donations['toCC']);
+//        echo "</pre>";
+//        ?>
+
+    </div>
+
+    <div class="card-container" id="ongoingDonations">
+
+    </div>
+
+    <div class="card-container" id="completedDonations">
+
+    </div>
+
 </div>
 
-<div class="content" id="completedDonations">
+<div class="content" >
     <h3>Completed Donations</h3>
 </div>
 

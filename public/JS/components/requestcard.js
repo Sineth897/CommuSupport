@@ -10,7 +10,8 @@ class Requestcard {
     }
 
 
-    static showCards(requests,container,btns) {
+    static showCards(requests,container,btns,accepted = false) {
+        this.accepted = accepted;
         requests.forEach( (request) => {
             container.append(Requestcard.getCard(request,btns));
         } );
@@ -19,13 +20,15 @@ class Requestcard {
     static getCard(request,btns) {
         const card = document.createElement('div');
         card.classList.add('rq-card');
-        card.id = request['requestID'];
+        card.id = this.accepted ? request['acceptedID'] : request['requestID'];
         card.innerHTML = `<div class='rq-card-header'>
-                <h1>${request['subcategoryName']}</h1></div>
-                <div class='rq-category'>
+                <h1>${request['subcategoryName']}</h1>` +
+                (this.accepted ? `<div class='rq-delivery-status'><strong>Delivery : </strong><p>${request['deliveryStatus']}</p></div>` : ``) +
+                `</div><div class='rq-category'>
                 <p>${request['categoryName']}</p></div>
-                <div class='rq-card-body'>
-                <p>${request['notes']}</p></div>` + Requestcard.getButtons(btns);
+                <div class='rq-description'>
+                <p>${request['notes']}</p></div>` +
+                (this.accepted ? `<p class='rq-accepted-date'><strong>Accepted On : </strong> ${request['acceptedDate']} </p>`: ``) + Requestcard.getButtons(btns) ;
         return card;
     }
 

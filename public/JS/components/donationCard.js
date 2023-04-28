@@ -31,7 +31,7 @@ class DonationCard {
     #cardDetails(donation) {
         return `<div class="don-del-details">
             <p><strong>Amount:</strong> ` + donation['amount'] + ` </p>
-            <p></p>` + (this.userType === 'donor' ? `` : `<p><strong>Donation from:</strong> ${donation['username']}</p>`) +`
+            <p></p>` + (this.userType === 'donor' ? `<p><strong>Donated To:</strong> ${donation['city']} CC</p>` : `<p><strong>Donated By:</strong> ${donation['username']}</p>`) +`
             <p><strong>Created:</strong> ` + donation['date'] + `</p>
         </div>`;
     }

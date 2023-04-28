@@ -74,6 +74,9 @@ filterBtn.addEventListener('click', async function(e) {
     donationCards.displayDonationCards(ongoingDonationsDiv,ongoingDonations);
     donationCards.displayDonationCards(completedDonationsDiv,completedDonations);
 
+    filterOptions.style.display = 'none';
+    sortOptions.style.display = 'none';
+
 });
 
 sortBtn.addEventListener('click', async function(e) {

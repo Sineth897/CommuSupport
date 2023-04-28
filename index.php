@@ -418,6 +418,14 @@ $app->router->post('/donor/donation/create', function ($request, $response) {
     $controller = new \app\controller\donationController("createDonation",$request,$response);
 });
 
+$app->router->post('/donor/donations/filter', function ($request, $response) {
+    $controller = new \app\controller\donationController("filterDonations",$request,$response);
+});
+
+$app->router->post('/donor/donation/popup', function ($request, $response) {
+    $controller = new \app\controller\donationController("donationPopup",$request,$response);
+});
+
 //Donor view event
 $app->router->get('/donor/events', function($request,$response) {
     $controller = new eventController("viewEvents",$request,$response);
@@ -437,14 +445,6 @@ $app->router->post('/donor/event/markParticipation', function ($request, $respon
 $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
 });
-
-
-
-
-
-
-
-
 
 
 
