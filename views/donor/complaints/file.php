@@ -10,6 +10,18 @@
 
 ?>
 
+<?php
+
+$profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end();
+
+?>
+
 <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
@@ -21,13 +33,6 @@ $headerDiv->end();
 
 
 
-<?php $profile = new \app\core\components\layout\profileDiv();
-
-$profile->notification();
-
-$profile->profile();
-
-$profile->end(); ?>
 
 
 <div class="content-form">
@@ -43,13 +48,17 @@ $profile->end(); ?>
 
             <?php $complaintRegistrationForm->textArea($complaint,"Please provide the complaint" ,"complaint") ?>
 
-            <?php $complaintRegistrationForm->inputField($complaint,'Subject','text','subject') ?>
+            <div style="display:none;">
+
+                <?php $complaintRegistrationForm->inputField($complaint,'Subject','text','subject') ?>
+            </div>
+
 
 
         </div>
 
         <div style="padding: 2rem;display:flex;justify-content: center">
-            <?php $complaintRegistrationForm->button("File",'submit','confirm') ?>
+            <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
         </div>
 
 

@@ -5,10 +5,22 @@
 <?php
 
 /** @var $complaint \app\models\complaintModel */
-/** @var $user \app\models\userModel */
+/** @var $user \app\models\doneeModel */
+
 
 ?>
 
+<?php
+
+$profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+
+$profile->profile();
+
+$profile->end();
+
+?>
 
 <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
 <?php
@@ -19,31 +31,34 @@ $headerDiv->heading("File a complaint");
 $headerDiv->end();
 ?>
 
+
+
+
+
 <div class="content-form">
 
     <?php $complaintRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 
     <div class="form-box">
 
-        <?php $complaintRegistrationForm ->formHeader('File a complaint ') ?>
+
 
         <div >
 
-            <?php $complaintRegistrationForm->inputField($complaint,'Filed By','text','userID') ?>
 
-            <?php $complaintRegistrationForm->inputField($complaint,'Filed Date','date','filedDate') ?>
+            <?php $complaintRegistrationForm->textArea($complaint,"Please provide the complaint" ,"complaint") ?>
 
-            <?php $complaintRegistrationForm->inputField($complaint,'Subject','text','subject') ?>
+            <div style="display:none;">
 
-            <?php $complaintRegistrationForm->inputField($complaint,'Status','text','status') ?>
+                <?php $complaintRegistrationForm->inputField($complaint,'Subject','text','subject') ?>
+            </div>
 
-            <?php $complaintRegistrationForm->inputField($complaint,"CHO ID ",'text','choID')?>
 
 
         </div>
 
         <div style="padding: 2rem;display:flex;justify-content: center">
-            <?php $complaintRegistrationForm->button("File",'submit','confirm') ?>
+            <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
         </div>
 
 
