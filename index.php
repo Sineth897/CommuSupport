@@ -423,7 +423,7 @@ $app->router->post('/donor/donations/filter', function ($request, $response) {
 });
 
 $app->router->post('/donor/donation/popup', function ($request, $response) {
-    $controller = new \app\controller\donationController("donationPopup",$request,$response);
+    $controller = new \app\controller\donationController("donationPopupDonor",$request,$response);
 });
 
 //Donor view event

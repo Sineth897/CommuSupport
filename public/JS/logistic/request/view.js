@@ -99,9 +99,9 @@ const showAcceptPopUp = async (popUp,reqId) => {
 
     const amountField = `<div class="form-group"><label class="form-label">Amount</label><input class="basic-input-field" id="amount" type="text" value="${amount}" disabled=""></div>`;
     const itemField = `<div class="form-group"><label class="form-label">Item</label><input class="basic-input-field" id="item" type="text" value="${item}" disabled=""></div>`;
-    const max = amount > available ? available : amount;
+    const max = parseInt(amount) > parseInt(available) ? parseInt(available) : parseInt(amount);
 
-    let acceptedValue = `<input type="number" id="acceptedAmount" value="${amount}" min="1" max="${max}"/>`;
+    let acceptedValue = `<input type="number" id="acceptedAmount" value="${parseInt(amount)}" min="1" max="${max}"/>`;
     let availableValue = `<p style="font-size: .8rem"> There are ${available} available in stock</p>`;
 
     if(max === 0) {
