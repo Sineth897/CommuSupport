@@ -104,7 +104,7 @@ $searchDiv->end(); ?>
     ?>
 </div>
 
-<div class="content" id="acceptedRequestsTable">
+<div class="content" id="acceptedRequestsTable" style="display: none">
     <?php
     $accepteRequests = $model->getAcceptedRequestWithPostedBy();
 

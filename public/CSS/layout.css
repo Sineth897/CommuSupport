@@ -121,12 +121,13 @@ a {
 }
 .notification-popup {
     position: absolute;
-    top: 50px;
+    top: 4.4rem;
     right: 0;
     background-color: #f6f6f6;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
+    z-index: 30;
 }
 
 .notification-header {

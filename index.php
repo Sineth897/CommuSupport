@@ -552,6 +552,10 @@ $app->router->post("/logistic/CCdonations/create", function ($request,$response)
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
 
+$app->router->post("/logistic/CCdonation/accept", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("acceptCCDonation",$request,$response);
+});
+
 $app->router->post('/logistic/inventory/getcurrentinventory', function ($request,$response) {
     $controller = new \app\controller\inventoryController("getCurrentInventory",$request,$response);
 });
@@ -565,9 +569,6 @@ $app->router->post('/logistic/donation/popup', function ($request,$response) {
 $app->router->post('/logistic/donations/filter', function ($request,$response) {
     $controller = new \app\controller\donationController("filterDonationsEmployee",$request,$response);
 });
-
-
-
 
 
 
