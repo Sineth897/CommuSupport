@@ -458,9 +458,11 @@ $app->router->get('/donor/complaints/file', function ($request,$response){
     $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
 });
 
+
 //$app->router->get('/donor/complaints/file',function ($request,$response){
 //   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
 //});
+
 
 
 
@@ -709,6 +711,10 @@ $app->router->get("/cho/complaints/solution",function ($request,$response){
 $app->router->post("/cho/complaints/solution",function ($request,$response){
     $controller = new \app\controller\complaintController("addSolution",$request,$response);
 });
+
+
+
+
 
 
 

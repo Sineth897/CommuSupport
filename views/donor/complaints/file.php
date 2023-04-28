@@ -10,28 +10,17 @@
 
 ?>
 
-<?php
 
-$profile = new \app\core\components\layout\profileDiv();
+
+
+
+<?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
 
 $profile->profile();
 
-$profile->end();
-
-?>
-
-<!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
-<?php
-$headerDiv = new \app\core\components\layout\headerDiv();
-
-$headerDiv->heading("File a complaint");
-
-$headerDiv->end();
-?>
-
-
+$profile->end(); ?>
 
 
 

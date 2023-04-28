@@ -1,12 +1,4 @@
-.info-container {
-    width: 100%;
-    display: grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap: 20px;
-    padding: 0 20px;
-}
-
-.info-container p{
+.info-container p {
     text-align: center;
 }
 
@@ -15,19 +7,20 @@
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     position: relative;
-    height: 200px;
+    height: 300px;
 }
 
-.stat-box{
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
-grid-template-rows: 1fr 1fr;
+.stat-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
 }
 
-.stat-content p:nth-child(1){
+.stat-content p:nth-child(1) {
     text-align: left;
     color: #9b9b9b;
 }
+
 .main-stat {
     grid-area: 1 / span 2 / span 2;
 
@@ -43,12 +36,12 @@ grid-template-rows: 1fr 1fr;
     font-weight: 500;
 }
 
-.main-stat #total{
+.main-stat #total {
     font-size: 6rem;
     font-weight: 500;
 }
 
-.co-stat{
+.co-stat {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,7 +55,12 @@ grid-template-rows: 1fr 1fr;
     font-weight: 500;
 }
 
-.co-stat p:nth-child(2){
+.co-stat p:nth-child(2) {
     font-size: 2rem;
     font-weight: 500;
+}
+
+#myChart
+{
+    z-index: 5000;
 }
