@@ -10,6 +10,7 @@ class driverMiddleware extends Middleware
             'viewDrivers' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC],
             'filterDriversAdmin' => [$this->ADMIN],
             'filterDrivers' => [$this->MANAGER,$this->LOGISTIC],
+            'driverPopup' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC],
         ];
 
     }

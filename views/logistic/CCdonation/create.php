@@ -9,9 +9,9 @@ $categories = \app\models\ccDonationModel::getCategories();
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -53,7 +53,7 @@ $profile->end(); ?>
 
 </div>
 
-<script type="module" src="../../public/JS/logistic/donation/create.js"></script>
+<script type="module" src="../../public/JS/logistic/CCdonation/create.js"></script>
 
 <script>
 

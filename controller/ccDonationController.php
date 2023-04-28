@@ -23,7 +23,7 @@ class ccDonationController extends Controller
 
         $model = new ccDonationModel();
         $user = $this->getUserModel();
-        $this->render("logistic/donation/view","View Donations",[
+        $this->render("logistic/CCdonation/view","View Donations",[
             'model' => $model,
             'user' => $user
         ]);
@@ -56,7 +56,7 @@ class ccDonationController extends Controller
 
 
         $user = $this->getUserModel();
-        $this->render("logistic/donation/create","View Donations",[
+        $this->render("logistic/CCdonation/create","View Donations",[
             'model' => $model,
             'user' => $user
         ]);

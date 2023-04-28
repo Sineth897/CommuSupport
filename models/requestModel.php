@@ -107,8 +107,30 @@ class requestModel extends DbModel
         $this->delete(['requestID' => $this->requestID]);
     }
 
-    public function getOwnRequests(string $doneeID) {
+    public function getOwnRequests(string $doneeID) : array {
+        return [
+            'activeRequests' => $this->getPostedRequestsbyDonee($doneeID),
+            'completedRequests' => $this->getCompletedRequestsOfDonee($doneeID),
+            'acceptedRequests' => $this->getAcceptedRequestsOfDonee($doneeID)
+        ];
+    }
+
+    private function getPostedRequestsbyDonee(string $doneeID) : array {
         $stmnt = self::prepare('SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID');
+        $stmnt->bindValue(':doneeID',$doneeID);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    private function getCompletedRequestsOfDonee(string $doneeID) : array {
+        $stmnt = self::prepare("SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID AND r.status = 'Completed'");
+        $stmnt->bindValue(':doneeID',$doneeID);
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    private function getAcceptedRequestsOfDonee(string $doneeID) : array {
+        $stmnt = self::prepare("SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID AND r.status = 'Accepted' AND r.requestID NOT IN (SELECT requestID FROM request)");
         $stmnt->bindValue(':doneeID',$doneeID);
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
@@ -139,7 +161,7 @@ class requestModel extends DbModel
     }
 
     public function getPendingRequestWithPostedBy() :  array {
-        $cols = "u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $cols = "r.requestID,u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
         $sql = 'SELECT ' . $cols . ' FROM request r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
 
         $stmnt = self::prepare($sql );

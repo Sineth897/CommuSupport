@@ -1,7 +1,11 @@
-import {getData} from "../../request.js";
+import {getData,getTextData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import flash from "../../flashmessages/flash.js";
+import requestCard from "../../components/requestcard.js";
+import togglePages from "../../togglePages.js";
+
+let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'accepted',pageId:'acceptedRequests'}],'grid');
 
 let popUpRequest = new PopUp();
 
@@ -23,16 +27,38 @@ async function showReqPopUp(e) {
 
     let result = await getData('./requests/popup', 'POST', {"r.requestID": element.id});
 
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({'type':'error','value':result['message']});
+        return;
+    }
+
     let data = result['requestDetails'];
+
+    if( element.id.includes('accepted')) {
+        popUpRequest.clearPopUp();
+        popUpRequest.setComplaintIcon('acceptedID','acceptedRequest');
+        popUpRequest.setHeader('Request Details');
+
+        popUpRequest.startSplitDiv();
+        popUpRequest.setBody(data,['acceptedDate','subcategoryName','notes'],['Accepted Date','Item',['Notes','textarea']]);
+
+        popUpRequest.setBody(data,['urgency','amount',],['Urgency','Amount',]);
+        popUpRequest.endSplitDiv();
+
+        popUpRequest.setDeliveryDetails(result['deliveries']);
+
+        popUpRequest.showPopUp();
+        return;
+    }
 
     popUpRequest.clearPopUp();
     popUpRequest.setHeader('Request Details');
 
     popUpRequest.startSplitDiv();
-    popUpRequest.startSplitDiv();
-    popUpRequest.setBody(data,['postedDate','subcategoryName','urgency'],['Date Posted','Item','Urgency']);
+    popUpRequest.setBody(data,['postedDate','subcategoryName','urgency','notes'],['Date Posted','Item','Urgency',['Notes','textarea']]);
 
-    popUpRequest.endSplitDiv();
     popUpRequest.setBody(data,['expDate','amount'],['Valid until','Amount']);
     popUpRequest.endSplitDiv();
 
@@ -100,3 +126,93 @@ const confirm = async (e) => {
         flash.showMessage({type:'error',vallue:'Something went wrong! Please try again later!'});
     }
 }
+
+const filterOptions = document.getElementById('filterOptions');
+const sortOptions = document.getElementById('sortOptions');
+document.getElementById('filter').addEventListener('click', function(e) {
+    if(filterOptions.style.display === 'block') {
+        filterOptions.style.display = 'none';
+    } else {
+        filterOptions.style.display = 'block';
+    }
+    sortOptions.style.display = 'none';
+});
+
+document.getElementById('sort').addEventListener('click', function(e) {
+    if(sortOptions.style.display === 'block') {
+        sortOptions.style.display = 'none';
+    } else {
+        sortOptions.style.display = 'block';
+    }
+    filterOptions.style.display = 'none';
+});
+
+const requestDisplay = document.getElementById('postedRequests');
+const acceptedDisplay = document.getElementById('acceptedRequests');
+
+const filterBtn = document.getElementById('filterBtn');
+const sortBtn = document.getElementById('sortBtn');
+
+const item = document.getElementById('filterCategory');
+const urgency = document.getElementById('filterUrgency');
+
+const sortDatePosted = document.getElementById('sortByDatePosted');
+const amount = document.getElementById('sortByAmount');
+
+filterBtn.addEventListener('click', async function(e) {
+    let filter = {
+        approval:'Approved'
+    };
+
+    if(item.value) {
+        filter['item'] = item.value;
+    }
+
+    if(urgency.value) {
+        filter['urgency'] = urgency.value;
+    }
+
+    let sort = {DESC:[]};
+
+    if(sortDatePosted.checked) {
+        sort['DESC'].push('postedDate');
+    }
+
+    if(amount.checked) {
+        sort['DESC'].push('amount');
+    }
+
+    const result = await getData('./requests/filter', 'POST', {filters:filter, sort:sort});
+
+    // console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:'Something went wrong! Please try again later!'});
+        return;
+    }
+
+    const requests = result['requests'];
+    const acceptedRequests = result['acceptedRequests'];
+
+    requestDisplay.innerHTML = '';
+    requestCard.showCards(requests,requestDisplay,[["View","requestView"]]);
+
+    acceptedDisplay.innerHTML = '';
+    requestCard.showCards(acceptedRequests,acceptedDisplay,[["View","requestView"]],true);
+
+    filterOptions.style.display = 'none';
+    sortOptions.style.display = 'none';
+
+    let newRequests = document.querySelectorAll('.requestView');
+
+    newRequests = Array.from(newRequests);
+
+    for(let i = 0; i < newRequests.length; i++) {
+        newRequests[i].addEventListener('click', (e) => showReqPopUp(e));
+    }
+
+});
+
+sortBtn.addEventListener('click', async function(e) {
+    filterBtn.click();
+});
