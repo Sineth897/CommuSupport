@@ -34,13 +34,19 @@ class Router
     {
         $path = $this->request->getPath();
         $method = $this->request->method();
+
+
         $callback = $this->routes[$method][$path] ?? false;
 
         if ($callback === false) {
+
             throw new notFoundException($path);
         }
 
-        return call_user_func($callback,$this->request,$this->response);
+
+        $result= call_user_func($callback,$this->request,$this->response);
+        return $result;
+
     }
 
     public function render($view, $title,$params = [], $active = ""): string
@@ -85,6 +91,8 @@ class Router
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/navbar/sidenav-$userType.php";
         return ob_get_clean();
+
+
     }
 
 

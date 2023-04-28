@@ -38,4 +38,33 @@ class choController extends Controller
         }
     }
 
+    protected function viewUsers(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+
+        $model = new \app\models\choModel();
+        $user = new \app\models\userModel();
+        $this->render('cho/users/view', 'View Users',
+            ['model' => $model,
+                'user'=>$user,]);
+    }
+
+//    public function  filterCommunityCenters(Request $request, Response $response)
+//    {
+//        $data = $request->getJsonData();
+//        $search = $data['search'];
+//        $sql = "select * from communitycenter";
+//        $where ="WHERE ";
+//
+//        if (!empty($search)){
+//            $where = $where === " WHERE " ? $where : $where . " AND ";
+//            $where .= " (city LIKE '%$search%')";
+//        }
+//
+//        $sql .=$where === " WHERE " ? "" : $where;
+//
+//
+//    }
+
+
 }
