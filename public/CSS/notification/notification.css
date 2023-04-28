@@ -83,6 +83,7 @@ button {
     display: block;
     overflow-y: scroll;
     height: auto;
+    border-radius: 12px;
 }
 
 .notif-card{
@@ -119,6 +120,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 1rem;
 }
 
 .notif-right-block i{

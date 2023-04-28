@@ -9,7 +9,8 @@ class complaintModel extends DbModel
 {
     public string $complaintID = "";
 
-    public string $complaint="";
+
+    public string $complaint = "";
     public string $filedBy = "";
     public string $filedDate = "";
     public string $subject = "";
@@ -27,7 +28,8 @@ class complaintModel extends DbModel
 
     public function attributes(): array
     {
-        return ["complaintID","complaint","filedBy", "filedDate", "subject", "choID"];
+
+        return ["complaintID", "complaint", "filedBy", "subject", "choID"];
 
     }
 
@@ -61,24 +63,48 @@ class complaintModel extends DbModel
 
         return parent::save();
 
+
     }
 
-    public function getComplaints(string $choID)
+    private function getchoIDofDonor($donorID)
     {
-        $statement= self::prepare("SELECT filedBy,filedDate,subject,status,solution,reviewedDate from complaint where choID=:choID");
-        $statement->bindValue(':choID',$choID);
+        $statement = self::prepare("SELECT c.cho from communitycenter c INNER JOIN donor d ON c.ccID = d.ccID WHERE d.donorID=:donorID ");
+        $statement->bindValue(':donorID', $donorID);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+
+
+    }
+
+    public function getAllComplaints(string $choID)
+    {
+        $statement = self::prepare("SELECT * from complaint where choID=:choID");
+        $statement->bindValue(':choID', $choID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
+
     }
 
+
     public function getOwnComplaints(string $userID)
-        {
-            $statement = self::prepare("SELECT filedDate,subject,status,solution,reviewedDate from complaint where filedBy=:userID");
-            $statement->bindValue(':userID',$userID);
-            $statement->execute();
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
-        }
+    {
+        $statement = self::prepare("SELECT * from complaint where filedBy=:userID");
+        $statement->bindValue(':userID', $userID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+       public function submitSolution(string $solution,string $complaintID)
+   {
+       $statement = self::prepare("UPDATE complaint SET solution=:solution WHERE complaintID=:complaintID");
+       $statement->bindValue(':solution',$solution);
+       $statement->bindValue(':complaintID',$complaintID);
+       $statement->execute();
+       return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+   }
+
 
 
 }

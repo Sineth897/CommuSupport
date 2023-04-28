@@ -24,6 +24,8 @@ for (let i = 1; i < category.length; i++) {
     subcategorySelects[category[i].value].setAttribute("disabled", "");
 }
 
+const filterBtn = document.getElementById('filterBtn');
+
 let activeSubcategory = document.getElementById('category').value;
 let amountInput = document.getElementById('amountInput');
 let amount = document.getElementById('amount');
@@ -80,6 +82,8 @@ document.getElementById('confirmDonation').addEventListener('click', async funct
     if(result['status']) {
         flash.showMessage({type: 'success', value: result['msg']},5000);
         hide(donationDiv);
+        resetInputs();
+        filterBtn.click();
     }
     else {
         console.log(result['msg']);
@@ -101,6 +105,12 @@ function validateDonation() {
         return false;
     }
     return true;
+}
+
+function resetInputs() {
+    activeSubcategory.value = '';
+    category.value = '';
+    amount.value = '';
 }
 
 

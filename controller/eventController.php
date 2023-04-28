@@ -67,12 +67,14 @@ class eventController extends Controller
             $events = $model->retrieve($filters,$sortBy);
             $categoryIcons = eventModel::getEventCategoryIcons();
             $this->sendJson([
+                'status' => 1,
                 'event' => $events,
                 'icons' => $categoryIcons
             ]);
         }
         catch (\Exception $e) {
             $this->sendJson([
+                'status' => 0,
                 'error' => $e->getMessage()
             ]);
         }

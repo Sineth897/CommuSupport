@@ -27,8 +27,8 @@ class eventModel extends DbModel
             'eventCategoryID' => [self::$REQUIRED],
             'theme' => [self::$REQUIRED],
             'organizedBy' => [self::$REQUIRED],
-            'contact' => [self::$REQUIRED,self::$CONTACT],
-            'date' => [self::$REQUIRED,self::$DATE],
+            'contact' => [self::$REQUIRED, self::$CONTACT],
+            'date' => [self::$REQUIRED, self::$DATE],
             'time' => [self::$REQUIRED],
             'location' => [self::$REQUIRED],
             'description' => [self::$REQUIRED],
@@ -43,7 +43,7 @@ class eventModel extends DbModel
 
     public function attributes(): array
     {
-        return ['eventID', 'eventCategoryID', 'theme', 'organizedBy', 'contact', 'date', 'time', 'location', 'description', 'status', 'participationCount','ccID'];
+        return ['eventID', 'eventCategoryID', 'theme', 'organizedBy', 'contact', 'date', 'time', 'location', 'description', 'status', 'participationCount', 'ccID'];
     }
 
     public function primaryKey(): string
@@ -53,7 +53,7 @@ class eventModel extends DbModel
 
     public function save(): bool
     {
-        $this->eventID = substr( uniqid('event',true),0,23);
+        $this->eventID = substr(uniqid('event', true), 0, 23);
         $manager = managerModel::getModel(['employeeID' => Application::session()->get('user')]);
         $this->ccID = $manager->ccID;
         return parent::save();
@@ -67,7 +67,8 @@ class eventModel extends DbModel
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-    public static function getEventCategoryIcons() {
+    public static function getEventCategoryIcons()
+    {
         $categories = (new static())->getEventCategories();
         $preparedIcons = [];
         foreach ($categories as $key => $value) {
@@ -76,43 +77,61 @@ class eventModel extends DbModel
         return $preparedIcons;
     }
 
-    public function isGoing($eventID) {
+    public function isGoing($eventID)
+    {
         $sql = "SELECT * FROM eventparticipation WHERE eventID = :eventID AND userID = :doneeID";
         $stmt = self::prepare($sql);
-        $stmt->bindValue(':eventID',$eventID);
-        $stmt->bindValue(':doneeID',Application::session()->get('user'));
+        $stmt->bindValue(':eventID', $eventID);
+        $stmt->bindValue(':doneeID', Application::session()->get('user'));
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
 
-    public static function markParticipation(string $eventID) {
+    public static function markParticipation(string $eventID)
+    {
         $userID = Application::session()->get('user');
         $sql = "INSERT INTO eventparticipation VALUES (:userID,:eventID)";
         $stmt = self::prepare($sql);
-        $stmt->bindValue(':userID',$userID);
-        $stmt->bindValue(':eventID',$eventID);
+        $stmt->bindValue(':userID', $userID);
+        $stmt->bindValue(':eventID', $eventID);
         $stmt->execute();
     }
 
-    public static function unmarkParticipation(string $eventID) {
+    public static function unmarkParticipation(string $eventID)
+    {
         $userID = Application::session()->get('user');
         $sql = "DELETE FROM eventparticipation WHERE eventID = :eventID AND userID = :userID";
         $stmt = self::prepare($sql);
-        $stmt->bindValue(':eventID',$eventID);
-        $stmt->bindValue(':userID',$userID);
+        $stmt->bindValue(':eventID', $eventID);
+        $stmt->bindValue(':userID', $userID);
         $stmt->execute();
     }
 
-    public static function setParticipation(string $eventID) {
+    public static function setParticipation(string $eventID)
+    {
         $event = self::getModel(['eventID' => $eventID]);
-        if($event->isGoing($eventID)) {
+        if ($event->isGoing($eventID)) {
             self::unmarkParticipation($eventID);
             $event->participationCount--;
-        }
-        else {
+        } else {
             self::markParticipation($eventID);
             $event->participationCount++;
         }
-        $event->update(['eventID' => $eventID],['participationCount' => $event->participationCount]);
+        $event->update(['eventID' => $eventID], ['participationCount' => $event->participationCount]);
+    }
+
+//    To create a chart that shows event participation per each event category
+    public function getEventbyCategory()
+    {
+        $sql = "SELECT ec.name, SUM(e.participationCount) as total_participantCount FROM event e RIGHT JOIN eventcategory ec ON e.eventCategoryID = ec.eventCategoryID GROUP BY ec.name";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['month']] = $row['count'];
+        }
+        return $chartData;
     }
 }

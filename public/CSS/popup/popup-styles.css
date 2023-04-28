@@ -22,7 +22,7 @@ button {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2000;
 }
 
 .popup {
@@ -206,3 +206,201 @@ button {
     height: 90%;
     border-radius: 0.5rem;
 }
+
+/* Styles to delivery progress */
+
+.popup-delivery {
+    width: 100%;
+    padding: .75rem;
+}
+
+.delivery-progress, .delivery-header {
+    width: 100%;
+}
+
+.delivery-header {
+    display: flex;
+    justify-content: center;
+}
+
+.delivery-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delivery-steps {
+    background: white;
+    margin-top: .75rem;
+    margin-bottom: .25rem;
+    padding: 0.375rem 0 0;
+    list-style-type: none;
+    display: flex;
+    border-radius: 50%;
+    position: relative;
+    /*color: var(--secondary-color);*/
+    z-index : 3000;
+}
+
+.delivery-stage {
+    padding: 0 .8rem;
+    flex-basis: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    /*max-width: 100%;*/
+    /*min-width: 30%;*/
+    text-align: center;
+    position: relative;
+    /*webkit-box-flex: 1;*/
+    /*-ms-flex-positive:1;*/
+}
+
+.delivery-stage + .delivery-stage:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.1875rem;
+    background: var(--secondary-color);
+    width: 100%;
+    height: 0.125rem;
+    transform: translateX(-50%);
+    z-index: -10;
+}
+
+.stage-number {
+    height: 2.5rem;
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 600;
+    margin: 0 auto;
+    position: relative;
+    z-index:10;
+    color: transparent;
+}
+
+.stage-number:after {
+    content: "";
+    height: 2rem;
+    width: 2rem;
+    background: var(--secondary-color);
+    /*background: black;*/
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: -10;
+}
+
+.stage-number:before {
+    content: "";
+    height: 0.25rem;
+    width: 0.75rem;
+    border-left: 0.15rem solid white;
+    border-bottom: 0.15rem solid white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -60%) rotate(-45deg);
+    transform-origin: center center;
+}
+
+.stage-label {
+    font-size: 0.2rem;
+    font-weight: 600;
+    margin-top: 0.625rem;
+}
+
+.current-stage .stage-number:before, .current-stage ~ .delivery-stage .stage-number:before {
+    display: none;
+}
+
+.current-stage ~ .delivery-stage .stage-number:after {
+    height: 0.625rem;
+    width: 0.625rem;
+}
+
+.current-stage ~ .delivery-stage .stage-label {
+    opacity: 0.5;
+}
+
+.current-stage .stage-number:after {
+    background: white;
+    border: 0.125rem solid var(--secondary-color);
+}
+
+.current-stage .stage-number {
+    color: var(--secondary-color);
+}
+
+.delivery-stage > p {
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 0.625rem;
+    height: 1.5rem;
+    width: 8rem
+}
+
+.delivery-details {
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.listed-description {
+    width : 60%;
+    list-style: none;
+}
+
+.listed-description li {
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.completed-stages-description {
+    color: var(--secondary-color);
+}
+
+.current-stage-description {
+    color: var(--primary-color);
+}
+
+.next-stages-description {
+    color: var(--light);
+}
+
+/* Following is the structure of the delivery div */
+
+/*<div class="delivery-progress">*/
+/*<ul class="delivery-steps">*/
+
+/*<li class="delivery-stage">*/
+/*<span class="stage-number">1</span>*/
+/*<p class="stage-label completed-stages-description">Delivery Has been assigned</p>*/
+/*</li>*/
+/*<li class="delivery-stage current-stage">*/
+/*<span class="stage-number">2</span>*/
+/*<p class="stage-label current-stage-description">Driver delivers to the donnor's CC</p>*/
+/*</li>*/
+/*<li class="delivery-stage">*/
+/*<span class="stage-number">3</span>*/
+/*<p class="stage-label next-stages-description">Delivery transferred to Donee's CC</p>*/
+/*</li>*/
+/*<li class="delivery-stage">*/
+/*<span class="stage-number">3</span>*/
+/*<p class="stage-label next-stages-description">Delivery delivered to the Donee</p>*/
+/*</li>*/
+
+/*</ul>*/
+/*</div>*/

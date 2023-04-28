@@ -96,7 +96,7 @@ class donationController extends Controller
         ];
     }
 
-    protected function filterDonations(Request $request,Response $response) {
+    protected function filterDonationsAdmin(Request $request,Response $response) {
         $data = $request->getJsonData();
         $filters = $data['filters'];
         $sort = $data['sortBy'];
@@ -132,5 +132,74 @@ class donationController extends Controller
         }
 
     }
+
+    protected function filterDonationsEmployee(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        $user = $this->getUserModel();
+        $user = $user->findOne(['employeeID' => $_SESSION['user']]);
+
+        $filters = array_merge($filters,['d.donateTo' => $user->ccID]);
+
+        $sql = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount FROM donation d INNER JOIN users u on d.createdBy = u.userID INNER JOIN subcategory s ON s.subcategoryID = d.item ";
+
+        try {
+            $this->sendJson(['status' => 1, 'donations' => donationModel::runCustomQuery($sql,$filters,$sort),'filters' => $filters]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
+        }
+
+
+    }
+
+    protected function filterDonations(Request $request,Response $response)
+    {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        $user = $this->getUserModel();
+        $user = $user->findOne(['donorID' => $_SESSION['user']]);
+
+        $filters = array_merge($filters, ['d.createdBy' => $user->donorID]);
+
+        $sql = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount FROM donation d INNER JOIN communitycenter c on d.donateTo = c.ccID INNER JOIN subcategory s ON s.subcategoryID = d.item ";
+
+        try {
+            $this->sendJson(['status' => 1, 'donations' => donationModel::runCustomQuery($sql, $filters, $sort), 'filters' => $filters]);
+        } catch (\Exception $e) {
+            $this->sendJson(['status' => 0, 'msg' => $e->getMessage()]);
+        }
+    }
+
+    protected function donationPopupDonor(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $donation = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount,CONCAT(c.city,' CC') AS city FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID INNER JOIN communitycenter c ON d.donateTo = c.ccID";
+        $delivery = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN donation don ON s.deliveryID = don.deliveryID";
+
+        try {
+            $this->sendJson(['status' => 1, 'donation' => donationModel::runCustomQuery($donation,['d.donationID' => $data['donationID']])[0],'deliveries' => subdeliveryModel::runCustomQuery($delivery,['don.donationID' => $data['donationID']])]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
+        }
+    }
+
+    protected function donationPopupEmployee(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $donation = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID INNER JOIN users u ON d.createdBy = u.userID";
+        $delivery = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN donation don ON s.deliveryID = don.deliveryID";
+
+        try {
+            $this->sendJson(['status' => 1, 'donation' => donationModel::runCustomQuery($donation,['d.donationID' => $data['donationID']])[0],'deliveries' => subdeliveryModel::runCustomQuery($delivery,['don.donationID' => $data['donationID']])]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
+        }
+    }
+
    
 }

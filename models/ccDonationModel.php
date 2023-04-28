@@ -25,7 +25,7 @@ class ccDonationModel extends DbModel
 
     public function attributes(): array
     {
-        return ['ccDonationID', 'fromCC','item', 'amount','notes'];
+        return ['ccDonationID', 'toCC','item', 'amount','notes'];
     }
 
     public function primaryKey(): string
@@ -46,7 +46,7 @@ class ccDonationModel extends DbModel
     {
         $this->ccDonationID = substr(uniqid('ccdonation',true),0,23);
         $user = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
-        $this->fromCC = $user->ccID;
+        $this->toCC = $user->ccID;
         return parent::save();
     }
     public static function getSubcategories(string $categoryId) : bool|array
@@ -66,10 +66,10 @@ class ccDonationModel extends DbModel
 
     public function getDonations(string $ccID) : array
     {
-        $stmnt1 = self::prepare("SELECT * FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID WHERE cc.fromCC = :ccID");
+        $stmnt1 = self::prepare("SELECT *,CONCAT(cc.amount,' ',s.scale) AS amount FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID INNER JOIN communitycenter c on cc.fromCC = c.ccID WHERE cc.fromCC = :ccID");
         $stmnt1->bindValue(':ccID', $ccID);
         $stmnt1->execute();
-        $stmnt2 = self::prepare("SELECT * FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID WHERE cc.toCC = :ccID");
+        $stmnt2 = self::prepare("SELECT *,CONCAT(cc.amount,' ',s.scale) AS amount FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID INNER JOIN communitycenter c on cc.toCC = c.ccID WHERE cc.toCC = :ccID");
         $stmnt2->bindValue(':ccID', $ccID);
         $stmnt2->execute();
 
@@ -78,4 +78,5 @@ class ccDonationModel extends DbModel
             'toCC' => $stmnt2->fetchAll(\PDO::FETCH_ASSOC)
         ];
     }
+
 }

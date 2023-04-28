@@ -35,12 +35,12 @@ class verificationDiv
 
     private function mobileVerificationDiv(): void
     {
-        echo "<div class='...'>";
-        echo "<div class='...'>";
-        echo "<p>You haven't verify your mobile yet. Please verify your mobile to access services </p>";
+        echo "<div class='error-container'>";
+        echo "<div class='error-img'>";
+        echo "<img src='/CommuSupport/public/src/errors/Mobile.svg'>";
         echo "</div>";
         echo "<div class='mobile-verification-div-content-body'>";
-        echo "<a href='/CommuSupport/verifyMobile' class='btn btn-primary'>Proceed</a>";
+        echo "<a href='/CommuSupport/verifyMobile' class='btn btn-primary'>Verify your Mobile</a>";
         echo "</div>";
         echo "</div>";
     }
@@ -55,9 +55,9 @@ class verificationDiv
 
     private function doneeVerificationDiv(): void
     {
-        echo "<div class='...'>";
-        echo "<div class='...'>";
-        echo "<p>Your request for registration hasn't been approved yet. </p>";
+        echo "<div class='error-container'>";
+        echo "<div class='error-img'>";
+        echo "<img src='/CommuSupport/public/src/errors/Document.svg'>";
         echo "</div>";
         echo "</div>";
     }

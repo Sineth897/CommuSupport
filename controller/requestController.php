@@ -12,6 +12,7 @@ use app\models\ccModel;
 use app\models\deliveryModel;
 use app\models\doneeModel;
 use app\models\donorModel;
+use app\models\inventorylog;
 use app\models\logisticModel;
 use app\models\requestModel;
 use app\models\subdeliveryModel;
@@ -61,9 +62,16 @@ class requestController extends Controller
 
     protected function requestPopup(Request $request,Response $response) {
         $where = $request->getJsonData();
+
+        if(str_contains($where['r.requestID'],'accepted')) {
+            $this->getAcceptedRequestPopup($where);
+            return;
+        }
+
+
         $where = array_key_first($where) . " = '" . $where[array_key_first($where)] . "'";
         try {
-            $sql = "SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE $where";
+            $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE $where";
             $stmnt = requestModel::prepare($sql);
             $stmnt->execute();
             $requestDetails = $stmnt->fetch(\PDO::FETCH_ORI_FIRST);
@@ -80,14 +88,26 @@ class requestController extends Controller
             };
 
             $this->sendJson([
+                'status' => 1,
                 'requestDetails' => $requestDetails,
                 'donee' => $donee
             ]);
         }
         catch (\PDOException $e) {
-            $this->sendJson($e->getMessage() . $where);
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
         }
+    }
 
+    private function getAcceptedRequestPopup($where) : void {
+        $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+        $sqldeliveries = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN acceptedrequest r ON d.deliveryID = r.deliveryID";
+
+        try {
+            $this->sendJson(['status' => 1 , 'requestDetails' => acceptedModel::runCustomQuery($sql,['acceptedID' => $where['r.requestID']])[0], 'deliveries' => subdeliveryModel::runCustomQuery($sqldeliveries,['r.acceptedID' => $where['r.requestID']])]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
+        }
     }
 
     protected function setApproval(Request $request,Response $response) {
@@ -152,19 +172,25 @@ class requestController extends Controller
 
             $result = $delivery->save() && $acceptedRequest->save() && $subdelivery->save();
 
-            if(!$result) {
-                $this->rollbackTransaction();
-                $this->sendJson(["success"=> 0,"error" => "Error accepting request"]);
-                return;
-            }
+            inventorylog::logInventoryAcceptingRequest($acceptedRequest->acceptedID);
+            $this->setNotification('Your request has been accepted','request',$req->postedBy,'donee','request',$acceptedRequest->acceptedID);
+
+            $remove = 0;
 
             if($data['remaining']) {
                 $req->update(['requestID' => $reqID],['amount' => $data['remaining']]);
             }
             else {
                 $req->delete(['requestID' => $reqID]);
+                $remove = 1;
             }
             $this->commitTransaction();
+
+            if(!$result) {
+                $this->rollbackTransaction();
+                $this->sendJson(["success"=> 0,"error" => "Error accepting request","remove" => $remove]);
+                return;
+            }
         }
         catch (\PDOException $e) {
             $this->rollbackTransaction();
@@ -351,5 +377,35 @@ class requestController extends Controller
 
         return $result;
     }
+
+    protected function filterRequests(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+
+        $sql = 'Select * FROM request INNER JOIN subcategory s on request.item = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID';
+        $requests = requestModel::runCustomQuery($sql,$filters,$sort);
+
+        if($_SESSION['userType'] === 'donor') {
+            $filters['acceptedBy'] = $_SESSION['user'];
+        }
+        else {
+            $logistic  = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
+            $filters['acceptedBy'] = $logistic->ccID;
+        }
+
+        $sql = 'Select * FROM acceptedrequest INNER JOIN subcategory s on acceptedrequest.item = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID';
+
+            $this->sendJson(['status' => 1,'requests' => $requests, 'acceptedRequests' => acceptedModel::runCustomQuery($sql,$filters,$sort)]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+
+    }
+
 
 }
