@@ -32,6 +32,11 @@ async function showDonationPopUp(e) {
 
     console.log(result);
 
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['msg']},3000);
+        return;
+    }
+
     const donation = result['donation'];
     const deliveries = result['deliveries'];
 

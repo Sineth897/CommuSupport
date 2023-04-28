@@ -175,9 +175,9 @@ class donationController extends Controller
         }
     }
 
-    protected function donationPopup(Request $request,Response $response) {
+    protected function donationPopupDonor(Request $request,Response $response) {
         $data = $request->getJsonData();
-        $donation = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount,CONCAT(c.city,' CC') AS city FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID INNER JOIN communitycenter c on d.donateTo = c.ccID";
+        $donation = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount,CONCAT(c.city,' CC') AS city FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID INNER JOIN communitycenter c ON d.donateTo = c.ccID";
         $delivery = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN donation don ON s.deliveryID = don.deliveryID";
 
         try {
@@ -187,5 +187,19 @@ class donationController extends Controller
             $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
         }
     }
+
+    protected function donationPopupEmployee(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $donation = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID INNER JOIN users u ON d.createdBy = u.userID";
+        $delivery = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN donation don ON s.deliveryID = don.deliveryID";
+
+        try {
+            $this->sendJson(['status' => 1, 'donation' => donationModel::runCustomQuery($donation,['d.donationID' => $data['donationID']])[0],'deliveries' => subdeliveryModel::runCustomQuery($delivery,['don.donationID' => $data['donationID']])]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0 , 'msg' => $e->getMessage()]);
+        }
+    }
+
    
 }
