@@ -28,14 +28,18 @@ $profile->end(); ?>
 
 // First Block of Statistics
 $infoDiv->statDivStart();
-//?>
+//
+$infoDiv->chartCanvas("itemChart");
+?>
 <!-- Summary of ALl Statistics in this div-->
 <?php
 $infoDiv->statDivEnd(); ?>
 
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
-<?php $infoDiv->chartCanvas("myChart"); ?>
+<div class="chart-container">
+<?php $infoDiv->chartCanvas("totalChart"); ?>
+</div>
 <?php
 $urgencies = array("Within 7 days", "Within a month");
 $results = $model->getRequestDataMonthly();
@@ -45,7 +49,7 @@ $results = $model->getRequestDataMonthly();
     const weekData = <?php echo json_encode($results[$urgencies[0]]); ?>;
     const monthData = <?php echo json_encode($results[$urgencies[1]]); ?>;
 </script>
-<script src="/CommuSupport/public/JS/charts/bar.js"></script>
+<script src="/CommuSupport/public/JS/charts/admin/request/totalChart.js"></script>
 
 <?php $infoDiv->chartDivEnd();
 $infoDiv->end(); ?>

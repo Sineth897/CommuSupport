@@ -1,4 +1,4 @@
-const canvas = document.getElementById('myChart');
+const canvas = document.getElementById('totalChart');
 const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const myChart = new Chart(canvas, {
     type: 'line', data: {
@@ -9,7 +9,8 @@ const myChart = new Chart(canvas, {
             borderWidth: 2,
             fill: false,
             pointRadius: 0,
-            pointBackgroundColor: 'rgb(0,198,21)'
+            pointBackgroundColor: 'rgb(0,198,21)',
+            lineTension: 0
 
         }, {
             label: 'Requests within a month',
@@ -18,7 +19,8 @@ const myChart = new Chart(canvas, {
             borderWidth: 2,
             fill: false,
             pointRadius: 0,
-            pointBackgroundColor: 'rgb(0,107,14)'
+            pointBackgroundColor: 'rgb(0,107,14)',
+            lineTension: 0
         },]
     }, options: {
         title: {
@@ -31,20 +33,17 @@ const myChart = new Chart(canvas, {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
-                    callback: function (value, index, values) {
-                        // Round the value to the nearest quartile and remove the decimal point
-                        return Math.round(value * 4) / 4 + '';
-                    }
+                    stepSize: 1
                 }, gridLines: {
                     display: false
                 }
             }], xAxes: [{
                 gridLines: {
-                    display: false
+                    display: true
                 },
                 ticks: {
                     autoSkip: true,
-                    autoSkipPadding: 20
+                    autoSkipPadding: 10
                 }
             }]
         },

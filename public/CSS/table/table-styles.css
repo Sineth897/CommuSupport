@@ -1,19 +1,13 @@
 
 * {
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
 }
 
 *::-webkit-scrollbar {
-    display: none;  /* Safari and Chrome */
+    display: none; /* Safari and Chrome */
 }
-body
-{
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    height: 100vh;
-}
+
 
 a {
     text-decoration: none;
@@ -22,29 +16,60 @@ a {
 
 table {
     border-collapse: collapse;
-    box-shadow: 0 5px 10px #e1e5ee;
-    background-color: white;
     text-align: left;
     border-radius: 12px;
-    width: 95%;
-
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-table thead {
-    box-shadow: 0 5px 10px #e1e5ee;
+table thead > tr {
+    border-radius: 8px;
+    border-bottom: 1px solid #d9d9d9;
+    height: 50px;
+
 }
 
 table th {
     padding: 10px 20px;
     text-transform: uppercase;
     letter-spacing: 0.1rem;
-    font-size: 0.8rem;
-    font-weight: 700;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #515151;
+
+}
+
+table th:first-child {
+    padding: 10px 40px;
+}
+
+table tbody tr {
+    border-radius: 8px;
+
 }
 
 table td {
-    padding: 20px 20px;
+    padding: 10px 20px;
     max-width: 225px;
+}
+
+table td:first-child {
+    padding: 10px 40px;
+}
+
+table tbody td {
+    font-size: 0.8rem;
+    color: black;
+    height: 60px;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #d9d9d9;
+
+}
+
+table tbody tr:last-child {
+    border-bottom: none;
 }
 
 .actions {
@@ -82,13 +107,12 @@ table td .view {
     color: white;
 }
 
-.actions a i
-{
+.actions a i {
     display: none;
     font-size: 0.01rem;
 }
 
-.actions a:hover i{
+.actions a:hover i {
     color: white;
     display: block;
     font-size: 1rem;
