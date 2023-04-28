@@ -90,6 +90,10 @@ class logisticModel extends DbModel
     }
 
     private function getCCDonations(string $ccID): array {
-        return ccDonationModel::getAllData(['fromCC' => $ccID]);
+        $sql = "SELECT * FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = :ccID AND s.status IN ('Not Assigned','Reassign Requested')";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':ccID', $ccID);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

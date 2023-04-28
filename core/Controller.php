@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\exceptions\forbiddenException;
+use app\core\exceptions\methodNotFound;
 use app\core\middlewares\Middleware;
 use app\models\adminModel;
 use app\models\choModel;
@@ -25,13 +27,13 @@ class Controller
             $this->middleware->execute($func, $this->getUserType());
             $this->$func($request, $response);
         } else {
-            throw new \Exception('Method does not exist');
+            throw new methodNotFound();
         }
     }
 
     protected function checkLink($request): void {
         if($request->getUser() !== $this->getUserType()) {
-            throw new \Exception('You do not have access to this page');
+            throw new forbiddenException();
         }
     }
 

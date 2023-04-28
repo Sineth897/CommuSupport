@@ -14,7 +14,7 @@ class DeliveryPopUp  {
     async showDeliveryPopUp(data,type) {
         this.popup.innerHTML = DeliveryPopUp.closeBtn + `<div class="delivery-map">
             <h4>Route of the current stage</h4>
-            <div id="map"></div>
+            <div id="map" style="height: 90%;weight: 100%"></div>
         </div>`
 
             + DeliveryPopUp.getDeliveryAddress(data)

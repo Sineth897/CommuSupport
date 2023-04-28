@@ -47,12 +47,14 @@ async  function showDeliveryPopUp(e) {
 
     const from = {lat: parseFloat(deliveryData['fromLatitude']), lng: parseFloat(deliveryData['fromLongitude'])};
     const to = {lat: parseFloat(deliveryData['toLatitude']), lng: parseFloat(deliveryData['toLongitude'])};
+    //
+    const map = await MapRoute.showRoute(from, to, popup.querySelector('#map'));
 
-    // const map = await MapRoute.showRoute(from, to, popup.querySelector('#map'));
-    //
-    // const distance = parseFloat(map['routes'][0]['legs'][0]['distance']['text']);
-    //
-    // popup.querySelector('#distance').innerHTML = map['routes'][0]['legs'][0]['distance']['text'];
+
+
+    const distance = parseFloat(map['routes'][0]['legs'][0]['distance']['text']);
+
+    popup.querySelector('#distance').innerHTML = map['routes'][0]['legs'][0]['distance']['text'];
 
     if(deliveryData['deliveryStatus'] !== 'Not assigned') {
         let reassignDriverDiv = popup.querySelector('#reassignedDriver')
@@ -67,7 +69,7 @@ async  function showDeliveryPopUp(e) {
         return;
     }
 
-    const distance = 5.9;
+    // const distance = 5.9;
 
     drivers = drivers.map(driver => { driver['score'] = driver['active'] + (driver['preference'] === '< 10km' ? distance >= 10.0 : distance < 10.0); return driver; });
 

@@ -75,7 +75,7 @@ class MapRoute {
             travelMode: google.maps.TravelMode.DRIVING,
         }, async (response, status) => {
             if (status === "OK") {
-               directionsRenderer.setDirections(response);
+               await directionsRenderer.setDirections(response);
 
                return  await response;
 

@@ -106,6 +106,17 @@ class driverController extends Controller
 
     }
 
+    protected function driverPopup(Request $request, Response $response)
+    {
+        $employeeID = $request->getJsonData()['employeeID'];
+
+        try {
+            $this->sendJson(['status'=> 1,'data'=>driverModel::getDriverDetails($employeeID)]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status'=> 0,'msg'=>$e->getMessage()]);
+        }
+    }
 
    
 

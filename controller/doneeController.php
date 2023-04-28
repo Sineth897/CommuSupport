@@ -144,4 +144,21 @@ class doneeController extends Controller
         }
     }
 
+    protected function doneePopup(Request $request, Response $response)
+    {
+        $data = $request->getJsonData();
+
+        $sql = " SELECT * FROM donee d INNER JOIN users u ON d.doneeID = u.userID";
+        $sql .= $data['doneeType'] === 'organization' ? " INNER JOIN doneeorganization o ON o.doneeID = d.doneeID" : ' INNER JOIN doneeindividual i ON i.doneeID = d.doneeID';
+        $doneeID = $data['doneeID'];
+
+        try {
+            $this->sendJson(['status' => 1, 'donee' => doneeModel::runCustomQuery($sql,['d.doneeID' => $doneeID])[0]]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0, 'msg' => $e->getMessage()]);
+        }
+
+    }
+
 }

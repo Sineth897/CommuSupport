@@ -1,60 +1,10 @@
 import togglePages from "../../togglePages.js";
-import {PopUp} from "../../popup/popUp.js";
 import donationCard from "../../components/donationCard.js";
-import {getData} from "../../request.js";
+import {getData,getTextData} from "../../request.js";
 import flash from "../../flashmessages/flash.js";
+import {PopUp} from "../../popup/popUp.js";
 
-let toggle = new togglePages([{btnId:'active',pageId:'activeDonations'},{btnId:'completed',pageId:'completedDonations'}],'grid');
-
-const popup = new PopUp();
-
-let donationBtns = document.querySelectorAll('.don-del-primary');
-
-for(let i=0;i<donationBtns.length;i++) {
-    donationBtns[i].addEventListener('click', showDonationPopUp);
-}
-
-function getParentWithID(element) {
-    let parent = element;
-    while(!parent.id) {
-        parent = parent.parentNode;
-    }
-    return parent;
-}
-
-async function showDonationPopUp(e) {
-
-    const parent = getParentWithID(e.target);
-
-    const donationID = parent.id;
-
-    const result = await getData('./donation/popup','post',{donationID:donationID});
-
-    console.log(result);
-
-    if(!result['status']) {
-        flash.showMessage({type:'error',value:result['msg']},3000);
-        return;
-    }
-
-    const donation = result['donation'];
-    const deliveries = result['deliveries'];
-
-    popup.clearPopUp();
-    popup.setHeader('Donation Details');
-    popup.setComplaintIcon(parent.id,"donation");
-
-    popup.startSplitDiv();
-    popup.setBody(donation,['city','subcategoryName'],['To',"Item"]);
-    popup.setBody(donation,['date','amount'],['Created Date',"Amount"]);
-    popup.endSplitDiv();
-
-
-    popup.setDeliveryDetails(deliveries);
-
-    popup.showPopUp();
-
-}
+let toggle = new togglePages([{btnId:'ongoing',pageId:'ongoingDonations'},{btnId:'completed',pageId:'completedDonations'}],'grid');
 
 let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
@@ -77,7 +27,7 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
-const ongoingDonationsDiv = document.getElementById('activeDonations');
+const ongoingDonationsDiv = document.getElementById('ongoingDonations');
 const completedDonationsDiv = document.getElementById('completedDonations');
 
 const filterBtn = document.getElementById('filterBtn');
@@ -88,7 +38,7 @@ const categoryFilter = document.getElementById('filterCategory');
 const sortDate = document.getElementById('sortDate');
 const sortAmount = document.getElementById('sortAmount');
 
-const donationCards = new donationCard('donor');
+const donationCards = new donationCard('employee');
 
 filterBtn.addEventListener('click', async function(e) {
 
@@ -128,10 +78,10 @@ filterBtn.addEventListener('click', async function(e) {
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 
-    let donationBtns = document.querySelectorAll('.don-del-primary');
+    let donationViewBtns = document.getElementsByClassName('don-del-primary');
 
-    for(let i=0;i<donationBtns.length;i++) {
-        donationBtns[i].addEventListener('click', showDonationPopUp);
+    for(let i=0;i<donationViewBtns.length;i++) {
+        donationViewBtns[i].addEventListener('click', showPopup);
     }
 
 });
@@ -139,3 +89,53 @@ filterBtn.addEventListener('click', async function(e) {
 sortBtn.addEventListener('click', async function(e) {
     filterBtn.click();
 });
+
+let donationViewBtns = document.getElementsByClassName('don-del-primary');
+
+for(let i=0;i<donationViewBtns.length;i++) {
+    donationViewBtns[i].addEventListener('click', showPopup);
+}
+
+const popup = new PopUp();
+
+function getParentElement(element) {
+    let parent = element;
+    while (!parent.id) {
+        parent = parent.parentNode;
+    }
+    return parent;
+}
+
+async function showPopup(e) {
+
+    const parent = getParentElement(e.target);
+
+    const donationId = parent.id;
+
+    const result = await getData('./donation/popup','post',{donationID:donationId});
+
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['msg']},3000);
+        return;
+    }
+
+    const donation = result['donation'];
+    const deliveries = result['deliveries'];
+
+    popup.clearPopUp();
+    popup.setHeader('Donation Details');
+    popup.setComplaintIcon(parent.id,"donation");
+
+    popup.startSplitDiv();
+    popup.setBody(donation,['username','subcategoryName'],['Donated By',"Item"]);
+    popup.setBody(donation,['date','amount'],['Created Date',"Amount"]);
+    popup.endSplitDiv();
+
+
+    popup.setDeliveryDetails(deliveries);
+
+    popup.showPopUp();
+
+}

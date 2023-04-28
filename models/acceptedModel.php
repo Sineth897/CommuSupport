@@ -70,4 +70,12 @@ class acceptedModel extends DbModel
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-}
+
+    static public function getAcceptedRequestsByUserID(string $acceptedBy) : bool|array {
+        $sql = "SELECT * FROM acceptedrequest a INNER JOIN subcategory s ON a.item = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID WHERE a.acceptedBy = :ID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':ID', $acceptedBy);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+ }
