@@ -7,6 +7,7 @@ use app\models\requestModel;
 class requestcard
 {
 
+    private bool $accepted = false;
     private array $btns = [];
     private array $btnDetails = [
         "Accept" => "<button class='rq-btn btn-primary %s' value='%s'>Accept</button>",
@@ -19,8 +20,9 @@ class requestcard
 
     }
 
-    public function displayRequests(array $requests = [],array $btns = []): void
+    public function displayRequests(array $requests = [],array $btns = [],bool $accepted = false): void
     {
+        $this->accepted = $accepted;
         $this->btns = $btns;
         foreach ($requests as $request) {
             $this->requestCard($request);
@@ -29,9 +31,14 @@ class requestcard
 
     private function requestCard(array $request): void
     {
-        echo sprintf("<div class='rq-card' id='%s'>",$request['requestID']);
+        echo sprintf("<div class='rq-card' id='%s'>",$this->accepted ? $request['acceptedID'] : $request['requestID']);
         echo "<div class='rq-card-header'>";
         echo sprintf("<h1>%s</h1>",$request['subcategoryName']);
+        if($this->accepted) {
+            echo "<div class='rq-delivery-status'>";
+            echo sprintf("<strong>Delivery : </strong><p>%s</p>",$request['deliveryStatus']);
+            echo "</div>";
+        }
         echo "</div>";
         echo "<div class='rq-category'>";
         echo sprintf("<p>%s</p>",$request['categoryName']);
@@ -40,6 +47,11 @@ class requestcard
         echo sprintf("<p>%s</p>",$request['notes']);
         echo "</div>";
         $this->displayBtns($request);
+        if($this->accepted) {
+            echo "<p class='rq-accepted-date'>";
+            echo sprintf("<strong>Accepted On : </strong> %s",$request['acceptedDate']);
+            echo "</p>";
+        }
         echo "</div>";
 
     }

@@ -81,12 +81,51 @@ class complaintController extends Controller
             }
         }
 
+        if($request->isGet())
+        {
+            $model->subject=$_GET['processID'];
+        }
+
         $this->render("./donee/complaint/create",'File a Complaint',[
             'complaint'=>$model
         ]);
 
         }
 
+        protected function addSolution(Request $request,Response $response)
+        {
+
+            $this->checkLink($request);
+
+            $model = new complaintModel();
+
+            if($request->isPost())
+            {
+                $model->getData($request->getBody());
+                if(!empty($model->solution)){
+                    $model->submitSolution($model->solution,$model->complaintID);
+                    $this->setFlash('result','Solution Added');
+                }
+                else{
+                    $model->addError('solution','No solution has filed');
+                    $this->setFlash('result','Solution failed to added');
+                }
+
+            }
+
+            if($request->isGet())
+            {
+                $model->complaintID=$_GET['complaintID'];
+
+            }
+            echo $model->complaintID;
+            $this->render("./cho/complaints/solution","Solution Submit",[
+
+                'solution'=>$model,
+
+
+            ]);
+        }
 
 
 

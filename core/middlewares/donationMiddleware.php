@@ -12,7 +12,9 @@ class donationMiddleware extends Middleware
             'createDonation' => [$this->DONOR],
             'filterDonationsAdmin' => [$this->ADMIN],
             'filterDonationsEmployee' => [$this->MANAGER,$this->LOGISTIC],
-            'donationPopup' => [$this->MANAGER,$this->DONOR,$this->LOGISTIC],
+            'donationPopupDonor' => [$this->DONOR,],
+            'filterDonations' => [$this->DONOR],
+            'donationPopupEmployee' => [$this->MANAGER,$this->LOGISTIC],
         ];
     }
 }

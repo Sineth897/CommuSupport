@@ -1,7 +1,8 @@
 import togglePages from "../../togglePages.js";
 import donationCard from "../../components/donationCard.js";
-import {getData} from "../../request.js";
+import {getData,getTextData} from "../../request.js";
 import flash from "../../flashmessages/flash.js";
+import {PopUp} from "../../popup/popUp.js";
 
 let toggle = new togglePages([{btnId:'ongoing',pageId:'ongoingDonations'},{btnId:'completed',pageId:'completedDonations'}],'grid');
 
@@ -74,8 +75,67 @@ filterBtn.addEventListener('click', async function(e) {
     donationCards.displayDonationCards(ongoingDonationsDiv,ongoingDonations);
     donationCards.displayDonationCards(completedDonationsDiv,completedDonations);
 
+    filterOptions.style.display = 'none';
+    sortOptions.style.display = 'none';
+
+    let donationViewBtns = document.getElementsByClassName('don-del-primary');
+
+    for(let i=0;i<donationViewBtns.length;i++) {
+        donationViewBtns[i].addEventListener('click', showPopup);
+    }
+
 });
 
 sortBtn.addEventListener('click', async function(e) {
     filterBtn.click();
 });
+
+let donationViewBtns = document.getElementsByClassName('don-del-primary');
+
+for(let i=0;i<donationViewBtns.length;i++) {
+    donationViewBtns[i].addEventListener('click', showPopup);
+}
+
+const popup = new PopUp();
+
+function getParentElement(element) {
+    let parent = element;
+    while (!parent.id) {
+        parent = parent.parentNode;
+    }
+    return parent;
+}
+
+async function showPopup(e) {
+
+    const parent = getParentElement(e.target);
+
+    const donationId = parent.id;
+
+    const result = await getData('./donation/popup','post',{donationID:donationId});
+
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['msg']},3000);
+        return;
+    }
+
+    const donation = result['donation'];
+    const deliveries = result['deliveries'];
+
+    popup.clearPopUp();
+    popup.setHeader('Donation Details');
+    popup.setComplaintIcon(parent.id,"donation");
+
+    popup.startSplitDiv();
+    popup.setBody(donation,['username','subcategoryName'],['Donated By',"Item"]);
+    popup.setBody(donation,['date','amount'],['Created Date',"Amount"]);
+    popup.endSplitDiv();
+
+
+    popup.setDeliveryDetails(deliveries);
+
+    popup.showPopUp();
+
+}

@@ -9,7 +9,7 @@
 
 $user = $user->findOne(['employeeID' => $_SESSION['user']]);
 $requests = $model->getAllRequests(['Approved']);
-$acceptedRequests = $accepted->getAcceptedRequests($user->ccID);
+$acceptedRequests = \app\models\acceptedModel::getAcceptedRequestsByUserID($user->ccID);
 
 ?>
 
@@ -26,7 +26,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Requests");
 
-$headerDiv->pages(["posted","history"]);
+$headerDiv->pages(["posted","accepted"]);
 
 $headerDiv->end();
 ?>
@@ -60,20 +60,24 @@ $searchDiv->filterDivEnd();
 $searchDiv->end();
 ?>
 
-<div class="content card-container" id="postedRequests">
-    <?php
-    $requestCards = new \app\core\components\cards\requestcard();
+<div class="content" >
 
-    $requestCards->displayRequests($requests,[["View","requestView"]]);
+    <div class="card-container" id="postedRequests">
 
-    echo "<pre>";
-    print_r($acceptedRequests);
-    echo "</pre>";
-    ?>
-</div>
+        <?php $requestCards = new \app\core\components\cards\requestcard();
 
-<div class="content" id="historyRequests">
-    <h3>History</h3>
+        $requestCards->displayRequests($requests,[["View","requestView"]]); ?>
+
+    </div>
+
+    <div class="card-container" id="acceptedRequests" style="display: none">
+
+        <?php
+
+        $requestCards->displayRequests($acceptedRequests,[["View","requestView"]],true);
+        ?>
+
+    </div>
 </div>
 
 <script type="module" src="../public/JS/logistic/request/view.js"></script>

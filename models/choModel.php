@@ -80,5 +80,16 @@ class choModel extends DbModel
     }
 
 
+    public static function viewUsers($choID):array{
+
+        $statement =  self::prepare("SELECT userName,userType FROM users INNER JOIN donor ON users.userID=donor.donorID  WHERE cho= :choID UNION SELECT userName,userType FROM users INNER JOIN donee ON users.userID=donee.doneeID WHERE cho=:choID ");
+        $statement->bindValue(":choID",$choID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+
+
 
 }
