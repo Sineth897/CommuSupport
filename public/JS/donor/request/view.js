@@ -3,6 +3,9 @@ import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import flash from "../../flashmessages/flash.js";
 import requestCard from "../../components/requestcard.js";
+import togglePages from "../../togglePages.js";
+
+let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'accepted',pageId:'acceptedRequests'}],'grid');
 
 let popUpRequest = new PopUp();
 
@@ -24,16 +27,38 @@ async function showReqPopUp(e) {
 
     let result = await getData('./requests/popup', 'POST', {"r.requestID": element.id});
 
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({'type':'error','value':result['message']});
+        return;
+    }
+
     let data = result['requestDetails'];
+
+    if( element.id.includes('accepted')) {
+        popUpRequest.clearPopUp();
+        popUpRequest.setComplaintIcon('acceptedID','acceptedRequest');
+        popUpRequest.setHeader('Request Details');
+
+        popUpRequest.startSplitDiv();
+        popUpRequest.setBody(data,['acceptedDate','subcategoryName','notes'],['Accepted Date','Item',['Notes','textarea']]);
+
+        popUpRequest.setBody(data,['urgency','amount',],['Urgency','Amount',]);
+        popUpRequest.endSplitDiv();
+
+        popUpRequest.setDeliveryDetails(result['deliveries']);
+
+        popUpRequest.showPopUp();
+        return;
+    }
 
     popUpRequest.clearPopUp();
     popUpRequest.setHeader('Request Details');
 
     popUpRequest.startSplitDiv();
-    popUpRequest.startSplitDiv();
-    popUpRequest.setBody(data,['postedDate','subcategoryName','urgency'],['Date Posted','Item','Urgency']);
+    popUpRequest.setBody(data,['postedDate','subcategoryName','urgency','notes'],['Date Posted','Item','Urgency',['Notes','textarea']]);
 
-    popUpRequest.endSplitDiv();
     popUpRequest.setBody(data,['expDate','amount'],['Valid until','Amount']);
     popUpRequest.endSplitDiv();
 
@@ -122,7 +147,8 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
-const requestDisplay = document.getElementById('requestDisplay');
+const requestDisplay = document.getElementById('postedRequests');
+const acceptedDisplay = document.getElementById('acceptedRequests');
 
 const filterBtn = document.getElementById('filterBtn');
 const sortBtn = document.getElementById('sortBtn');
@@ -158,7 +184,7 @@ filterBtn.addEventListener('click', async function(e) {
 
     const result = await getData('./requests/filter', 'POST', {filters:filter, sort:sort});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type:'error',value:'Something went wrong! Please try again later!'});
@@ -166,12 +192,24 @@ filterBtn.addEventListener('click', async function(e) {
     }
 
     const requests = result['requests'];
+    const acceptedRequests = result['acceptedRequests'];
 
     requestDisplay.innerHTML = '';
     requestCard.showCards(requests,requestDisplay,[["View","requestView"]]);
 
+    acceptedDisplay.innerHTML = '';
+    requestCard.showCards(acceptedRequests,acceptedDisplay,[["View","requestView"]],true);
+
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    let newRequests = document.querySelectorAll('.requestView');
+
+    newRequests = Array.from(newRequests);
+
+    for(let i = 0; i < newRequests.length; i++) {
+        newRequests[i].addEventListener('click', (e) => showReqPopUp(e));
+    }
 
 });
 

@@ -19,7 +19,7 @@ async function updatedInventory() {
 
 }
 
-let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'history',pageId:'historyRequests'}],'grid');
+let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'accepted',pageId:'acceptedRequests'}],'grid');
 
 let popUpRequest = new PopUp();
 
@@ -41,7 +41,28 @@ async function showReqPopUp(e) {
 
     let result = await getData('./requests/popup', 'POST', {"r.requestID": element.id});
 
+    // console.log(result);
+
     let data = result['requestDetails'];
+
+    if( element.id.includes('accepted')) {
+        popUpRequest.clearPopUp();
+        popUpRequest.setHeader('Request Details');
+
+
+
+        popUpRequest.startSplitDiv();
+        popUpRequest.setBody(data,['acceptedDate','subcategoryName','notes'],['Accepted Date','Item',['Notes','textarea']]);
+
+        popUpRequest.setBody(data,['urgency','amount',],['Urgency','Amount',]);
+        popUpRequest.endSplitDiv();
+
+        popUpRequest.setDeliveryDetails(result['deliveries']);
+
+
+        popUpRequest.showPopUp();
+        return;
+    }
 
     popUpRequest.clearPopUp();
     popUpRequest.setHeader('Request Details');
@@ -78,9 +99,9 @@ const showAcceptPopUp = async (popUp,reqId) => {
 
     const amountField = `<div class="form-group"><label class="form-label">Amount</label><input class="basic-input-field" id="amount" type="text" value="${amount}" disabled=""></div>`;
     const itemField = `<div class="form-group"><label class="form-label">Item</label><input class="basic-input-field" id="item" type="text" value="${item}" disabled=""></div>`;
-    const max = amount > available ? available : amount;
+    const max = parseInt(amount) > parseInt(available) ? parseInt(available) : parseInt(amount);
 
-    let acceptedValue = `<input type="number" id="acceptedAmount" value="${amount}" min="1" max="${max}"/>`;
+    let acceptedValue = `<input type="number" id="acceptedAmount" value="${parseInt(amount)}" min="1" max="${max}"/>`;
     let availableValue = `<p style="font-size: .8rem"> There are ${available} available in stock</p>`;
 
     if(max === 0) {
@@ -157,6 +178,7 @@ document.getElementById('sort').addEventListener('click', function(e) {
 });
 
 const requestDisplay = document.getElementById('postedRequests');
+const acceptedDisplay = document.getElementById('acceptedRequests');
 
 const filterBtn = document.getElementById('filterBtn');
 const sortBtn = document.getElementById('sortBtn');
@@ -200,9 +222,13 @@ filterBtn.addEventListener('click', async function(e) {
     }
 
     const requests = result['requests'];
+    const acceptedRequests = result['acceptedRequests'];
 
     requestDisplay.innerHTML = '';
     requestCard.showCards(requests,requestDisplay,[["View","requestView"]]);
+
+    acceptedDisplay.innerHTML = '';
+    requestCard.showCards(acceptedRequests,acceptedDisplay,[["View","requestView"]],true);
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';

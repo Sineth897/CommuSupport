@@ -15,7 +15,7 @@ $categories = $model->getCategories();
 $donations = $model->getDonationsFromDonorsToViewByDonors($_SESSION['user']);
 
 $activeDonations = array_filter($donations, function($donation) {
-    return $donation['deliveryStatus'] === 'Ongoing' || $donation['deliveryStatus'] === 'Not assigned';
+    return $donation['deliveryStatus'] === 'Ongoing' || $donation['deliveryStatus'] === 'Not Assigned';
 });
 
 $completedDonations = array_filter($donations, function($donation) {
@@ -59,9 +59,18 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', \app\models\donationModel::getAllSubcategories(), 'filterCategory');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"Date","",'sortDate');
+$sortForm->checkBox($model, "Amount", "amount", 'sortAmount');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 

@@ -6,9 +6,11 @@
 /** @var $model \app\models\requestModel */
 /** @var $user \app\models\donorModel */
 
+use app\models\acceptedModel;
+
 $requests = $model->getAllRequests(['Approved']);
 //$user = $user->findOne(['donorID' => $_SESSION['user']]);
-//$requests = $user->filterRequests($requests);
+$acceptedRequests = acceptedModel::getAcceptedRequestsByUserID($_SESSION['user']);
 
 ?>
 
@@ -24,7 +26,9 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Posted Requests");
+$headerDiv->heading("Requests");
+
+$headerDiv->pages(["posted", "accepted"]);
 
 $headerDiv->end();
 ?>
@@ -67,13 +71,25 @@ $searchDiv->filterDivEnd();
 $searchDiv->end();
 ?>
 
-<div class="card-container content" id="requestDisplay" >
+<div class="content"  >
 
+    <div class="card-container" id="postedRequests">
     <?php
     $requestCards = new \app\core\components\cards\requestcard();
 
     $requestCards->displayRequests($requests,[["View","requestView"]]);
     ?>
+
+    </div>
+
+    <div class="card-container" id="acceptedRequests" style="display: none">
+
+        <?php
+
+        $requestCards->displayRequests($acceptedRequests,[["View","requestView"]],true);
+        ?>
+
+    </div>
 
 </div>
 
