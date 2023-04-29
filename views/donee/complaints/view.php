@@ -3,6 +3,24 @@
 <link href="../public/CSS/navbar/sidenav-styles.css" type="text/css" rel="stylesheet" >
 <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet">
 
+<?php
+
+/** @var $complaints \app\models\complaintModel */
+use app\core\components\tables\table;
+
+$userID = \app\core\Application::session()->get('user');
+
+
+try{
+    $complaint = $complaints->getOwnComplaints($userID);
+
+}
+catch(\Exception $e){
+    echo $e->getMessage();
+}
+
+?>
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
@@ -31,21 +49,7 @@ if($checkVerification->notVerified()) {
 ?>
 
 
-<?php
-/** @var $complaints \app\models\complaintModel */
-use app\core\components\tables\table;
 
-$userID = \app\core\Application::session()->get('user');
-
-try{
-    $complaint = $complaints->getOwnComplaints($userID);
-
-}
-catch(\Exception $e){
-    echo $e->getMessage();
-}
-
-?>
 
 <div class="content-form">
 

@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/complaints/complaint.css">
 
 
 <?php
@@ -51,7 +52,7 @@ $complaintsTable = new table($headers,$arrayKeys);
 $complaintsTable ->displayTable($complaint);
 
 ?>
-<div style="text-align: center;padding: 250px">
+<div class="no-complaint">
     <?php
     if(empty($complaint)){
         echo "No Complaints has been filed.";
