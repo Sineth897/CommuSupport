@@ -6,8 +6,11 @@
 
 /** @var $complaint \app\models\complaintModel */
 /** @var $user \app\models\donorModel */
-
-
+/** @var $donation \app\models\donationModel */
+//
+//
+//$donationID= \app\core\Application::session('donation');
+//$donationDetails=$donation->getDonationDetails($donationID);
 ?>
 
 <?php
@@ -31,7 +34,9 @@ $headerDiv->heading("File a complaint");
 $headerDiv->end();
 ?>
 
+<div>
 
+</div>
 
 
 

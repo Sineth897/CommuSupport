@@ -42,8 +42,10 @@ try{
 catch(\Exception $e){
     echo $e->getMessage();
 }
+?>
 
-
+<div class="content">
+<?php
 $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
 $arrayKeys = ['filedBy','filedDate','subject','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
 
@@ -52,6 +54,7 @@ $complaintsTable = new table($headers,$arrayKeys);
 $complaintsTable ->displayTable($complaint);
 
 ?>
+</div>
 <div class="no-complaint">
     <?php
     if(empty($complaint)){

@@ -41,7 +41,7 @@ $headerDiv->end();
         </div>  -->
 
     <div class="search">
-        <input type="text" placeholder="Search" name="find">
+        <input type="text" placeholder="Search" name="find" id="search">
         <a href="#"><i class="material-icons">search</i></a>
     </div>
 
@@ -63,6 +63,9 @@ $headerDiv->end();
 
 
 </div>
+
+
+<script type="module" src="../public/JS/cho/users/filter.js"></script>
 
 
 
