@@ -15,9 +15,9 @@ $requests = $model->getOwnRequests($_SESSION['user']);
 <!--profile div-->
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -71,7 +71,8 @@ $searchDiv->end();
     <?php
     $requestCards = new \app\core\components\cards\requestcard();
 
-    $requestCards->displayRequests($requests,[['View','viewRequest']]);
+    $requestCards->displayRequests($requests['activeRequests'],[['View','viewActiveRequest']]);
+    $requestCards->displayRequests($requests['acceptedRequests'],[['View','viewActiveRequest']]);
     ?>
 
 </div>
@@ -79,9 +80,7 @@ $searchDiv->end();
 <div class="content card-container" id="completedRequests">
 
     <?php
-    echo "<pre>";
-    echo "Completed Requests";
-    echo "</pre>";
+    $requestCards->displayRequests($requests['completedRequests'],[['View','viewActiveRequest']]);
     ?>
 
 </div>

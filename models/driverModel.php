@@ -93,4 +93,11 @@ class driverModel extends DbModel
         $this->user->userType = "driver";
         $this->user->userID = $this->employeeID;
     }
+
+    public static function getDriverDetails(string $employeeID) : array {
+        $sql = "SELECT status,COUNT(deliveredBy) FROM subdelivery WHERE deliveredBy = '$employeeID' GROUP BY status";
+        $stmt = driverModel::prepare($sql);
+        $stmt->execute();
+        return ['driver' => driverModel::getModel(['employeeID' => $employeeID]),'deliveryInfo' => $stmt->fetchALL(\PDO::FETCH_KEY_PAIR)];
+    }
 }

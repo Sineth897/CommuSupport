@@ -18,6 +18,12 @@
 <!--            <span class="tooltip">Donations</span>-->
         </li>
         <li>
+            <a href="/CommuSupport/logistic/CCdonations">
+                <i class="material-icons">emoji_transportation</i>
+                <span class="links_name">CC Donations</span>
+            </a>
+        </li>
+        <li>
             <a href="/CommuSupport/logistic/deliveries">
                 <i class="material-icons">local_shipping</i>
                 <span class="links_name">Deliveries</span>

@@ -28,6 +28,41 @@ $profile->end(); ?>
 
 <?php $headerDiv->end(); ?>
 
+<!-- Inforgraphic Cards Layout -->
+<?php $infoDiv = new \app\core\components\layout\infoDiv();
+
+$infoDiv->statDivStart();
+?>
+<div class="stat-content main-stat">
+    <p>Total Drivers</p>
+    <p id="total">980</p>
+</div>
+<div class="stat-content co-stat">
+    <p>Long Distance Drivers</p>
+    <p id="long-distance">980</p>
+</div>
+<div class="stat-content co-stat">
+    <p>Short Distance Drivers</p>
+    <p id="short-distance">980</p>
+</div>
+<?php
+$infoDiv->statDivEnd();
+$infoDiv->chartDivStart();
+?>
+<h1>Two Charts</h1>
+<p>Driver Distribution by Vehicle</p>
+<?php $infoDiv->chartCanvas("chart1"); ?>
+<?php
+$infoDiv->chartDivEnd();
+$infoDiv->chartDivStart();
+$infoDiv->chartCanvas("chart3");
+?>
+<h1>Deliveries in an year</h1>
+<?php
+$infoDiv->chartDivEnd();
+$infoDiv->end(); ?>
+
+
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
 
 $searchDiv->filterDivStart();

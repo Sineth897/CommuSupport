@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
+
 <?php
 
 /**
@@ -22,9 +24,9 @@ $organizationDonorKeys = ['organizationName','representative','contactNumber','e
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 

@@ -47,14 +47,29 @@ async  function showDeliveryPopUp(e) {
 
     const from = {lat: parseFloat(deliveryData['fromLatitude']), lng: parseFloat(deliveryData['fromLongitude'])};
     const to = {lat: parseFloat(deliveryData['toLatitude']), lng: parseFloat(deliveryData['toLongitude'])};
-
-    // const map = await MapRoute.showRoute(from, to, popup.querySelector('#map'));
     //
-    // const distance = parseFloat(map['routes'][0]['legs'][0]['distance']['text']);
-    //
-    // popup.querySelector('#distance').innerHTML = map['routes'][0]['legs'][0]['distance']['text'];
+    const map = await MapRoute.showRoute(from, to, popup.querySelector('#map'));
 
-    const distance = 5.9;
+
+
+    const distance = parseFloat(map['routes'][0]['legs'][0]['distance']['text']);
+
+    popup.querySelector('#distance').innerHTML = map['routes'][0]['legs'][0]['distance']['text'];
+
+    if(deliveryData['deliveryStatus'] !== 'Not assigned') {
+        let reassignDriverDiv = popup.querySelector('#reassignedDriver')
+        reassignDriverDiv.style.display = 'block';
+        const driverIndex = drivers.findIndex(driver => driver['driverID'] === deliveryData['driverID']);
+        reassignDriverDiv.querySelector('h2').innerHTML = drivers[driverIndex]['name'];
+        drivers.splice(driverIndex, 1);
+    }
+
+    if(!drivers.length > 0) {
+        popup.querySelector('#driverSelectionError').innerHTML = 'No drivers available';
+        return;
+    }
+
+    // const distance = 5.9;
 
     drivers = drivers.map(driver => { driver['score'] = driver['active'] + (driver['preference'] === '< 10km' ? distance >= 10.0 : distance < 10.0); return driver; });
 

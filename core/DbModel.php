@@ -58,6 +58,9 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
+    //to simplify select queries which get all matching columns with option to order them
+    // $where = ['id' => 1, 'name' => 'john']
+    // $orderBy = ['ASC' => ['id', 'name']]
     public function retrieve(array $where = [], array $orderBy = []): array
     {
         $tableName = static::table();
@@ -75,6 +78,8 @@ abstract class DbModel extends Model
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    //to simplify delete queries
+    // $where = ['id' => 1, 'name' => 'john']
     public function delete($where): bool
     {
         $tableName = static::table();
@@ -91,6 +96,7 @@ abstract class DbModel extends Model
     //to simplify update queries
     // $where = ['id' => 1, 'name' => 'john']
     // $data = ['name' => 'john', 'age' => 20]
+    // but the thing is we cannot use the same column for where and set
     public function update(array $where,array $data): bool
     {
         try {
@@ -159,13 +165,13 @@ abstract class DbModel extends Model
     // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause
     // $sort = ['ASC' => ['id', 'name']]; <- ORDER BY clause
     // $search = ['search' , ['name' => 'John']]; <- LIKE clause
-    public static function runCutomQuery(string $sql,array $where,array $sort,array $search) {
+    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [], string $fetchMode = \PDO::FETCH_ASSOC): array {
 
         $wherestmnt = ' WHERE ';
 
         if($where) {
             $where = implode("AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", array_keys($where)));
-            $wherestmnt .= " WHERE $where";
+            $wherestmnt .= " $where";
         }
 
         if(!empty($search)) {
@@ -175,14 +181,14 @@ abstract class DbModel extends Model
 
         $sql .= $wherestmnt;
 
-        if($sort) {
+        if(!empty($sort['ASC']) && !empty($sort['DESC'])) {
             $order = array_keys($sort)[0];
             $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
         }
 
         $statement = self::prepare($sql);
         $statement->execute();
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAll($fetchMode);
     }
 
 }

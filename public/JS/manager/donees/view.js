@@ -1,4 +1,4 @@
-import {getData} from "../../request.js";
+import {getData,getTextData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
@@ -185,6 +185,12 @@ filterBtn.addEventListener('click', async function(e) {
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 
+    let viewBtns = document.querySelectorAll('a.btn-primary');
+
+    for(let i=0;i<viewBtns.length;i++) {
+        viewBtns[i].addEventListener('click', showDoneePopup);
+    }
+
 });
 
 sortBtn.addEventListener('click', async function(e) {
@@ -195,3 +201,52 @@ searchBtn.addEventListener('click', async function(e) {
     filterBtn.click();
 });
 
+let viewBtns = document.querySelectorAll('a.btn-primary');
+
+for(let i=0;i<viewBtns.length;i++) {
+    viewBtns[i].addEventListener('click', showDoneePopup);
+}
+
+async function showDoneePopup(e) {
+    const doneeID = e.target.id;
+    const doneeType = toggle.getActivePage()['btn'].id;
+
+    // console.log(doneeID,doneeType);
+
+    const result = await getData('./donee/popup','post',{doneeID:doneeID,doneeType:doneeType});
+
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['msg']},3000);
+        return;
+    }
+
+    popup.clearPopUp();
+    popup.setHeader("Donor Details");
+
+    popup.setSubHeading('User Account Details');
+    popup.startSplitDiv();
+    popup.setBody(result['donee'], ['username', 'registeredDate'], ['Username', 'Registered Date']);
+    popup.setBody(result['donee'], ['lockedStatus','mobileVerification'], [['Account Locked','bool'],['Mobile Verified','bool']]);
+    popup.endSplitDiv();
+
+
+    if(doneeType === 'organization') {
+        popup.setSubHeading('Organization Details');
+        popup.startSplitDiv();
+        popup.setBody(result['donee'], ['organizationName', 'contactNumber', 'regNo'], ['Organization Name', 'Contact Number', 'Registration Number']);
+        popup.setBody(result['donee'], ['representative', 'representativeContact', 'email'], ['Representive', 'Representative contact', 'Email']);
+        popup.endSplitDiv();
+    } else {
+        popup.setSubHeading('Personal Details');
+        popup.startSplitDiv();
+        popup.setBody(result['donee'], ['fname','verificationStatus', 'contactNumber',], ['First Name', ['Verified Donee','bool'],'Contact Number']);
+        popup.setBody(result['donee'],['lname','age','email'],['Last Name','Age','Email']);
+        popup.endSplitDiv();
+
+    }
+
+
+    popup.showPopUp();
+}

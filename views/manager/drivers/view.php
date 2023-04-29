@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /** @var $model \app\models\driverModel */
@@ -19,9 +20,9 @@ if( empty($drivers) ) {
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -69,7 +70,7 @@ $searchDiv->end(); ?>
     <?php
 
     $headers = ['Name','Contact Number','Vehicle', 'Vehicle Number', 'Preference'];
-    $arraykeys= ['name','contactNumber','vehicleType', 'vehicleNo', 'preference',['','View','#',[],'driverID']];
+    $arraykeys= ['name','contactNumber','vehicleType', 'vehicleNo', 'preference',['','View','#',[],'employeeID']];
 
     $driversTable = new table($headers,$arraykeys);
 

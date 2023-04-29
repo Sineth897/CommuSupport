@@ -5,7 +5,7 @@ import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 
-let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'completedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}]);
+let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'finishedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}],);
 
 let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
@@ -29,7 +29,9 @@ document.getElementById('sort').addEventListener('click', function(e) {
 });
 
 let filterBtn = document.getElementById('filterBtn');
-let eventsDiv = document.getElementById('eventDisplay')
+const upcomingEventsDiv = document.getElementById('ongoingEventsDisplay');
+const finishedEventsDiv = document.getElementById('finishedEventsDisplay');
+const cancelledEventsDiv = document.getElementById('cancelledEventsDisplay');
 
 let eventCategory = document.getElementById('eventCategory');
 let sortByDate = document.getElementById('sortByDate');
@@ -57,10 +59,31 @@ filterBtn.addEventListener('click', async function() {
         sort['DESC'].push('participationCount');
     }
 
-    let array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+    const array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+
+    console.log(array);
+
+    const upcomingEvents = {
+        icons : array['icons'],
+        event : array['event'].filter((event) => event['status'] === 'Upcoming'),
+    };
+
+    const finishedEvents = {
+        icons : array['icons'],
+        event : array['event'].filter((event) => event['status'] === 'Finished'),
+    }
+
+    const cancelledEvents = {
+        icons : array['icons'],
+        event : array['event'].filter((event) => event['status'] === 'Cancelled'),
+    }
 
     filterOptions.style.display = 'none';
-    displayEventcards(eventsDiv,array);
+
+
+    displayEventcards(upcomingEventsDiv,upcomingEvents);
+    displayEventcards(finishedEventsDiv,finishedEvents);
+    displayEventcards(cancelledEventsDiv,cancelledEvents);
     updateEventCardOnClick();
 
 });
@@ -97,7 +120,7 @@ async function showPopUp(e) {
     popUpEvent.endPopUpInfo();
 
     popUpEvent.setBody(event,popUpArrayKeys,popUpArrayLabels);
-    if(event['status'] !== 'Cancelled') {
+    if(event['status'] === 'Not active') {
         popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc,cancel:true},
             {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc,cancel:true}]);
     }

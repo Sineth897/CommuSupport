@@ -15,13 +15,24 @@ $manager = $manager->findOne(['employeeID' => $managerID]);
 $ccID = $manager->ccID;
 
 $events = $model->retrieve(["ccID" => $ccID],["DESC" => ["date"]]);
+$ongoingEvents = array_filter($events, function($event) {
+    return $event['status'] === "Upcoming" || $event['status'] === "Not Active";
+});
+
+$finishedEvents = array_filter($events, function($event) {
+    return $event['status'] === "Finished";
+});
+
+$cancelledEvents = array_filter($events, function($event) {
+    return $event['status'] === "Cancelled";
+});
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -74,17 +85,18 @@ $searchDiv->end();
 <div class="content" id="upcomingEvents">
 <?php
 $eventCards = new \app\core\components\cards\eventcard();
-$eventCards->displayEvents($events);
+$eventCards->displayEvents($ongoingEvents,'ongoingEventsDisplay');
 
 ?>
 </div>
 
-<div class="content" id="completedEvents" style="display: none">
-    <h1>Completed Events</h1>
+<div class="content" id="finishedEvents" style="display: none">
+
+    <?php $eventCards->displayEvents($finishedEvents,'finishedEventsDisplay'); ?>
 </div>
 
 <div class="content" id="cancelledEvents" style="display: none">
-    <h1>Cancelled Events</h1>
+    <?php $eventCards->displayEvents($cancelledEvents,'cancelledEventsDisplay'); ?>
 </div>
 
 

@@ -103,5 +103,10 @@ class Router
         $this->response->send();
     }
 
+    public function sayHello($name): string
+    {
+        return "Hello $name";
+    }
+
 
 }
