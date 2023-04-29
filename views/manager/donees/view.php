@@ -104,5 +104,3 @@ $searchDiv->end(); ?>
     } ?>
 
 </div>
-
-<script type="module" src="../public/JS/manager/donees/view.js"></script>

@@ -47,7 +47,7 @@ catch(\Exception $e){
 <div class="content">
 <?php
 $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['filedBy','filedDate','subject','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
+$arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
 
 
 $complaintsTable = new table($headers,$arrayKeys);

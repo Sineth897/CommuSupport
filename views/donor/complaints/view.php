@@ -51,7 +51,7 @@ catch(\Exception $e){
 
     <?php
     $headers = ['Complaint','Filed Date','Subject','Status','Solution','Reviewed Date'];
-    $arrayKeys = ['complaint','filedDate','subject','status','solution','reviewedDate'];
+    $arrayKeys = ['complaint','filedDate','subcategoryName','status','solution','reviewedDate'];
 
 
     $complaintsTable = new table($headers,$arrayKeys);
@@ -74,7 +74,7 @@ catch(\Exception $e){
 
 
 
-
+<script type="module" src="../public/JS/donor/complaint/filter.js"></script>
 
 
 
