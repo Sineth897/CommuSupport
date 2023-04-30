@@ -21,6 +21,7 @@ catch(\Exception $e){
 
 ?>
 
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->profile();
@@ -75,10 +76,6 @@ if($checkVerification->notVerified()) {
     }
     ?>
 </div>
-
-
-
-
 
 
 

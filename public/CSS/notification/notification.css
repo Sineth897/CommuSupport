@@ -83,6 +83,7 @@ button {
     display: block;
     overflow-y: scroll;
     height: auto;
+    border-radius: 12px;
 }
 
 .notif-card{

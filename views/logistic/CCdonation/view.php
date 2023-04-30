@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/cards/cc-donation-card.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /**
@@ -69,18 +70,15 @@ $searchDiv->end(); ?>
 
     </div>
 
-    <div class="card-container" id="ongoingDonations">
+    <div class="card-container" id="ongoingDonations" style="display: none">
 
     </div>
 
-    <div class="card-container" id="completedDonations">
+    <div class="card-container" id="completedDonations" style="display: none">
 
     </div>
 
 </div>
 
-<div class="content" >
-    <h3>Completed Donations</h3>
-</div>
 
 <script type="module" src="../public/JS/logistic/CCdonation/view.js"></script>

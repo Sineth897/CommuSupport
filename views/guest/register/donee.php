@@ -67,7 +67,7 @@ $CHOs = \app\models\choModel::getCHOs();
 
                 <?php $doneeForm->inputField($doneeIndividual, 'Age','number','age'); ?>
 
-                <?php $doneeForm->inputField($doneeIndividual, 'NIC','text','nic'); ?>
+                <?php $doneeForm->inputField($doneeIndividual, 'NIC','text','NIC'); ?>
 
                 <?php $doneeForm->fileInput($donee,'Upload your NIC Front','nicFront'); ?>
 

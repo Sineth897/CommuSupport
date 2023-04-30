@@ -34,7 +34,7 @@ class doneeIndividualModel extends DbModel
         return [
             'fname' => [self::$REQUIRED],
             'lname' => [self::$REQUIRED],
-            'nic' => [self::$REQUIRED,self::$nic,[self::$UNIQUE, 'class' => self::class]],
+            'NIC' => [self::$REQUIRED,self::$nic,[self::$UNIQUE, 'class' => self::class]],
             'age' => [self::$REQUIRED],
         ];
     }
