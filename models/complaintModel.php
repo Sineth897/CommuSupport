@@ -98,6 +98,12 @@ class complaintModel extends DbModel
        return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
    }
+    public function getUserType(): bool|array
+    {
+        $statement = self::prepare("SELECT usrType FROM users");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 
 
 }

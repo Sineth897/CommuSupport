@@ -4,6 +4,23 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/complaints/complaint.css">
 
+<?php
+
+/** @var $complaints \app\models\complaintModel */
+/** @var $user \app\models\choModel */
+
+use app\core\components\tables\table;
+
+$userID = \app\core\Application::session()->get('user');
+//
+try{
+    $complaint = $complaints->getAllComplaints($userID);
+
+}
+catch(\Exception $e){
+    echo $e->getMessage();
+}
+?>
 
 <?php
 
@@ -24,25 +41,33 @@ $headerDiv->heading("Complaints");
 
 $headerDiv->end();
 ?>
-
-
 <?php
+$filterDiv = new \app\core\components\layout\searchDiv();
 
-/** @var $complaints \app\models\complaintModel */
-/** @var $user \app\models\choModel */
+$filterDiv->filterBegin();
 
-use app\core\components\tables\table;
+//$filter = \app\core\components\form\form::begin('', '');
+//$filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory");
+//$filter->end();
 
-$userID = \app\core\Application::session()->get('user');
-//
-try{
-    $complaint = $complaints->getAllComplaints($userID);
+$filterDiv->filterEnd();
 
-}
-catch(\Exception $e){
-    echo $e->getMessage();
-}
+$filterDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+
+$sortForm->checkBox($complaints,"Sort By Date","reviewedDate",'filter');
+
+$sortForm::end();
+
+$filterDiv->sortEnd();
+
+$filterDiv->filterDivEnd();
+
+
 ?>
+
+
 
 <div class="content">
 <?php
@@ -63,6 +88,9 @@ $complaintsTable ->displayTable($complaint);
     ?>
 
 </div>
+
+
+<script type="module" src="../public/JS/cho/event/filter.js"></script>
 
 
 

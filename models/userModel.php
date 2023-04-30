@@ -180,6 +180,4 @@ class userModel extends  DbModel
         }
     }
 
-
-
 }

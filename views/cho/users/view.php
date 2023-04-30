@@ -3,12 +3,16 @@
 
 <?php
 /** @var $model \app\models\choModel */
+/** @var $model \app\models\userModel */
 
 $userID = \app\core\Application::session()->get('user');
 $donorData = $model->viewDonors($userID);
 
 
 ?>
+
+
+
 
 <?php
 
@@ -22,6 +26,7 @@ $profile->end();
 
 ?>
 
+
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
@@ -29,6 +34,7 @@ $headerDiv->heading("Users");
 
 $headerDiv->end();
 ?>
+
 <div class="search-filter">
     <!--
         <div class="filters">
@@ -46,6 +52,25 @@ $headerDiv->end();
     </div>
 
 </div>
+
+<?php
+$filterDiv = new \app\core\components\layout\searchDiv();
+$filterDiv->filterDivStart();
+
+$filterDiv->filterBegin();
+
+//$filterForm = \app\core\components\form\form::begin('', '');
+//$filterForm->dropDownList($model, "Select a User Type", '', \app\models\userModel::getUserType(), 'filterCategory');
+//$filterForm::end();
+
+$filterDiv->filterEnd();
+
+$filterDiv->filterDivEnd();
+
+
+?>
+
+
 
 <div class="content">
   <?php
