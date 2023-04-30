@@ -1,5 +1,7 @@
+/* Importing and using the Inter font from google fonts */
 @import url("https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap");
 
+/* Global Styles */
 * {
     font-family: Inter, sans-serif;
     margin: 0;
@@ -18,6 +20,7 @@
     scrollbar-width: none; /* Firefox */
 }
 
+/* Defining global color variables */
 :root {
     --primary-color: #1a1a1a;
     --secondary-color: #00d776;
@@ -31,75 +34,102 @@
     --transparent-background: rgba(0, 0, 0, 0.5);
 }
 
+/* Resetting css for hyperlinks */
 a {
     text-decoration: none;
     color: #000;
 }
 
+/* Styles for the main container of the layout */
 .main {
     display: block;
-    justify-content: center;
     background-color: var(--background-main);
+    padding: 10px 0;
+    height: 100%;
+    margin: 0;
 }
 
-/*basic layout of the top 3 panels*/
+/* Header structure is as follos*/
+/* .profile block = user profile and notification */
+/* .heading-pages block = page header and links for other pages */
+/* .search-filter block = search and filter divs */
+/* .main block = main content */
+
+/* ------------------- basic CSS layout parts of the blocks -------------------*/
+
+/* Common CSS for some blocks */
+
+.profile, .heading-pages, .search-filter {
+    display: flex;
+    padding: 0 20px;
+    height: 40px;
+}
+
+.heading-pages, .search-filter {
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Define styles for the top profile panel */
 .profile {
-    margin-top: 10px;
-    display: flex;
     justify-content: flex-end;
-    padding: 0 20px;
-    height: 60px;
     gap: 10px;
+    font-size: 0.8rem;
+    height: 60px;
+    margin-bottom: 10px;
 }
 
+/* Define styles for the heading pages panel */
 .heading-pages {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 60px;
-    padding: 0 20px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
 }
 
-.active-heading-page {
-    color: var(--secondary-color);
-}
-
+/* Define styles for the search filter panel */
 .search-filter {
-    margin-top: 10px;
-    display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    padding: 0 20px;
+    font-size: 0.8rem;
+
 }
 
-/*profile and notificationModel box layout */
+/* Define styles for the statistics div if needed */
+.info-container {
+    display: grid;
+    grid-template-columns:1fr 2fr;
+    gap: 20px;
+    padding: 0 20px;
+    margin-bottom: 10px;
+}
+
+/* ------------------- intricate CSS for each block -------------------*/
+
+/* 1. profile, notification block */
 
 .notif-box {
     position: relative;
-    border-radius: 1rem;
+    border-radius: 12px;
     background-color: #fff;
-    padding: 1rem;
+    padding: 18px;
     display: flex;
     align-items: center;
     box-shadow: 0 0 10px #e1e5ee;
+    cursor: pointer;
 }
 
 .notif-box i {
     font-size: 1.5rem;
 }
-
-
 .notification-popup {
     position: absolute;
-    top: 70px;
+    top: 4.4rem;
     right: 0;
-
     background-color: #f6f6f6;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
+    z-index: 30;
 }
 
 .notification-header {
@@ -135,10 +165,6 @@ a {
     font-size: 0.8rem;
 }
 
-.notification-text span i {
-    /*font-size: 1;*/
-}
-
 
 .name-box {
     text-align: right;
@@ -156,8 +182,8 @@ a {
 }
 
 .profile-box .profile-img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background-color: #000;
 }
@@ -168,7 +194,7 @@ a {
     border-radius: 50%;
 }
 
-/*heading and the other pagesb*/
+/* 2. heading and the other pages*/
 .pages {
     display: flex;
     flex-direction: row;
@@ -178,14 +204,25 @@ a {
 .heading-pages a {
     background-color: #fff;
     border-radius: 0.5rem;
-    padding: 16px;
+    padding: 0 12px;
     display: flex;
     align-items: center;
     line-height: 20px;
     gap: 10px;
     box-shadow: 0 0 10px #e1e5ee;
+    height: 40px;
 }
 
+.heading-pages a i {
+    font-size: 1.2rem;
+}
+
+/* Define styles for the active heading page */
+.active-heading-page {
+    color: var(--secondary-color);
+}
+
+/* 3. Filter, Sort and Search */
 .filters {
     display: flex;
     justify-content: space-between;
@@ -205,7 +242,7 @@ a {
   border-radius: 0.5rem;
   background-color: #fff;
   padding: 0 1rem;
-  height: 50px;
+  height: 40px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -249,7 +286,7 @@ a {
     display: flex;
     align-items: center;
     gap: 10px;
-    height: 50px;
+    height: 40px;
     padding: 0 10px;
     box-shadow: 0 0 10px #e1e5ee;
 }
@@ -258,19 +295,22 @@ a {
     border: none;
     outline: none;
     width: 100%;
-    height: 50px;
-    padding: 0 10px;
-    font-size: 1rem;
+    height: 40px;
+    padding: 0 10px;font-size: 0.8rem;
 }
+
+.search a i {
+font-size: 1rem;
+}
+
 
 /*  JUST FOR DEMO   */
 
 .content {
-    height: calc(100vh - 200px);
+    /*height: calc(100vh - 200px);*/
     width: 100%;
     overflow-y: scroll;
-    margin-top: 8px;
-    padding: 20px 20px;
+    padding: 10px 20px;
 }
 
 .content-form {
@@ -297,4 +337,24 @@ a {
     height: 100%;
     background-color: white;
     overflow-y: scroll;
+}
+
+/* Error pages css  */
+.error-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 20px;
+    height: 100%;
+    background-color: white;
+    overflow-y: scroll;
+}
+
+.error_code{
+display: flex;
+justify-content: center;
+align-items: center;
+    height: 100vh;
 }

@@ -458,9 +458,11 @@ $app->router->get('/donor/complaints/file', function ($request,$response){
     $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
 });
 
+
 //$app->router->get('/donor/complaints/file',function ($request,$response){
 //   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
 //});
+
 
 
 
@@ -550,6 +552,10 @@ $app->router->post("/logistic/CCdonations/create", function ($request,$response)
     $controller = new \app\controller\ccDonationController("createCCDonation",$request,$response);
 });
 
+$app->router->post("/logistic/CCdonation/accept", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("acceptCCDonation",$request,$response);
+});
+
 $app->router->post('/logistic/inventory/getcurrentinventory', function ($request,$response) {
     $controller = new \app\controller\inventoryController("getCurrentInventory",$request,$response);
 });
@@ -563,9 +569,6 @@ $app->router->post('/logistic/donation/popup', function ($request,$response) {
 $app->router->post('/logistic/donations/filter', function ($request,$response) {
     $controller = new \app\controller\donationController("filterDonationsEmployee",$request,$response);
 });
-
-
-
 
 
 
@@ -712,6 +715,10 @@ $app->router->get("/cho/complaints/solution",function ($request,$response){
 $app->router->post("/cho/complaints/solution",function ($request,$response){
     $controller = new \app\controller\complaintController("addSolution",$request,$response);
 });
+
+
+
+
 
 
 

@@ -9,6 +9,7 @@ class complaintModel extends DbModel
 {
     public string $complaintID = "";
 
+
     public string $complaint = "";
     public string $filedBy = "";
     public string $filedDate = "";
@@ -27,6 +28,7 @@ class complaintModel extends DbModel
 
     public function attributes(): array
     {
+
         return ["complaintID", "complaint", "filedBy", "subject", "choID"];
 
     }
@@ -39,7 +41,7 @@ class complaintModel extends DbModel
     public function rules(): array
     {
         return [
-            "complaint" => [self::$REQUIRED],
+            "complaint"=>[self::$REQUIRED],
         ];
 
     }
@@ -47,11 +49,17 @@ class complaintModel extends DbModel
     public function save(): bool
     {
         $this->complaintID = substr(uniqid('complaint', true), 0, 23);
-        $this->filedBy = $_SESSION['user'];
-
-
-        $this->choID = $this->getchoIDofDonor($_SESSION['user'])['cho'];
-
+        $this->filedBy=$_SESSION['user'];
+//        protected function getchoIDforComplaints($donorID)
+//    {
+//
+//        $statement= self::prepare("SELECT choID.cc from donor INNER JOIN communitycenter ON donor.ccID = communitycenter.ccID where donorID=:$donorID");
+//        $statement->bindValue(':userID',$donorID);
+//        $statement->execute();
+//        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+//
+//    }
+//        $this->choID=$_SESSION['user'];
 
         return parent::save();
 
@@ -75,7 +83,9 @@ class complaintModel extends DbModel
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
+
     }
+
 
     public function getOwnComplaints(string $userID)
     {
@@ -98,6 +108,7 @@ class complaintModel extends DbModel
        return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
    }
+
 
 
 }

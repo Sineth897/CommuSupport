@@ -83,7 +83,7 @@ const showAcceptPopUp = (popUp,reqId) => {
     const amountField = `<div class="form-group"><label class="form-label">Amount</label><input class="basic-input-field" id="amount" type="text" value="${amount}" disabled=""></div>`;
     const item = popUp.querySelector('#subcategoryName').value;
     const itemField = `<div class="form-group"><label class="form-label">Item</label><input class="basic-input-field" id="item" type="text" value="${item}" disabled=""></div>`;
-    const acceptedValue = `<input type="number" id="acceptedAmount" value="${amount}" min="1" max="${amount}"/>`
+    const acceptedValue = `<input type="number" id="acceptedAmount" value="${parseInt(amount)}" min="1" max="${parseInt(amount)}"/>`
 
     const buttons = `<div class='popup-btns'>
     <button class='btn btn-primary' id='confirm' value="${reqId}">Confirm</button>

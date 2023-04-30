@@ -31,16 +31,11 @@ $headerDiv->heading("File a complaint");
 $headerDiv->end();
 ?>
 
-
-
-
-
 <div class="content-form">
 
     <?php $complaintRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 
     <div class="form-box">
-
 
 
         <div >
@@ -58,7 +53,9 @@ $headerDiv->end();
         </div>
 
         <div style="padding: 2rem;display:flex;justify-content: center">
+
             <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
+
         </div>
 
 
