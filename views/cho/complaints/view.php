@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/complaints/complaint.css">
 
 
 <?php
@@ -41,17 +42,20 @@ try{
 catch(\Exception $e){
     echo $e->getMessage();
 }
+?>
 
-
+<div class="content">
+<?php
 $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['filedBy','filedDate','subject','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
+$arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
 
 
 $complaintsTable = new table($headers,$arrayKeys);
 $complaintsTable ->displayTable($complaint);
 
 ?>
-<div style="text-align: center;padding: 250px">
+</div>
+<div class="no-complaint">
     <?php
     if(empty($complaint)){
         echo "No Complaints has been filed.";

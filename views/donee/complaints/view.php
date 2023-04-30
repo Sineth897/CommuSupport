@@ -3,6 +3,24 @@
 <link href="../public/CSS/navbar/sidenav-styles.css" type="text/css" rel="stylesheet" >
 <link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet">
 
+<?php
+
+/** @var $complaints \app\models\complaintModel */
+use app\core\components\tables\table;
+
+$userID = \app\core\Application::session()->get('user');
+
+
+try{
+    $complaint = $complaints->getOwnComplaints($userID);
+
+}
+catch(\Exception $e){
+    echo $e->getMessage();
+}
+
+?>
+
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
@@ -32,21 +50,7 @@ if($checkVerification->notVerified()) {
 ?>
 
 
-<?php
-/** @var $complaints \app\models\complaintModel */
-use app\core\components\tables\table;
 
-$userID = \app\core\Application::session()->get('user');
-
-try{
-    $complaint = $complaints->getOwnComplaints($userID);
-
-}
-catch(\Exception $e){
-    echo $e->getMessage();
-}
-
-?>
 
 <div class="content-form">
 
@@ -74,42 +78,4 @@ catch(\Exception $e){
 </div>
 
 
-
-
-
-
-$searchDiv->end();
-?>
-
-
-<?php
-
-/** @var $complaint \app\models\complaintModel */
-/** @var $user \app\models\donorModel */
-
-use app\core\components\tables\table;
-
-$userID = \app\core\Application::session()->get('user');
-try{
-    $complaint = $complaint->ownComplaints($userID);
-
-}
-catch(\Exception $e){
-    echo $e->getMessage();
-}
-
-//$complaints= $model->retrieve(['filedBy'=>'complaintID']);
-
-$headers = ['Filed Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['filedDate','subject','status','solution','reviewedDate'];
-
-
-$complaintsTable = new table($headers,$arrayKeys);
-$complaintsTable ->displayTable($complaint);
-
-if(empty($complaint)){
-    echo "No Complaints has been filed by the user. ";
-}
-
-?>
 
