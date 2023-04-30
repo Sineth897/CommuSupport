@@ -92,6 +92,9 @@ class SMS
         if(str_contains($id,'cho')){
             return choModel::getModel(['choID' => $id]);
         }
+        if(str_contains($id,'cc')) {
+            return logisticModel::getModel(['ccID' => $id]);
+        }
         return null;
     }
 

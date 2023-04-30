@@ -72,7 +72,7 @@ class logisticModel extends DbModel
     }
 
     private function getDirectDonations(string $ccID): array {
-        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID AND sd.status IN ('Not Assigned','Reassign Requested')";
+        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID AND sd.status != 'Completed'";
         $stmt = self::prepare($sql);
         $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
@@ -82,7 +82,7 @@ class logisticModel extends DbModel
 //    Get data of the accepted requests from the relevant tables.
     private function getAcceptedRequests(string $ccID): array {
 
-        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') OR a.acceptedBy = '$ccID') AND s.status IN ('Not Assigned','Reassign Requested')";
+        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') OR a.acceptedBy = '$ccID') AND s.status != 'Completed'";
 
         $stmt = self::prepare($sql);
         $stmt->execute();
@@ -90,10 +90,71 @@ class logisticModel extends DbModel
     }
 
     private function getCCDonations(string $ccID): array {
-        $sql = "SELECT * FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = :ccID AND s.status IN ('Not Assigned','Reassign Requested')";
+        $sql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = :ccID AND s.status != 'Completed'";
         $stmt = self::prepare($sql);
         $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    // get deliveries filtered and sorted realted to specific process or all processes
+    public static function getDeliveriesOfLogisticOfficerFilteredAndSorted(string $process,array $filter,array $sort) : array {
+
+        // get the model of the logistic offcer
+        $logistic = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
+
+        // sql queries to retrieve subdelivery relating to each process
+        $directDonationSql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = '{$logistic->ccID}' AND sd.status != 'Completed'";
+        $ccDonationSql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = '{$logistic->ccID}' AND s.status != 'Completed'";
+        $acceptedRequestSql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '{$logistic->ccID}') OR a.acceptedBy = '{$logistic->ccID}') AND s.status != 'Completed'";
+
+        // if filter is provided
+        // since here filtering is done only by item we can directly add it
+        if(!empty($filter)) {
+            $directDonationSql .= " AND d.item = '{$filter['item']}'";
+            $ccDonationSql .= " AND c.item = '{$filter['item']}'";
+            $acceptedRequestSql .= " AND a.item = '{$filter['item']}'";
+        }
+
+        // if sort is provided
+        // since here sorting is done only by date we can directly add it
+        if(!empty($sort['DESC'])) {
+            $directDonationSql .= " ORDER BY s.createdDate DESC";
+            $ccDonationSql .= " ORDER BY s.createdDate DESC";
+            $acceptedRequestSql .= " ORDER BY s.createdDate DESC";
+        }
+
+        // prepare and execute the queries
+        $directDonationStmnt = self::prepare($directDonationSql);
+        $ccDonationStmnt = self::prepare($ccDonationSql);
+        $acceptedRequestStmnt = self::prepare($acceptedRequestSql);
+        $directDonationStmnt->execute();
+        $ccDonationStmnt->execute();
+        $acceptedRequestStmnt->execute();
+
+        //match expression to return the relevant data matching the process
+        return match ($process) {
+            'donation' => [
+                'status' =>  1,
+                'directDonations' => $directDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+            'acceptedRequest' => [
+                'status' =>  1,
+                'acceptedRequests' => $acceptedRequestStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+            'ccDonation' => [
+                'status' =>  1,
+                'ccDonations' => $ccDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+            default => [
+                'status' =>  1,
+                'directDonations' => $directDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+                'acceptedRequests' => $acceptedRequestStmnt->fetchAll(\PDO::FETCH_ASSOC),
+                'ccDonations' => $ccDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+        };
+
+    }
+
+
 }

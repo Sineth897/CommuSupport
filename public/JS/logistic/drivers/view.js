@@ -5,8 +5,8 @@ import flash from "../../flashmessages/flash.js";
 
 const driverTableDiv = document.getElementById('driverDisplay');
 
-let filterOptions = document.getElementById('filterOptions');
-let sortOptions = document.getElementById('sortOptions');
+const filterOptions = document.getElementById('filterOptions');
+const sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
     if(filterOptions.style.display === 'block') {
@@ -95,6 +95,12 @@ sortBtn.addEventListener('click', async function() {
 searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 })
+
+searchInput.addEventListener('keypress', async function(e) {
+    if(e.key === 'Enter') {
+        filterBtn.click();
+    }
+});
 
 
 let viewBtns = document.querySelectorAll('a.btn-primary');

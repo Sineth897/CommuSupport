@@ -8,7 +8,7 @@
 //should show direct donations
 //should show accepted requests
 //should show ccdonations
-$deliveries = $user->getPendingDeliveries();
+$delivery = $user->getPendingDeliveries();
 
 
 ?>
@@ -25,7 +25,7 @@ $profile->end(); ?>
 
 <?php $headerDiv->heading("Deliveries"); ?>
 
-<?php $headerDiv->pages(["pending", "completed"]); ?>
+<?php //$headerDiv->pages(["pending", "completed"]); ?>
 
 <?php $headerDiv->end(); ?>
 
@@ -35,9 +35,18 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($deliveries, "Select a Category", '', \app\models\donationModel::getAllSubcategories(), 'filterCategory');
+$filterForm->dropDownList($deliveries, "Select a Process", '', ['acceptedRequest' => 'Requests','donation' => 'Donations','ccDonation' => 'CC Donations' ], 'filterProcess');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($deliveries,"Date","",'sortCreatedDate');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
@@ -47,15 +56,13 @@ $searchDiv->end(); ?>
 
 <div class="content">
 
-        <div class="card-container">
+        <div class="card-container" id="pendingDeliveryDiv" >
             <?php
             $deliveryCard = new \app\core\components\cards\deliveryCard();
-            $deliveryCard->showDeliveryCard($deliveries['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($deliveries['acceptedRequests'],"acceptedRequests");
-            $deliveryCard->showDeliveryCard($deliveries['ccDonations'],"ccDonations");
+            $deliveryCard->showDeliveryCard($delivery['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($delivery['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($delivery['ccDonations'],"ccDonations");
             ?>
-
-
         </div>
 </div>
 

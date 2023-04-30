@@ -104,15 +104,18 @@ const showAcceptPopUp = async (popUp,reqId) => {
     let acceptedValue = `<input type="number" id="acceptedAmount" value="${parseInt(amount)}" min="1" max="${max}"/>`;
     let availableValue = `<p style="font-size: .8rem"> There are ${available} available in stock</p>`;
 
-    if(max === 0) {
-        acceptedValue =``;
-        availableValue = `<p style="font-size: .8rem"> There are no items available in stock</p>`;
-    }
-
-    const buttons = `<div class='popup-btns'>
+    let buttons = `<div class='popup-btns'>
     <button class='btn btn-primary' id='confirm' value="${reqId}">Confirm</button>
     <button class='btn btn-secondary' id='cancel'>Cancel</button>
     </div>`
+
+    if(max === 0) {
+        acceptedValue =``;
+        availableValue = `<p style="font-size: .8rem"><strong> There are no items available in stock </strong></p>`;
+        buttons = `<div class='popup-btns' style="justify-content: end">
+                        <button class='btn btn-secondary' id='cancel'>Cancel</button>
+                   </div>`;
+    }
 
     const acceptPopUp = document.createElement('div');
     acceptPopUp.id = 'acceptPopUp';
@@ -120,7 +123,9 @@ const showAcceptPopUp = async (popUp,reqId) => {
     acceptPopUp.innerHTML = `<div class='form-split'> ${itemField} ${amountField}</div>` + acceptedValue + availableValue + buttons;
 
     acceptPopUp.querySelector('#cancel').addEventListener('click', () => cancelAccept());
-    acceptPopUp.querySelector('#confirm').addEventListener('click', (e) => confirm(e));
+    if(acceptPopUp.querySelector('#confirm')) {
+        acceptPopUp.querySelector('#confirm').addEventListener('click', (e) => confirm(e));
+    }
 
     document.querySelector('#popUpBackground').appendChild(acceptPopUp);
 }
