@@ -21,6 +21,8 @@ class subdeliveryModel extends DbModel
     public ?string $completedTime = '';
 
     public ?string $deliveredBy = '';
+    //distance respect to each subdelivery in kilometers
+    public ?float $distance = 0.0;
 
     public function table(): string
     {

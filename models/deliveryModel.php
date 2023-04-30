@@ -50,12 +50,19 @@ class deliveryModel extends DbModel
         return $stmt1->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public static function updateDeliveryAsCompleted(string $deliveryID, string $completed) {
+    public static function updateDeliveryAsCompleted(string $deliveryID, string $completed) : void {
         $sql = "UPDATE delivery SET status = 'Completed', completedDate =:completedDate, completedTime = :completedTime WHERE deliveryID = :deliveryID";
         $stmt = self::prepare($sql);
         $stmt->bindValue(':deliveryID', $deliveryID);
         $stmt->bindValue(':completedDate', $completed);
         $stmt->bindValue(':completedTime', $completed);
         $stmt->execute();
+    }
+
+    public static function getDeliveryInfoOfCCDonation(string $ccDonationID) : array {
+        $sql = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN ccdonation cc ON s.deliveryID = cc.deliveryID WHERE cc.ccdonationID = '$ccDonationID'";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

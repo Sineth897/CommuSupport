@@ -26,6 +26,9 @@ abstract class DbModel extends Model
         return (new static())->retrieve($where, $orderBy);
     }
 
+    // base function to save a record on the table of the model
+    // here columns to be saved will be taken from the attributes() function in the relevant model
+    // and values will be the currently holding values of the relevant attribute of the model
     public function save(): bool
     {
         $table = $this->table();
@@ -45,6 +48,7 @@ abstract class DbModel extends Model
         return Application::$app->database->pdo->prepare($sql);
     }
 
+    //to simplify select queries which get only one row as a object of the relevant class
     public function findOne($where)
     {
         $tableName = static::table();
@@ -99,7 +103,6 @@ abstract class DbModel extends Model
     // but the thing is we cannot use the same column for where and set
     public function update(array $where,array $data): bool
     {
-        try {
             $tableName = static::table();
             $attributes = array_keys($where);
             $setData = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
@@ -112,21 +115,6 @@ abstract class DbModel extends Model
                 $statement->bindValue(":$key", $item);
             }
             return $statement->execute();
-
-        }
-        catch (\PDOException $e) {;
-            return $e->getMessage();
-        }
-
-    }
-
-    public function getCC(string $userID): string {
-        $table = static::table();
-        $primaryKey = static::getPrimaryKey();
-        $sql = "SELECT ccID FROM $table WHERE $ = $userID";
-        $statement = self::prepare($sql);
-        $statement->execute();
-        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
     //to retrieve data from two tables
@@ -179,7 +167,7 @@ abstract class DbModel extends Model
             $wherestmnt .= implode(" OR ", array_map(fn($attr) => "$attr LIKE '%$search[0]%' ", $search[1]));
         }
 
-        $sql .= $wherestmnt;
+        $sql .= $wherestmnt === " WHERE " ? '' : $wherestmnt;
 
         if(!empty($sort['ASC']) && !empty($sort['DESC'])) {
             $order = array_keys($sort)[0];

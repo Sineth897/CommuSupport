@@ -77,12 +77,7 @@ class deliveryController extends Controller
     private function getDriverDetails() : array {
         $user = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
 
-        $sql1 = "SELECT * FROM driver WHERE ccID = :ccID ";
-
-        $stmt1 = deliveryModel::prepare($sql1);
-        $stmt1->bindValue(':ccID',$user->ccID);
-        $stmt1->execute();
-        $drivers = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
+        $drivers = driverModel::getAllData(['ccID' => $user->ccID]);
 
         $sql2 = "SELECT deliveredBy,COUNT(*) as count FROM subdelivery WHERE deliveredBy IN (SELECT employeeID FROM driver WHERE ccID = :ccID) AND status = 'Ongoing'";
         $stmt2 = deliveryModel::prepare($sql2);
@@ -106,7 +101,7 @@ class deliveryController extends Controller
         try {
             $this->startTransaction();
             //update relavant subdelivery record
-            $subdelivery->update(['subdeliveryID' => $data['subdeliveryID']],['deliveredBy' => $data['driverID'],'status' => 'Ongoing']);
+            $subdelivery->update(['subdeliveryID' => $data['subdeliveryID']],['deliveredBy' => $data['driverID'],'status' => 'Ongoing','distance' => $data['distance']]);
             //update relevant process using a private function defined in this controller
             $this->updateProcess($data['related'],$data['processID']);
             //send sms to the driver
@@ -209,8 +204,12 @@ class deliveryController extends Controller
         deliveryModel::updateDeliveryAsCompleted($subdelivery->deliveryID,$completed);
         $this->completeProcess($subdelivery,$process,$completed);
         $this->logtransactionComplete($subdelivery,$process);
+        if($process === 'ccdonation') {
+            $this->setNotification("Your donation has been delivered",'Delivery Completed',$subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
+            return;
+        }
         $this->sendSMSByUserID($process === "acceptedRequest" ? "Your delivery has been completed. Please check your dashboard for more details" : "Your donation has been delivered. Please check your dashboard for more details",$process === 'donation' ? $subdelivery->start : $subdelivery->end);
-        $this->setNotification('Delivery Completed',$process === 'acceptedRequest' ? 'Your delivery has been completed. For any complaint please report via system or contact your community center' : 'Your donation has been delivered',$process === 'donation' ? $subdelivery->start : $subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
+        $this->setNotification($process === 'acceptedRequest' ? 'Your delivery has been completed. For any complaint please report via system or contact your community center' : 'Your donation has been delivered','Delivery Completed',$process === 'donation' ? $subdelivery->start : $subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
     }
 
     private function logtransactionComplete(subdeliveryModel $subdelivery,string $process) {
@@ -222,7 +221,7 @@ class deliveryController extends Controller
             case "acceptedRequest":
                 $sql = "SELECT * FROM acceptedrequest WHERE deliveryID = :deliveryID";
                 break;
-            case "ccDonation":
+            case "ccdonation":
                 $sql = "SELECT * FROM ccdonation WHERE deliveryID = :deliveryID";
                 break;
         }
@@ -239,7 +238,7 @@ class deliveryController extends Controller
             case 'acceptedRequest':
                 inventorylog::logPickupFromCC($data['acceptedID'],$data['donateTo']);
                 break;
-            case 'ccDonation':
+            case 'ccdonation':
                 inventorylog::logCCdonation($data['ccDonationID'],$data['fromCC'],$data['toCC']);
                 break;
         }
@@ -254,7 +253,7 @@ class deliveryController extends Controller
             case "acceptedRequest":
                 $sql = "UPDATE acceptedrequest SET deliveryStatus = 'Completed' WHERE deliveryID = :deliveryID";
                 break;
-            case "ccDonation":
+            case "ccdonation":
                 $sql = "UPDATE ccdonation SET deliveryStatus = 'Completed',completedDate = '$completedDate' WHERE deliveryID = :deliveryID";
                 break;
         }
@@ -341,6 +340,21 @@ class deliveryController extends Controller
             $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
         }
 
+    }
+
+    protected function filterDeliveries(Request $request, Response $response) : void {
+
+        $data = $request->getJsonData();
+        $process = $data['process'];
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+            $this->sendJson(array_merge(logisticModel::getDeliveriesOfLogisticOfficerFilteredAndSorted($process,$filters,$sort),['destinations' => subdeliveryModel::getDestinations(),'subcategories' => donationModel::getAllSubcategories()]));
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
     }
 
 }

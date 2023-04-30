@@ -57,10 +57,10 @@ async function finishDelivery(e) {
 
     const stringSplit = parent.id.split(",");
 
-    // console.log(parent.id)
+    console.log(parent.id)
 
-    const finishData = await getData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
-    // const finishData = await getTextData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
+    // const finishData = await getData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
+    const finishData = await getTextData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
     console.log(finishData);
 
     if(!finishData['status']) {

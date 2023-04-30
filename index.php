@@ -527,6 +527,10 @@ $app->router->post('/logistic/delivery/assign', function($request,$response) {
     $controller = new \app\controller\deliveryController("assignDriver",$request,$response);
 });
 
+$app->router->post('/logistic/deliveries/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController("filterDeliveries",$request,$response);
+});
+
 $app->router->get('/logistic/requests', function ($request,$response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
@@ -556,6 +560,14 @@ $app->router->post("/logistic/CCdonation/accept", function ($request,$response) 
     $controller = new \app\controller\ccDonationController("acceptCCDonation",$request,$response);
 });
 
+$app->router->post("/logistic/CCdonation/popup", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("CCDonationPopup",$request,$response);
+});
+
+$app->router->post("/logistic/CCdonations/filter", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("filterCCDonations",$request,$response);
+});
+
 $app->router->post('/logistic/inventory/getcurrentinventory', function ($request,$response) {
     $controller = new \app\controller\inventoryController("getCurrentInventory",$request,$response);
 });
@@ -569,14 +581,6 @@ $app->router->post('/logistic/donation/popup', function ($request,$response) {
 $app->router->post('/logistic/donations/filter', function ($request,$response) {
     $controller = new \app\controller\donationController("filterDonationsEmployee",$request,$response);
 });
-
-
-
-
-
-
-
-
 
 
 

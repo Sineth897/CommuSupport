@@ -114,7 +114,7 @@ async function showPopup(e) {
 
     const result = await getData('./donation/popup','post',{donationID:donationId});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type:'error',value:result['msg']},3000);
@@ -126,7 +126,6 @@ async function showPopup(e) {
 
     popup.clearPopUp();
     popup.setHeader('Donation Details');
-    popup.setComplaintIcon(parent.id,"donation");
 
     popup.startSplitDiv();
     popup.setBody(donation,['username','subcategoryName'],['Donated By',"Item"]);

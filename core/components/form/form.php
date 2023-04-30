@@ -30,13 +30,13 @@ class form
         echo "</div>";
     }
 
-    public function textArea($model, $label, $attribute,$size = [10,30]): void
+    public function textArea($model, $label, $attribute,$size = [10,30],$id=''): void
     {
         echo "<div class='form-group'>";
-        echo sprintf('<div></div><label class="form-label">%s :</label></div>', $label);
-        echo sprintf("<textarea name='%s' rows='%s' cols='%s' class='basic-text-area'>%s</textarea>", $attribute, $size[0], $size[1], $model->{$attribute});
+        echo sprintf('<label class="form-label">%s :</label>', $label);
+        echo sprintf("<textarea name='%s' rows='%s' cols='%s' class='basic-text-area' %s>%s</textarea>", $attribute, $size[0], $size[1],empty($id) ? $id: "id='". $id ."'", $model->{$attribute});
         echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
-        echo "<div>";
+        echo "</div>";
     }
 
     public function dropDownList($model, $label, $attribute, $options, $id =""): void
