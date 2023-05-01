@@ -1,11 +1,19 @@
-.chart-container {
+.chart-container, .stat {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
     height: 100%;
 }
 
 #totalChart {
-    width: 500px;
+    width: 540px;
+}
+
+#itemChart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }

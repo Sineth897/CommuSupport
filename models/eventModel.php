@@ -130,7 +130,7 @@ class eventModel extends DbModel
         $chartData = array();
         // Loop through the result and update the corresponding value in the new array
         foreach ($result as $row) {
-            $chartData[$row['month']] = $row['count'];
+            $chartData[$row['name']] = $row['count'];
         }
         return $chartData;
     }

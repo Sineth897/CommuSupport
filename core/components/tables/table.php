@@ -47,7 +47,7 @@ class table
                             $url .= '?' . implode("&", array_map(fn($param) => "$param=$data[$param]", $key[3]));
                         }
                         $id = !empty($key[4]) ? $data[$key[4]] : '';
-                        echo sprintf("<td><a id='%s' class='btn-primary' href='%s'>%s</a></td>",$id,$url, $key[1]);
+                        echo sprintf("<td><a id='%s' class='view' href='%s'>%s</a></td>",$id,$url, $key[1]);
                     }
                     else {
                         echo sprintf("<td>%s</td>", $data[$key[0]]);

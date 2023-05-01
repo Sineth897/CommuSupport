@@ -241,14 +241,14 @@ class requestModel extends DbModel
     public function getRequestDatabyCategory() : array
     {
         // Get the count of requests published on each month for urgency = "Within 7 days"
-        $sql = "SELECT c.categoryName, COUNT(r.item) as request_count FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID GROUP BY c.categoryName";
+        $sql = "SELECT c.categoryName, COUNT(r.item) as count FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID RIGHT JOIN category c ON s.categoryID = c.categoryID GROUP BY c.categoryName";
         $statement = requestModel::prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $chartData = array();
         // Loop through the result and update the corresponding value in the new array
         foreach ($result as $row) {
-            $chartData[$row['month']] = $row['count'];
+            $chartData[$row['categoryName']] = $row['count'];
         }
         return $chartData;
     }

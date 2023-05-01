@@ -24,16 +24,31 @@ $profile->profile();
 $profile->end(); ?>
 
 <!-- Inforgraphic Cards Layout -->
-<?php $infoDiv = new \app\core\components\layout\infoDiv();
+<?php $infoDiv = new \app\core\components\layout\infoDiv([2,3]);
 
 // First Block of Statistics
-$infoDiv->statDivStart();
-//
+$infoDiv->chartDivStart();
+//?>
+<div class="chart-container">
+<?php
 $infoDiv->chartCanvas("itemChart");
 ?>
+</div>
+<?php
+$chartData1 = $model->getRequestDatabyCategory();
+?>
+
+<script>
+    const itemData = <?php echo json_encode($chartData1); ?>;
+</script>
+<script src="../public/JS/charts/admin/request/subcategoryChart.js"></script>
 <!-- Summary of ALl Statistics in this div-->
 <?php
-$infoDiv->statDivEnd(); ?>
+$infoDiv->chartDivEnd();
+
+?>
+
+
 
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
@@ -42,14 +57,14 @@ $infoDiv->statDivEnd(); ?>
 </div>
 <?php
 $urgencies = array("Within 7 days", "Within a month");
-$results = $model->getRequestDataMonthly();
+$chartData2 = $model->getRequestDataMonthly();
 ?>
 
 <script>
-    const weekData = <?php echo json_encode($results[$urgencies[0]]); ?>;
-    const monthData = <?php echo json_encode($results[$urgencies[1]]); ?>;
+    const weekData = <?php echo json_encode($chartData2[$urgencies[0]]); ?>;
+    const monthData = <?php echo json_encode($chartData2[$urgencies[1]]); ?>;
 </script>
-<script src="/CommuSupport/public/JS/charts/admin/request/totalChart.js"></script>
+<script src="../public/JS/charts/admin/request/totalChart.js"></script>
 
 <?php $infoDiv->chartDivEnd();
 $infoDiv->end(); ?>

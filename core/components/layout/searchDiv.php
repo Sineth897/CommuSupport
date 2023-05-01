@@ -21,8 +21,8 @@ class searchDiv
 
     public function filterBegin(): void
     {
-        echo "<div class='filter'>";
-        echo "<p id='filter'><i class='material-icons'>filter_list</i><span>Filter</span></p>";
+        echo "<div class='filter' id='filter'>";
+        echo "<p ><i class='material-icons'>filter_alt</i><span>Filter</span></p>";
         echo "<div class='filter-box' id='filterOptions' style='display: none'>";
     }
 
@@ -34,8 +34,8 @@ class searchDiv
 
     public function sortBegin(): void
     {
-        echo "<div class='sort'>";
-        echo "<p id='sort'><i class='material-icons'>sort</i> <span>Sort</span></p>";
+        echo "<div class='sort' id='sort'>";
+        echo "<p><i class='material-icons'>sort</i> <span>Sort</span></p>";
         echo "<div class='filter-box' id='sortOptions' style='display: none'>";
     }
 

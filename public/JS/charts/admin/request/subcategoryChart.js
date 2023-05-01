@@ -1,59 +1,37 @@
-const canvas = document.getElementById('totalChart');
-const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const myChart = new Chart(canvas, {
-    type: 'line', data: {
-        labels: monthsOfYear, datasets: [{
-            label: 'Requests within 7 days',
-            data: Object.values(weekData),
-            borderColor: 'rgb(0,198,21)',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
-            pointBackgroundColor: 'rgb(0,198,21)',
-            lineTension: 0
-
-        }, {
-            label: 'Requests within a month',
-            data: Object.values(monthData),
-            borderColor: 'rgb(0,107,14)',
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
-            pointBackgroundColor: 'rgb(0,107,14)',
-            lineTension: 0
-        },]
-    }, options: {
+var ctx = document.getElementById('itemChart').getContext('2d');
+var itemChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: Object.keys(itemData),
+        datasets: [{
+            label: 'My Pie Chart',
+            data: Object.values(itemData),
+            backgroundColor: [
+                '#225E27',
+                '#3AAC43',
+                '#78D480'
+            ]
+        }]
+    },
+    options: {
         title: {
             display: true,
-            text: 'Requests',
-            fontSize: 20
+            text: 'Categories of Requests',
+            fontSize: 24,
+            fontColor: '#000',
+            fontFamily: 'inter'
         },
-
-        responsive: false, maintainAspectRatio: false, scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    stepSize: 1
-                }, gridLines: {
-                    display: false
-                }
-            }], xAxes: [{
-                gridLines: {
-                    display: true
-                },
-                ticks: {
-                    autoSkip: true,
-                    autoSkipPadding: 10
-                }
-            }]
-        },
-
+        responsive: false,
         legend: {
+            display: true,
+            position: 'top',
             labels: {
-                usePointStyle: true,
-                boxWidth: 4,
+                boxWidth: 10,
                 fontSize: 10,
             }
+        },
+        layout:{
+            padding: 0
         }
     }
 });
