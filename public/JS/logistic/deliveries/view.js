@@ -9,7 +9,7 @@ import DeliveryCardLogistic from "../../components/deliveryCard-logistic.js";
 window.initMap = MapRoute.initMap;
 
 // toggle pages function
-// let toggle = new togglePages([{btnId:'pending',pageId:'pendingDeliveries'},{btnId:'completed',pageId:'completedDeliveries'}]);
+let toggle = new togglePages([{btnId:'pending',pageId:'pendingDeliveryDiv'},{btnId:'completed',pageId:'completedDeliveryDiv'}],'grid');
 
 // initialize variables to store delivery cards and assign buttons
 let deliveryCards = [];
@@ -65,7 +65,7 @@ async  function showDeliveryPopUp(e) {
     const popup = await deliverypopup.showDeliveryPopUp(deliveryData,e.target.value);
 
     // If the delivery is not assigned to a driver, remove the driver from the drivers array and show assigned driver in the popup
-    if(deliveryData['deliveryStatus'] !== 'Not Assigned' && deliveryData['deliveryStatus'] !== 'Ongoing') {
+    if(deliveryData['deliveryStatus'] !== 'Not Assigned' && deliveryData['deliveryStatus'] !== 'Ongoing' && deliveryData['deliveryStatus'] !== 'Completed') {
 
         // get the div to show reassigned driver
         let reassignDriverDiv = popup.querySelector('#reassignedDriver')
@@ -99,6 +99,36 @@ async  function showDeliveryPopUp(e) {
 
         popup.querySelector('.driver-selection').remove();
     }
+    // if completed, remove the driver scroller card and assign driver button and show the assigned driver, and completed date and time
+    else if (deliveryData['deliveryStatus'] === 'Completed') {
+
+        // get the div to show reassigned driver
+        let reassignDriverDiv = popup.querySelector('#reassignedDriver')
+
+        // get the index of the driver in the drivers array
+        const driverIndex = drivers.findIndex(driver => driver['driverID'] === deliveryData['driverID']);
+
+        // update the div with the driver name
+        reassignDriverDiv.querySelector('h2').innerHTML = drivers[driverIndex]['name'];
+
+        // divs to show completed date and time
+        const completedDateDiv = document.createElement('div');
+        const completedTimeDiv = document.createElement('div');
+
+        // update the divs with the completed date and time
+        completedDateDiv.innerHTML = `<h4>Completed Date</h4><p>${deliveryData['completedDate']}</p>`;
+        completedTimeDiv.innerHTML = `<h4>Completed Time</h4><p>${deliveryData['completedTime']}</p>`;
+
+        // append the divs to the reassigned driver div
+        reassignDriverDiv.parentElement.append(completedDateDiv);
+        reassignDriverDiv.parentElement.append(completedTimeDiv);
+
+        // show the driver's name
+        reassignDriverDiv.style.display = 'block';
+
+        popup.querySelector('.driver-selection').remove();
+
+    }
 
     // initialize from and to coordinates to show route in the map
     const from = {lat: parseFloat(deliveryData['fromLatitude']), lng: parseFloat(deliveryData['fromLongitude'])};
@@ -123,7 +153,7 @@ async  function showDeliveryPopUp(e) {
     // const distance = 5.9;
 
     // add event listener to the assign driver button, if not already assigned
-    if (deliveryData['deliveryStatus'] !== 'Ongoing') {
+    if (deliveryData['deliveryStatus'] !== 'Ongoing' && deliveryData['deliveryStatus'] !== 'Completed') {
         popup.querySelector('.driver-assign-btn').addEventListener('click', assignDriver);
     } else {
         return;
@@ -239,6 +269,7 @@ document.getElementById('sort').addEventListener('click', function(e) {
 
 // get the divs to show the deliveries
 const pendingDeliveryDiv = document.getElementById('pendingDeliveryDiv');
+const completedDeliveryDiv = document.getElementById('completedDeliveryDiv');
 
 // get filter and sort btns
 const filterBtn = document.getElementById('filterBtn');
@@ -283,9 +314,23 @@ filterBtn.addEventListener('click', async function(e) {
     }
 
     // get the data from the response
+    // first get the deliveries
     const directDonations = result['directDonations'];
     const acceptedRequests = result['acceptedRequests'];
     const ccDonations = result['ccDonations'];
+
+    // filter out pending deliveries
+    const pendingDirectDonations = directDonations ? directDonations.filter(delivery => delivery['status'] !== 'Completed') : [];
+    const pendingAcceptedRequests = acceptedRequests ? acceptedRequests.filter(delivery => delivery['status'] !== 'Completed') : [];
+    const pendingCCDonations = ccDonations ? ccDonations.filter(delivery => delivery['status'] !== 'Completed') : [];
+
+    // filter out completed deliveries
+    const completedDirectDonations = directDonations ? directDonations.filter(delivery => delivery['status'] === 'Completed') : [];
+    const completedAcceptedRequests = acceptedRequests ? acceptedRequests.filter(delivery => delivery['status'] === 'Completed') : [];
+    const completedCCDonations = ccDonations ? ccDonations.filter(delivery => delivery['status'] === 'Completed') : [];
+
+
+    // get the destinations and subcategories
     const destinations = result['destinations'];
     const subcategories = result['subcategories'];
 
@@ -294,20 +339,24 @@ filterBtn.addEventListener('click', async function(e) {
 
     // remove currently shown delivery cards
     pendingDeliveryDiv.innerHTML = '';
+    completedDeliveryDiv.innerHTML = '';
 
     // if delivery related to direct donations are available show them
     if(directDonations) {
-        deliveries.showDeliveryCards(pendingDeliveryDiv,directDonations,'directDonations');
+        deliveries.showDeliveryCards(pendingDeliveryDiv,pendingDirectDonations,'directDonations');
+        deliveries.showDeliveryCards(completedDeliveryDiv,completedDirectDonations,'directDonations');
     }
 
     // if delivery related to accepted requests are available show them
     if(acceptedRequests) {
-        deliveries.showDeliveryCards(pendingDeliveryDiv,acceptedRequests,'acceptedRequests');
+        deliveries.showDeliveryCards(pendingDeliveryDiv,pendingAcceptedRequests,'acceptedRequests');
+        deliveries.showDeliveryCards(completedDeliveryDiv,completedAcceptedRequests,'acceptedRequests');
     }
 
     // if delivery related to cc donations are available show them
     if(ccDonations) {
-        deliveries.showDeliveryCards(pendingDeliveryDiv,ccDonations,'ccDonations');
+        deliveries.showDeliveryCards(pendingDeliveryDiv,pendingCCDonations,'ccDonations');
+        deliveries.showDeliveryCards(completedDeliveryDiv,completedCCDonations,'ccDonations');
     }
 
     // hide the filter and sort options

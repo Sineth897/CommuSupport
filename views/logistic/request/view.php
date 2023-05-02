@@ -7,9 +7,24 @@
 /** @var $accepted \app\models\acceptedModel */
 /** @var $user \app\models\logisticModel */
 
+// get the logistic model of the logged-in user
 $user = $user->findOne(['employeeID' => $_SESSION['user']]);
+
+// retrieve all requests approved by managers
 $requests = $model->getAllRequests(['Approved']);
+
+// retrieve all requests accepted by the logistic ( both ongoing and completed )
 $acceptedRequests = \app\models\acceptedModel::getAcceptedRequestsByUserID($user->ccID);
+
+// filter the accepted requests to get only completed requests
+$completedRequests = array_filter($acceptedRequests,function ($request){
+    return $request['deliveryStatus'] === 'Completed';
+});
+
+// filter the accepted requests to get only ongoing requests
+$ongoingRequests = array_filter($acceptedRequests,function ($request){
+    return $request['deliveryStatus'] !== 'Completed';
+});
 
 ?>
 
@@ -26,7 +41,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Requests");
 
-$headerDiv->pages(["posted","accepted"]);
+$headerDiv->pages(["posted","accepted","completed"]);
 
 $headerDiv->end();
 ?>
@@ -74,7 +89,20 @@ $searchDiv->end();
 
         <?php
 
-        $requestCards->displayRequests($acceptedRequests,[["View","requestView"]],true);
+        $requestCards->displayRequests($ongoingRequests,[["View","requestView"]],true);
+
+//        echo "<pre>";
+//        print_r($ongoingRequests);
+//        echo "</pre>";
+        ?>
+
+    </div>
+
+    <div class="card-container" id="completedRequests" style="display: none">
+
+        <?php
+
+        $requestCards->displayRequests($completedRequests,[["View","requestView"]],true);
         ?>
 
     </div>

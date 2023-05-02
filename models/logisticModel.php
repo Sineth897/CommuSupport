@@ -72,7 +72,7 @@ class logisticModel extends DbModel
     }
 
     private function getDirectDonations(string $ccID): array {
-        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID AND sd.status != 'Completed'";
+        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID";
         $stmt = self::prepare($sql);
         $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
@@ -82,7 +82,7 @@ class logisticModel extends DbModel
 //    Get data of the accepted requests from the relevant tables.
     private function getAcceptedRequests(string $ccID): array {
 
-        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') OR a.acceptedBy = '$ccID') AND s.status != 'Completed'";
+        $sql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') OR a.acceptedBy = '$ccID')";
 
         $stmt = self::prepare($sql);
         $stmt->execute();
@@ -90,7 +90,7 @@ class logisticModel extends DbModel
     }
 
     private function getCCDonations(string $ccID): array {
-        $sql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = :ccID AND s.status != 'Completed'";
+        $sql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = :ccID";
         $stmt = self::prepare($sql);
         $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
@@ -104,9 +104,9 @@ class logisticModel extends DbModel
         $logistic = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
 
         // sql queries to retrieve subdelivery relating to each process
-        $directDonationSql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = '{$logistic->ccID}' AND sd.status != 'Completed'";
-        $ccDonationSql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = '{$logistic->ccID}' AND s.status != 'Completed'";
-        $acceptedRequestSql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '{$logistic->ccID}') OR a.acceptedBy = '{$logistic->ccID}') AND s.status != 'Completed'";
+        $directDonationSql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = '{$logistic->ccID}'";
+        $ccDonationSql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = '{$logistic->ccID}'";
+        $acceptedRequestSql = "SELECT * FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '{$logistic->ccID}') OR a.acceptedBy = '{$logistic->ccID}') ";
 
         // if filter is provided
         // since here filtering is done only by item we can directly add it

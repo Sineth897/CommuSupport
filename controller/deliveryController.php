@@ -236,7 +236,7 @@ class deliveryController extends Controller
                 inventoryModel::updateInventoryAfterDonation($data);
                 break;
             case 'acceptedRequest':
-                inventorylog::logPickupFromCC($data['acceptedID'],$data['donateTo']);
+                inventorylog::logPickupFromCC($data['acceptedID'],$data['postedBy']);
                 break;
             case 'ccdonation':
                 inventorylog::logCCdonation($data['ccDonationID'],$data['fromCC'],$data['toCC']);

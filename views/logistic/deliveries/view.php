@@ -8,8 +8,34 @@
 //should show direct donations
 //should show accepted requests
 //should show ccdonations
+// contains all deliveries related to logistic officer's community center
 $delivery = $user->getPendingDeliveries();
 
+// filter out pending deliveries
+$pendingDeliveries['directDonations'] = array_filter($delivery['directDonations'], function($delivery) {
+    return $delivery['status'] !== "Completed";
+});
+
+$pendingDeliveries['acceptedRequests'] = array_filter($delivery['acceptedRequests'], function($delivery) {
+    return $delivery['status'] !== "Completed";
+});
+
+$pendingDeliveries['ccDonations'] = array_filter($delivery['ccDonations'], function($delivery) {
+    return $delivery['status'] !== "Completed";
+});
+
+// filter out completed deliveries
+$completedDeliveries['directDonations'] = array_filter($delivery['directDonations'], function($delivery) {
+    return $delivery['status'] === "Completed";
+});
+
+$completedDeliveries['acceptedRequests'] = array_filter($delivery['acceptedRequests'], function($delivery) {
+    return $delivery['status'] === "Completed";
+});
+
+$completedDeliveries['ccDonations'] = array_filter($delivery['ccDonations'], function($delivery) {
+    return $delivery['status'] === "Completed";
+});
 
 ?>
 
@@ -25,7 +51,7 @@ $profile->end(); ?>
 
 <?php $headerDiv->heading("Deliveries"); ?>
 
-<?php //$headerDiv->pages(["pending", "completed"]); ?>
+<?php $headerDiv->pages(["pending", "completed"]); ?>
 
 <?php $headerDiv->end(); ?>
 
@@ -59,9 +85,18 @@ $searchDiv->end(); ?>
         <div class="card-container" id="pendingDeliveryDiv" >
             <?php
             $deliveryCard = new \app\core\components\cards\deliveryCard();
-            $deliveryCard->showDeliveryCard($delivery['directDonations'],"directDonations");
-            $deliveryCard->showDeliveryCard($delivery['acceptedRequests'],"acceptedRequests");
-            $deliveryCard->showDeliveryCard($delivery['ccDonations'],"ccDonations");
+            $deliveryCard->showDeliveryCard($pendingDeliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($pendingDeliveries['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($pendingDeliveries['ccDonations'],"ccDonations");
+            ?>
+        </div>
+
+        <div class="card-container" id="completedDeliveryDiv" style="display: none;">
+            <?php
+            $deliveryCard = new \app\core\components\cards\deliveryCard();
+            $deliveryCard->showDeliveryCard($completedDeliveries['directDonations'],"directDonations");
+            $deliveryCard->showDeliveryCard($completedDeliveries['acceptedRequests'],"acceptedRequests");
+            $deliveryCard->showDeliveryCard($completedDeliveries['ccDonations'],"ccDonations");
             ?>
         </div>
 </div>

@@ -14,7 +14,7 @@ class eventcard
     public function displayEvents(array $events = [],string $id = "eventDisplay") {
         echo sprintf("<div class='card-container' id='%s'>",$id);
         if(!$events) {
-            echo "<h1>There are no event to display</h1>";
+            echo "<img src='/CommuSupport/public/src/errors/NoData.svg'>";
         }
         else {
             foreach ($events as $event) {

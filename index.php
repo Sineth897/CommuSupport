@@ -307,6 +307,14 @@ $app->router->post('/donee/request/create', function($request,$response) {
     $controller = new \app\controller\requestController('postRequest',$request,$response);
 });
 
+$app->router->post('/donee/request/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+
+$app->router->post('/donee/requests/filter', function ($request, $response) {
+    $controller = new \app\controller\requestController("filterOwnRequests",$request,$response);
+});
+
 $app->router->get('/donee/communitycenters', function ($request, $response) {
     $controller = new \app\controller\ccController("viewCC",$request,$response);
 });
@@ -334,14 +342,6 @@ $app->router->get('/donee/complaints', function($request,$response) {
 $app->router->post('/donee/complaints/files',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
-
-
-
-
-
-
-
-
 
 
 

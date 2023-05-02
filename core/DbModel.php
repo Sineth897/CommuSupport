@@ -150,15 +150,26 @@ abstract class DbModel extends Model
 
     //to run custom queries
     //example: $sql = "SELECT * FROM users INNER JOIN ..."; <- without WHERE, ORDER and LIKE clauses
-    // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause
+    // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause, can specify if not equal // $where = ['!id' => 1, '!name' => '!John'];
     // $sort = ['ASC' => ['id', 'name']]; <- ORDER BY clause
     // $search = ['search' , ['name' => 'John']]; <- LIKE clause
-    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [], string $fetchMode = \PDO::FETCH_ASSOC): array {
+    // $groupBy = 'id'; <- GROUP BY clause
+    // $having = ['id' => 1, 'name' => 'John']; <- HAVING clause
+    // $fetchMode = \PDO::FETCH_ASSOC; <- fetch mode
+    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [],string $groupBy = "",array $having = [] ,string $fetchMode = \PDO::FETCH_ASSOC): array {
 
         $wherestmnt = ' WHERE ';
 
         if($where) {
-            $where = implode("AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", array_keys($where)));
+            $where = implode("AND ", array_map(function($attr)  use ($where)
+                                                {
+                                                    if($attr[0] === '!') {
+                                                        return substr($attr, 1) . " != '$where[$attr]'";
+                                                    }
+                                                    else {
+                                                        return "$attr = '$where[$attr]'";
+                                                    }
+                                                }, array_keys($where)));
             $wherestmnt .= " $where";
         }
 
@@ -169,7 +180,21 @@ abstract class DbModel extends Model
 
         $sql .= $wherestmnt === " WHERE " ? '' : $wherestmnt;
 
-        if(!empty($sort['ASC']) && !empty($sort['DESC'])) {
+        if( empty($groupBy) && (!empty($sort[array_key_first($sort)]))) {
+            $order = array_keys($sort)[0];
+            $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
+        }
+
+        if($groupBy !== "") {
+            $sql .= " GROUP BY $groupBy";
+        }
+
+        if(!empty($having)) {
+            $having = implode("AND ", array_map(fn($attr) => "$attr = '$having[$attr]'", array_keys($having)));
+            $sql .= " HAVING $having";
+        }
+
+        if( !empty($groupBy) && (!empty($sort[array_key_first($sort)])) ) {
             $order = array_keys($sort)[0];
             $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
         }
@@ -177,6 +202,7 @@ abstract class DbModel extends Model
         $statement = self::prepare($sql);
         $statement->execute();
         return $statement->fetchAll($fetchMode);
+//        return [$sql];
     }
 
 }
