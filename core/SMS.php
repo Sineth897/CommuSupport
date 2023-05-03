@@ -12,8 +12,8 @@ use app\models\userModel;
 
 class SMS
 {
-    private string $id = '';
-    private string $pw = '';
+    private ?string $id = '';
+    private ?string $pw = '';
     private string $baseURL = 'http://www.textit.biz/sendmsg';
 
     public function __construct(array $config)

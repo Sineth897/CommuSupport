@@ -4,29 +4,41 @@ namespace app\core;
 
 class Request
 {
-    private static $REPLACE_START;
+    private static array $REPLACE_START;
 
-
+    // constructor function to initialize the base url
     public function __construct()
     {
         self::$REPLACE_START = ['/CommuSupport/' => '/'];
     }
 
+    // function to get the base url
+    public function getBaseURL(): array
+    {
+        return self::$REPLACE_START;
+    }
+
     //function to get the path of the request
     public function getPath(): string
     {
+        // get the path from the request uri in the super global variable
         $path = strtr($_SERVER['REQUEST_URI'], self::$REPLACE_START);
+
+        // get the position of the question mark in the path, and if it exists, remove it
         $position = strpos($path, '?');
-        if($path === '/') {
-            return $path;
-        }
+        $path = $position === false ? $path : substr($path, 0, $position);
+
+        // if the path is empty, return the path as '/'
         if($path[-1] === '/') {
             $path = substr($path, 0, -1);
         }
-        if ($position === false) {
-            return $path;
+
+        // if the path is empty, return the path as '/'
+        if($path === '') {
+            $path = '/';
         }
-        return substr($path, 0, $position);
+
+        return $path;
     }
 
     //function to get the request method
@@ -50,27 +62,32 @@ class Request
     //function to get the body of the request
     public function getBody(): array
     {
+
         $body = [];
+
+        // if the method is get, sanitize the input and store it in the body array
         if ($this->isGet()) {
             foreach ($_GET as $key => $value) {
                 $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
+
+        // if the method is post, sanitize the input and store it in the body array
         if ($this->isPost()) {
             foreach ($_POST as $key => $value) {
                 $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
+
         return $body;
+
     }
 
-    public function getUser(): string {
-        $url = $this->getPath();
-        $url = explode('/', $url);
-        return $url[1];
-    }
 
     public function getJsonData() {
+
+        // get the json data from fetch requests
         return json_decode(file_get_contents('php://input'), true);
+
     }
 }

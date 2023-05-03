@@ -49,7 +49,7 @@ abstract class DbModel extends Model
     }
 
     //to simplify select queries which get only one row as a object of the relevant class
-    public function findOne($where)
+    public function findOne($where) : ?DbModel
     {
         $tableName = static::table();
         $attributes = array_keys($where);
@@ -156,10 +156,12 @@ abstract class DbModel extends Model
     // $groupBy = 'id'; <- GROUP BY clause
     // $having = ['id' => 1, 'name' => 'John']; <- HAVING clause
     // $fetchMode = \PDO::FETCH_ASSOC; <- fetch mode
-    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [],string $groupBy = "",array $having = [] ,string $fetchMode = \PDO::FETCH_ASSOC): array {
+    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [],string $groupBy = "",array $having = [] ,string|int $fetchMode = \PDO::FETCH_ASSOC): array {
 
         $wherestmnt = ' WHERE ';
 
+        // structure where array to be like "id = 1", "name != 'John'"
+        // then implode it with AND, then append it to where statement
         if($where) {
             $where = implode("AND ", array_map(function($attr)  use ($where)
                                                 {
@@ -173,27 +175,39 @@ abstract class DbModel extends Model
             $wherestmnt .= " $where";
         }
 
+        // structure search array to be like "name LIKE '%John%'"
+        // then implode it with OR, then append it to where statement
         if(!empty($search)) {
             $wherestmnt = $wherestmnt === " WHERE " ? $wherestmnt : $wherestmnt . " AND ";
             $wherestmnt .= implode(" OR ", array_map(fn($attr) => "$attr LIKE '%$search[0]%' ", $search[1]));
         }
 
+        // append where statement to sql
         $sql .= $wherestmnt === " WHERE " ? '' : $wherestmnt;
 
+        // if there is no group by clause and there is order by clause
+        // append order by clause to sql
         if( empty($groupBy) && (!empty($sort[array_key_first($sort)]))) {
             $order = array_keys($sort)[0];
             $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
         }
 
+        // if there is group by clause
+        // append group by clause to sql
         if($groupBy !== "") {
             $sql .= " GROUP BY $groupBy";
         }
 
+        // if there is having clause
+        // structure having array to be like "id = 1", "name != 'John'"
+        // then implode it with AND, then append it to sql
         if(!empty($having)) {
             $having = implode("AND ", array_map(fn($attr) => "$attr = '$having[$attr]'", array_keys($having)));
             $sql .= " HAVING $having";
         }
 
+        // if there is group by clause and there is order by clause
+        // append order by clause to sql
         if( !empty($groupBy) && (!empty($sort[array_key_first($sort)])) ) {
             $order = array_keys($sort)[0];
             $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
