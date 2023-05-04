@@ -48,8 +48,8 @@ abstract class DbModel extends Model
         return Application::$app->database->pdo->prepare($sql);
     }
 
-    //to simplify select queries which get only one row as a object of the relevant class
-    public function findOne($where) : ?DbModel
+    //to simplify select queries which get only one row as an object of the relevant class
+    public function findOne($where) : DbModel | bool | null
     {
         $tableName = static::table();
         $attributes = array_keys($where);

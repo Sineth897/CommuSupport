@@ -13,12 +13,18 @@ class Request
     }
 
     // function to get the base url
+    /**
+     * @return array|string[]
+     */
     public function getBaseURL(): array
     {
         return self::$REPLACE_START;
     }
 
     //function to get the path of the request
+    /**
+     * @return string
+     */
     public function getPath(): string
     {
         // get the path from the request uri in the super global variable
@@ -42,6 +48,9 @@ class Request
     }
 
     //function to get the request method
+    /**
+     * @return string
+     */
     public function method(): string
     {
         return strtolower($_SERVER['REQUEST_METHOD']);
@@ -54,12 +63,18 @@ class Request
     }
 
     //function to verify whether the method is post or not
+    /**
+     * @return bool
+     */
     public function isPost(): bool
     {
         return $this->method() === 'post';
     }
 
     //function to get the body of the request
+    /**
+     * @return array
+     */
     public function getBody(): array
     {
 
@@ -68,14 +83,16 @@ class Request
         // if the method is get, sanitize the input and store it in the body array
         if ($this->isGet()) {
             foreach ($_GET as $key => $value) {
-                $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+//                $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+                $body[$key] = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
 
         // if the method is post, sanitize the input and store it in the body array
         if ($this->isPost()) {
             foreach ($_POST as $key => $value) {
-                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+//                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+                $body[$key] = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
             }
         }
 
@@ -83,8 +100,21 @@ class Request
 
     }
 
+    //function to get the json data from fetch requests
+    /**
+     * @return string
+     */
+    public function getUser(): string {
+        $url = $this->getPath();
+        $url = explode('/', $url);
+        return $url[1];
+    }
 
-    public function getJsonData() {
+    //function to get the json data from fetch requests
+    /**
+     * @return mixed
+     */
+    public function getJsonData() : mixed {
 
         // get the json data from fetch requests
         return json_decode(file_get_contents('php://input'), true);

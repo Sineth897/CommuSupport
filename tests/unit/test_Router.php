@@ -7,6 +7,7 @@ use app\core\exceptions\notFoundException;
 use app\core\Request;
 use app\core\Response;
 use app\core\Router;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class test_Router extends TestCase
@@ -82,6 +83,10 @@ class test_Router extends TestCase
 
     }
 
+    /**
+     * @throws notFoundException
+     * @throws methodNotFound
+     */
     public function test_route_resolve_function_for_exiting_links_where_call_back_is_a_string() : void {
 
         // test case to check if the resolve function is working properly for existing links
@@ -110,6 +115,10 @@ class test_Router extends TestCase
 
     }
 
+    /**
+     * @throws notFoundException
+     * @throws methodNotFound
+     */
     public function test_route_resolve_function_for_exiting_links_where_call_back_is_a_function() : void {
 
         // test case to check if the resolve function is working properly for existing links
@@ -141,6 +150,10 @@ class test_Router extends TestCase
 
     }
 
+    /**
+     * @throws notFoundException
+     * @throws methodNotFound
+     */
     public function test_route_resolve_function_for_existing_links_where_call_back_is_not_a_string_or_function() : void {
 
             // test case to check if the resolve function is working properly for existing links
@@ -164,10 +177,13 @@ class test_Router extends TestCase
             $this->assertSame($expected, $this->router->getRoutes());
 
             // assert that the expected outcome is equal to the actual outcome
-            $this->expectException(\Exception::class);
+            $this->expectException(Exception::class);
             $this->router->resolve();
     }
 
+    /**
+     * @throws notFoundException
+     */
     public function test_route_resolve_function_for_non_exiting_links() : void
     {
 

@@ -38,7 +38,7 @@ class test_Session extends TestCase
      * @return void
      * @dataProvider \app\tests\unit\data_provider\data_provider::random_key_value_pair()
      */
-    public function test_remove_function(string $key,$value) : void {
+    public function test_remove_function(string $key,mixed $value) : void {
 
         // test case to check if the remove function is working properly
 
@@ -49,12 +49,26 @@ class test_Session extends TestCase
         $this->assertNotEmpty($this->session->get($key));
 
         // remove data from the session
-        $this->session->remove($key);
+        $this->assertTrue($this->session->remove($key));
 
         // assert that value is removed from the session
         $this->assertEmpty($this->session->get($key));
 
     }
+
+    /**
+     * @param string $key
+     * @return void
+     * @dataProvider \app\tests\unit\data_provider\data_provider::random_key_value_pair()
+     */
+    public function test_remove_function_when_data_is_not_stored_in_the_session(string $key) : void {
+
+            // test case to check if the remove function is working properly
+
+            // assert that value is removed from the session
+            $this->assertFalse($this->session->remove($key));
+    }
+
 
     /**
      * @var string $key

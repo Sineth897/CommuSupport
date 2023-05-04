@@ -2,6 +2,10 @@
 
 namespace app\core;
 
+/**
+ * @method method(string $string)
+ * @method expects(\PHPUnit\Framework\MockObject\Rule\InvokedCount $once)
+ */
 class Session
 {
 
@@ -15,7 +19,7 @@ class Session
     {
 
         // start session if not already started
-        if( session_id() === "" ) session_start();
+        if( session_status() === PHP_SESSION_NONE ) session_start();
         $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
         foreach ($flashMessages as $key => &$flashMessage) {
             $flashMessage['remove'] = true;
@@ -67,9 +71,13 @@ class Session
     }
 
     // function to remove session variables
-    public function remove($key): void
+    public function remove($key): bool
     {
-        unset($_SESSION[$key]);
+        if(!empty($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+            return true;
+        }
+        return false;
     }
 
 }
