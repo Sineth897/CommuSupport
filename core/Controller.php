@@ -20,6 +20,10 @@ class Controller
     protected string $userType  = 'guest';
     protected ?Middleware $middleware = null;
 
+    /**
+     * @throws forbiddenException
+     * @throws methodNotFound
+     */
     public function __construct($func, Request $request, Response $response)
     {
         $this->getUserType();
@@ -31,7 +35,12 @@ class Controller
         }
     }
 
-    protected function checkLink($request): void {
+    /**
+     * @param Request $request
+     * @return void
+     * @throws forbiddenException
+     */
+    protected function checkLink(Request $request): void {
         if($request->getUser() !== $this->getUserType()) {
             throw new forbiddenException();
         }
@@ -40,16 +49,32 @@ class Controller
 
     //function to be called by the subclasses to render the view
 
-    public function render($view, $title, $params = []): void
+    /**
+     * @param string $view
+     * @param string $title
+     * @param array $params
+     * @return void
+     */
+    public function render(string $view,string $title,array $params = []): void
     {
         echo Application::$app->router->render($view, $title, $params);
     }
 
-    public function renderOnlyView($view, $title, $params = []): void
+    /**
+     * @param string $view
+     * @param string $title
+     * @param array $params
+     * @return void
+     */
+    public function renderOnlyView(string $view,string $title,array $params = []): void
     {
         echo Application::$app->router->renderWithoutNavbar($view,$title,$params);
     }
 
+    /**
+     * @param  $data
+     * @return void
+     */
     public function sendJson($data): void
     {
         Application::$app->router->sendData($data);
