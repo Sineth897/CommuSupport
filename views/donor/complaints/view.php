@@ -42,29 +42,24 @@ $profile->end();
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Complaints");
+$headerDiv->heading("My Complaints");
 
 $headerDiv->pages(['pending','completed']);
 
 $headerDiv->end();
 ?>
-<?php
-$filterDiv = new \app\core\components\layout\searchDiv();
-
-$filterDiv->sortBegin();
-
-$sortForm = \app\core\components\form\form::begin('', '');
-
-$sortForm->checkBox($complaints,"Sort By Date","reviewedDate",'filter');
-
-$sortForm::end();
-
-$filterDiv->sortEnd();
-
-$filterDiv->filterDivEnd();
 
 
-?>
+<div class="search-filter">
+    <div class="pending" id="pending">
+        <p id="pending"><i class="material-icons">pending </i><span>Pending</span> </p>
+    </div>
+
+    <div class="sort" id="sort-btn">
+        <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort by Reviewed Date</span></p>
+    </div>
+</div>
+
 
 <?php
 $checkVerification = new \app\core\components\layout\verificationDiv();
@@ -112,34 +107,6 @@ if($checkVerification->notVerified()) {
 
 
 
-
-<?php
-/** @var $complaints \app\models\complaintModel */
-use app\core\components\tables\table;
-
-$userID = \app\core\Application::session()->get('user');
-
-try{
-    $complaint = $complaints->getOwnComplaints($userID);
-
-}
-catch(\Exception $e){
-    echo $e->getMessage();
-}
-
-
-$headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'];
-
-
-$complaintsTable = new table($headers,$arrayKeys);
-$complaintsTable ->displayTable($complaint);
-
-if(empty($complaint)){
-    echo "No Complaints has been filed.";
-}
-
-?>
 
 
 

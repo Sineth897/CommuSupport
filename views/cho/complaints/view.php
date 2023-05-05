@@ -37,40 +37,31 @@ $profile->end();
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Complaints");
+$headerDiv->heading("Complaints by Donors and Donees ");
 
 $headerDiv->end();
 ?>
-<?php
-$filterDiv = new \app\core\components\layout\searchDiv();
-
-$filterDiv->filterBegin();
-
-//$filter = \app\core\components\form\form::begin('', '');
-//$filter->dropDownList($model,"Event Type","eventCategory",$model->getEventCategories(),"eventCategory");
-//$filter->end();
-
-$filterDiv->filterEnd();
-
-$filterDiv->sortBegin();
-
-$sortForm = \app\core\components\form\form::begin('', '');
-
-$sortForm->checkBox($complaints,"Sort By Date","reviewedDate",'filter');
-
-$sortForm::end();
-
-$filterDiv->sortEnd();
-
-$filterDiv->filterDivEnd();
-
-
-?>
-
 
 
 <div class="content">
-<?php
+    <div class="filters">
+
+            <p ><i class="material-icons"  >
+                    <select id="filter">
+                        <option value="all">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select></i>
+                <span>Filter</span>
+            </p>
+
+        <div class="sort" id="sort-btn">
+            <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort by Reviewed Date</span></p>
+        </div>
+    </div>
+
+</div>
+    <?php
 $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
 $arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
 
@@ -79,7 +70,7 @@ $complaintsTable = new table($headers,$arrayKeys);
 $complaintsTable ->displayTable($complaint);
 
 ?>
-</div>
+
 <div class="no-complaint">
     <?php
     if(empty($complaint)){
@@ -90,7 +81,7 @@ $complaintsTable ->displayTable($complaint);
 </div>
 
 
-<script type="module" src="../public/JS/cho/event/filter.js"></script>
+<script type="module" src="../public/JS/cho/complaints/sort.js"></script>
 
 
 

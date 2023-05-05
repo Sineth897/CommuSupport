@@ -46,6 +46,23 @@ $headerDiv->end();
             </div>
         </div>  -->
 
+        <div class="filters">
+
+            <p ><i class="material-icons"  >
+                    <select id="filter">
+                        <option value="all">All</option>
+                        <option value="donor">Donor</option>
+                        <option value="donee">Donee</option>
+                        <option value="individual">Individual</option>
+                        <option value="organization">Organization</option>
+                    </select></i>
+                <span>Filter</span>
+            </p>
+
+
+        </div>
+
+
     <div class="search">
         <input type="text" placeholder="Search" name="find" id="search">
         <a href="#"><i class="material-icons">search</i></a>
@@ -53,22 +70,7 @@ $headerDiv->end();
 
 </div>
 
-<?php
-$filterDiv = new \app\core\components\layout\searchDiv();
-$filterDiv->filterDivStart();
 
-$filterDiv->filterBegin();
-
-//$filterForm = \app\core\components\form\form::begin('', '');
-//$filterForm->dropDownList($model, "Select a User Type", '', \app\models\userModel::getUserType(), 'filterCategory');
-//$filterForm::end();
-
-$filterDiv->filterEnd();
-
-$filterDiv->filterDivEnd();
-
-
-?>
 
 
 

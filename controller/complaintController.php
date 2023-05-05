@@ -102,6 +102,8 @@ class complaintController extends Controller
             if($request->isPost())
             {
                 $model->getData($request->getBody());
+                print_r($model);
+                exit();
                 if(!empty($model->solution)){
                     $model->submitSolution($model->solution,$model->complaintID);
                     $this->setFlash('result','Solution Added');

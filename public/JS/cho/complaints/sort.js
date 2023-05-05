@@ -1,4 +1,3 @@
-//sorting by date field
 
 const sort_btn = document.getElementById("sort-btn")
 sort_btn.addEventListener("click",sortTable);
@@ -27,23 +26,26 @@ function sortTable() {
 
 
 }
-//
-// const filter = document.getElementById("pending");
-// const table = document.querySelectorAll("tbody")[0];
-// const rows = table.getElementsByTagName("tr");
-//
-// filter.addEventListener("change", function() {
-//     var selectedType = this.value
-//     // console.log(selectedType)
-//     for (var i = 0; i < rows.length; i++) {
-//         var row = rows[i];
-//         var type = row.getElementsByTagName("td")[3].textContent.toLowerCase();
-//         console.log(type)
-//         if (selectedType === "all" || selectedType === type) {
-//             row.style.display = "";
-//         } else {
-//             row.style.display = "none";
-//         }
-//     }
-// });
+
+
+//sorting by date field
+const filter = document.getElementById("filter");
+const table = document.querySelectorAll("tbody")[0];
+const rows = table.getElementsByTagName("tr");
+
+filter.addEventListener("change", function() {
+    var selectedType = this.value
+    // console.log(selectedType)
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var type = row.getElementsByTagName("td")[3].textContent.toLowerCase();
+        console.log(type)
+        if (selectedType === "all" || selectedType === type) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    }
+});
+
 
