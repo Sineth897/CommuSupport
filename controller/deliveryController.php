@@ -282,7 +282,13 @@ class deliveryController extends Controller
         return true;
     }
 
-    private function logtransactionNext(subdeliveryModel $subdelivery,string $process) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @param string $process
+     * @return void
+     */
+    private function logtransactionNext(subdeliveryModel $subdelivery, string $process): void
+    {
         $sql = "SELECT * FROM acceptedrequest WHERE deliveryID = :deliveryID";
         $stmnt = deliveryModel::prepare($sql);
         $stmnt->bindValue(':deliveryID',$subdelivery->deliveryID);
@@ -306,7 +312,13 @@ class deliveryController extends Controller
     }
 
 
-    protected function requestToReassign(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function requestToReassign(Request $request, Response $response): void
+    {
         $data = $request->getJsonData()['data'];
         $subdelivery = new subdeliveryModel();
 
@@ -342,6 +354,11 @@ class deliveryController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
     protected function filterDeliveries(Request $request, Response $response) : void {
 
         $data = $request->getJsonData();
@@ -356,5 +373,26 @@ class deliveryController extends Controller
             $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
         }
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function deliveryPopupDriver(Request $request, Response $response) : void {
+
+        $subdeliveryID = $request->getJsonData()['subdeliveryID'];
+
+        try{
+            $subdelivery = subdeliveryModel::getDeliveryDetailsByID($subdeliveryID);
+
+            $this->sendJson(['subdeliveryDetails' => subdeliveryModel::getModel(['subdeliveryID' => $subdeliveryID]) , 'destinationAddresses' => deliveryModel::getDestinationAddresses()]);
+        }
+        catch(\PDOException $e){
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+
+    }
+
 
 }

@@ -1,4 +1,13 @@
+<link rel="stylesheet" href="../../public/CSS/cards/driver-delivery-card.css">
+
 <?php
+
+/**
+ * @var $deliveryModel \app\models\deliveryModel
+ * @var $user \app\models\driverModel
+ */
+
+$CompletedDeliveries = $deliveryModel->getCompletedDeliveriesByDriverID($_SESSION['user']);
 
 ?>
 
@@ -34,3 +43,20 @@ $searchDiv->sortEnd();
 $searchDiv->filterDivEnd();
 
 $searchDiv->end(); ?>
+
+<div class="content">
+
+    <div class="card-container">
+
+        <?php
+
+         \app\core\components\cards\driverDeliveryCard::showCompletedDeliveryCards($CompletedDeliveries);
+
+         ?>
+
+    </div>
+
+
+</div>
+
+<script type="module" src="../../public/JS/driver/completed/view.js"></script>

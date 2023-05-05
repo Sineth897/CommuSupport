@@ -619,9 +619,9 @@ $app->router->get('/driver/deliveries/completed', function ($request,$response) 
     $controller = new \app\controller\deliveryController('completedDeliveries',$request,$response);
 });
 
-
-
-
+$app->router->post('/driver/deliveries/popup', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('deliveryPopupDriver',$request,$response);
+});
 
 
 

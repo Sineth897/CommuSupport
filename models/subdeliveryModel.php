@@ -24,40 +24,64 @@ class subdeliveryModel extends DbModel
     //distance respect to each subdelivery in kilometers
     public ?float $distance = 0.0;
 
+    /**
+     * @return string
+     */
     public function table(): string
     {
         return 'subdelivery';
     }
 
+    /**
+     * @return string[]
+     */
     public function attributes(): array
     {
         return ['subdeliveryID', 'deliveryID', 'deliveryStage','start', 'end', 'fromLongitude', 'fromLatitude', 'toLongitude', 'toLatitude',];
     }
 
+    /**
+     * @return string
+     */
     public function primaryKey(): string
     {
         return 'subdeliveryID';
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         return [];
     }
 
+    /**
+     * @return bool
+     */
     public function save(): bool
     {
         $this->subdeliveryID = substr(uniqid('sub',true),0,23);
         return parent::save();
     }
 
+    /**
+     * @return array
+     */
     public static function getDestinations() :  array {
+
+        // get all the donors, donees and community centers with their IDs as keys and addresses as values
         $sql = "SELECT donorID,address FROM donor UNION SELECT ccID,CONCAT(city,' (CC)') as address FROM communitycenter UNION SELECT doneeID,address FROM donee";
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-    public function saveFinalStagedetails(subdeliveryModel $subdelivery) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @return void
+     */
+    public function saveFinalStagedetails(subdeliveryModel $subdelivery) : void {
         $this->start = $subdelivery->end;
         $this->fromLongitude = $subdelivery->toLongitude;
         $this->fromLatitude = $subdelivery->toLatitude;
@@ -79,7 +103,11 @@ class subdeliveryModel extends DbModel
 
     }
 
-    public function save2ndStagedetails(subdeliveryModel $subdelivery) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @return void
+     */
+    public function save2ndStagedetails(subdeliveryModel $subdelivery) : void {
         $this->start = $subdelivery->end;
         $this->fromLongitude = $subdelivery->toLongitude;
         $this->fromLatitude = $subdelivery->toLatitude;
@@ -100,12 +128,25 @@ class subdeliveryModel extends DbModel
         inventorylog::logCollectionFromDonor($result['acceptedID'],$result['ccID']);
     }
 
-    public static function updateAsCompleted(string $subdeliveryID,string $completed) {
+    /**
+     * @param string $subdeliveryID
+     * @param string $completed
+     * @return void
+     */
+    public static function updateAsCompleted(string $subdeliveryID, string $completed) : void {
         $sql = "UPDATE subdelivery SET status = 'Completed', completedDate = :completedDate, completedTime = :completedTime WHERE subdeliveryID = :subdeliveryID";
         $stmt = self::prepare($sql);
         $stmt->bindValue(":completedDate",$completed);
         $stmt->bindValue(":completedTime",$completed);
         $stmt->bindValue(":subdeliveryID",$subdeliveryID);
         $stmt->execute();
+    }
+
+    /**
+     * @param string $subdeliveryID
+     * @return array
+     */
+    public static function getDeliveryDetailsByID(string $subdeliveryID) : array {
+        return [];
     }
 }
