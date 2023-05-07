@@ -19,7 +19,12 @@ async function updatedInventory() {
 
 }
 
-let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'accepted',pageId:'acceptedRequests'}],'grid');
+let toggle = new togglePages(
+    [
+            {btnId:'posted',pageId:'postedRequests',title:"Posted Requests"},
+            {btnId:'accepted',pageId:'acceptedRequests',title:'Accepted Requests'},
+            {btnId: 'completed',pageId:'completedRequests',title:'Completed Requests'}],
+        'grid');
 
 let popUpRequest = new PopUp();
 

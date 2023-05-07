@@ -39,10 +39,11 @@ class ccModel extends DbModel
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "city" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             "email" => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE, "class" => self::class]],
-            "fax" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
-            "contactNumber" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            "fax" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class],self::$CONTACT],
+            "contactNumber" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class],self::$CONTACT],
             'longitude' => [self::$REQUIRED, self::$LONGITUDE],
             'latitude' => [self::$REQUIRED, self::$LATITUDE],
+            'cho' => [self::$REQUIRED,],
 
         ];
     }

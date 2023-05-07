@@ -307,6 +307,14 @@ $app->router->post('/donee/request/create', function($request,$response) {
     $controller = new \app\controller\requestController('postRequest',$request,$response);
 });
 
+$app->router->post('/donee/request/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+
+$app->router->post('/donee/requests/filter', function ($request, $response) {
+    $controller = new \app\controller\requestController("filterOwnRequests",$request,$response);
+});
+
 $app->router->get('/donee/communitycenters', function ($request, $response) {
     $controller = new \app\controller\ccController("viewCC",$request,$response);
 });
@@ -335,17 +343,9 @@ $app->router->post('/donee/complaints/files',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
 
-
-
-
-
-
-
-
-
-
-
-
+$app->router->get('/donee/profile',function($request,$response){
+    $controller = new \app\controller\profileController('doneeProfile',$request,$response);
+});
 
 
 
@@ -458,13 +458,13 @@ $app->router->get('/donor/complaints/file', function ($request,$response){
     $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
 });
 
+$app->router->get('/donee/profile',function($request,$response){
+    $controller = new \app\controller\profileController('doneeProfile',$request,$response);
+});
 
 //$app->router->get('/donor/complaints/file',function ($request,$response){
 //   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
 //});
-
-
-
 
 
 
@@ -619,17 +619,17 @@ $app->router->get('/driver/deliveries/completed', function ($request,$response) 
     $controller = new \app\controller\deliveryController('completedDeliveries',$request,$response);
 });
 
+$app->router->post('/driver/deliveries/popup', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('deliveryPopupDriver',$request,$response);
+});
 
+$app->router->post('/driver/deliveries/completed/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('filterCompletedDeliveries',$request,$response);
+});
 
-
-
-
-
-
-
-
-
-
+$app->router->post('/driver/deliveries/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('filterAssignedDeliveries',$request,$response);
+});
 
 
 

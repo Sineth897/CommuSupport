@@ -17,6 +17,9 @@ class deliveryMiddleware extends Middleware
             'completeDelivery'=> [$this->DRIVER],
             'requestToReassign' => [$this->DRIVER],
             'filterDeliveries' =>   [$this->LOGISTIC],
+            'deliveryPopupDriver' => [$this->DRIVER],
+            'filterCompletedDeliveries' => [$this->DRIVER],
+            'filterAssignedDeliveries' => [$this->DRIVER],
         ];
     }
 }

@@ -126,15 +126,16 @@ class requestModel extends DbModel
 
     private function getPostedRequestsbyDonee(string $doneeID): array
     {
-        $stmnt = self::prepare('SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID');
+        $stmnt = self::prepare("SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName,COUNT(a.acceptedBy) AS users,CONCAT(SUM(a.amount),' ',s.scale) AS acceptedAmount FROM request r LEFT JOIN subcategory s ON r.item = s.subcategoryID LEFT JOIN acceptedrequest a on a.requestID = r.requestID WHERE r.postedBy = :doneeID GROUP BY a.requestID");
         $stmnt->bindValue(':doneeID', $doneeID);
         $stmnt->execute();
-        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+        $requests = $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+        return $requests;
     }
 
     private function getCompletedRequestsOfDonee(string $doneeID): array
     {
-        $stmnt = self::prepare("SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID AND r.status = 'Completed'");
+        $stmnt = self::prepare("SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID AND r.deliveryStatus = 'Completed' GROUP BY r.requestID");
         $stmnt->bindValue(':doneeID', $doneeID);
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
@@ -142,7 +143,7 @@ class requestModel extends DbModel
 
     private function getAcceptedRequestsOfDonee(string $doneeID): array
     {
-        $stmnt = self::prepare("SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID AND r.status = 'Accepted' AND r.requestID NOT IN (SELECT requestID FROM request)");
+        $stmnt = self::prepare("SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.postedBy = :doneeID AND r.deliveryStatus != 'Completed'");
         $stmnt->bindValue(':doneeID', $doneeID);
         $stmnt->execute();
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);

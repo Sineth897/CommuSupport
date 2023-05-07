@@ -18,6 +18,10 @@ class PopUp {
         this.splitFormFlag++;
     }
 
+    container() {
+        return this.splitDiv[this.splitFormFlag];
+    }
+
 
     setHeader(heading,obj = {},subheading = '') {
         this.popUpHeader = this.getDiv('popUpHeader',['popup-header']);

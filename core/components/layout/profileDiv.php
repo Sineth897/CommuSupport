@@ -22,7 +22,7 @@ class profileDiv
         'event' => 'event',
         'directDonations' => 'local_shipping',
         'request' => 'local_shipping',
-        'acceptedRequest' => 'local_shipping',
+        'acceptedRequests' => 'local_shipping',
         'delivery' => 'local_shipping',
         'ccDonation' => 'local_shipping',
     ];
