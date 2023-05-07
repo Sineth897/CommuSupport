@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use DateTime;
+
 abstract class Model
 {
     public static string $REQUIRED = 'required';
@@ -15,6 +17,8 @@ abstract class Model
     public static string $nic = 'nic';
     public static string $DATE = 'date';
 
+    public static string $TIME = 'time';
+
     public static string $POSITIVE = 'positive';
     public static string $NOTZERO = 'notzero';
 
@@ -23,6 +27,10 @@ abstract class Model
     public array $errors = [];
 
 
+    /**
+     * @param $data
+     * @return void
+     */
     public function getData($data): void {
         foreach ($data as $key => $value) {
             if( property_exists($this, $key) ) {
@@ -31,8 +39,15 @@ abstract class Model
         }
     }
 
+    /**
+     * @return array
+     */
     abstract public function rules(): array;
 
+    /**
+     * @param $data
+     * @return bool
+     */
     public function validate($data): bool {
 
         foreach ($this->rules() as $attribute => $rules) {
@@ -80,8 +95,11 @@ abstract class Model
                 if( $ruleName === self::$nic && !(preg_match('/^[0-9]{9}[vV]$/', $value) || preg_match('/^[0-9]{12}$/', $value)) ) {
                     $this->addRuleError($attribute, self::$nic);
                 }
-                if( $ruleName === self::$DATE && date('Y-m-d') >= $value ) {
+                if( $ruleName === self::$DATE && date('Y-m-d') >= $value && $this->validateDateorTime('Y-m-d',$value)) {
                     $this->addRuleError($attribute, self::$DATE);
+                }
+                if( $ruleName === self::$TIME && $this->validateDateorTime('H:i:s',$value) ) {
+                    $this->addRuleError($attribute, self::$TIME);
                 }
                 if( $ruleName === self::$POSITIVE && $value < 0 ) {
                     $this->addRuleError($attribute, self::$POSITIVE);
@@ -101,6 +119,12 @@ abstract class Model
         return empty($this->errors);
     }
 
+    /**
+     * @param $attribute
+     * @param $rule
+     * @param $params
+     * @return void
+     */
     private function addRuleError($attribute, $rule, $params = []): void {
         $message = $this->errorMessages()[$rule] ?? '';
         foreach ($params as $key => $value) {
@@ -109,10 +133,18 @@ abstract class Model
         $this->errors[$attribute][] = $message;
     }
 
+    /**
+     * @param $attribute
+     * @param $message
+     * @return void
+     */
     public function addError($attribute, $message): void {
         $this->errors[$attribute][] = $message;
     }
 
+    /**
+     * @return string[]
+     */
     public function errorMessages(): array {
         return [
             self::$REQUIRED => 'This field is required',
@@ -124,6 +156,7 @@ abstract class Model
             self::$CONTACT => 'This field must be a valid contact number',
             self::$nic => 'This field must be a valid NIC number',
             self::$DATE => 'This field must be a future date',
+            self::$TIME => 'This field must be a valid time',
             self::$POSITIVE => 'This field must be a positive number',
             self::$NOTZERO => 'This field must be a non-zero number',
             self::$LONGITUDE => 'Longitude must belong to Sri Lanka',
@@ -131,14 +164,25 @@ abstract class Model
         ];
     }
 
+    /**
+     * @param $attribute
+     * @return bool
+     */
     public function hasError($attribute): bool {
         return $this->errors[$attribute] ?? false;
     }
 
+    /**
+     * @param $attribute
+     * @return string
+     */
     public function getFirstError($attribute): string {
         return $this->errors[$attribute][0] ?? '';
     }
 
+    /**
+     * @return void
+     */
     public function reset(): void {
         foreach ($this->rules() as $attribute => $rules) {
             if( is_int($this->{$attribute})) {
@@ -157,5 +201,16 @@ abstract class Model
                 $this->{$attribute} = null;
             }
         }
+    }
+
+    /**
+     * @param string $format
+     * @param mixed $value
+     * @return bool
+     */
+    private function validateDateorTime(string $format, mixed $value): bool
+    {
+        $d = DateTime::createFromFormat($format, $value);
+        return $d && $d->format($format) === $value;
     }
 }

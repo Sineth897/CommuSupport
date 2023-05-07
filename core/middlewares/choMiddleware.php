@@ -12,6 +12,7 @@ class choMiddleware extends  Middleware
             'choPopup' => [$this->ADMIN],
             'viewUsers' =>[$this->CHO],
 
+
         ];
     }
 }

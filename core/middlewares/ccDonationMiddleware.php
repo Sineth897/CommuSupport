@@ -9,7 +9,9 @@ class ccDonationMiddleware extends  Middleware
         return [
             'viewCCDonations' => [$this->LOGISTIC],
             'createCCDonation' => [$this->LOGISTIC],
-            'acceptCCDonation' => [$this->LOGISTIC]
+            'acceptCCDonation' => [$this->LOGISTIC],
+            'CCDonationPopup' => [$this->LOGISTIC],
+            'filterCCDonations' => [$this->LOGISTIC],
         ];
     }
 }

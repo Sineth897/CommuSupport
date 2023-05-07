@@ -26,6 +26,9 @@ abstract class DbModel extends Model
         return (new static())->retrieve($where, $orderBy);
     }
 
+    // base function to save a record on the table of the model
+    // here columns to be saved will be taken from the attributes() function in the relevant model
+    // and values will be the currently holding values of the relevant attribute of the model
     public function save(): bool
     {
         $table = $this->table();
@@ -45,7 +48,8 @@ abstract class DbModel extends Model
         return Application::$app->database->pdo->prepare($sql);
     }
 
-    public function findOne($where)
+    //to simplify select queries which get only one row as an object of the relevant class
+    public function findOne($where) : DbModel | bool | null
     {
         $tableName = static::table();
         $attributes = array_keys($where);
@@ -99,7 +103,6 @@ abstract class DbModel extends Model
     // but the thing is we cannot use the same column for where and set
     public function update(array $where,array $data): bool
     {
-        try {
             $tableName = static::table();
             $attributes = array_keys($where);
             $setData = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
@@ -112,21 +115,6 @@ abstract class DbModel extends Model
                 $statement->bindValue(":$key", $item);
             }
             return $statement->execute();
-
-        }
-        catch (\PDOException $e) {;
-            return $e->getMessage();
-        }
-
-    }
-
-    public function getCC(string $userID): string {
-        $table = static::table();
-        $primaryKey = static::getPrimaryKey();
-        $sql = "SELECT ccID FROM $table WHERE $ = $userID";
-        $statement = self::prepare($sql);
-        $statement->execute();
-        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
     //to retrieve data from two tables
@@ -162,26 +150,65 @@ abstract class DbModel extends Model
 
     //to run custom queries
     //example: $sql = "SELECT * FROM users INNER JOIN ..."; <- without WHERE, ORDER and LIKE clauses
-    // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause
+    // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause, can specify if not equal // $where = ['!id' => 1, '!name' => '!John'];
     // $sort = ['ASC' => ['id', 'name']]; <- ORDER BY clause
     // $search = ['search' , ['name' => 'John']]; <- LIKE clause
-    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [], string $fetchMode = \PDO::FETCH_ASSOC): array {
+    // $groupBy = 'id'; <- GROUP BY clause
+    // $having = ['id' => 1, 'name' => 'John']; <- HAVING clause
+    // $fetchMode = \PDO::FETCH_ASSOC; <- fetch mode
+    public static function runCustomQuery(string $sql, array $where = [], array $sort = [], array $search = [],string $groupBy = "",array $having = [] ,string|int $fetchMode = \PDO::FETCH_ASSOC): array {
 
         $wherestmnt = ' WHERE ';
 
+        // structure where array to be like "id = 1", "name != 'John'"
+        // then implode it with AND, then append it to where statement
         if($where) {
-            $where = implode("AND ", array_map(fn($attr) => "$attr = '$where[$attr]'", array_keys($where)));
+            $where = implode("AND ", array_map(function($attr)  use ($where)
+                                                {
+                                                    if($attr[0] === '!') {
+                                                        return substr($attr, 1) . " != '$where[$attr]'";
+                                                    }
+                                                    else {
+                                                        return "$attr = '$where[$attr]'";
+                                                    }
+                                                }, array_keys($where)));
             $wherestmnt .= " $where";
         }
 
+        // structure search array to be like "name LIKE '%John%'"
+        // then implode it with OR, then append it to where statement
         if(!empty($search)) {
             $wherestmnt = $wherestmnt === " WHERE " ? $wherestmnt : $wherestmnt . " AND ";
             $wherestmnt .= implode(" OR ", array_map(fn($attr) => "$attr LIKE '%$search[0]%' ", $search[1]));
         }
 
-        $sql .= $wherestmnt;
+        // append where statement to sql
+        $sql .= $wherestmnt === " WHERE " ? '' : $wherestmnt;
 
-        if(!empty($sort['ASC']) && !empty($sort['DESC'])) {
+        // if there is no group by clause and there is order by clause
+        // append order by clause to sql
+        if( empty($groupBy) && (!empty($sort[array_key_first($sort)]))) {
+            $order = array_keys($sort)[0];
+            $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
+        }
+
+        // if there is group by clause
+        // append group by clause to sql
+        if($groupBy !== "") {
+            $sql .= " GROUP BY $groupBy";
+        }
+
+        // if there is having clause
+        // structure having array to be like "id = 1", "name != 'John'"
+        // then implode it with AND, then append it to sql
+        if(!empty($having)) {
+            $having = implode("AND ", array_map(fn($attr) => "$attr = '$having[$attr]'", array_keys($having)));
+            $sql .= " HAVING $having";
+        }
+
+        // if there is group by clause and there is order by clause
+        // append order by clause to sql
+        if( !empty($groupBy) && (!empty($sort[array_key_first($sort)])) ) {
             $order = array_keys($sort)[0];
             $sql .= " ORDER BY ". implode(",", $sort[$order]) . " " . $order;
         }
@@ -189,6 +216,7 @@ abstract class DbModel extends Model
         $statement = self::prepare($sql);
         $statement->execute();
         return $statement->fetchAll($fetchMode);
+//        return [$sql];
     }
 
 }

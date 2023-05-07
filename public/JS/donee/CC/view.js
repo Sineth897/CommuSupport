@@ -1,5 +1,5 @@
 import Map from '../../map/map.js';
-import flash from "../../flashmessages/flash";
+import flash from "../../flashmessages/flash.js";
 
 let map = new Map();
 

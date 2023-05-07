@@ -15,6 +15,7 @@ class requestMiddleware extends Middleware
             'acceptRequest' => [$this->DONOR,$this->LOGISTIC],
             'filterRequests' => [$this->DONOR,$this->LOGISTIC],
             'filterRequestsAdmin' => [$this->ADMIN],
+            'filterOwnRequests' => [$this->DONEE],
         ];
     }
 }

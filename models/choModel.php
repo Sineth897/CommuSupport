@@ -79,17 +79,12 @@ class choModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-
     public static function viewUsers($choID):array{
 
-        $statement =  self::prepare("SELECT userName,userType FROM users INNER JOIN donor ON users.userID=donor.donorID  WHERE cho= :choID UNION SELECT userName,userType FROM users INNER JOIN donee ON users.userID=donee.doneeID WHERE cho=:choID ");
+        $statement =  self::prepare("SELECT u.userName,u.userType,d.email,d.address,d.contactNumber,d.type,d.registeredDate FROM users u  INNER JOIN DONOR d ON u.userID=d.donorID INNER JOIN communitycenter c ON d.ccID=c.ccID WHERE cho=:choID UNION SELECT u.userName,u.userType,d.email,d.address,d.contactNumber,d.type,d.registeredDate FROM users u  INNER JOIN DONEE d ON u.userID=d.doneeID INNER JOIN communitycenter c ON d.ccID=c.ccID WHERE cho=:choID");
         $statement->bindValue(":choID",$choID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
-
-
-
-
 
 }

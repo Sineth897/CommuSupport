@@ -8,6 +8,8 @@
 /** @var $solution \app\models\complaintModel */
 /** @var $user \app\models\choModel */
 
+
+
 ?>
 
 <?php
@@ -31,6 +33,11 @@ $headerDiv->heading("Provide a solution");
 $headerDiv->end();
 ?>
 
+
+<div class="container">
+
+
+</div>
 <div class="content-form">
 
     <?php $solutionForm = \app\core\components\form\form::begin('','post') ?>

@@ -7,12 +7,12 @@ use app\core\DbModel;
 class ccDonationModel extends DbModel
 {
     public string $ccDonationID = '';
-    public string $fromCC = '';
+    public ?string $fromCC = '';
     public string $toCC = '';
     public string $createdDate = '';
-    public string $completedDate = '';
-    public string $deliveryID = '';
-    public string $deliveryStatus = '';
+    public ?string $completedDate = '';
+    public ?string $deliveryID = '';
+    public ?string $deliveryStatus = '';
     public string $item = '';
     public float $amount = 0.0;
     public string $notes = '';
@@ -64,19 +64,48 @@ class ccDonationModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-    public function getDonations(string $ccID) : array
+    public function getDonations() : array
     {
-        $stmnt1 = self::prepare("SELECT *,CONCAT(cc.amount,' ',s.scale) AS amount FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID INNER JOIN communitycenter c on cc.fromCC = c.ccID WHERE cc.fromCC = :ccID");
-        $stmnt1->bindValue(':ccID', $ccID);
-        $stmnt1->execute();
-        $stmnt2 = self::prepare("SELECT *,CONCAT(cc.amount,' ',s.scale) AS amount FROM ccdonation cc INNER JOIN subcategory s ON cc.item = s.subcategoryID INNER JOIN communitycenter c on cc.toCC = c.ccID WHERE cc.toCC = :ccID");
-        $stmnt2->bindValue(':ccID', $ccID);
-        $stmnt2->execute();
+        $stmnt = self::prepare("SELECT *,CONCAT(c.amount,' ',s.scale) AS amount FROM ccdonation c LEFT JOIN subcategory s ON c.item = s.subcategoryID");
+        $stmnt->execute();
 
         return [
-            'fromCC' => $stmnt1->fetchAll(\PDO::FETCH_ASSOC),
-            'toCC' => $stmnt2->fetchAll(\PDO::FETCH_ASSOC)
+            'donations' => $stmnt->fetchAll(\PDO::FETCH_ASSOC),
+            'CCs' => ccModel::getCCs(),
         ];
+    }
+
+    public static function getAllSubcategories() : array {
+
+        $stmnt = self::prepare('SELECT subcategoryID,subcategoryName FROM subcategory');
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public static function acceptCCDonation(string $ccDonationID,string $fromCC,string $deliveryID) : void {
+        $sql = "UPDATE ccdonation SET deliveryID = :deliveryID, deliveryStatus = 'Ongoing', fromCC = :fromCC WHERE ccDonationID = :ccDonationID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':deliveryID', $deliveryID);
+        $stmt->bindValue(':fromCC', $fromCC);
+        $stmt->bindValue(':ccDonationID', $ccDonationID);
+        $stmt->execute();
+    }
+
+    public static function getCCDonationInfoWithItemInfo(string $ccDonationID) : array {
+        $sql = "SELECT ccd.*,s.subcategoryName,CONCAT(ccd.amount,' ',s.scale) AS amount FROM ccdonation ccd LEFT JOIN subcategory s ON ccd.item = s.subcategoryID  WHERE ccd.ccDonationID = :ccDonationID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':ccDonationID', $ccDonationID);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getCCDonationsBelongsToLogisticOfficerFilteredAndSorted(array $filters, array $sort) : array {
+
+        //query to get all CCdonations
+        $sql = "SELECT *,CONCAT(c.amount,' ',s.scale) AS amount FROM ccdonation c LEFT JOIN subcategory s ON c.item = s.subcategoryID";
+
+        // use static method to run custom query to get the result
+        return self::runCustomQuery($sql,$filters,$sort);
     }
 
 }

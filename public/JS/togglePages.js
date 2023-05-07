@@ -1,6 +1,8 @@
 
 class TogglePages {
 
+    static header = document.querySelector("h1");
+
     pages = [];
     activePage = 0;
     displayType = 'block';
@@ -13,7 +15,8 @@ class TogglePages {
             this.pages.push(
                 {
                     btn: btn,
-                    page: document.getElementById(pages[i].pageId)
+                    page: document.getElementById(pages[i].pageId),
+                    title: pages[i].title ? pages[i].title : null
                 }
             );
             btn.addEventListener('click', (e) => {
@@ -38,6 +41,10 @@ class TogglePages {
         this.pages[this.activePage].page.style.display = this.displayType;
         this.pages[this.activePage].btn.classList.add('active-heading-page');
 
+        if(this.pages[this.activePage]['title']) {
+            TogglePages.header.innerHTML = this.pages[this.activePage]['title']
+        }
+
     }
 
     showPage(page) {
@@ -50,6 +57,26 @@ class TogglePages {
 
     getActivePage() {
         return this.pages[this.activePage];
+    }
+
+    removeNoData() {
+        this.pages.forEach((page) => {
+            page['page'].classList.remove('no-data');
+        });
+    }
+
+    checkNoData() {
+
+        this.pages.forEach((page) => {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+            if(page['page'].innerHTML === '') {
+                page['page'].classList.add('no-data');
+                page['page'].append(noDataImg);
+            }
+        });
     }
 }
 

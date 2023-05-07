@@ -18,6 +18,10 @@ class PopUp {
         this.splitFormFlag++;
     }
 
+    container() {
+        return this.splitDiv[this.splitFormFlag];
+    }
+
 
     setHeader(heading,obj = {},subheading = '') {
         this.popUpHeader = this.getDiv('popUpHeader',['popup-header']);
@@ -424,6 +428,7 @@ class PopUp {
         const secondStageTextIndex = subdelivery['end'].includes('donee') ? 1 : 0;
 
         switch (subdelivery['deliveryStatus']) {
+            case 'Not Assigned':
             case 'Not assigned':
                 firstStage.classList.add('current-stage');
                 firstStage.innerHTML = `<span class="stage-number">1</span><p class="stage-label current-stage-description">${deliveryStageText[0]}</p>`;
