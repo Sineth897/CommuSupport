@@ -11,20 +11,26 @@ class eventcard
         $this->eventCategoryIcons = eventModel::getEventCategoryIcons();
     }
 
-    public function displayEvents(array $events = [],string $id = "eventDisplay") {
+    /**
+     * @param array $events
+     * @param string $id
+     * @return void
+     */
+    public function displayEvents(array $events = [], string $id = "eventDisplay") : void  {
         echo sprintf("<div class='card-container' id='%s'>",$id);
-        if(!$events) {
-            echo "<img src='/CommuSupport/public/src/errors/NoData.svg'>";
-        }
-        else {
+
             foreach ($events as $event) {
                 $this->eventCard($event);
             }
-        }
+
         echo "</div>";
     }
 
-    private function eventCard(array $event) {
+    /**
+     * @param array $event
+     * @return void
+     */
+    private function eventCard(array $event) : void {
         echo sprintf("<div class='event-card' id='%s'>",$event['eventID']);
         echo "<div class='event-card-header'>";
         echo "<img class='event-icon' src='{$this->eventCategoryIcons[$event['eventCategoryID']]}'>";
@@ -38,8 +44,5 @@ class eventcard
         echo sprintf("<p>%s</p>",$event['date']);
         echo "</div></div>";
     }
-
-
-
 
 }

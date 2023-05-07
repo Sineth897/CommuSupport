@@ -192,10 +192,13 @@ filterBtn.addEventListener('click', async function(e) {
     const acceptedRequests = result['acceptedRequests'];
     const completedRequests = result['completedRequests'];
 
+    toggle.removeNoData();
 
     doneeRequestCard.showPostedRequestCards(activeRequestsDiv,activeRequests);
     doneeRequestCard.showAcceptedRequestCards(acceptedRequestsDiv,acceptedRequests);
     doneeRequestCard.showCompletedRequestCards(completedRequestsDiv,completedRequests);
+
+    toggle.checkNoData();
 
     // assign popup function to cards
     assignPopupFunctionToCards();

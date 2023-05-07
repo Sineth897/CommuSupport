@@ -72,6 +72,43 @@ class deliveryModel extends DbModel
     }
 
     /**
+     * @param string $driverID
+     * @param array $filters
+     * @param array $sort
+     * @return array
+     */
+    public static function getAssignedDeliveriesFilteredAndSorted(string $driverID, array $filters, array $sort) : array {
+
+        // initialize empty string to store where and order by clauses
+        $where = '';
+
+        // if filter variables are available then add them to where clause
+        if(!empty($filters)) {
+            $where = " WHERE s.item = '{$filters['category']}' ";
+        }
+
+        // if sort variables are available then add them to order by clause
+        if(!empty($sort["DESC"])) {
+            $where .= ' ORDER BY ' . implode(',', $sort["DESC"]) . ' DESC ';
+        }
+
+        // queries to get deliveries related to each process
+        $cols = "s.subdeliveryID,s.start,s.end,s.createdDate,t.item,s.status";
+        $sql1 = "SELECT $cols,'acceptedRequest' AS type from subdelivery s INNER JOIN acceptedrequest t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status IN ('Ongoing','Reassign Requested')";
+        $sql2 = "SELECT $cols,'donation' AS type from subdelivery s INNER JOIN donation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status IN ('Ongoing','Reassign Requested')";
+        $sql3 = "SELECT $cols,'ccdonation' AS type from subdelivery s INNER JOIN ccdonation t on s.deliveryID = t.deliveryID WHERE s.deliveredBy = '$driverID' AND s.status IN ('Ongoing','Reassign Requested')";
+
+        // take union of deliveries related to all processes
+        $sql = $sql1 . " UNION " . $sql2 . " UNION " . $sql3;
+
+        // selects from the result of the select statement
+        $stmt1 = self::prepare("SELECT * FROM ($sql) AS s $where");
+        $stmt1->execute();
+//        return $stmt1->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt1->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * @param string $deliveryID
      * @param string $completed
      * @return void
@@ -118,5 +155,51 @@ class deliveryModel extends DbModel
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    /**
+     * @param string $employeeID
+     * @param array $filter
+     * @param array $sort
+     * @return array
+     */
+    public static function getCompletedDeliveriesByDriverIDFilteredAndSorted(string $employeeID, array $filter, array $sort) : array {
+
+        // initialize empty string to store where and order by clauses
+        $where = '';
+
+        // if filter variables are available then add them to where clause
+        if(!empty($filter)) {
+            $where = " WHERE s.item = '{$filter['category']}' ";
+        }
+
+        // if sort variables are available then add them to order by clause
+        if(!empty($sort["DESC"])) {
+            $where .= ' ORDER BY ' . implode(',', $sort["DESC"]) . ' DESC ';
+        }
+
+
+        // queries to get deliveries related to each process
+        $cols = "s.subdeliveryID,s.distance,s.start,s.end,s.createdDate,t.item,s.status,s.completedDate,s.completedTime";
+
+        $sql1 = "SELECT $cols,'acceptedRequest' AS type from subdelivery s 
+                                        INNER JOIN acceptedrequest t on s.deliveryID = t.deliveryID 
+                                        WHERE s.deliveredBy = '$employeeID' AND s.status = 'Completed'";
+
+        $sql2 = "SELECT $cols,'donation' AS type from subdelivery s 
+                                        INNER JOIN donation t on s.deliveryID = t.deliveryID 
+                                        WHERE s.deliveredBy = '$employeeID' AND s.status = 'Completed'";
+
+        $sql3 = "SELECT $cols,'ccdonation' AS type from subdelivery s 
+                                        INNER JOIN ccdonation t on s.deliveryID = t.deliveryID 
+                                        WHERE s.deliveredBy = '$employeeID' AND s.status = 'Completed'";
+
+        // take union of deliveries related to all processes
+        $sql = $sql1 . " UNION " . $sql2 . " UNION " . $sql3;
+
+        // selects from the result of the select statement
+        $stmt1 = self::prepare("SELECT * FROM ($sql) AS s $where");
+        $stmt1->execute();
+        return $stmt1->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

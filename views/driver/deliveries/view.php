@@ -22,8 +22,6 @@ $profile->end(); ?>
 
 <?php $headerDiv->heading("Deliveries"); ?>
 
-<?php //$headerDiv->pages(["assigned", "completed"]); ?>
-
 <?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
@@ -32,9 +30,17 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($deliveries, "Select a Category", '', \app\models\donationModel::getAllSubcategories(), 'filterCategory');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($deliveries, "Created Date", "", 'sortCreatedDate');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
@@ -43,7 +49,7 @@ $searchDiv->filterDivEnd();
 $searchDiv->end(); ?>
 
 
-<div class="card-container">
+<div class="card-container" id="assignedDeliveries">
 
     <?php
 

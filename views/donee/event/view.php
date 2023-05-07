@@ -5,7 +5,7 @@
 
 /** @var $model \app\models\eventModel */
 
-$events = $model->retrieve(['Status' => 'Upcoming']);
+$events = $model->getAllUpcominAndActiveEvents();
 
 ?>
 

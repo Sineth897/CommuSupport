@@ -58,6 +58,26 @@ class TogglePages {
     getActivePage() {
         return this.pages[this.activePage];
     }
+
+    removeNoData() {
+        this.pages.forEach((page) => {
+            page['page'].classList.remove('no-data');
+        });
+    }
+
+    checkNoData() {
+
+        this.pages.forEach((page) => {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+            if(page['page'].innerHTML === '') {
+                page['page'].classList.add('no-data');
+                page['page'].append(noDataImg);
+            }
+        });
+    }
 }
 
 export default TogglePages;

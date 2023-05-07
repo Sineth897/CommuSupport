@@ -623,13 +623,13 @@ $app->router->post('/driver/deliveries/popup', function ($request,$response) {
     $controller = new \app\controller\deliveryController('deliveryPopupDriver',$request,$response);
 });
 
+$app->router->post('/driver/deliveries/completed/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('filterCompletedDeliveries',$request,$response);
+});
 
-
-
-
-
-
-
+$app->router->post('/driver/deliveries/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('filterAssignedDeliveries',$request,$response);
+});
 
 
 

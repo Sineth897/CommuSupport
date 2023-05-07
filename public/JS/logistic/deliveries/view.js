@@ -240,6 +240,8 @@ async function assignDriver(e) {
     // close the popup
     deliveryPopUp.closePopUp();
 
+    flash.showMessage({value:'Delivery assigned successfully', type: 'success'});
+
     // console.log(result);
 
 }
