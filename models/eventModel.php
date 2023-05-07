@@ -121,7 +121,7 @@ class eventModel extends DbModel
     }
 
 //    To create a chart that shows event participation per each event category
-    public function getEventbyCategory()
+    public function getEventbyCategory(): array
     {
         $sql = "SELECT ec.name, SUM(e.participationCount) as total_participantCount FROM event e RIGHT JOIN eventcategory ec ON e.eventCategoryID = ec.eventCategoryID GROUP BY ec.name";
         $stmt = self::prepare($sql);
@@ -133,5 +133,27 @@ class eventModel extends DbModel
             $chartData[$row['name']] = $row['count'];
         }
         return $chartData;
+    }
+
+    public function getEventPartbyMonth(): array
+    {
+        $eventcategories = $this->getEventCategories();
+        $results[] = array();
+        foreach ($eventcategories as $eventcategory) {
+            // Create an array with all 12 months of the year
+            $monthsOfYear = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+            // Get the count of requests published on each month for urgency = "Within 7 days"
+            $sql = "SELECT ec.name, MONTHNAME(e.date) AS month, SUM(e.participationCount) AS count FROM event e INNER JOIN eventcategory ec ON e.eventCategoryID = ec.eventCategoryID WHERE ec.name = :eventCategory GROUP BY MONTH(e.date);";
+            $statement = eventModel::prepare($sql);
+            $statement->execute(array(":eventCategory" => $eventcategory));
+            $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            // Loop through the result and update the corresponding value in the new array
+            $chartData = array_fill_keys($monthsOfYear, 0);
+            foreach ($result as $row) {
+                $chartData[$row['month']] = $row['count'];
+            }
+            $results[$eventcategory] = $chartData;
+        }
+        return $results;
     }
 }

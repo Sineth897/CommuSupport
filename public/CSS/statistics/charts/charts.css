@@ -1,4 +1,4 @@
-.chart-container, .stat {
+.chart-container, .stat-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -7,13 +7,5 @@
     height: 100%;
 }
 
-#totalChart {
-    width: 540px;
-}
 
-#itemChart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
+
