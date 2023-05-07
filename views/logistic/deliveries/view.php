@@ -29,7 +29,8 @@ $profile->end(); ?>
 
 <?php $headerDiv->end(); ?>
 
-<?php $searchDiv = new \app\core\components\layout\searchDiv();
+<?php
+$searchDiv = new \app\core\components\layout\searchDiv();
 
 $searchDiv->filterDivStart();
 

@@ -71,9 +71,11 @@ class complaintController extends Controller
         if($request->isPost())
         {
             $model->getData($request->getBody());
+
             if($model->validate($request->getBody()) && $model->save())
             {
                 $this->setFlash('result','Complaint submitted');
+                $model->reset();
             }
             else {
 
@@ -86,7 +88,7 @@ class complaintController extends Controller
             $model->subject=$_GET['processID'];
         }
 
-        $this->render("./donee/complaint/create",'File a Complaint',[
+        $this->render("./donee/complaints/file",'File a Complaint',[
             'complaint'=>$model
         ]);
 
@@ -102,8 +104,7 @@ class complaintController extends Controller
             if($request->isPost())
             {
                 $model->getData($request->getBody());
-                print_r($model);
-                exit();
+
                 if(!empty($model->solution)){
                     $model->submitSolution($model->solution,$model->complaintID);
                     $this->setFlash('result','Solution Added');
@@ -115,11 +116,14 @@ class complaintController extends Controller
 
             }
 
+            echo $model->complaintID;
+
             if($request->isGet())
             {
                 $model->complaintID=$_GET['complaintID'];
 
             }
+
             echo $model->complaintID;
             $this->render("./cho/complaints/solution","Solution Submit",[
 

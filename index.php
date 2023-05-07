@@ -328,7 +328,7 @@ $app->router->post('/donee/event/markParticipation', function ($request, $respon
 });
 //donee view complaints
 $app->router->get('/donee/complaints', function($request,$response) {
-    $controller = new \app\controller\complaintController('viewComplaint',$request,$response);
+    $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 //donee file complaints
 $app->router->post('/donee/complaints/files',function($request,$response){
@@ -873,8 +873,11 @@ $app->router->get('/admin/donors', function($request,$response) {
 $app->router->post('/admin/donors/filter', function($request,$response) {
     $controller = new \app\controller\donorController('donorsFilterAdmin', $request, $response);
 });
-
-
+// admin view complaints
+$app->router->get('/admin/complaints',function ($request,$response)
+{
+    $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
+});
 
 
 

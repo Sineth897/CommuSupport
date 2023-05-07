@@ -13,13 +13,15 @@ use app\core\components\tables\table;
 
 $userID = \app\core\Application::session()->get('user');
 //
-try{
-    $complaint = $complaints->getAllComplaints($userID);
-
-}
-catch(\Exception $e){
-    echo $e->getMessage();
-}
+//try{
+//    $complaint = $complaints->getAllComplaints($userID);
+////    $complaintID = $complaints->getID($userID);
+//
+//}
+//catch(\Exception $e){
+//    echo $e->getMessage();
+//}
+$complaint = $complaints->getAllComplaints($userID);
 ?>
 
 <?php
@@ -41,44 +43,62 @@ $headerDiv->heading("Complaints by Donors and Donees ");
 
 $headerDiv->end();
 ?>
+<?php
+
+$searchDiv = new \app\core\components\layout\searchDiv();
+$searchDiv ->filterDivStart();
+$searchDiv->filterBegin();
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($complaints, "Select a Status", '',['pending'=>'Pending','completed'=>"Completed"], 'filterCategory');
+$filterForm::end();
 
 
-<div class="content">
-    <div class="filters">
-
-            <p ><i class="material-icons"  >
-                    <select id="filter">
-                        <option value="all">All</option>
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
-                    </select></i>
-                <span>Filter</span>
-            </p>
-
-        <div class="sort" id="sort-btn">
-            <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort by Reviewed Date</span></p>
-        </div>
-    </div>
-
-</div>
-    <?php
-$headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
+$searchDiv->filterEnd();
 
 
-$complaintsTable = new table($headers,$arrayKeys);
-$complaintsTable ->displayTable($complaint);
+
+$searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($complaints,"Reviewed Date","reviewedDate","registeredDateSort");
+$sort->end();
+$sort::end();
+
+$searchDiv->sortEnd();
+$searchDiv->filterDivEnd();
+$searchDiv->end();
+
 
 ?>
 
-<div class="no-complaint">
+
+
+
+<div class="content">
+
     <?php
-    if(empty($complaint)){
-        echo "No Complaints has been filed.";
-    }
+    $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
+    $arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
+
+
+    $complaintsTable = new table($headers,$arrayKeys);
+    $complaintsTable ->displayTable($complaint);
+
     ?>
 
+    <div class="no-complaint">
+        <?php
+        if(empty($complaint)){
+            echo "No Complaints has been filed.";
+        }
+        ?>
+
+    </div>
+
+
+
 </div>
+
 
 
 <script type="module" src="../public/JS/cho/complaints/sort.js"></script>

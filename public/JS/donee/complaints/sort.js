@@ -1,5 +1,5 @@
 
-const sort_btn = document.getElementById("sortBtn")
+const sort_btn = document.getElementById("sort-btn")
 sort_btn.addEventListener("click",sortTable);
 
 function sortTable() {
@@ -11,7 +11,7 @@ function sortTable() {
         rows = table.getElementsByTagName("tr");
         for (i = 1; i < (rows.length - 1); i++) {
             shouldSwitch = false;
-            x = rows[i].getElementsByTagName("td")[5];
+            x = rows[i].getElementsByTagName("td")[3];
             y = rows[i + 1].getElementsByTagName("td")[5];
             if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
                 shouldSwitch = true;
@@ -29,7 +29,7 @@ function sortTable() {
 
 
 //sorting by date field
-const filter = document.getElementById("filterBtn");
+const filter = document.getElementById("filter");
 const table = document.querySelectorAll("tbody")[0];
 const rows = table.getElementsByTagName("tr");
 

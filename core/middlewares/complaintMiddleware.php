@@ -12,6 +12,7 @@ class complaintMiddleware extends Middleware
             'donorFileComplaint'=>[$this->DONOR],
             'doneeFileComplaint'=>[$this->DONEE],
             'addSolution'=>[$this->CHO],
+            'submitSolution'=>[$this->CHO],
 
         ];
     }

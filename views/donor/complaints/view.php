@@ -18,12 +18,6 @@ catch(\Exception $e){
 }
 
 
-//$pending= array_filter($complaint,function ($complaint){
-//    return $complaint['status'] === "pending" ;
-//})
-
-
-
 
 ?>
 
@@ -49,15 +43,23 @@ $headerDiv->pages(['pending','completed']);
 $headerDiv->end();
 ?>
 
+<div class="content">
+    <div class="filters">
 
-<div class="search-filter">
-    <div class="pending" id="pending">
-        <p id="pending"><i class="material-icons">pending </i><span>Pending</span> </p>
+        <p ><i class="material-icons"  >
+                <select id="filter">
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                </select></i>
+            <span>Filter</span>
+        </p>
+
+        <div class="sort" id="sort-btn">
+            <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort</span></p>
+        </div>
     </div>
 
-    <div class="sort" id="sort-btn">
-        <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort by Reviewed Date</span></p>
-    </div>
 </div>
 
 
@@ -103,7 +105,7 @@ if($checkVerification->notVerified()) {
 
 
 
-<script type="module" src="../public/JS/donor/complaint/filter.js"></script>
+<script type="module" src="../public/JS/donor/complaints/filter.js"></script>
 
 
 
