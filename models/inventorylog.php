@@ -7,6 +7,8 @@ use app\core\DbModel;
 class inventorylog extends DbModel
 {
 
+    public string $remark = '';
+
     public function table(): string
     {
         return 'inventorylog';
@@ -46,9 +48,7 @@ class inventorylog extends DbModel
     }
 
     public static function logCCdonation(string $ccdonationID,string $fromCC,string $toCC) {
-        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark)  SELECT ccdonationID,amount,item,fromCC,CONCAT('Donation was dispatched to ', c.city,' CC on ',CURRENT_DATE) FROM ccdonation cc INNER JOIN communitycenter c on cc.toCC = c.ccID WHERE cc.ccdonationID = '$ccdonationID'";
-        $statement = self::prepare($sql);
-        $statement->execute();
+
         $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark)  SELECT ccdonationID,amount,item,toCC,CONCAT('Donation was collected from  ', c.city,' CC on ',CURRENT_DATE) FROM ccdonation cc INNER JOIN communitycenter c on cc.fromCC = c.ccID WHERE cc.ccdonationID = '$ccdonationID'";
         $statement = self::prepare($sql);
         $statement->execute();
@@ -69,5 +69,19 @@ class inventorylog extends DbModel
         $statement->execute();
     }
 
+    public static function logLogisticAddingInventoryManually(string $suncateogoryID,Int $amount,string $remark) {
+        $logistic = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
+        $processID = substr(uniqid('logisticAdd',true),0,23);
+        $sql = "INSERT INTO inventorylog(processID,amount,item,ccID,remark) VALUES ('$processID',$amount,'$suncateogoryID','$logistic->ccID',:remark)";
+        $statement = self::prepare($sql);
+        $statement->bindParam(':remark',$remark);
+        $statement->execute();
+    }
+
+    public static function logAcceptingCCDonation(string $ccdonationID) : void {
+        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark)  SELECT ccdonationID,amount,item,fromCC,CONCAT('Donation was dispatched to ', c.city,' CC on ',CURRENT_DATE) FROM ccdonation cc INNER JOIN communitycenter c on cc.toCC = c.ccID WHERE cc.ccdonationID = '$ccdonationID'";
+        $statement = self::prepare($sql);
+        $statement->execute();
+    }
 
 }

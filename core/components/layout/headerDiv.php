@@ -20,7 +20,7 @@ class headerDiv
         'completed' => [
             'id' => 'completed',
             'link' => '#',
-            'icon' => 'check_circle_outline',
+            'icon' => 'done_all',
             'name' => 'Completed'
         ],
         'cancelled' => [

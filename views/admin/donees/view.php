@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
+
 <?php
 
 /** @var $model \app\models\doneeModel */
@@ -14,6 +15,51 @@ $profile->notification();
 $profile->profile();
 
 $profile->end(); ?>
+
+<!-- Inforgraphic Cards Layout -->
+<?php $infoDiv = new \app\core\components\layout\infoDiv([2,3]);
+
+// First Block of Statistics
+$infoDiv->chartDivStart();
+//?>
+<div class="chart-container">
+<canvas id="doneeCategoryChart"></canvas>
+</div>
+
+<?php
+$chartData1 = $model->getDoneebyCategory();
+?>
+<script>
+    const doneeData = <?php echo json_encode($chartData1); ?>;
+</script>
+<script src="../public/JS/charts/admin/donee/doneeCategoryChart.js"></script>
+
+<!-- Summary of ALl Statistics in this div-->
+<?php
+$infoDiv->chartDivEnd();
+
+?>
+
+
+<!--Second Long Div with Bar Chart-->
+<?php $infoDiv->chartDivStart(); ?>
+<div class="chart-container">
+<!--    --><?php //$infoDiv->chartCanvas("totalRegChart"); ?>
+    <canvas id="totalRegChart" width="400" height="250"></canvas>
+</div>
+
+<?php
+$chartData2 = $model->getDoneeRegMonthly();
+?>
+
+<script>
+    const monthData = <?php echo json_encode($chartData2); ?>;
+</script>
+<script src="../public/JS/charts/admin/donee/totalRegChart.js"></script>
+
+<?php $infoDiv->chartDivEnd();
+$infoDiv->end(); ?>
+
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 

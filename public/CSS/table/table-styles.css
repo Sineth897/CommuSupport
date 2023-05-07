@@ -20,6 +20,8 @@ table {
     border-radius: 12px;
     width: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    overflow-y: scroll;
 }
 
 table thead > tr {
@@ -46,6 +48,10 @@ table th:first-child {
 table tbody tr {
     border-radius: 8px;
 
+}
+
+table tbody{
+    overflow-y: scroll;
 }
 
 table td {
@@ -82,18 +88,27 @@ table tbody tr:last-child {
 
 table tbody td a {
     border-radius: 0.5rem;
-    padding: 10px 10px;
+    padding: 8px 8px;
     text-align: center;
     display: flex;
     flex-direction: row;
-    grid-gap: 10px;
     align-items: center;
     justify-content: center;
+    max-width: 50px;
 }
 
-table td .edit {
+table td .view {
+    /*background-color: var(--secondary-color);*/
+    /*color: white;*/
+    background-color: #d1ffd6;
+    color:  var(--secondary-dark);
+}
+
+table td .view:hover {
     background-color: var(--secondary-color);
     color: white;
+    /*background-color: #beffc4;*/
+    /*color:  var(--secondary-color);*/
 }
 
 
@@ -102,7 +117,7 @@ table td .delete {
     color: white
 }
 
-table td .view {
+table td .edit {
     background-color: var(--primary-color);
     color: white;
 }

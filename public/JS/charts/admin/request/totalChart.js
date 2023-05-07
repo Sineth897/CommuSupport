@@ -1,6 +1,6 @@
 const canvas = document.getElementById('totalChart');
 const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const myChart = new Chart(canvas, {
+const totalChart = new Chart(canvas, {
     type: 'line', data: {
         labels: monthsOfYear, datasets: [{
             label: 'Requests within 7 days',
@@ -8,7 +8,7 @@ const myChart = new Chart(canvas, {
             borderColor: 'rgb(0,198,21)',
             borderWidth: 2,
             fill: false,
-            pointRadius: 0,
+            pointRadius: 3,
             pointBackgroundColor: 'rgb(0,198,21)',
             lineTension: 0
 
@@ -18,15 +18,17 @@ const myChart = new Chart(canvas, {
             borderColor: 'rgb(0,107,14)',
             borderWidth: 2,
             fill: false,
-            pointRadius: 0,
+            pointRadius: 3,
             pointBackgroundColor: 'rgb(0,107,14)',
             lineTension: 0
         },]
     }, options: {
         title: {
             display: true,
-            text: 'Requests',
-            fontSize: 20
+            text: 'Variation of the Requests over the months',
+            fontSize: 24,
+            fontColor: '#000',
+            fontFamily: 'inter'
         },
 
         responsive: false, maintainAspectRatio: false, scales: {

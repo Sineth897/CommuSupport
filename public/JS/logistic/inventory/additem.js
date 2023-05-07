@@ -13,22 +13,26 @@ let activeSubcategory = '';
 let subcategorySelectDivs = [];
 let subcategorySelect = [];
 
-let confirmBtn = document.getElementById('addToInventory');
-let amount = document.getElementById('amount');
+const confirmBtn = document.getElementById('addToInventory');
+const amount = document.getElementById('amount');
+const remark = document.getElementById('remark');
 
 let filterCategory = document.getElementById('filterCategory');
 let sortLastUpdated = document.getElementById('sortLastUpdated');
 let sortAmount = document.getElementById('sortAmount');
 
+const popupBackground = document.getElementById('popUpBackground');
+popupBackground.append(itemForm);
+show(itemForm);
 
 prepareCategoryOptionArray();
 prepareSubcategorySelectionArray();
 addBtn.addEventListener('click', function() {
-    show(itemForm);
+    show(popupBackground);
 });
 
 closeBtn.addEventListener('click', function() {
-    hide(itemForm);
+    hide(popupBackground);
 });
 
 category.addEventListener('change', function() {
@@ -45,11 +49,14 @@ confirmBtn.addEventListener('click', async function() {
     if(verifyForm()) {
         let data = {
             subcategoryID: subcategorySelect[activeSubcategory].value,
-            amount: amount.value };
+            amount: amount.value,
+            remark: remark.value };
         let array = await getData('./inventory/add', 'POST', { data:data });
         if(array['success']) {
             flash.showMessage({type: 'success', value: 'Item added to inventory'},3000);
             filterBtn.click();
+            resetAddForm();
+            hide(popupBackground);
         }
         else {
             flash.showMessage({type: 'error', value: 'Item could not be added to inventory'},3000);
@@ -108,12 +115,31 @@ document.getElementById('sortBtn').addEventListener('click', function() {
 
 
 function verifyForm() {
-    return required(category) && required(subcategorySelect[activeSubcategory]);
+    return required(category) && required(subcategorySelect[activeSubcategory]) && required(amount) && positive(amount) && required(remark);
 }
 
 function required(element) {
     if(element.value === '') {
         element.nextElementSibling.innerHTML = "This field is required";
+        return false;
+    }
+    element.nextElementSibling.innerHTML = "";
+    return true;
+}
+
+function resetAddForm() {
+    category.value = '';
+    activeSubcategory = '';
+    amount.value = '';
+    remark.value = '';
+    for(let i = 0; i < subcategorySelect.length; i++) {
+        subcategorySelect[i].value = '';
+    }
+}
+
+function positive(element) {
+    if(parseFloat(element.value) <= 0) {
+        element.nextElementSibling.innerHTML = "This field must be a valid amount";
         return false;
     }
     element.nextElementSibling.innerHTML = "";

@@ -14,9 +14,13 @@
     <link rel="stylesheet" href="/Commusupport/public/CSS/form/form.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/button/button-styles.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/flashMessages.css">
-    <link rel="stylesheet" href="/Commusupport/public/CSS/statistics/stat.css">
+    <link rel="stylesheet" href="/Commusupport/public/CSS/statistics/statDivBase.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/notification/notification.css">
-<!--    {styles}-->
+    <link rel="stylesheet" href="/CommuSupport/public/CSS/statistics/charts/charts.css">
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+    <!--    {styles}-->
 </head>
 
 <body>
@@ -38,7 +42,6 @@
     <?php endif; ?>
 
     const notificationBtn = document.getElementById('notif-btn');
-    // const notification = document.getElementById('notification');
 
     if(notificationBtn){
         notificationBtn.addEventListener('click', () => {
@@ -48,12 +51,25 @@
                 notification.style.display = 'none';
             }
         });
-        // document.getElementById('close-notification').addEventListener('click', () => {
-        //     notification.style.display = 'none';
-        //     console.log(notification.style.display);
-        // });
     }
 
+
+    const cardContainers = document.querySelectorAll('.card-container');
+
+    if(cardContainers) {
+
+        const noDataImg = document.createElement('img');
+        noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+        for(let i=0; i < cardContainers.length; i++) {
+
+            if(cardContainers[i].children.length === 0) {
+                cardContainers[i].appendChild(noDataImg);
+                cardContainers[i].classList.add('no-data');
+            }
+        }
+
+    }
 
 </script>
 

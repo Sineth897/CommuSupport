@@ -10,6 +10,9 @@
 
 $CHOs = \app\models\choModel::getCHOs();
 
+//echo '<pre>';
+//var_dump($donee->errors);
+//echo '</pre>';
 
 ?>
 
@@ -33,7 +36,7 @@ $CHOs = \app\models\choModel::getCHOs();
          <div>
 
              <div style="display: none">
-                 <?php $doneeForm->inputField($donee, 'Donor Type','text','type','doneeType'); ?>
+                 <?php $doneeForm->inputField($donee, 'Donee Type','text','type','doneeType'); ?>
              </div>
 
              <?php $doneeForm->dropDownList($donee,'Choose District','district',$CHOs,'district'); ?>
@@ -137,7 +140,7 @@ $CHOs = \app\models\choModel::getCHOs();
 
 
     <script>
-        document.getElementById('donorType').value = 'Individual';
+        document.getElementById('doneeType').value = 'Individual';
     </script>
 
 <?php if(!empty($_POST['type'])) : ?>

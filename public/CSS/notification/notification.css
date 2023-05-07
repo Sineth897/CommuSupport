@@ -31,7 +31,7 @@ button {
     right : 0;
     top: 70px;
     padding-right: 5%;
-    max-height: 600px;
+    max-height: 28.125rem;
     overflow-y: hidden;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
 }
@@ -82,7 +82,7 @@ button {
 .notif-box-scroller{
     display: block;
     overflow-y: scroll;
-    height: auto;
+    height: inherit;
     border-radius: 12px;
 }
 

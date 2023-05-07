@@ -9,10 +9,11 @@
     position: relative;
     height: 300px;
 }
-
 .stat-box {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.stat-grid-1-1-h {
     grid-template-rows: 1fr 1fr;
 }
 
