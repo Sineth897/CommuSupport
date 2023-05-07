@@ -2,10 +2,12 @@
 
 namespace app\core\components\layout;
 
-class infoDiv{
-    public function __construct()
+class infoDiv
+{
+    public function __construct($gridCount)
     {
-        echo "<div class='info-container'>";
+        $class = "grid-" . implode("-", $gridCount);
+        echo "<div class='info-container $class'>";
     }
 
     public function statDivStart(): void

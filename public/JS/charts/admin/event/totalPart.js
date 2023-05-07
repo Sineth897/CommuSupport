@@ -1,6 +1,6 @@
 const canvas = document.getElementById('totalChart');
 const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const totalChart = new Chart(canvas, {
+const totalPart = new Chart(canvas, {
     type: 'line', data: {
         labels: monthsOfYear, datasets: [{
             label: 'Requests within 7 days',

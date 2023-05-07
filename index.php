@@ -37,7 +37,7 @@ $app = new Application(dirname(__DIR__) . "/CommuSupport", $config);
 
 
 //*************************Guest get and post methods*************************//
-////Guest landing page
+////Guest landing page - 40
 $app->router->get('/', function($request, $response) {
     $controller = new redirectController("redirectHome", $request, $response);
 });
@@ -152,7 +152,7 @@ $app->router->post('/verifyMobile', function($request,$response) {
 
 
 //*************************Manager get and post methods*************************//
-//manager home page
+//manager home page - 155
 $app->router->get('/manager', function($request,$response) {
     $controller = new redirectController("redirectHome", $request, $response);
 });
@@ -294,7 +294,7 @@ $app->router->get('/manager/profile', function ($request, $response) {
 
 
 
-//*************************Donee get and post methods*************************//
+//*************************Donee get and post methods*************************// --297
 $app->router->get('/donee/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
@@ -387,7 +387,7 @@ $app->router->get('/donee/profile',function($request,$response){
 
 
 //*************************Donor get and post methods*************************//
-//Donor view request
+//Donor view request - 390
 $app->router->get('/donor/requests', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
@@ -489,7 +489,7 @@ $app->router->get('/donee/profile',function($request,$response){
 
 
 //*************************Logistic get and post methods*************************//
-//logistic view drivers
+//logistic view drivers - 492
 $app->router->get("/logistic/drivers", function ($request,$response) {
     $controller = new \app\controller\driverController("viewDrivers",$request,$response);
 });
@@ -598,7 +598,6 @@ $app->router->post('/logistic/donations/filter', function ($request,$response) {
 
 
 
-//*************************Driver get and post methods*************************//
 $app->router->get('/driver/deliveries', function($request,$response) {
     $controller = new \app\controller\deliveryController('viewDeliveries',$request,$response);
 });
@@ -617,6 +616,10 @@ $app->router->post('/driver/delivery/reassign', function ($request,$response) {
 
 $app->router->get('/driver/deliveries/completed', function ($request,$response) {
     $controller = new \app\controller\deliveryController('completedDeliveries',$request,$response);
+});
+
+$app->router->get('/driver/profile', function ($request, $response) {
+    $controller = new \app\controller\profileController("viewProfile",$request,$response);
 });
 
 $app->router->post('/driver/deliveries/popup', function ($request,$response) {
@@ -672,8 +675,9 @@ $app->router->post('/driver/deliveries/filter', function ($request,$response) {
 
 
 
+
 //*************************CHO get and post methods*************************//
-//cho add a community center
+//cho add a community center - 672
 $app->router->get("/cho/communitycenter/register", function($request,$response) {
     $controller = new \app\controller\registerController("registerCC",$request,$response);
 });
@@ -720,9 +724,9 @@ $app->router->post("/cho/complaints/solution",function ($request,$response){
     $controller = new \app\controller\complaintController("addSolution",$request,$response);
 });
 
-
-
-
+$app->router->get('/cho/profile', function ($request, $response) {
+    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+});
 
 
 
@@ -789,7 +793,7 @@ $app->router->post("/cho/complaints/solution",function ($request,$response){
 
 
 //*************************Admin get and post methods*************************//
-//Admin view cho
+//Admin view cho - 785
 $app->router->get('/admin/communityheadoffices', function ($request, $response) {
     $controller = new \app\controller\choController("viewCho",$request,$response);
 });
@@ -878,13 +882,13 @@ $app->router->post('/admin/donors/filter', function($request,$response) {
     $controller = new \app\controller\donorController('donorsFilterAdmin', $request, $response);
 });
 
+$app->router->get('/admin/profile', function ($request, $response) {
+    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+});
 
 
 
 
 
-
-
-
-
+// 882
 $app->run();

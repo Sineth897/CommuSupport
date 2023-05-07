@@ -78,4 +78,21 @@ class ccModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+    public function getHighestPerformingCC()
+    {
+        $sql = "SELECT communitycenter.city, COUNT(*) AS registration_count FROM communitycenter LEFT JOIN donor ON communitycenter.ccID = donor.ccID LEFT JOIN donee ON communitycenter.ccID = donee.ccID GROUP BY communitycenter.ccID ORDER BY registration_count DESC LIMIT 5;";
+        $stmnt = self::prepare($sql);
+        $stmnt->execute();
+        $result = $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['city']] = $row['registration_count'];
+        }
+        return $chartData;
+
+    }
+
+
 }

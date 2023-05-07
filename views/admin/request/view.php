@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/statistics/charts/charts.css">
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
@@ -24,32 +23,45 @@ $profile->profile();
 $profile->end(); ?>
 
 <!-- Inforgraphic Cards Layout -->
-<?php $infoDiv = new \app\core\components\layout\infoDiv();
+<?php $infoDiv = new \app\core\components\layout\infoDiv([2,3]);
 
 // First Block of Statistics
-$infoDiv->statDivStart();
-//
-$infoDiv->chartCanvas("itemChart");
+$infoDiv->chartDivStart();
+//?>
+<div class="chart-container">
+    <canvas id="itemChart"></canvas>
+</div>
+<?php
+$chartData1 = $model->getRequestDatabyCategory();
 ?>
+
+<script>
+    const itemData = <?php echo json_encode($chartData1); ?>;
+</script>
+<script src="../public/JS/charts/admin/request/subcategoryChart.js"></script>
 <!-- Summary of ALl Statistics in this div-->
 <?php
-$infoDiv->statDivEnd(); ?>
+$infoDiv->chartDivEnd();
+
+?>
+
+
 
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
 <div class="chart-container">
-<?php $infoDiv->chartCanvas("totalChart"); ?>
+    <canvas id="totalChart" width="600"></canvas>
 </div>
 <?php
 $urgencies = array("Within 7 days", "Within a month");
-$results = $model->getRequestDataMonthly();
+$chartData2 = $model->getRequestDataMonthly();
 ?>
 
 <script>
-    const weekData = <?php echo json_encode($results[$urgencies[0]]); ?>;
-    const monthData = <?php echo json_encode($results[$urgencies[1]]); ?>;
+    const weekData = <?php echo json_encode($chartData2[$urgencies[0]]); ?>;
+    const monthData = <?php echo json_encode($chartData2[$urgencies[1]]); ?>;
 </script>
-<script src="/CommuSupport/public/JS/charts/admin/request/totalChart.js"></script>
+<script src="../public/JS/charts/admin/request/totalChart.js"></script>
 
 <?php $infoDiv->chartDivEnd();
 $infoDiv->end(); ?>
@@ -95,7 +107,7 @@ $searchDiv->end(); ?>
 <!--        Content Block-->
 
 <!--<img src="/CommuSupport/public/src/errors/404.svg">-->
-<div class="content" id="pendingRequestsTable">
+<div class="content with-chart" id="pendingRequestsTable">
     <?php
     $requests = $model->getPendingRequestWithPostedBy();
 
@@ -108,7 +120,7 @@ $searchDiv->end(); ?>
     ?>
 </div>
 
-<div class="content" id="acceptedRequestsTable" style="display: none">
+<div class="content with-chart" id="acceptedRequestsTable" style="display: none">
     <?php
     $accepteRequests = $model->getAcceptedRequestWithPostedBy();
 

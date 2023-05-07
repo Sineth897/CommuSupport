@@ -100,4 +100,38 @@ class driverModel extends DbModel
         $stmt->execute();
         return ['driver' => driverModel::getModel(['employeeID' => $employeeID]),'deliveryInfo' => $stmt->fetchALL(\PDO::FETCH_KEY_PAIR)];
     }
+
+
+    public function getDriverbyVehicle() {
+//         get the count of donees and group by type
+
+        $sql = "SELECT COUNT(*) as count,vehicleType FROM driver GROUP BY vehicleType";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['vehicleType']] = $row['count'];
+        }
+        return $chartData;
+    }
+
+    public function getDriverLengths(): array
+    {
+        // get the counts of drivers who do "< 10km>" or "> 10km" and group by preference
+        $sql = "SELECT COUNT(*) as count,preference FROM driver GROUP BY preference";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+        $chartData = array();
+        foreach ($result as $row) {
+            $chartData[$row['preference']] = $row['count'];
+        }
+        return $chartData;
+
+    }
+
 }

@@ -14,9 +14,13 @@
     <link rel="stylesheet" href="/Commusupport/public/CSS/form/form.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/button/button-styles.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/flashMessages.css">
-    <link rel="stylesheet" href="/Commusupport/public/CSS/statistics/stat.css">
+    <link rel="stylesheet" href="/Commusupport/public/CSS/statistics/statDivBase.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/notification/notification.css">
-<!--    {styles}-->
+    <link rel="stylesheet" href="/CommuSupport/public/CSS/statistics/charts/charts.css">
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+    <!--    {styles}-->
 </head>
 
 <body>

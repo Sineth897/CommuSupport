@@ -91,4 +91,21 @@ class donationModel extends DbModel
         $sql = "SELECT * FROM donation d INNER JOIN communitycenter c ON d.donateTo = c.ccID INNER JOIN subcategory s ON d.item = s.subcategoryID";
         return self::runCustomQuery($sql,['d.createdBy' => $userID]);
     }
+
+    public function getRequestDatabyCategory() : array
+    {
+        // Get the count of requests published on each month for urgency = "Within 7 days"
+        $sql = "SELECT c.categoryName, COUNT(d.item) as donation_count FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID RIGHT JOIN category c ON s.categoryID = c.categoryID GROUP BY c.categoryName";
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['category']] = $row['count'];
+        }
+        return $chartData;
+    }
+
+
 }

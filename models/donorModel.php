@@ -182,4 +182,39 @@ class donorModel extends DbModel
         return $sql->fetchAll(\PDO::FETCH_COLUMN);
     }
 
+
+    public function getDonorbyCategory() {
+//         get the count of donors and group by type
+
+        $sql = "SELECT COUNT(donorID) as count,type FROM donor GROUP BY type";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['type']] = $row['count'];
+        }
+        return $chartData;
+    }
+
+    public function getDonorRegMonthly(): array
+    {
+        $chartData = array();
+        // Create an array with all 12 months of the year
+        $monthsOfYear = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        // Get the count of requests published on each month for urgency = "Within 7 days"
+        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donor GROUP BY MONTH(registeredDate)";
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        // Loop through the result and update the corresponding value in the new array
+        $chartData = array_fill_keys($monthsOfYear, 0);
+        foreach ($result as $row) {
+            $chartData[$row['month']] = $row['count'];
+        }
+        return $chartData;
+    }
+
 }

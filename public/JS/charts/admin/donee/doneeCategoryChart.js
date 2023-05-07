@@ -1,11 +1,11 @@
-var ctx = document.getElementById('itemChart').getContext('2d');
+var ctx = document.getElementById('doneeCategoryChart').getContext('2d');
 var itemChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: Object.keys(itemData),
+        labels: Object.keys(doneeData),
         datasets: [{
             label: 'My Pie Chart',
-            data: Object.values(itemData),
+            data: Object.values(doneeData),
             backgroundColor: [
                 '#225E27',
                 '#3AAC43',
@@ -16,13 +16,13 @@ var itemChart = new Chart(ctx, {
     options: {
         title: {
             display: true,
-            text: 'Categories of Requests',
+            text: 'Categories of Donees',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'
         },
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         legend: {
             display: true,
             position: 'top',
