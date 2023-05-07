@@ -1,5 +1,5 @@
 
-const sort_btn = document.getElementById("pending")
+const sort_btn = document.getElementById("sortBtn")
 sort_btn.addEventListener("click",sortTable);
 
 function sortTable() {
@@ -29,7 +29,7 @@ function sortTable() {
 
 
 //sorting by date field
-const filter = document.getElementById("filter");
+const filter = document.getElementById("filterBtn");
 const table = document.querySelectorAll("tbody")[0];
 const rows = table.getElementsByTagName("tr");
 

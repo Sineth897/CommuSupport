@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\core\DbModel;
 use app\core\Model;
+use app\core\notificationModel;
 
 class complaintModel extends DbModel
 {
@@ -78,7 +79,7 @@ class complaintModel extends DbModel
 
     public function getAllComplaints(string $choID)
     {
-        $statement = self::prepare("SELECT u.username,c.filedDate,s.subcategoryName,c.status,c.solution,c.reviewedDate FROM complaint c INNER JOIN users u ON c.filedBy=u.userID INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where choID=:choID");
+        $statement = self::prepare("SELECT u.username,c.filedDate,s.subcategoryName,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c INNER JOIN users u ON c.filedBy=u.userID INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where choID=:choID");
         $statement->bindValue(':choID', $choID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -89,7 +90,7 @@ class complaintModel extends DbModel
 
     public function getOwnComplaints(string $userID)
     {
-        $statement = self::prepare("SELECT c.complaint,c.filedDate,c.status,c.solution,c.reviewedDate,s.subcategoryName from complaint c INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where filedBy=:userID");
+        $statement = self::prepare("SELECT c.complaintID,c.complaint,c.filedDate,c.status,c.solution,c.reviewedDate,s.subcategoryName from complaint c INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where filedBy=:userID");
         $statement->bindValue(':userID', $userID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -98,7 +99,7 @@ class complaintModel extends DbModel
        public function submitSolution(string $solution,string $complaintID)
    {
        $updateDate=date('Y-m-d');
-       $updateStatus="completed";
+       $updateStatus="Completed";
        $statement = self::prepare("UPDATE complaint SET solution=:solution,reviewedDate=:updateDate,status=:updateStatus WHERE complaintID=:complaintID");
        $statement->bindValue(':solution',$solution);
        $statement->bindValue(':updateDate',$updateDate);
@@ -108,7 +109,26 @@ class complaintModel extends DbModel
        return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
    }
+    public function getUserType(): bool|array
+    {
+        $statement = self::prepare("SELECT usrType FROM users");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 
+    public function allComplaints()
+    {
+        $statement = self::prepare("SELECT * from complaint");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getID(string $userID)
+    {
+        $statement = self::prepare("SELECT complaintID from complaint where choID=:userID");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
 
 }

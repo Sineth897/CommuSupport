@@ -31,3 +31,26 @@ searchInput.addEventListener('keyup',function (event) {
         data.style.display=""
     })
 });
+
+
+const filter = document.getElementById("filter");
+const table = document.querySelectorAll("tbody")[0];
+const fRows = table.getElementsByTagName("tr");
+
+filter.addEventListener("change", function() {
+    var selectedType = this.value
+    // console.log(selectedType)
+    for (var i = 0; i < fRows.length; i++) {
+        var row = fRows[i];
+        var type1 = row.getElementsByTagName("td")[1].textContent.toLowerCase();
+        var type2 = row.getElementsByTagName("td")[5].textContent.toLowerCase();
+
+        if (selectedType === "all" || selectedType === type1 || selectedType === type2) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    }
+});
+
+
