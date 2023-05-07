@@ -84,4 +84,12 @@ class inventoryModel extends DbModel
         }
 
     }
+
+    public static function updateInventoryAfterAcceptingCCDontion(string $ccID,string $subcategoryID,int $amount) : void {
+        $stmnt = self::prepare("UPDATE inventory SET amount = amount - :amount, updatedTime = CURRENT_TIMESTAMP WHERE ccID = :ccID AND subcategoryID = :subcategoryID");
+        $stmnt->bindValue(':amount', $amount);
+        $stmnt->bindValue(':ccID', $ccID);
+        $stmnt->bindValue(':subcategoryID', $subcategoryID);
+        $stmnt->execute();
+    }
 }

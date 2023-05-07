@@ -50,8 +50,8 @@ catch(\Exception $e){
 <div class="content-form">
 
     <?php
-    $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-    $arrayKeys = ['filedBy','filedDate','subject','status','solution','reviewedDate'];
+    $headers = ['Complaint','Filed Date','Subject','Status','Solution','Reviewed Date'];
+    $arrayKeys = ['complaint','filedDate','subcategoryName','status','solution','reviewedDate'];
 
 
     $complaintsTable = new table($headers,$arrayKeys);
@@ -74,7 +74,7 @@ catch(\Exception $e){
 
 
 
-
+<script type="module" src="../public/JS/donor/complaint/filter.js"></script>
 
 
 

@@ -11,7 +11,7 @@
     padding: 20px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     gap: 1.5rem;
-    height: 9.5rem;
+    /*height: 9.5rem;*/
     position: relative;
 }
 
@@ -20,12 +20,12 @@
 }
 
 .CC-donation-header{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: space-between;
 }
 
 .CC-donation-details{
-    margin-top: 10px;
+    margin-top: .5rem;
     font-size: 0.8rem;
     display: flex;
     justify-content: space-between;
@@ -40,7 +40,13 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    padding: .5rem 0;
+    padding: .5rem 0 0;
+}
+
+.CC-donation-note{
+    font-size: 0.8rem;
+    padding : 0 .625rem;
+    height: 2.5rem;
 }
 
 .CC-donation-primary {
@@ -55,4 +61,18 @@
     color: white;
     font-weight: 600;
     cursor: pointer;
+}
+
+.color-danger-font-point9rem {
+    color : var(--danger-color);
+    font-size: 0.9rem;
+}
+
+.color-secondary-font-point9rem {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.font-point8rem {
+    font-size: 0.8rem;
 }

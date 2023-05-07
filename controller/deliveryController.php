@@ -77,12 +77,7 @@ class deliveryController extends Controller
     private function getDriverDetails() : array {
         $user = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
 
-        $sql1 = "SELECT * FROM driver WHERE ccID = :ccID ";
-
-        $stmt1 = deliveryModel::prepare($sql1);
-        $stmt1->bindValue(':ccID',$user->ccID);
-        $stmt1->execute();
-        $drivers = $stmt1->fetchAll(\PDO::FETCH_ASSOC);
+        $drivers = driverModel::getAllData(['ccID' => $user->ccID]);
 
         $sql2 = "SELECT deliveredBy,COUNT(*) as count FROM subdelivery WHERE deliveredBy IN (SELECT employeeID FROM driver WHERE ccID = :ccID) AND status = 'Ongoing'";
         $stmt2 = deliveryModel::prepare($sql2);
@@ -106,7 +101,7 @@ class deliveryController extends Controller
         try {
             $this->startTransaction();
             //update relavant subdelivery record
-            $subdelivery->update(['subdeliveryID' => $data['subdeliveryID']],['deliveredBy' => $data['driverID'],'status' => 'Ongoing']);
+            $subdelivery->update(['subdeliveryID' => $data['subdeliveryID']],['deliveredBy' => $data['driverID'],'status' => 'Ongoing','distance' => $data['distance']]);
             //update relevant process using a private function defined in this controller
             $this->updateProcess($data['related'],$data['processID']);
             //send sms to the driver
@@ -203,17 +198,31 @@ class deliveryController extends Controller
         }
     }
 
-    private function complete(subdeliveryModel $subdelivery,string $process) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @param string $process
+     * @return void
+     */
+    private function complete(subdeliveryModel $subdelivery, string $process) : void {
         $completed = date('Y-m-d H:i:s');
         subdeliveryModel::updateAsCompleted($subdelivery->subdeliveryID,$completed);
         deliveryModel::updateDeliveryAsCompleted($subdelivery->deliveryID,$completed);
         $this->completeProcess($subdelivery,$process,$completed);
         $this->logtransactionComplete($subdelivery,$process);
+        if($process === 'ccdonation') {
+            $this->setNotification("Your donation has been delivered",'Delivery Completed',$subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
+            return;
+        }
         $this->sendSMSByUserID($process === "acceptedRequest" ? "Your delivery has been completed. Please check your dashboard for more details" : "Your donation has been delivered. Please check your dashboard for more details",$process === 'donation' ? $subdelivery->start : $subdelivery->end);
-        $this->setNotification('Delivery Completed',$process === 'acceptedRequest' ? 'Your delivery has been completed. For any complaint please report via system or contact your community center' : 'Your donation has been delivered',$process === 'donation' ? $subdelivery->start : $subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
+        $this->setNotification($process === 'acceptedRequest' ? 'Your delivery has been completed. For any complaint please report via system or contact your community center' : 'Your donation has been delivered','Delivery Completed',$process === 'donation' ? $subdelivery->start : $subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
     }
 
-    private function logtransactionComplete(subdeliveryModel $subdelivery,string $process) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @param string $process
+     * @return void
+     */
+    private function logtransactionComplete(subdeliveryModel $subdelivery, string $process) : void {
         $sql = "";
         switch ($process) {
             case "donation":
@@ -222,7 +231,7 @@ class deliveryController extends Controller
             case "acceptedRequest":
                 $sql = "SELECT * FROM acceptedrequest WHERE deliveryID = :deliveryID";
                 break;
-            case "ccDonation":
+            case "ccdonation":
                 $sql = "SELECT * FROM ccdonation WHERE deliveryID = :deliveryID";
                 break;
         }
@@ -237,15 +246,21 @@ class deliveryController extends Controller
                 inventoryModel::updateInventoryAfterDonation($data);
                 break;
             case 'acceptedRequest':
-                inventorylog::logPickupFromCC($data['acceptedID'],$data['donateTo']);
+                inventorylog::logPickupFromCC($data['acceptedID'],$data['postedBy']);
                 break;
-            case 'ccDonation':
+            case 'ccdonation':
                 inventorylog::logCCdonation($data['ccDonationID'],$data['fromCC'],$data['toCC']);
                 break;
         }
     }
 
-    private function completeProcess(subdeliveryModel $subdelivery,string $process,string $completedDate) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @param string $process
+     * @param string $completedDate
+     * @return bool
+     */
+    private function completeProcess(subdeliveryModel $subdelivery, string $process, string $completedDate) : bool {
         $sql = "";
         switch ($process) {
             case "donation":
@@ -254,7 +269,7 @@ class deliveryController extends Controller
             case "acceptedRequest":
                 $sql = "UPDATE acceptedrequest SET deliveryStatus = 'Completed' WHERE deliveryID = :deliveryID";
                 break;
-            case "ccDonation":
+            case "ccdonation":
                 $sql = "UPDATE ccdonation SET deliveryStatus = 'Completed',completedDate = '$completedDate' WHERE deliveryID = :deliveryID";
                 break;
         }
@@ -264,7 +279,12 @@ class deliveryController extends Controller
         return true;
     }
 
-    private function setNextProcess(subdeliveryModel $subdelivery,string $process) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @param string $process
+     * @return bool
+     */
+    private function setNextProcess(subdeliveryModel $subdelivery, string $process) : bool {
         $completed = date('Y-m-d H:i:s');
         subdeliveryModel::updateAsCompleted($subdelivery->subdeliveryID,$completed);
         $nextSubdelivery = new subdeliveryModel();
@@ -283,7 +303,13 @@ class deliveryController extends Controller
         return true;
     }
 
-    private function logtransactionNext(subdeliveryModel $subdelivery,string $process) {
+    /**
+     * @param subdeliveryModel $subdelivery
+     * @param string $process
+     * @return void
+     */
+    private function logtransactionNext(subdeliveryModel $subdelivery, string $process): void
+    {
         $sql = "SELECT * FROM acceptedrequest WHERE deliveryID = :deliveryID";
         $stmnt = deliveryModel::prepare($sql);
         $stmnt->bindValue(':deliveryID',$subdelivery->deliveryID);
@@ -307,7 +333,13 @@ class deliveryController extends Controller
     }
 
 
-    protected function requestToReassign(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function requestToReassign(Request $request, Response $response): void
+    {
         $data = $request->getJsonData()['data'];
         $subdelivery = new subdeliveryModel();
 
@@ -342,5 +374,94 @@ class deliveryController extends Controller
         }
 
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterDeliveries(Request $request, Response $response) : void {
+
+        $data = $request->getJsonData();
+        $process = $data['process'];
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+            $this->sendJson(array_merge(logisticModel::getDeliveriesOfLogisticOfficerFilteredAndSorted($process,$filters,$sort),['destinations' => subdeliveryModel::getDestinations(),'subcategories' => donationModel::getAllSubcategories()]));
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function deliveryPopupDriver(Request $request, Response $response) : void {
+
+        $subdeliveryID = $request->getJsonData()['subdeliveryID'];
+
+        try{
+            $subdelivery = subdeliveryModel::getDeliveryDetailsByID($subdeliveryID);
+
+            $this->sendJson(['status' => 1,'subdeliveryDetails' => subdeliveryModel::getModel(['subdeliveryID' => $subdeliveryID]) , 'destinationAddresses' => deliveryModel::getDestinationAddresses()]);
+        }
+        catch(\PDOException $e){
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterCompletedDeliveries(Request $request, Response $response) : void {
+
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+            $this->sendJson([
+                'status' => 1,
+                'deliveries' => deliveryModel::getCompletedDeliveriesByDriverIDFilteredAndSorted($_SESSION['user'], $filters, $sort),
+                'destinations' => deliveryModel::getDestinationAddresses(),
+                'subcategories' => donationModel::getAllSubcategories()
+            ]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterAssignedDeliveries(Request $request, Response $response) : void {
+
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+            $this->sendJson([
+                'status' => 1,
+                'deliveries' => deliveryModel::getAssignedDeliveriesFilteredAndSorted($_SESSION['user'], $filters, $sort),
+                'destinations' => deliveryModel::getDestinationAddresses(),
+                'subcategories' => donationModel::getAllSubcategories()
+            ]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
+        }
+    }
+
 
 }

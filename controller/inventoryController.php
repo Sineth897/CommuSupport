@@ -8,6 +8,7 @@ use app\core\DbModel;
 use app\core\middlewares\inventoryMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\inventorylog;
 use app\models\inventoryModel;
 use app\models\logisticModel;
 use app\models\userModel;
@@ -39,15 +40,20 @@ class inventoryController extends Controller
 
         $inventory->getData($data);
          try {
+             $this->startTransaction();
              if($inventory->validate($data) && $inventory->save()) {
+                 inventorylog::logLogisticAddingInventoryManually($data['subcategoryID'],$data['amount'],$data['remark']);
                  $this->sendJson(['success' => 1]);
                  $inventory->reset();
+                 $this->commitTransaction();
              }
              else {
                  $this->sendJson(['success' => 0]);
+                 $this->rollbackTransaction();
              }
          }
             catch (\Exception $e) {
+                $this->rollbackTransaction();
                 $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
             }
 

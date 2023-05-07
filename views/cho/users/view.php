@@ -3,16 +3,20 @@
 
 <?php
 /** @var $model \app\models\choModel */
-/** @var $user \app\models\userModel */
+
+$userID = \app\core\Application::session()->get('user');
+$donorData = $model->viewDonors($userID);
+
 
 ?>
+
 <?php
 
 $profile = new \app\core\components\layout\profileDiv();
 
-$profile->profile();
-
 $profile->notification();
+
+$profile->profile();
 
 $profile->end();
 
@@ -37,7 +41,7 @@ $headerDiv->end();
         </div>  -->
 
     <div class="search">
-        <input type="text" placeholder="Search" name="find">
+        <input type="text" placeholder="Search" name="find" id="search">
         <a href="#"><i class="material-icons">search</i></a>
     </div>
 
@@ -46,19 +50,22 @@ $headerDiv->end();
 <div class="content">
   <?php
 
-    $userID = \app\core\Application::session()->get('user');
-    $userData = $user->retrieve();
 
+  $header = ["User Name","User Type","Email","Address","Contact Number","Type"];
 
-  $header = ["Name", "User Type"];
+  $arrayKey = ["userName","userType","email","address","contactNumber","type"];
 
-  $arrayKey = ["userName", "userType"];
-
-  $userTable = new \app\core\components\tables\table($header,$arrayKey);
-  $userTable->displayTable($userData);
+  $donorTable = new \app\core\components\tables\table($header,$arrayKey);
+  $donorTable->displayTable($donorData);
 
     ?>
 
+
+
 </div>
+
+
+<script type="module" src="../public/JS/cho/users/filter.js"></script>
+
 
 

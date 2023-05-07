@@ -5,6 +5,8 @@
 /** @var $inventory \app\models\inventoryModel */
 /** @var $user \app\models\logisticModel */
 
+$inventoryLog = new \app\models\inventorylog();
+
 use app\core\Application;
 
 $user = $user->findOne(['employeeID' => Application::session()->get('user')]);
@@ -87,6 +89,10 @@ $searchDiv->filterDivEnd(); ?>
         </div>
 
         <div>
+            <?php $form->textArea($inventoryLog, 'Enter a remark', 'remark', [8,30],'remark'); ?>
+        </div>
+
+        <div>
             <?php $form->button('Confirm','button', 'addToInventory'); ?>
         </div>
 
@@ -100,6 +106,7 @@ $searchDiv->filterDivEnd(); ?>
     </div>
 
 </div>
+
 
 <div id="inventoryDisplay" class="content">
 

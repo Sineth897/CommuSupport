@@ -307,6 +307,14 @@ $app->router->post('/donee/request/create', function($request,$response) {
     $controller = new \app\controller\requestController('postRequest',$request,$response);
 });
 
+$app->router->post('/donee/request/popup', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopup",$request,$response);
+});
+
+$app->router->post('/donee/requests/filter', function ($request, $response) {
+    $controller = new \app\controller\requestController("filterOwnRequests",$request,$response);
+});
+
 $app->router->get('/donee/communitycenters', function ($request, $response) {
     $controller = new \app\controller\ccController("viewCC",$request,$response);
 });
@@ -335,17 +343,9 @@ $app->router->post('/donee/complaints/files',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
 
-
-
-
-
-
-
-
-
-
-
-
+$app->router->get('/donee/profile',function($request,$response){
+    $controller = new \app\controller\profileController('doneeProfile',$request,$response);
+});
 
 
 
@@ -458,13 +458,13 @@ $app->router->get('/donor/complaints/file', function ($request,$response){
     $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
 });
 
+$app->router->get('/donee/profile',function($request,$response){
+    $controller = new \app\controller\profileController('doneeProfile',$request,$response);
+});
 
 //$app->router->get('/donor/complaints/file',function ($request,$response){
 //   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
 //});
-
-
-
 
 
 
@@ -527,6 +527,10 @@ $app->router->post('/logistic/delivery/assign', function($request,$response) {
     $controller = new \app\controller\deliveryController("assignDriver",$request,$response);
 });
 
+$app->router->post('/logistic/deliveries/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController("filterDeliveries",$request,$response);
+});
+
 $app->router->get('/logistic/requests', function ($request,$response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
 });
@@ -554,6 +558,14 @@ $app->router->post("/logistic/CCdonations/create", function ($request,$response)
 
 $app->router->post("/logistic/CCdonation/accept", function ($request,$response) {
     $controller = new \app\controller\ccDonationController("acceptCCDonation",$request,$response);
+});
+
+$app->router->post("/logistic/CCdonation/popup", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("CCDonationPopup",$request,$response);
+});
+
+$app->router->post("/logistic/CCdonations/filter", function ($request,$response) {
+    $controller = new \app\controller\ccDonationController("filterCCDonations",$request,$response);
 });
 
 $app->router->post('/logistic/inventory/getcurrentinventory', function ($request,$response) {
@@ -586,15 +598,6 @@ $app->router->post('/logistic/donations/filter', function ($request,$response) {
 
 
 
-
-
-
-
-
-
-
-
-//*************************Driver get and post methods*************************// - 597
 $app->router->get('/driver/deliveries', function($request,$response) {
     $controller = new \app\controller\deliveryController('viewDeliveries',$request,$response);
 });
@@ -619,12 +622,17 @@ $app->router->get('/driver/profile', function ($request, $response) {
     $controller = new \app\controller\profileController("viewProfile",$request,$response);
 });
 
+$app->router->post('/driver/deliveries/popup', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('deliveryPopupDriver',$request,$response);
+});
 
+$app->router->post('/driver/deliveries/completed/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('filterCompletedDeliveries',$request,$response);
+});
 
-
-
-
-
+$app->router->post('/driver/deliveries/filter', function ($request,$response) {
+    $controller = new \app\controller\deliveryController('filterAssignedDeliveries',$request,$response);
+});
 
 
 
@@ -703,6 +711,9 @@ $app->router->get("/cho/complaints",function($request,$response){
 });
 //cho view users
 $app->router->get("/cho/users",function ($request,$response){
+    $controller = new \app\controller\choController("viewUsers",$request,$response);
+});
+$app->router->post("/cho/users",function ($request,$response){
     $controller = new \app\controller\choController("viewUsers",$request,$response);
 });
 //cho add a solution

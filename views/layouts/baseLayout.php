@@ -42,7 +42,6 @@
     <?php endif; ?>
 
     const notificationBtn = document.getElementById('notif-btn');
-    // const notification = document.getElementById('notification');
 
     if(notificationBtn){
         notificationBtn.addEventListener('click', () => {
@@ -52,12 +51,25 @@
                 notification.style.display = 'none';
             }
         });
-        // document.getElementById('close-notification').addEventListener('click', () => {
-        //     notification.style.display = 'none';
-        //     console.log(notification.style.display);
-        // });
     }
 
+
+    const cardContainers = document.querySelectorAll('.card-container');
+
+    if(cardContainers) {
+
+        const noDataImg = document.createElement('img');
+        noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+        for(let i=0; i < cardContainers.length; i++) {
+
+            if(cardContainers[i].children.length === 0) {
+                cardContainers[i].appendChild(noDataImg);
+                cardContainers[i].classList.add('no-data');
+            }
+        }
+
+    }
 
 </script>
 

@@ -61,6 +61,12 @@ class requestController extends Controller
     }
 
     protected function requestPopup(Request $request,Response $response) {
+
+        if($_SESSION['userType'] === 'donee') {
+            $this->getRequestPopupForDonee($request);
+            return;
+        }
+
         $where = $request->getJsonData();
 
         if(str_contains($where['r.requestID'],'accepted')) {
@@ -108,6 +114,38 @@ class requestController extends Controller
         catch (\PDOException $e) {
             $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
         }
+    }
+
+    private function getRequestPopupForDonee(Request $request) : void {
+
+        // get data from js fetch request
+        $data = $request->getJsonData();
+
+        // initialize sql statement to empty string to be modified according to the delivery status
+        $sql =  "";
+        $deliveries = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN acceptedrequest r ON d.deliveryID = r.deliveryID";
+
+        switch ($data['deliveryStatus']) {
+
+            // if delivery is completed then get the aggregate of the all accepted requests
+            case 'Completed':
+                $sql = "SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.requestID = '{$data['requestID']}' GROUP BY r.requestID ";
+                break;
+
+            // if delivery is not completed then get the details of the accepted request
+            default:
+                $sql = "SELECT *,CONCAT(r.amount,' ',s.scale) AS amount FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.acceptedID = '{$data['acceptedID']}'";
+                break;
+        }
+
+        // send the json response
+        try {
+            $this->sendJson(['status' => 1 , 'requestDetails' => acceptedModel::runCustomQuery($sql)[0], 'deliveries' => subdeliveryModel::runCustomQuery($deliveries,['r.acceptedID' => $data['acceptedID']])]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage(),'sql' => substr($sql,50)]);
+        }
+
     }
 
     protected function setApproval(Request $request,Response $response) {
@@ -173,7 +211,7 @@ class requestController extends Controller
             $result = $delivery->save() && $acceptedRequest->save() && $subdelivery->save();
 
             inventorylog::logInventoryAcceptingRequest($acceptedRequest->acceptedID);
-            $this->setNotification('Your request has been accepted','request',$req->postedBy,'donee','request',$acceptedRequest->acceptedID);
+            $this->setNotification('Your request has been accepted. Check accepted requests for more details','Request is accepted',$req->postedBy,'donee','request',$acceptedRequest->acceptedID);
 
             $remove = 0;
 
@@ -405,6 +443,56 @@ class requestController extends Controller
             return;
         }
 
+    }
+
+    protected function filterOwnRequests(Request $request,Response $response) : void {
+
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        $doneeID = $_SESSION['user'];
+
+        $activeRequestFilters = ['r.postedBy' => $doneeID];
+        $acceptedRequestFilters = ['r.postedBy' => $doneeID, '!r.deliveryStatus' => 'Completed'];
+        $completedRequestFilters = ['r.postedBy' => $doneeID, 'r.deliveryStatus' => 'Completed'];
+
+        if(!empty($filters)) {
+            $activeRequestFilters['r.item'] = $filters['item'];
+            $acceptedRequestFilters['r.item'] = $filters['item'];
+            $completedRequestFilters['r.item'] = $filters['item'];
+        }
+
+        $activeRequestSort = ['DESC' => []];
+        $acceptedRequestSort = ['DESC' => []];
+        $completedRequestSort = ['DESC' => []];
+
+        if(!empty($sort['DESC'])) {
+            foreach ($sort['DESC'] as $key => $value) {
+                $activeRequestSort['DESC'][] = $key === 'postedDate' ? 'r.postedDate' : "r.amount";
+                $acceptedRequestSort['DESC'][] = $key === 'postedDate' ? 'r.postedDate' : "r.amount";
+                $completedRequestSort['DESC'][] = $key === 'postedDate' ? 'r.postedDate' : "SUM(r.amount)";
+            }
+        }
+
+        try {
+            $activeRequestSql = "SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName,COUNT(a.acceptedBy) AS users,CONCAT(SUM(a.amount),' ',s.scale) AS acceptedAmount FROM request r LEFT JOIN subcategory s ON r.item = s.subcategoryID LEFT JOIN acceptedrequest a ON a.requestID = r.requestID";
+            $acceptedRequestSql = "SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+            $completedRequestSql = "SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+
+            $this->sendJson(
+                [
+                    "status" => 1,
+                    "activeRequests" => requestModel::runCustomQuery($activeRequestSql,$activeRequestFilters,$activeRequestSort,[],'a.requestID'),
+                    "acceptedRequests" => requestModel::runCustomQuery($acceptedRequestSql,$acceptedRequestFilters,$acceptedRequestSort),
+                    "completedRequests" => requestModel::runCustomQuery($completedRequestSql,$completedRequestFilters,$completedRequestSort,[],'r.requestID'),
+                ]
+            );
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
     }
 
 
