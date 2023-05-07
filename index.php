@@ -343,9 +343,9 @@ $app->router->post('/donee/complaints/files',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
 
-
-
-
+$app->router->get('/donee/profile',function($request,$response){
+    $controller = new \app\controller\profileController('doneeProfile',$request,$response);
+});
 
 
 
@@ -458,13 +458,13 @@ $app->router->get('/donor/complaints/file', function ($request,$response){
     $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
 });
 
+$app->router->get('/donee/profile',function($request,$response){
+    $controller = new \app\controller\profileController('doneeProfile',$request,$response);
+});
 
 //$app->router->get('/donor/complaints/file',function ($request,$response){
 //   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
 //});
-
-
-
 
 
 
