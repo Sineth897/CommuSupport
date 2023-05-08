@@ -20,7 +20,6 @@ class Application
     public Cookie $cookie;
     public SMS $sms;
     public File $file;
-    public Notification $notification;
     public ?userModel $user;
     private array $rootInfo;
 
@@ -29,6 +28,7 @@ class Application
     {
         self::$ROOT_DIR = $rootPath;
         self::$app = $this;
+
 
         $this->userClass = $config['userClass'];
         $this->request = new Request();
@@ -39,7 +39,6 @@ class Application
         $this->sms = new SMS($config['sms']);
         $this->file = new File();
         $this->database = new Database($config['db']);
-        $this->notification = new Notification();
         $this->rootInfo = $config['root'];
 
         $this->settingLoggedData();
@@ -71,11 +70,6 @@ class Application
         return self::$app->file;
     }
 
-    public static function notification() : Notification
-    {
-        return self::$app->notification;
-    }
-
     public function run() : void
     {
         try {
@@ -85,12 +79,19 @@ class Application
         } catch (\Exception $e) {
             echo $e->getMessage();
             $this->response->setStatusCode($e->getCode());
-            $this->router->render('_error', $e->getMessage(),[
+            ob_start();
+            echo $this->router->render('error',$e->getMessage(),[
                 'exception' => $e
             ]);
+            ob_end_flush();
         }
     }
 
+    // function to save user info on the session upon login
+    /**
+     * @param $user
+     * @return bool
+     */
     public function login($user): bool
     {
         $this->user = $user;
@@ -105,6 +106,10 @@ class Application
         return false;
     }
 
+    // function to remove user details from the session upon logout
+    /**
+     * @return void
+     */
     public function logout(): void
     {
         $this->user = null;
@@ -113,34 +118,45 @@ class Application
         $this->session->set('userType','guest');
     }
 
-    public function userType()
+    // function to get the user type of the user
+    /**
+     * @return string
+     */
+    public function userType() : string
     {
         return $this->session->get('userType');
     }
 
-    private function getUserClass(string $userType): string
-    {
-        return $this->userClass::getUserClass($userType);
-
-    }
-
+    // function to check whether the username is of the root
+    /**
+     * @param string $username
+     * @return bool
+     */
     public function isRoot(string $username): bool
     {
         return $username === $this->rootInfo['username'];
     }
 
+    // function to check whether the password is of the root
+    /**
+     * @param string $password
+     * @return bool
+     */
     public function isRootPassword(string $password): bool
     {
         return password_verify($password, $this->rootInfo['password']);
     }
 
-    private function getSelectorNValidator(): array
+    public function getSelectorNValidator(): array | null
     {
         $selectorNValidator = $this->cookie->getCookie('rememberMe');
+        if(!$selectorNValidator) {
+            return ['',''];
+        }
         return explode(':', $selectorNValidator);
     }
 
-    private function settingLoggedData(): void {
+    public function settingLoggedData(): void {
         $primaryValue = $this->session->get('user');
         if($primaryValue) {
             $primaryKey = $this->userClass::getPrimaryKey();

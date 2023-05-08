@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/cards/request-card.css">
+<link rel="stylesheet" href="../public/CSS/cards/postedRequestCard.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 /** @var $model \app\models\requestModel */
 /** @var $user  \app\models\doneeModel*/
@@ -7,7 +9,12 @@
 use app\core\Application;
 
 $user = $user->findOne(['doneeID' => Application::$app->session->get('user')]);
-$requests = $model->getOwnRequests($_SESSION['user']);
+$acceptedRequests = $model->getOwnRequests($_SESSION['user']);
+
+//echo "<pre>";
+//print_r($acceptedRequests);
+//echo "</pre>";
+
 
 ?>
 
@@ -15,9 +22,9 @@ $requests = $model->getOwnRequests($_SESSION['user']);
 <!--profile div-->
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -25,9 +32,9 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Your Requests");
+$headerDiv->heading("Active Requests");
 
-$headerDiv->pages(["active", "completed"]);
+$headerDiv->pages(["active",'accepted' ,"completed"]);
 
 $headerDiv->end();
 ?>
@@ -48,9 +55,18 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', \app\models\requestModel::getAllSubcategories(), 'filterCategory');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"Date Posted","",'sortByDatePosted');
+$sortForm->checkBox($model, "Amount", "amount", 'sortByAmount');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
@@ -65,24 +81,35 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
+<div class="content">
 
-<div class="content card-container" id="activeRequests">
+<div class="posted-rq-card-container" id="activeRequests">
 
     <?php
-    $requestCards = new \app\core\components\cards\requestcard();
 
-    $requestCards->displayRequests($requests,[['View','viewRequest']]);
+    \app\core\components\cards\postedRequestCard::displayCards($acceptedRequests['activeRequests']);
+
     ?>
 
 </div>
 
-<div class="content card-container" id="completedRequests">
+<div class="card-container" id="acceptedRequests" style="display:none;">
 
     <?php
-    echo "<pre>";
-    echo "Completed Requests";
-    echo "</pre>";
+    $requestCards = new \app\core\components\cards\requestCard();
+
+    $requestCards->displayAcceptedRequetsToDonee($acceptedRequests['acceptedRequests'],);
     ?>
+
+</div>
+
+<div class="card-container" id="completedRequests" style="display: none">
+
+    <?php
+    $requestCards->displayRequests($acceptedRequests['completedRequests'],[['View','viewActiveRequest']],true);
+    ?>
+
+</div>
 
 </div>
 

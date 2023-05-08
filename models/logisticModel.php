@@ -16,14 +16,19 @@ class logisticModel extends DbModel
     public string $contactNumber = '';
     public string $ccID = '';
 
+    public function __construct(userModel $user =null)
+    {
+       //$this->user = $user;
+
+    }
     public function table(): string
     {
-        return "logisticOfficer";
+        return "logisticofficer";
     }
 
     public function attributes(): array
     {
-        return ["employeeID","name","age","NIC","gender","address","contactNumber","email","ccID"];
+        return ["employeeID","name","age","NIC","gender","address","contactNumber","ccID"];
     }
 
     public function primaryKey(): string
@@ -40,11 +45,25 @@ class logisticModel extends DbModel
             "gender" => [self::$REQUIRED],
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "contactNumber" => [self::$REQUIRED,self::$CONTACT,[self::$UNIQUE, "class" => self::class]],
+            'ccID' =>[self::$REQUIRED],
         ];
+    }
+
+    public function save(): bool
+    {
+        $this->employeeID = substr(uniqid('logistic',true),0,23);
+        return parent::save();
+    }
+
+    public function userType():string
+    {
+        return 'logistic';
+
     }
 
     public function getPendingDeliveries() : array {
         $logisticOfficer = $this->findOne(['employeeID' => Application::$app->session->get('user')]);
+//        return subdeliveryModel::getAllData();
         return $deliveries = [
             "directDonations" => $this->getDirectDonations($logisticOfficer->ccID),
             "acceptedRequests" => $this->getAcceptedRequests($logisticOfficer->ccID),
@@ -53,20 +72,89 @@ class logisticModel extends DbModel
     }
 
     private function getDirectDonations(string $ccID): array {
-        $sql = "SELECT * FROM donation d INNER JOIN subcategory s ON d.item = s.subcategoryID WHERE d.donateTo = '$ccID'";
+        $sql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = :ccID";
         $stmt = self::prepare($sql);
+        $stmt->bindValue(':ccID', $ccID);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+//    Get data of the accepted requests from the relevant tables.
     private function getAcceptedRequests(string $ccID): array {
-        $sql = "SELECT * FROM acceptedrequest WHERE acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') AND status = 'accepted'";
+
+        $sql = "SELECT *,s.status FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '$ccID') OR a.acceptedBy = '$ccID')";
+
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function getCCDonations(string $ccID): array {
-        return ccDonationModel::getAllData(['fromCC' => $ccID]);
+        $sql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = :ccID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':ccID', $ccID);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    // get deliveries filtered and sorted realted to specific process or all processes
+    public static function getDeliveriesOfLogisticOfficerFilteredAndSorted(string $process,array $filter,array $sort) : array {
+
+        // get the model of the logistic offcer
+        $logistic = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
+
+        // sql queries to retrieve subdelivery relating to each process
+        $directDonationSql = "SELECT * FROM subdelivery sd LEFT JOIN donation d ON d.deliveryID = sd.deliveryID WHERE d.donateTo = '{$logistic->ccID}'";
+        $ccDonationSql = "SELECT *,c.createdDate AS date,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN ccdonation c on s.deliveryID = c.deliveryID WHERE c.fromCC = '{$logistic->ccID}'";
+        $acceptedRequestSql = "SELECT *,s.status FROM subdelivery s LEFT JOIN acceptedrequest a on s.deliveryID = a.deliveryID  WHERE (a.acceptedBy IN (SELECT donorID FROM donor WHERE ccID = '{$logistic->ccID}') OR a.acceptedBy = '{$logistic->ccID}') ";
+
+        // if filter is provided
+        // since here filtering is done only by item we can directly add it
+        if(!empty($filter)) {
+            $directDonationSql .= " AND d.item = '{$filter['item']}'";
+            $ccDonationSql .= " AND c.item = '{$filter['item']}'";
+            $acceptedRequestSql .= " AND a.item = '{$filter['item']}'";
+        }
+
+        // if sort is provided
+        // since here sorting is done only by date we can directly add it
+        if(!empty($sort['DESC'])) {
+            $directDonationSql .= " ORDER BY s.createdDate DESC";
+            $ccDonationSql .= " ORDER BY s.createdDate DESC";
+            $acceptedRequestSql .= " ORDER BY s.createdDate DESC";
+        }
+
+        // prepare and execute the queries
+        $directDonationStmnt = self::prepare($directDonationSql);
+        $ccDonationStmnt = self::prepare($ccDonationSql);
+        $acceptedRequestStmnt = self::prepare($acceptedRequestSql);
+        $directDonationStmnt->execute();
+        $ccDonationStmnt->execute();
+        $acceptedRequestStmnt->execute();
+
+        //match expression to return the relevant data matching the process
+        return match ($process) {
+            'donation' => [
+                'status' =>  1,
+                'directDonations' => $directDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+            'acceptedRequest' => [
+                'status' =>  1,
+                'acceptedRequests' => $acceptedRequestStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+            'ccDonation' => [
+                'status' =>  1,
+                'ccDonations' => $ccDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+            default => [
+                'status' =>  1,
+                'directDonations' => $directDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+                'acceptedRequests' => $acceptedRequestStmnt->fetchAll(\PDO::FETCH_ASSOC),
+                'ccDonations' => $ccDonationStmnt->fetchAll(\PDO::FETCH_ASSOC),
+            ],
+        };
+
+    }
+
+
 }

@@ -1,7 +1,8 @@
-import {getData} from "../../request.js";
+import {getData, getTextData} from "../../request.js";
 import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
+import flash from "../../flashmessages/flash.js";
 
 let eventCards = document.getElementsByClassName('event-card');
 
@@ -24,6 +25,9 @@ async function showPopUp(e) {
     }
 
     let event = await getData('./event/popup', 'POST', {"event.eventID": eventCard.id});
+
+    console.log(event);
+
     let participationFlag = event['isGoing'];
     event = event['event'];
 
@@ -51,12 +55,13 @@ let markParticipation = async (e) => {
         let result = await getData('./event/markParticipation', 'POST', {eventID: eventID});
 
         if(result['status']) {
+            flash.showMessage({type: 'success', value: "Your participation is marked successfully"},3000);
             e.target.innerHTML = "Not Going";
             e.target.classList.remove('btn-primary');
             e.target.classList.add('btn-danger');
         } else {
-            console.log(result);
-            alert('Something went wrong');
+            // console.log(result);
+            flash.showMessage({type: 'error', value: "Something went wrong! Try again later"},3000)
         }
     }
     else {
@@ -65,12 +70,13 @@ let markParticipation = async (e) => {
         let result = await getData('./event/markParticipation', 'POST', {eventID: eventID});
 
         if(result['status']) {
+            flash.showMessage({type: 'success', value: "Your participation is removed successfully"},3000);
             e.target.innerHTML = "Going";
             e.target.classList.remove('btn-danger');
             e.target.classList.add('btn-primary');
         } else {
-            console.log(result);
-            alert('Something went wrong');
+            // console.log(result);
+            flash.showMessage({type: 'error', value: "Something went wrong! Try again later"},3000)
         }
     }
 

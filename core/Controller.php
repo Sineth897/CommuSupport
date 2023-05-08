@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\exceptions\forbiddenException;
+use app\core\exceptions\methodNotFound;
 use app\core\middlewares\Middleware;
 use app\models\adminModel;
 use app\models\choModel;
@@ -10,6 +12,7 @@ use app\models\donorModel;
 use app\models\driverModel;
 use app\models\logisticModel;
 use app\models\managerModel;
+use app\models\notificationModel;
 use app\models\userModel;
 
 class Controller
@@ -17,6 +20,10 @@ class Controller
     protected string $userType  = 'guest';
     protected ?Middleware $middleware = null;
 
+    /**
+     * @throws forbiddenException
+     * @throws methodNotFound
+     */
     public function __construct($func, Request $request, Response $response)
     {
         $this->getUserType();
@@ -24,29 +31,50 @@ class Controller
             $this->middleware->execute($func, $this->getUserType());
             $this->$func($request, $response);
         } else {
-            throw new \Exception('Method does not exist');
+            throw new methodNotFound();
         }
     }
 
-    protected function checkLink($request): void {
+    /**
+     * @param Request $request
+     * @return void
+     * @throws forbiddenException
+     */
+    protected function checkLink(Request $request): void {
         if($request->getUser() !== $this->getUserType()) {
-            throw new \Exception('You do not have access to this page');
+            throw new forbiddenException();
         }
     }
 
 
     //function to be called by the subclasses to render the view
 
-    public function render($view, $title, $params = []): void
+    /**
+     * @param string $view
+     * @param string $title
+     * @param array $params
+     * @return void
+     */
+    public function render(string $view,string $title,array $params = []): void
     {
         echo Application::$app->router->render($view, $title, $params);
     }
 
-    public function renderOnlyView($view, $title, $params = []): void
+    /**
+     * @param string $view
+     * @param string $title
+     * @param array $params
+     * @return void
+     */
+    public function renderOnlyView(string $view,string $title,array $params = []): void
     {
         echo Application::$app->router->renderWithoutNavbar($view,$title,$params);
     }
 
+    /**
+     * @param  $data
+     * @return void
+     */
     public function sendJson($data): void
     {
         Application::$app->router->sendData($data);
@@ -140,6 +168,10 @@ class Controller
         return Application::sms()->send($msg,$user);
     }
 
+    protected function sendSMSByUserID(string $msg,$user): bool {
+        return Application::sms()->sendSMSByUserID($msg,$user);
+    }
+
     protected function file() : File
     {
         return Application::$app->file;
@@ -158,6 +190,11 @@ class Controller
     protected function rollbackTransaction() : void
     {
         Application::$app->database->pdo->rollBack();
+    }
+
+    protected function setNotification($message,$title,$userID = '', $usertype='',$related = '',$relatedID = '') : void
+    {
+        notificationModel::setNotification($message,$title,$userID,$usertype,$related,$relatedID);
     }
 
 

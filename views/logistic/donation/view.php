@@ -1,22 +1,31 @@
-<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
-<?php
+<link rel="stylesheet" href="/CommuSupport/public/CSS/cards/donor-donation-card.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 
-/**
- * @var $model \app\models\ccdonationModel
- * @var $user \app\models\logisticModel
- */
+<?php
+    /** @var $model \app\models\donationModel */
+    /** @var $user \app\models\logisticModel */
 
 $user = $user->findOne(['employeeID' => $_SESSION['user']]);
-$donations = $model->getDonations($user->ccID);
+
+$donations = $model->getDonationsFromDonorsToViewByEmployees($user->ccID);
+
+$ongoingDonations = array_filter($donations, function($donation) {
+    return $donation['deliveryStatus'] === "Not Assigned" || $donation['deliveryStatus'] === "Ongoing";
+});
+
+$completedDonations = array_filter($donations, function($donation) {
+    return $donation['deliveryStatus'] === 'Completed';
+});
 
 ?>
 
-
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -34,32 +43,55 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', \app\models\donationModel::getAllSubcategories(), 'filterCategory');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"Date","",'sortDate');
+$sortForm->checkBox($model, "Amount", "amount", 'sortAmount');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
-$donationBtn = \app\core\components\form\form::begin('./donations/create', 'get');
-
-$donationBtn->button("Request from another", "submit");
+$donationBtn = \app\core\components\form\form::begin('./CCdonations/create', 'get');
 
 $donationBtn->end();
 
 $searchDiv->end(); ?>
 
-<div class="content" id="ongoingDonations">
+<div class="content">
+
+    <div class="card-container" id="ongoingDonations">
     <?php
-    echo "<pre>";
-    print_r($donations);
-    echo "</pre>";
+    //    echo "<pre>";
+    //    print_r($ongoingDonations);
+    //    echo "</pre>";
+
+    $donationCards = new \app\core\components\cards\donationCard();
+
+    $donationCards->displayCards($ongoingDonations);
     ?>
 </div>
 
-<div class="content" id="completedDonations">
-    <h3>Completed Donations</h3>
+<div class="card-container" id="completedDonations" style="display: none">
+    <?php
+    //    echo "<pre>";
+    //    print_r($completedDonations);
+    //    echo "</pre>";
+
+    $donationCards->displayCards($completedDonations);
+    ?>
 </div>
 
-<script type="module" src="../public/JS/logistic/donation/view.js"></script>
+</div>
+
+
+
+<script type="module" src="../public/JS/logistic/donations/view.js"></script>

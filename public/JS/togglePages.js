@@ -1,6 +1,8 @@
 
 class TogglePages {
 
+    static header = document.querySelector("h1");
+
     pages = [];
     activePage = 0;
     displayType = 'block';
@@ -8,11 +10,13 @@ class TogglePages {
 
     constructor(pages,displayType = 'block') {
          for(let i = 0; i < pages.length; i++) {
+             // console.log(pages[i]);
              let btn = document.getElementById(pages[i].btnId);
             this.pages.push(
                 {
                     btn: btn,
-                    page: document.getElementById(pages[i].pageId)
+                    page: document.getElementById(pages[i].pageId),
+                    title: pages[i].title ? pages[i].title : null
                 }
             );
             btn.addEventListener('click', (e) => {
@@ -37,6 +41,10 @@ class TogglePages {
         this.pages[this.activePage].page.style.display = this.displayType;
         this.pages[this.activePage].btn.classList.add('active-heading-page');
 
+        if(this.pages[this.activePage]['title']) {
+            TogglePages.header.innerHTML = this.pages[this.activePage]['title']
+        }
+
     }
 
     showPage(page) {
@@ -47,6 +55,29 @@ class TogglePages {
         page.style.display = 'none';
     }
 
+    getActivePage() {
+        return this.pages[this.activePage];
+    }
+
+    removeNoData() {
+        this.pages.forEach((page) => {
+            page['page'].classList.remove('no-data');
+        });
+    }
+
+    checkNoData() {
+
+        this.pages.forEach((page) => {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+            if(page['page'].innerHTML === '') {
+                page['page'].classList.add('no-data');
+                page['page'].append(noDataImg);
+            }
+        });
+    }
 }
 
 export default TogglePages;

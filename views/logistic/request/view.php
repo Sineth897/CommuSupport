@@ -7,17 +7,32 @@
 /** @var $accepted \app\models\acceptedModel */
 /** @var $user \app\models\logisticModel */
 
+// get the logistic model of the logged-in user
 $user = $user->findOne(['employeeID' => $_SESSION['user']]);
+
+// retrieve all requests approved by managers
 $requests = $model->getAllRequests(['Approved']);
-$acceptedRequests = $accepted->getAcceptedRequests($user->ccID);
+
+// retrieve all requests accepted by the logistic ( both ongoing and completed )
+$acceptedRequests = \app\models\acceptedModel::getAcceptedRequestsByUserID($user->ccID);
+
+// filter the accepted requests to get only completed requests
+$completedRequests = array_filter($acceptedRequests,function ($request){
+    return $request['deliveryStatus'] === 'Completed';
+});
+
+// filter the accepted requests to get only ongoing requests
+$ongoingRequests = array_filter($acceptedRequests,function ($request){
+    return $request['deliveryStatus'] !== 'Completed';
+});
 
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -26,7 +41,7 @@ $headerDiv = new \app\core\components\layout\headerDiv();
 
 $headerDiv->heading("Requests");
 
-$headerDiv->pages(["posted","history"]);
+$headerDiv->pages(["posted","accepted","completed"]);
 
 $headerDiv->end();
 ?>
@@ -39,9 +54,19 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', \app\models\requestModel::getAllSubcategories(), 'filterCategory');
+$filterForm->dropDownList($model, "Select urgency", '', $model->getUrgency(), 'filterUrgency');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"Date Posted","",'sortByDatePosted');
+$sortForm->checkBox($model, "Amount", "amount", 'sortByAmount');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
@@ -50,20 +75,37 @@ $searchDiv->filterDivEnd();
 $searchDiv->end();
 ?>
 
-<div class="content card-container" id="postedRequests">
-    <?php
-    $requestCards = new \app\core\components\cards\requestcard();
+<div class="content" >
 
-    $requestCards->displayRequests($requests,[["View","requestView"]]);
+    <div class="card-container" id="postedRequests">
 
-    echo "<pre>";
-    print_r($acceptedRequests);
-    echo "</pre>";
-    ?>
-</div>
+        <?php $requestCards = new \app\core\components\cards\requestcard();
 
-<div class="content" id="historyRequests">
-    <h3>History</h3>
+        $requestCards->displayRequests($requests,[["View","requestView"]]); ?>
+
+    </div>
+
+    <div class="card-container" id="acceptedRequests" style="display: none">
+
+        <?php
+
+        $requestCards->displayRequests($ongoingRequests,[["View","requestView"]],true);
+
+//        echo "<pre>";
+//        print_r($ongoingRequests);
+//        echo "</pre>";
+        ?>
+
+    </div>
+
+    <div class="card-container" id="completedRequests" style="display: none">
+
+        <?php
+
+        $requestCards->displayRequests($completedRequests,[["View","requestView"]],true);
+        ?>
+
+    </div>
 </div>
 
 <script type="module" src="../public/JS/logistic/request/view.js"></script>

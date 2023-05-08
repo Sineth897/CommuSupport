@@ -10,9 +10,9 @@
 <!--        Profile Details-->
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -50,6 +50,7 @@ $headerDiv->end();
 
 
         <?php $ccRegistrationForm->inputField($cc,"Fax",'text','fax')?>
+
     </div>
 
     <div style="padding: 2rem;display:flex;justify-content: center">

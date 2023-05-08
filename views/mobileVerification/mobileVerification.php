@@ -15,7 +15,7 @@ $mobileVerificationForm->button('Request OTP','button','requestBtn');
 
 <div id="otpInputDiv">
     <?php
-    $mobileVerificationForm->inputField($user,'Enter OTP','text','','otpInput');
+    $mobileVerificationForm->inputField($user,'Enter OTP','text','userID','otpInput');
 
     echo "<span id='otpError' class='error'></span>";
 

@@ -144,17 +144,14 @@ class donorModel extends DbModel
 
     public function createDonation($data): bool
     {
-        $cols = ['donationID', 'createdBy', 'item', 'amount', 'address', 'donateTo'];
+        $cols = ['donationID', 'createdBy', 'item', 'amount', 'donateTo'];
         $data['donationID'] = substr(uniqid('donation',true),0,23);
         $data['createdBy'] = $this->donorID;
-        if(empty($data['address'])) {
-            $data['address'] = $this->address;
-        }
         if(empty($data['donateTo'])) {
             $data['donateTo'] = $this->ccID;
         }
         try {
-            $sql = "INSERT INTO donation (donationID,createdBy,item,amount,address,donateTo) VALUES (:donationID,:createdBy,:item,:amount,:address,:donateTo)";
+            $sql = "INSERT INTO donation (donationID,createdBy,item,amount,donateTo) VALUES (:donationID,:createdBy,:item,:amount,:donateTo)";
             $statement = self::prepare($sql);
             foreach ($cols as $attr) {
                 $statement->bindValue(":$attr", $data[$attr]);
@@ -183,6 +180,41 @@ class donorModel extends DbModel
         $sql->bindValue(":ccID",$ccID);
         $sql->execute();
         return $sql->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+
+    public function getDonorbyCategory() {
+//         get the count of donors and group by type
+
+        $sql = "SELECT COUNT(donorID) as count,type FROM donor GROUP BY type";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['type']] = $row['count'];
+        }
+        return $chartData;
+    }
+
+    public function getDonorRegMonthly(): array
+    {
+        $chartData = array();
+        // Create an array with all 12 months of the year
+        $monthsOfYear = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        // Get the count of requests published on each month for urgency = "Within 7 days"
+        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donor GROUP BY MONTH(registeredDate)";
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        // Loop through the result and update the corresponding value in the new array
+        $chartData = array_fill_keys($monthsOfYear, 0);
+        foreach ($result as $row) {
+            $chartData[$row['month']] = $row['count'];
+        }
+        return $chartData;
     }
 
 }

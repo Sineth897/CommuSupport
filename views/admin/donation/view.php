@@ -9,66 +9,60 @@ use app\core\components\tables\table;
 /** @var $model \app\models\donationModel */
 /** @var $user \app\models\adminModel */
 
+
 ?>
         <!--        Profile Details-->
-        <div class="profile">
-            <div class="notif-box">
-                <i class="material-icons">notifications</i>
-            </div>
-            <div class="profile-box">
-                <div class="name-box">
-                    <h4>Username</h4>
-                    <p>Position</p>
-                </div>
-                <div class="profile-img">
-                    <img src="https://www.w3schools.com/howto/img_avatar.png" alt="profile">
-                </div>
-            </div>
-        </div>
+<?php $profile = new \app\core\components\layout\profileDiv();
 
-        <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
-        <div class="heading-pages">
-            <div class="heading">
-                <h1>Donations</h1>
-            </div>
-            <div class="pages">
-                <a href="#">
-                    <i class="material-icons">cached</i>
-                    Ongoing</a>
-                <a href="#">
-                    <i class="material-icons">check_circle_outline</i>
-                    Completed</a>
-            </div>
-        </div>
+$profile->notification();
 
-        <!--        Search and filter boxes -->
-        <div class="search-filter">
+$profile->profile();
 
-            <div class="filters">
-                <div class="filter">
-                    <p><i class="material-icons">filter_list</i><span>Filter</span></p>
-                </div>
-                <div class="sort">
-                    <p><i class="material-icons">sort</i> <span>Sort</span></p>
-                </div>
-            </div>
-            <div class="search">
-                <input type="text" placeholder="Search">
-                <a href="#"><i class="material-icons">search</i></a>
-            </div>
+$profile->end(); ?>
 
-        </div>
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Donations"); ?>
+
+<?php $headerDiv->end(); ?>
+
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
+
+$searchDiv->filterDivStart();
+
+$searchDiv->filterBegin();
+
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Community center","cc",\app\models\ccModel::getCCs(),"ccFilter");
+$filter->dropDownList($model,"Item",'item',\app\models\donationModel::getAllSubcategories(),"subcategoryFilter");
+//$filter->dropDownList($model,"Type","type",['Individual' => 'Individual','Organization' => 'Organization'],"typeFilter");
+$filter->end();
+
+$searchDiv->filterEnd();
+
+$searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Date","date","dateSort");
+$sort->end();
+
+$searchDiv->sortEnd();
+
+$searchDiv->filterDivEnd();
+
+$searchDiv->search();
+
+$searchDiv->end(); ?>
 
         <!--        Content Block-->
-        <div class="content">
+        <div class="content" id="donationTable">
 <?php
-            $userID = \app\core\Application::session()->get('user');
-           // $user = $user->findOne(['adminId' => $userID]);
-           $donation = $model->retrieve();
 
-           $header = ["CreateBy", "Item", "Amount", "Date", "Address", "Donate To","DeliveryStatus"];
+           $donation = $model->getDonationWithPostedBy();
 
-           $arrayKey = ["createBy", "item", "amount", "date", "address", "donateTo","deliveryStatus"];
+           $header = ["Create By", "Item", "Amount", "Date", "Donate To","Delivery Status"];
+
+           $arrayKey = ["username", "subcategoryName", "amount", "date", "city","deliveryStatus",['','View','#',[],'donationID']];
 
            $donationTable = new table($header, $arrayKey);
 
@@ -77,6 +71,7 @@ use app\core\components\tables\table;
 ?>
         </div>
 
+<script type="module" src="../public/JS/admin/donation/view.js"></script>
     
 
 

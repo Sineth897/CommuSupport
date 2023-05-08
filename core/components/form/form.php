@@ -30,13 +30,13 @@ class form
         echo "</div>";
     }
 
-    public function textArea($model, $label, $attribute,$size = [10,30]): void
+    public function textArea($model, $label, $attribute,$size = [10,30],$id=''): void
     {
         echo "<div class='form-group'>";
-        echo sprintf('<div></div><label class="form-label">%s :</label></div>', $label);
-        echo sprintf("<textarea name='%s' rows='%s' cols='%s' class='basic-text-area'>%s</textarea>", $attribute, $size[0], $size[1], $model->{$attribute});
+        echo sprintf('<label class="form-label">%s :</label>', $label);
+        echo sprintf("<textarea name='%s' rows='%s' cols='%s' class='basic-text-area' %s>%s</textarea>", $attribute, $size[0], $size[1],empty($id) ? $id: "id='". $id ."'", $model->{$attribute});
         echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
-        echo "<div>";
+        echo "</div>";
     }
 
     public function dropDownList($model, $label, $attribute, $options, $id =""): void
@@ -52,7 +52,7 @@ class form
         echo "<option value=''>Select</option>";
         foreach ($options as $key => $value) {
             if($attribute){
-                $selected = $model->{$attribute} == $key ? 'selected' : '';
+                $selected = $model->{$attribute} === $key ? 'selected' : '';
             }else{
                 $selected = '';
             }
@@ -64,24 +64,31 @@ class form
     }
 
     public function checkBox($model,$label,$attribute,$id='') {
+        $attributeValue = $attribute ? $model->{$attribute} : '';
         echo "<div>";
         echo sprintf("<label>%s : </label>",$label);
         if($id == '') {
-            echo sprintf("<input type='checkbox' name='%s' value='%s'>",$attribute,$model->{$attribute});
+            echo sprintf("<input type='checkbox' name='%s' value='%s'>",$attribute,$attributeValue);
         }
         else {
-            echo sprintf("<input type='checkbox' name='%s' value='%s' id='%s'>",$attribute,$model->{$attribute},$id);
+            echo sprintf("<input type='checkbox' name='%s' value='%s' id='%s'>",$attribute,$attributeValue,$id);
         }
         echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
         echo "</div>";
     }
 
-    public function button($label, $type = 'submit', $id = '') : void
+    public function button($label, $type = 'submit', $id = '',$classes =[]) : void
     {
+        if($classes) {
+            $classes = implode(' ',$classes);
+        }
+        else {
+            $classes = 'btn-cta-primary';
+        }
         if($id == ""){
-            echo sprintf("<button type='%s' class='btn-cta-primary'>%s</button>", $type, $label);
+            echo sprintf("<button type='%s' class='%s'>%s</button>", $type,$classes ,$label);
         }else{
-            echo sprintf("<button type='%s' id='%s' class='btn-cta-primary'>%s</button>", $type, $id, $label);
+            echo sprintf("<button type='%s' id='%s' class='%s'>%s</button>", $type, $id,$classes ,$label);
         }
     }
 

@@ -19,7 +19,7 @@ class ccModel extends DbModel
 
     public function table(): string
     {
-        return "communityCenter";
+        return "communitycenter";
     }
 
     public function attributes(): array
@@ -39,10 +39,11 @@ class ccModel extends DbModel
             "address" => [self::$REQUIRED, [self::$UNIQUE, "class" => self::class]],
             "city" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             "email" => [self::$REQUIRED, self::$EMAIL, [self::$UNIQUE, "class" => self::class]],
-            "fax" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
-            "contactNumber" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
+            "fax" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class],self::$CONTACT],
+            "contactNumber" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class],self::$CONTACT],
             'longitude' => [self::$REQUIRED, self::$LONGITUDE],
             'latitude' => [self::$REQUIRED, self::$LATITUDE],
+            'cho' => [self::$REQUIRED,],
 
         ];
     }
@@ -57,7 +58,7 @@ class ccModel extends DbModel
 
     public function getAll(string $choID)
     {
-        $stmnt = self::prepare("SELECT cc.*,m.name AS manager,l.name AS logistic FROM manager m INNER JOIN communitycenter cc ON m.ccID = cc.ccID INNER JOIN logisticofficer l ON l.ccID=cc.ccID WHERE cc.cho = :choID; ");
+        $stmnt = self::prepare("SELECT cc.*,m.name AS manager,l.name AS logistic FROM manager m RIGHT JOIN communitycenter cc ON m.ccID = cc.ccID LEFT JOIN logisticofficer l ON l.ccID=cc.ccID WHERE cc.cho = :choID; ");
         $stmnt->bindValue(':choID',$choID);
         $stmnt ->execute();
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
@@ -69,5 +70,29 @@ class ccModel extends DbModel
         $this->cho = $_SESSION['user'];
         return parent::save();
     }
+
+    public static function getCCs()
+    {
+        $stmnt = self::prepare("SELECT ccID,city FROM communitycenter");
+        $stmnt->execute();
+        return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getHighestPerformingCC()
+    {
+        $sql = "SELECT communitycenter.city, COUNT(*) AS registration_count FROM communitycenter LEFT JOIN donor ON communitycenter.ccID = donor.ccID LEFT JOIN donee ON communitycenter.ccID = donee.ccID GROUP BY communitycenter.ccID ORDER BY registration_count DESC LIMIT 5;";
+        $stmnt = self::prepare($sql);
+        $stmnt->execute();
+        $result = $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['city']] = $row['registration_count'];
+        }
+        return $chartData;
+
+    }
+
 
 }

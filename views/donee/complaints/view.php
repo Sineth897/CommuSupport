@@ -1,14 +1,32 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
+<link href="../public/CSS/button/button-styles.css" type="text/css" rel="stylesheet" >
+<link href="../public/CSS/navbar/sidenav-styles.css" type="text/css" rel="stylesheet" >
+<link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet">
+
 <?php
 
+/** @var $complaints \app\models\complaintModel */
+use app\core\components\tables\table;
+
+$userID = \app\core\Application::session()->get('user');
+
+
+try{
+    $complaint = $complaints->getOwnComplaints($userID);
+
+}
+catch(\Exception $e){
+    echo $e->getMessage();
+}
 
 ?>
 
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -31,20 +49,48 @@ if($checkVerification->notVerified()) {
 }
 ?>
 
+<div class="content">
+    <div class="filters">
 
-<!--        Search and filter boxes -->
-<?php
-$searchDiv = new \app\core\components\layout\searchDiv();
+        <p ><i class="material-icons"  >
+                <select id="filter">
+                    <option value="all">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                </select></i>
+            <span>Filter</span>
+        </p>
 
-$searchDiv->filterDivStart();
+        <div class="sort" id="sort-btn">
+            <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort</span></p>
+        </div>
+    </div>
 
-$searchDiv->filterBegin();
+</div>
+<div class="content-form">
 
-$searchDiv->filterEnd();
+    <?php
+    $headers = ['Complaint','Filed Date','Subject','Status','Solution','Reviewed Date'];
+    $arrayKeys = ['complaint','filedDate','subject','status','solution','reviewedDate'];
 
-$searchDiv->sortBegin();
 
-$searchDiv->sortEnd();
+    $complaintsTable = new table($headers,$arrayKeys);
+    $complaintsTable ->displayTable($complaint);
 
-$searchDiv->end();
-?>
+    ?>
+
+
+</div>
+
+
+
+<div>
+    <?php
+    if(empty($complaint)){
+        echo "No Complaints has been filed.";
+    }
+    ?>
+</div>
+
+
+<script type="module" src="../public/JS/donor/complaints/sort.js"></script>

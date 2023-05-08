@@ -63,4 +63,33 @@ class inventoryModel extends DbModel
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    public static function updateInventoryAfterDonation(array $data) {
+
+        $sql = "UPDATE inventory SET amount = amount + :amount, updatedTime = CURRENT_TIMESTAMP WHERE ccID = :ccID AND subcategoryID = :subcategoryID";
+        $stmt = self::prepare($sql);
+        $stmt->bindValue(':amount', $data['amount']);
+        $stmt->bindValue(':ccID', $data['donateTo']);
+        $stmt->bindValue(':subcategoryID', $data['item']);
+        $stmt->execute();
+
+
+        if($stmt->rowCount() === 0) {
+            $sql = "INSERT INTO inventory (ccID,subcategoryID,amount,updatedTime) VALUES (:ccID,:subcategoryID,:amount,CURRENT_TIMESTAMP)";
+            $stmt = self::prepare($sql);
+            $stmt->bindValue(':amount', $data['amount']);
+            $stmt->bindValue(':ccID', $data['donateTo']);
+            $stmt->bindValue(':subcategoryID', $data['item']);
+            $stmt->execute();
+        }
+
+    }
+
+    public static function updateInventoryAfterAcceptingCCDontion(string $ccID,string $subcategoryID,int $amount) : void {
+        $stmnt = self::prepare("UPDATE inventory SET amount = amount - :amount, updatedTime = CURRENT_TIMESTAMP WHERE ccID = :ccID AND subcategoryID = :subcategoryID");
+        $stmnt->bindValue(':amount', $amount);
+        $stmnt->bindValue(':ccID', $ccID);
+        $stmnt->bindValue(':subcategoryID', $subcategoryID);
+        $stmnt->execute();
+    }
 }

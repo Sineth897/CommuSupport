@@ -20,7 +20,7 @@ class headerDiv
         'completed' => [
             'id' => 'completed',
             'link' => '#',
-            'icon' => 'check_circle_outline',
+            'icon' => 'done_all',
             'name' => 'Completed'
         ],
         'cancelled' => [
@@ -64,6 +64,18 @@ class headerDiv
             'link' => '#',
             'icon' => 'schedule',
             'name' => 'Upcoming'
+        ],
+        'accepted' => [
+            'id' => 'accepted',
+            'link' => '#',
+            'icon' => 'check_circle_outline',
+            'name' => 'Accepted'
+        ],
+        'assigned' => [
+            'id' => 'assigned',
+            'link' => '#',
+            'icon' => 'assignment_ind',
+            'name' => 'Assigned'
         ],
     ];
 

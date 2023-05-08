@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /** @var $model \app\models\driverModel */
@@ -10,16 +11,16 @@ $logisticID = Application::$app->session->get('user');
 $user = $user->findOne(['employeeID' => $logisticID]);
 $drivers = $model->retrieve(["ccID" => $user->ccID]);
 
-$headers = ['Name','Contact Number','Address','Vehicle', 'Vehicle Number', 'Preference'];
-$arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'preference'];
+$headers = ['Name','Contact Number','Vehicle', 'Vehicle Number', 'Preference'];
+$arraykeys= ['name','contactNumber','vehicleType', 'vehicleNo', 'preference',['','View','#',[],'employeeID']];
 
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -35,14 +36,18 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
-$filterForm = \app\core\components\form\form::begin('', '');
-$filterForm->dropDownList($model, "Select a Category", '', $model->getVehicleTypes(), 'filterCategory');
-$filterForm->dropDownList($model, "Select a Category", '', $model->getPreferences(), 'filterCategory');
-$filterForm::end();
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Vehicle Type","vehicleType",$model->getVehicleTypes(),"vehicleTypeFilter");
+$filter->dropDownList($model,"Preference","preference",$model->getPreferences(),"preferenceFilter");
+$filter->end();
 
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Age","age","ageSort");
+$sort->end();
 
 $searchDiv->sortEnd();
 
@@ -59,5 +64,6 @@ $searchDiv->end(); ?>
     <?php $driversTable->displayTable($drivers); ?>
 
 
+</div>
 
-    <script src="../public/JS//table.js"></script>
+<script type="module" src="../public/JS/logistic/drivers/view.js"></script>

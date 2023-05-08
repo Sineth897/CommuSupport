@@ -83,9 +83,8 @@ class driverModel extends DbModel
 
     public function getPreferences(): array {
         return [
-            'Short' => 'Short distances',
-            'Long' => 'Long distances',
-            'Both' => 'Both',
+            '< 10km' => 'Less than 10km',
+            '> 10km' => 'More than 10km',
         ];
     }
 
@@ -94,4 +93,45 @@ class driverModel extends DbModel
         $this->user->userType = "driver";
         $this->user->userID = $this->employeeID;
     }
+
+    public static function getDriverDetails(string $employeeID) : array {
+        $sql = "SELECT status,COUNT(deliveredBy) FROM subdelivery WHERE deliveredBy = '$employeeID' GROUP BY status";
+        $stmt = driverModel::prepare($sql);
+        $stmt->execute();
+        return ['driver' => driverModel::getModel(['employeeID' => $employeeID]),'deliveryInfo' => $stmt->fetchALL(\PDO::FETCH_KEY_PAIR)];
+    }
+
+
+    public function getDriverbyVehicle() {
+//         get the count of donees and group by type
+
+        $sql = "SELECT COUNT(*) as count,vehicleType FROM driver GROUP BY vehicleType";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+        $chartData = array();
+        // Loop through the result and update the corresponding value in the new array
+        foreach ($result as $row) {
+            $chartData[$row['vehicleType']] = $row['count'];
+        }
+        return $chartData;
+    }
+
+    public function getDriverLengths(): array
+    {
+        // get the counts of drivers who do "< 10km>" or "> 10km" and group by preference
+        $sql = "SELECT COUNT(*) as count,preference FROM driver GROUP BY preference";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+        $chartData = array();
+        foreach ($result as $row) {
+            $chartData[$row['preference']] = $row['count'];
+        }
+        return $chartData;
+
+    }
+
 }

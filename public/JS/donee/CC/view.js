@@ -1,4 +1,5 @@
 import Map from '../../map/map.js';
+import flash from "../../flashmessages/flash.js";
 
 let map = new Map();
 
@@ -39,3 +40,5 @@ filterBtn.addEventListener('click', function() {
    filterOptions.style.display = 'none';
 
 });
+
+flash.showMessage({type:'success',value:"If maps aren't visible, please refresh the page!"});

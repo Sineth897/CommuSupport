@@ -5,6 +5,8 @@
 /** @var $inventory \app\models\inventoryModel */
 /** @var $user \app\models\logisticModel */
 
+$inventoryLog = new \app\models\inventorylog();
+
 use app\core\Application;
 
 $user = $user->findOne(['employeeID' => Application::session()->get('user')]);
@@ -23,9 +25,9 @@ for($i = 0; $i < count($items); $i++) {
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -50,7 +52,7 @@ $searchDiv->filterEnd();
 $searchDiv->sortBegin();
 
 $sortForm = \app\core\components\form\form::begin('', '');
-$sortForm->checkBox($inventory,"Last Updated","updatedTime",'sortLastUpdated');
+$sortForm->checkBox($inventory,"Last Updated","",'sortLastUpdated');
 $sortForm->checkBox($inventory, "Amount", "amount", 'sortAmount');
 $sortForm::end();
 
@@ -67,8 +69,6 @@ $searchDiv->filterDivEnd(); ?>
 <div id="itemForm" class="popup-background">
 
     <div class="popup" id="logistic-item-add-popup-form">
-
-        <span id="resultMsg" class="error"></span>
 
         <?php $form = \app\core\components\form\form::begin('', ''); ?>
 
@@ -89,6 +89,10 @@ $searchDiv->filterDivEnd(); ?>
         </div>
 
         <div>
+            <?php $form->textArea($inventoryLog, 'Enter a remark', 'remark', [8,30],'remark'); ?>
+        </div>
+
+        <div>
             <?php $form->button('Confirm','button', 'addToInventory'); ?>
         </div>
 
@@ -102,6 +106,7 @@ $searchDiv->filterDivEnd(); ?>
     </div>
 
 </div>
+
 
 <div id="inventoryDisplay" class="content">
 

@@ -1,42 +1,114 @@
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/complaints/complaint.css">
+
 <?php
 
-/** @var $model \app\models\complaintModel */
+/** @var $complaints \app\models\complaintModel */
 /** @var $user \app\models\choModel */
 
 use app\core\components\tables\table;
+
 $userID = \app\core\Application::session()->get('user');
-$user = $user->findOne(['filedBy'=>$userID]);
-$complaint= $model->retrieve(['filedBy'=>$userID]);
+//
+//try{
+//    $complaint = $complaints->getAllComplaints($userID);
+////    $complaintID = $complaints->getID($userID);
+//
+//}
+//catch(\Exception $e){
+//    echo $e->getMessage();
+//}
+$complaint = $complaints->getAllComplaints($userID);
+?>
 
-if(empty($complaints)){
-    echo "No Complaints has been filed.";
-}
+<?php
 
-$headers = ['Filled By','Filled Date','Subject','Status','Solution','Reviewed Date'];
-$arrayKeys = ['filledBy','filledDate','subject','status','solution','reviewedDate'];
+$profile = new \app\core\components\layout\profileDiv();
 
-$complaintsTable = new table($headers,$arrayKeys);
-$complaintsTable->displayTable($complaint);
+$profile->profile();
 
+$profile->notification();
+
+$profile->end();
+?>
+
+<!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
+
+$headerDiv->heading("Complaints by Donors and Donees ");
+
+$headerDiv->end();
+?>
+<?php
+
+$searchDiv = new \app\core\components\layout\searchDiv();
+$searchDiv ->filterDivStart();
+$searchDiv->filterBegin();
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($complaints, "Select a Status", '',['pending'=>'Pending','completed'=>"Completed"], 'filterCategory');
+$filterForm::end();
+
+
+$searchDiv->filterEnd();
+
+
+
+$searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($complaints,"Reviewed Date","reviewedDate","registeredDateSort");
+$sort->end();
+$sort::end();
+
+$searchDiv->sortEnd();
+$searchDiv->filterDivEnd();
+$searchDiv->end();
 
 
 ?>
 
-<?php $createComplaint = \app\core\components\form::begin('./cho/cc/complaint','get');?>
 
-<button> Make a complaint </button>
 
-<?php $createComplaint->end(); ?>
 
-<button type="button"> Filter </button>
+<div class="content">
 
-<div id="complaintDisplay">
+    <?php
+    $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
+    $arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
 
-    <?php $complaintsTable = new table($headers,$arrayKeys); ?>
 
-    <?php $complaintsTable->displayTable($complaint); ?>
+    $complaintsTable = new table($headers,$arrayKeys);
+    $complaintsTable ->displayTable($complaint);
+
+    ?>
+
+    <div class="no-complaint">
+        <?php
+        if(empty($complaint)){
+            echo "No Complaints has been filed.";
+        }
+        ?>
+
+    </div>
+
+
 
 </div>
+
+
+
+<script type="module" src="../public/JS/cho/complaints/sort.js"></script>
+
+
+
+
+
+
+
 
 
 

@@ -3,12 +3,19 @@
 namespace app\controller;
 
 use app\core\Controller;
+use app\core\DbModel;
 use app\core\middlewares\requestMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\acceptedModel;
+use app\models\ccModel;
+use app\models\deliveryModel;
 use app\models\doneeModel;
+use app\models\donorModel;
+use app\models\inventorylog;
+use app\models\logisticModel;
 use app\models\requestModel;
+use app\models\subdeliveryModel;
 
 class requestController extends Controller
 {
@@ -54,10 +61,23 @@ class requestController extends Controller
     }
 
     protected function requestPopup(Request $request,Response $response) {
+
+        if($_SESSION['userType'] === 'donee') {
+            $this->getRequestPopupForDonee($request);
+            return;
+        }
+
         $where = $request->getJsonData();
+
+        if(str_contains($where['r.requestID'],'accepted')) {
+            $this->getAcceptedRequestPopup($where);
+            return;
+        }
+
+
         $where = array_key_first($where) . " = '" . $where[array_key_first($where)] . "'";
         try {
-            $sql = "SELECT * FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE $where";
+            $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE $where";
             $stmnt = requestModel::prepare($sql);
             $stmnt->execute();
             $requestDetails = $stmnt->fetch(\PDO::FETCH_ORI_FIRST);
@@ -74,12 +94,56 @@ class requestController extends Controller
             };
 
             $this->sendJson([
+                'status' => 1,
                 'requestDetails' => $requestDetails,
                 'donee' => $donee
             ]);
         }
         catch (\PDOException $e) {
-            $this->sendJson($e->getMessage() . $where);
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
+        }
+    }
+
+    private function getAcceptedRequestPopup($where) : void {
+        $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+        $sqldeliveries = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN acceptedrequest r ON d.deliveryID = r.deliveryID";
+
+        try {
+            $this->sendJson(['status' => 1 , 'requestDetails' => acceptedModel::runCustomQuery($sql,['acceptedID' => $where['r.requestID']])[0], 'deliveries' => subdeliveryModel::runCustomQuery($sqldeliveries,['r.acceptedID' => $where['r.requestID']])]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
+        }
+    }
+
+    private function getRequestPopupForDonee(Request $request) : void {
+
+        // get data from js fetch request
+        $data = $request->getJsonData();
+
+        // initialize sql statement to empty string to be modified according to the delivery status
+        $sql =  "";
+        $deliveries = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN acceptedrequest r ON d.deliveryID = r.deliveryID";
+
+        switch ($data['deliveryStatus']) {
+
+            // if delivery is completed then get the aggregate of the all accepted requests
+            case 'Completed':
+                $sql = "SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.requestID = '{$data['requestID']}' GROUP BY r.requestID ";
+                break;
+
+            // if delivery is not completed then get the details of the accepted request
+            default:
+                $sql = "SELECT *,CONCAT(r.amount,' ',s.scale) AS amount FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE r.acceptedID = '{$data['acceptedID']}'";
+                break;
+        }
+
+        // send the json response
+        try {
+            $this->sendJson(['status' => 1 , 'requestDetails' => acceptedModel::runCustomQuery($sql)[0], 'deliveries' => subdeliveryModel::runCustomQuery($deliveries,['r.acceptedID' => $data['acceptedID']])]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage(),'sql' => substr($sql,50)]);
         }
 
     }
@@ -121,35 +185,315 @@ class requestController extends Controller
     protected function acceptRequest(Request $request,Response $response) {
         $data = $request->getJsonData();
         $reqID = $data['requestID'];
-        $acceptedAmount = $data['acceptedAmount'];
-        $amount = $data['amount'];
-        $req = requestModel::getModel(['requestID' => $reqID]);
+
+
+        $deliveryID = substr(uniqid('delivery',true),0,23);
+        $req = requestModel::getModel(['requestID' => $data['requestID']]);
+        $acceptor = $this->acceptedUserDetails();
+        $delivery = new deliveryModel();
+        $subdelivery = new subdeliveryModel();
+        $donee = doneeModel::getModel(['doneeID' => $req->postedBy]);
 
         try{
+            $data = array_merge($data,
+                ['deliveryID' => $deliveryID,],
+                $acceptor['data'],
+                $this->subdeliveryDetails($acceptor['user'],$donee));
+
+
             $this->startTransaction();
-            $req->amount = $acceptedAmount;
-            $result = $req->accept();
+            $req->getData($data);
+            $acceptedRequest = $req->accept();
+            $acceptedRequest->getData($data);
+            $subdelivery->getData($data);
+            $delivery->getData(array_merge($data,$this->deliveryDetails($acceptor['user'],$donee)));
 
-            if(!$result) {
-                $this->rollbackTransaction();
-                $this->sendJson(["success"=> 0,"error" => "Error accepting request"]);
-                return;
-            }
+            $result = $delivery->save() && $acceptedRequest->save() && $subdelivery->save();
 
-            if($acceptedAmount < $amount) {
-                $req->update(['requestID' => $reqID],['amount' => $amount - $acceptedAmount]);
+            inventorylog::logInventoryAcceptingRequest($acceptedRequest->acceptedID);
+            $this->setNotification('Your request has been accepted. Check accepted requests for more details','Request is accepted',$req->postedBy,'donee','request',$acceptedRequest->acceptedID);
+
+            $remove = 0;
+
+            if($data['remaining']) {
+                $req->update(['requestID' => $reqID],['amount' => $data['remaining']]);
             }
             else {
                 $req->delete(['requestID' => $reqID]);
+                $remove = 1;
             }
             $this->commitTransaction();
+
+            if(!$result) {
+                $this->rollbackTransaction();
+                $this->sendJson(["success"=> 0,"error" => "Error accepting request","remove" => $remove]);
+                return;
+            }
         }
         catch (\PDOException $e) {
             $this->rollbackTransaction();
             $this->sendJson(["status"=> 0,"error" => $e->getMessage()]);
+            return;
         }
 
         $this->sendJson(["success"=> 1]);
     }
+
+    private function acceptedUserDetails(): array {
+        $userType = $this->getUserType();
+        $user = null;
+        $data = null;
+        if($userType === 'logistic') {
+            $logistic = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
+            $user = ccModel::getModel(['ccID' => $logistic->ccID]);
+            $data = ['user'=> $user , 'data' => ['acceptedBy' => $user->ccID,'longitude' => $user->longitude,'latitude' => $user->latitude]];
+        }
+        else {
+            $user = donorModel::getModel(['donorID' => $_SESSION['user']]);
+            $data = ['user'=> $user , 'data' => ['acceptedBy' => $user->donorID,'longitude' => $user->longitude,'latitude' => $user->latitude]];
+        }
+        return $data;
+    }
+
+    private function deliveryDetails(DbModel $user,doneeModel $donee): array
+    {
+        $data = [];
+        if ($user instanceof donorModel)
+            $data = array_merge($data, [
+                'end' => $donee->doneeID,
+                'start' => $user->donorID
+            ]);
+        else if ($user instanceof ccModel) {
+            $data = array_merge($data, [
+                'end' => $donee->doneeID,
+                'start' => $user->ccID
+            ]);
+        }
+        return $data;
+    }
+
+    private function subdeliveryDetails(DbModel $user,doneeModel $donee):array {
+        $donorFlag = $user instanceof donorModel;
+        $sameCC = $user->ccID === $donee->ccID;
+        $data = [];
+
+        if($donorFlag) {
+            $cc = ccModel::getModel(['ccID' => $user->ccID]);
+            if($sameCC) {
+                $data = array_merge($data,[
+                    'subdeliveryCount' => 2,
+                    'deliveryStage' => 2,
+                    'start' => $user->donorID,
+                    'end' => $user->ccID,
+                    'fromLongitude' => $user->longitude,
+                    'fromLatitude' => $user->latitude,
+                    'toLongitude' => $cc->longitude,
+                    'toLatitude' => $cc->latitude
+                ]);
+            }
+            else {
+                $data = array_merge($data,[
+                    'subdeliveryCount' => 3,
+                    'deliveryStage' => 3,
+                    'start' => $user->donorID,
+                    'end' => $user->ccID,
+                    'fromLongitude' => $user->longitude,
+                    'fromLatitude' => $user->latitude,
+                    'toLongitude' => $cc->longitude,
+                    'toLatitude' => $cc->latitude
+                ]);
+            }
+        }
+        else {
+            if($sameCC) {
+                $data = array_merge($data,[
+                    'subdeliveryCount' => 1,
+                    'deliveryStage' => 1,
+                    'start' => $user->ccID,
+                    'end' => $donee->doneeID,
+                    'fromLongitude' => $user->longitude,
+                    'fromLatitude' => $user->latitude,
+                    'toLongitude' => $donee->longitude,
+                    'toLatitude' => $donee->latitude
+                ]);
+            }
+            else {
+                $cc = ccModel::getModel(['ccID' => $donee->ccID]);
+                $data = array_merge($data,[
+                    'subdeliveryCount' => 2,
+                    'deliveryStage' => 2,
+                    'start' => $user->ccID,
+                    'end' => $donee->ccID,
+                    'fromLongitude' => $user->longitude,
+                    'fromLatitude' => $user->latitude,
+                    'toLongitude' => $cc->longitude,
+                    'toLatitude' => $cc->latitude
+                ]);
+            }
+        }
+        return $data;
+    }
+
+    protected function filterRequestsAdmin(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+        $search = $data['search'];
+
+        try {
+            $this->sendJson(["status"=> 1,"pendingRequests" => $this->getPendingRequestsAdmin($filters,$sort,$search), "acceptedRequests" => $this->getAcceptedRequestsAdmin($filters,$sort,$search)]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+
+    }
+
+    private function getPendingRequestsAdmin($filters,$sort,$search) : array {
+        $cols = "u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $sql = 'SELECT ' . $cols . ' FROM request r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
+
+        $where = " WHERE ";
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (username LIKE '%$search%' OR notes LIKE '%$search%' OR address LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY " . implode(", ", $sort['DESC']) . " DESC";
+        }
+
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    private function getAcceptedRequestsAdmin($filters,$sort,$search) : array {
+        $cols = "u.username,r.acceptedBy,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount, r.deliveryStatus";
+        $sql = 'SELECT ' . $cols . ' FROM acceptedrequest r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
+
+        $where = " WHERE ";
+
+        if(isset($filters['approval'])) {
+            unset($filters['approval']);
+        }
+
+        if(!empty($filters)) {
+            $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
+        }
+
+        if(!empty($search)) {
+            $where = $where === " WHERE " ? $where : $where . " AND ";
+            $where .= " (username LIKE '%$search%' OR notes LIKE '%$search%' OR address LIKE '%$search%')";
+        }
+
+        $sql .= $where === " WHERE " ? "" : $where;
+
+        if(!empty($sort['DESC'])) {
+            $sql .= " ORDER BY " . implode(", ", $sort['DESC']) . " DESC";
+        }
+
+        $statement = requestModel::prepare($sql);
+        $statement->execute();
+        $result =  $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $stmnt2 = requestModel::prepare("SELECT userID,username as acceptedBy FROM users WHERE userType = 'donor' UNION ALL SELECT ccID,CONCAT(city,' (CC)') as acceptedBY FROM communitycenter");
+        $stmnt2->execute();
+        $acceptedBy = $stmnt2->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+        foreach($result as &$row) {
+            $row['acceptedBy'] = $acceptedBy[$row['acceptedBy']];
+        }
+
+        return $result;
+    }
+
+    protected function filterRequests(Request $request,Response $response) {
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+
+        $sql = 'Select * FROM request INNER JOIN subcategory s on request.item = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID';
+        $requests = requestModel::runCustomQuery($sql,$filters,$sort);
+
+        if($_SESSION['userType'] === 'donor') {
+            $filters['acceptedBy'] = $_SESSION['user'];
+        }
+        else {
+            $logistic  = logisticModel::getModel(['employeeID' => $_SESSION['user']]);
+            $filters['acceptedBy'] = $logistic->ccID;
+        }
+
+        $sql = 'Select * FROM acceptedrequest INNER JOIN subcategory s on acceptedrequest.item = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID';
+
+            $this->sendJson(['status' => 1,'requests' => $requests, 'acceptedRequests' => acceptedModel::runCustomQuery($sql,$filters,$sort)]);
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+
+    }
+
+    protected function filterOwnRequests(Request $request,Response $response) : void {
+
+        $data = $request->getJsonData();
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        $doneeID = $_SESSION['user'];
+
+        $activeRequestFilters = ['r.postedBy' => $doneeID];
+        $acceptedRequestFilters = ['r.postedBy' => $doneeID, '!r.deliveryStatus' => 'Completed'];
+        $completedRequestFilters = ['r.postedBy' => $doneeID, 'r.deliveryStatus' => 'Completed'];
+
+        if(!empty($filters)) {
+            $activeRequestFilters['r.item'] = $filters['item'];
+            $acceptedRequestFilters['r.item'] = $filters['item'];
+            $completedRequestFilters['r.item'] = $filters['item'];
+        }
+
+        $activeRequestSort = ['DESC' => []];
+        $acceptedRequestSort = ['DESC' => []];
+        $completedRequestSort = ['DESC' => []];
+
+        if(!empty($sort['DESC'])) {
+            foreach ($sort['DESC'] as $key => $value) {
+                $activeRequestSort['DESC'][] = $key === 'postedDate' ? 'r.postedDate' : "r.amount";
+                $acceptedRequestSort['DESC'][] = $key === 'postedDate' ? 'r.postedDate' : "r.amount";
+                $completedRequestSort['DESC'][] = $key === 'postedDate' ? 'r.postedDate' : "SUM(r.amount)";
+            }
+        }
+
+        try {
+            $activeRequestSql = "SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName,COUNT(a.acceptedBy) AS users,CONCAT(SUM(a.amount),' ',s.scale) AS acceptedAmount FROM request r LEFT JOIN subcategory s ON r.item = s.subcategoryID LEFT JOIN acceptedrequest a ON a.requestID = r.requestID";
+            $acceptedRequestSql = "SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+            $completedRequestSql = "SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+
+            $this->sendJson(
+                [
+                    "status" => 1,
+                    "activeRequests" => requestModel::runCustomQuery($activeRequestSql,$activeRequestFilters,$activeRequestSort,[],'a.requestID'),
+                    "acceptedRequests" => requestModel::runCustomQuery($acceptedRequestSql,$acceptedRequestFilters,$acceptedRequestSort),
+                    "completedRequests" => requestModel::runCustomQuery($completedRequestSql,$completedRequestFilters,$completedRequestSort,[],'r.requestID'),
+                ]
+            );
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+    }
+
 
 }

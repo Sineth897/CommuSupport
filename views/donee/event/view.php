@@ -5,15 +5,15 @@
 
 /** @var $model \app\models\eventModel */
 
-$events = $model->retrieve();
+$events = $model->getAllUpcominAndActiveEvents();
 
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 

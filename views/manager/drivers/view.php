@@ -1,29 +1,28 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <?php
 
 /** @var $model \app\models\driverModel */
+/** @var $user \app\models\managerModel */
 
 use app\core\components\tables\table;
 
-echo empty($model);
+$user = \app\models\managerModel::getModel(['employeeID' => $_SESSION['user']]);
 
-$drivers = $model->retrieve();
+$drivers = $model->retrieve(['ccID' => $user->ccID]);
 
 if( empty($drivers) ) {
     echo "No drivers currently registered";
 }
 
-$headers = ['Name','Contact Number','Address','Vehicle', 'Vehicle Number', 'Preference'];
-$arraykeys= ['name','contactNumber','address','vehicleType', 'vehicleNo', 'preference'];
-
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -45,24 +44,40 @@ $profile->end(); ?>
 
 $searchDiv->filterBegin();
 
+$filter = \app\core\components\form\form::begin('', '');
+$filter->dropDownList($model,"Vehicle Type","vehicleType",$model->getVehicleTypes(),"vehicleTypeFilter");
+$filter->dropDownList($model,"Preference","preference",$model->getPreferences(),"preferenceFilter");
+$filter->end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
 
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($model,"Age","age","ageSort");
+$sort->end();
+
 $searchDiv->sortEnd();
 
-$searchDiv->filterDivEnd();?>
+$searchDiv->filterDivEnd();
 
-<?php $searchDiv->search(); ?>
+$searchDiv->search();
 
-<?php $searchDiv->end(); ?>
+$searchDiv->end(); ?>
 
-<div id="driverDisplay"  class="content">
+<div id="driverTable"  class="content">
 
-    <?php $driversTable = new table($headers,$arraykeys); ?>
+    <?php
 
-    <?php $driversTable->displayTable($drivers); ?>
+    $headers = ['Name','Contact Number','Vehicle', 'Vehicle Number', 'Preference'];
+    $arraykeys= ['name','contactNumber','vehicleType', 'vehicleNo', 'preference',['','View','#',[],'employeeID']];
+
+    $driversTable = new table($headers,$arraykeys);
+
+    $driversTable->displayTable($drivers); ?>
 
 </div>
+
+<script type="module" src="../public/JS/manager/drivers/view.js"></script>
 
 

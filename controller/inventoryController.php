@@ -8,8 +8,10 @@ use app\core\DbModel;
 use app\core\middlewares\inventoryMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\models\inventorylog;
 use app\models\inventoryModel;
 use app\models\logisticModel;
+use app\models\userModel;
 
 class inventoryController extends Controller
 {
@@ -38,15 +40,20 @@ class inventoryController extends Controller
 
         $inventory->getData($data);
          try {
+             $this->startTransaction();
              if($inventory->validate($data) && $inventory->save()) {
+                 inventorylog::logLogisticAddingInventoryManually($data['subcategoryID'],$data['amount'],$data['remark']);
                  $this->sendJson(['success' => 1]);
                  $inventory->reset();
+                 $this->commitTransaction();
              }
              else {
                  $this->sendJson(['success' => 0]);
+                 $this->rollbackTransaction();
              }
          }
             catch (\Exception $e) {
+                $this->rollbackTransaction();
                 $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
             }
 
@@ -70,6 +77,19 @@ class inventoryController extends Controller
         }
         catch (\Exception $e) {
             $this->sendJson(['success' => 0, 'error' => $e->getMessage()]);
+        }
+    }
+
+    protected function getCurrentInventory(Request $request,Response $response) {
+        $logistic = logisticModel::getModel(['employeeID' => Application::session()->get('user')]);
+
+        $sql = "SELECT s.subcategoryName,CONCAT(i.amount,' ',s.scale) as stock FROM inventory i INNER JOIN subcategory s ON i.subcategoryID = s.subcategoryID";
+
+        try {
+            $this->sendJson(['status' => 1, 'inventory' => inventoryModel::runCustomQuery($sql,['ccID' => $logistic->ccID],[],[],\PDO::FETCH_KEY_PAIR)]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson(['status' => 0, 'error' => $e->getMessage()]);
         }
     }
 

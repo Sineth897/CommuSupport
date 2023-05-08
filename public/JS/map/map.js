@@ -2,12 +2,14 @@
 class Map {
 
     map = [];
+    markers = [];
 
     cards = [];
 
     async initMap() {
-         let cards = document.getElementsByClassName('cc-card');
-         let map = [];
+        this.map = [];
+        this.markers = [];
+         this.cards = document.getElementsByClassName('cc-card');
 
          let coordinates = await fetch('/CommuSupport/communitycenters',{
              method: 'get',
@@ -20,14 +22,21 @@ class Map {
                  console.error('Error:', error);
              });
 
-        for(let i = 0; i < cards.length; i++) {
-            map.push( new google.maps.Map(document.getElementById(cards[i].title), {
-                // latitude and longitude of Colombp, Sri Lanka
+        for(let i = 0; i < this.cards.length; i++) {
+
+            this.map.push( new google.maps.Map(document.getElementById(cards[i].title), {
 
                 center: {lat: coordinates[i]['latitude'], lng: coordinates[i]['longitude']},
                 zoom: 15,
                 styles: this.styles,
             }));
+
+            this.markers.push(new google.maps.Marker({
+                position: this.map[i].getCenter(),
+                map: this.map[i],
+                draggable: false
+            }));
+
         }
     }
 

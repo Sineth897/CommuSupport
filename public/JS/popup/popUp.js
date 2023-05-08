@@ -12,9 +12,16 @@ class PopUp {
         this.popUpBackgroud = document.getElementById(background);
         this.popUpContainer = document.getElementById(container);
         this.popUpInfo = document.getElementById(info);
+
         this.splitDiv.push(this.popUpContainer);
+
         this.splitFormFlag++;
     }
+
+    container() {
+        return this.splitDiv[this.splitFormFlag];
+    }
+
 
     setHeader(heading,obj = {},subheading = '') {
         this.popUpHeader = this.getDiv('popUpHeader',['popup-header']);
@@ -37,6 +44,12 @@ class PopUp {
             this.popUpHeader.append(this.subheading);
         }
         this.popUpContainer.append(this.popUpHeader);
+    }
+
+    setSubHeading(subheading) {
+        this.subheading = document.createElement('h4');
+        this.subheading.innerHTML = subheading;
+        this.splitDiv[this.splitFormFlag].append(this.subheading);
     }
 
     setBody(arr, arrKeys, labels =[]) {
@@ -122,6 +135,7 @@ class PopUp {
         this.inputFields.push(this.field);
         return this.field;
     }
+
     setCloseButton() {
         this.closeIcon = document.createElement('i');
         this.closeIcon.setAttribute('class','material-icons');
@@ -134,6 +148,19 @@ class PopUp {
         });
         this.popUpContainer.append(this.closeButtonDiv);
     }
+
+    setComplaintIcon(processID, processName){
+        this.complaintHyper = document.createElement('a');
+        this.complaintHyper.setAttribute('href','./complaints/file?processID=' + processID +'&process=' + processName);
+        this.complaintIcon = document.createElement('i');
+        this.complaintIcon.setAttribute('class','material-icons');
+        this.complaintIcon.innerHTML = "report";
+        this.complaintIconDiv = this.getDiv('complaintIconDiv',['complaint-icon']);
+        this.complaintIconDiv.append(this.complaintHyper);
+        this.complaintHyper.append(this.complaintIcon);
+        this.popUpContainer.append(this.complaintIconDiv);
+    }
+
 
     getDiv(id = "", classes = []) {
         this.div = document.createElement('div');
@@ -231,6 +258,17 @@ class PopUp {
         this.popInfoFlag = false;
     }
 
+    startDiv() {
+        this.splitDiv.push(this.getDiv(document.createElement('div')));
+        this.splitFormFlag++;
+    }
+
+    endDiv() {
+        this.splitDiv[this.splitFormFlag-1].append(this.splitDiv[this.splitFormFlag]);
+        this.splitDiv.pop();
+        this.splitFormFlag--;
+    }
+
     startSplitDiv() {
         this.splitDiv.push(this.getDiv('',['form-split']));
         this.splitFormFlag++;
@@ -298,6 +336,116 @@ class PopUp {
         this.aTag.innerHTML = innerText;
         return this.aTag;
     }
+
+    insertElement(element) {
+        if(this.popInfoFlag) {
+            this.popUpInfo.append(element);
+        }
+        else {
+            this.popUpContainer.append(element);
+        }
+    }
+
+    getElement(elementTag,classes = [],innerText = '') {
+        this.element = document.createElement(elementTag);
+        this.element.innerHTML = innerText;
+        if(classes.length !== 0) {
+            this.element.setAttribute('class',classes.join(' '));
+        }
+        return this.element;
+    }
+
+    static deliveryStageText = [
+        ['Delivery assigned to a driver',['Delivery arrived at the CC','Delivery delivered to donee']],
+        ['Delivery assigned to a driver','Delivery arrived at the CC','Delivery delivered to donee'],
+        ['Delivery assigned to a driver',"Delivery arrived at the donor's CC","Delivery transferred to donee's CC",'Delivery delivered to donee']];
+
+    setDeliveryDetails(subdeliveries) {
+        const deliveryDiv = this.getDiv('',['popup-delivery']);
+
+        deliveryDiv.innerHTML = `<div class="delivery-header"><h4>Delivery Progress</h4></div>`;
+
+        this.deliveryDiv = this.getDiv('',['delivery-progress']);
+        this.deliverySteps = this.getElement('ul',['delivery-steps']);
+        this.deliveryDiv.append(this.deliverySteps);
+        const subdeliveryCount = subdeliveries[0]['subdeliveryCount'];
+        const deliveryStageText = PopUp.deliveryStageText[subdeliveryCount-1];
+
+        //To show the initial step where the first delivery should be marked separately
+        this.deliverySteps.append(this.getDeliveryStage(subdeliveries[0],0,deliveryStageText));
+
+        this.deliverySteps.innerHTML = ``;
+        //then for each remaining subdelivery, create a delivery stage
+        for(let i = 0; i < subdeliveryCount; i++) {
+
+            if( i === 0 ) {
+
+                const initialStage = this.getInitialStages(subdeliveries[i],deliveryStageText);
+                initialStage.forEach((stage) => {
+                    // console.log(stage);
+                    this.deliverySteps.append(stage);
+                });
+
+            }
+            else if ( i >= subdeliveries.length) {
+                this.deliverySteps.append(this.getDeliveryStage([],i,deliveryStageText));
+            }
+            else {
+                this.deliverySteps.append(this.getDeliveryStage(subdeliveries[i],i,deliveryStageText));
+            }
+
+
+        }
+        deliveryDiv.append(this.deliveryDiv);
+        this.splitDiv[this.splitFormFlag].append(deliveryDiv);
+
+    }
+
+    getDeliveryStage(subdelivery,stage,deliveryStageText) {
+        const deliveryStage = this.getElement('li',['delivery-stage']);
+
+        if(subdelivery) {
+            deliveryStage.innerHTML = `<span class="stage-number">${stage+2}</span><p class="stage-label next-stages-description">${deliveryStageText[stage+1]}</p>`;
+            return deliveryStage;
+        }
+
+        switch (subdelivery['deliveryStatus']) {
+            case 'Completed':
+                deliveryStage.innerHTML = `<span class="stage-number">${stage+2}</span><p class="stage-label completed-stage-description">${deliveryStageText[stage+1]}</p>`;
+                break;
+            default:
+                deliveryStage.classList.add('current-stage');
+                deliveryStage.innerHTML = `<span class="stage-number">${stage+2}</span><p class="stage-label current-stage-description">${deliveryStageText[stage+1]}</p>`;
+        }
+
+        return deliveryStage;
+    }
+
+    getInitialStages(subdelivery,deliveryStageText) {
+        const firstStage = this.getElement('li',['delivery-stage']);
+        const secondStage = this.getElement('li',['delivery-stage']);
+
+        const secondStageTextIndex = subdelivery['end'].includes('donee') ? 1 : 0;
+
+        switch (subdelivery['deliveryStatus']) {
+            case 'Not Assigned':
+            case 'Not assigned':
+                firstStage.classList.add('current-stage');
+                firstStage.innerHTML = `<span class="stage-number">1</span><p class="stage-label current-stage-description">${deliveryStageText[0]}</p>`;
+                secondStage.innerHTML = `<span class="stage-number">2</span><p class="stage-label next-stages-description">${ subdelivery['subdeliveryCount'] === 1 ? deliveryStageText[1][secondStageTextIndex] : deliveryStageText[1] }</p>`;
+                break;
+            case 'Ongoing':
+                secondStage.classList.add('current-stage');
+                firstStage.innerHTML = `<span class="stage-number">1</span><p class="stage-label completed-stages-description">${deliveryStageText[0]}</p>`;
+                secondStage.innerHTML = `<span class="stage-number">2</span><p class="stage-label current-stage-description">${ subdelivery['subdeliveryCount'] === 1 ? deliveryStageText[1][secondStageTextIndex] : deliveryStageText[1] }</p>`;
+                break;
+            default:
+                firstStage.innerHTML = `<span class="stage-number">1</span><p class="stage-label completed-stages-description">${deliveryStageText[0]}</p>`;
+                secondStage.innerHTML = `<span class="stage-number">2</span><p class="stage-label completed-stages-description">${ subdelivery['subdeliveryCount'] === 1 ? deliveryStageText[1][secondStageTextIndex] : deliveryStageText[1] }</p>`;
+        }
+        return [firstStage,secondStage];
+    }
+
 }
 
 export {PopUp};

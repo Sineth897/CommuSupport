@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\core\exceptions\methodNotFound;
 use app\core\exceptions\notFoundException;
 use function Composer\Autoload\includeFile;
 
@@ -9,13 +10,18 @@ class Router
 {
     public Request $request;
     public Response $response;
-    protected array $routes = [];
+    private array $routes = [];
 
     //constructor function to initialize the request and response
     public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
         $this->response = $response;
+    }
+
+    // getter function to get the routes array
+    public function getRoutes() : array {
+        return $this->routes;
     }
 
     //function to add the get route to the routes array
@@ -30,17 +36,36 @@ class Router
         $this->routes['post'][$path] = $callback;
     }
 
+    // checks if the path exists in the routes array
+    // if not throws not found exception
+    // if yes calls the callback function, and returns the result
     public function resolve()
     {
+        // get the path and method from the request
         $path = $this->request->getPath();
         $method = $this->request->method();
+
+        // get the callback function from the routes array
         $callback = $this->routes[$method][$path] ?? false;
 
+        // if the callback is false, throw not found exception (404)
         if ($callback === false) {
             throw new notFoundException($path);
         }
 
-        return call_user_func($callback,$this->request,$this->response);
+        // if the callback is a string, return the string
+        if(is_string($callback)) {
+            return $callback;
+        }
+
+        if(is_callable($callback)) {
+            // if the callback is a function, call the function
+            return call_user_func($callback,$this->request,$this->response);
+        }
+
+        // if the provided argument is none of them, throw not found exception (404)
+        throw new methodNotFound();
+
     }
 
     public function render($view, $title,$params = [], $active = ""): string
@@ -85,8 +110,9 @@ class Router
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/navbar/sidenav-$userType.php";
         return ob_get_clean();
-    }
 
+
+    }
 
     public function sendData($data, $status = 200): void
     {
@@ -94,6 +120,5 @@ class Router
         $this->response->setJsonData($data);
         $this->response->send();
     }
-
 
 }

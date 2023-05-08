@@ -3,8 +3,9 @@ import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
+import flash from "../../flashmessages/flash.js";
 
-let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'completedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}]);
+let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'finishedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}],);
 
 let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
@@ -28,12 +29,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
 });
 
 let filterBtn = document.getElementById('filterBtn');
-let eventsDiv = document.getElementById('eventDisplay')
+const upcomingEventsDiv = document.getElementById('ongoingEventsDisplay');
+const finishedEventsDiv = document.getElementById('finishedEventsDisplay');
+const cancelledEventsDiv = document.getElementById('cancelledEventsDisplay');
 
 let eventCategory = document.getElementById('eventCategory');
 let sortByDate = document.getElementById('sortByDate');
 let sortByParticipation = document.getElementById('sortByParticipation');
-console.log(sortByParticipation);
+// console.log(sortByParticipation);
 
 let popUpArrayKeys = ['organizedBy','date','time','location','description'];
 let popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
@@ -56,10 +59,31 @@ filterBtn.addEventListener('click', async function() {
         sort['DESC'].push('participationCount');
     }
 
-    let array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+    const array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+
+    console.log(array);
+
+    const upcomingEvents = {
+        icons : array['icons'],
+        event : array['event'].filter((event) => event['status'] === 'Upcoming'),
+    };
+
+    const finishedEvents = {
+        icons : array['icons'],
+        event : array['event'].filter((event) => event['status'] === 'Finished'),
+    }
+
+    const cancelledEvents = {
+        icons : array['icons'],
+        event : array['event'].filter((event) => event['status'] === 'Cancelled'),
+    }
 
     filterOptions.style.display = 'none';
-    displayEventcards(eventsDiv,array);
+
+
+    displayEventcards(upcomingEventsDiv,upcomingEvents);
+    displayEventcards(finishedEventsDiv,finishedEvents);
+    displayEventcards(cancelledEventsDiv,cancelledEvents);
     updateEventCardOnClick();
 
 });
@@ -96,7 +120,7 @@ async function showPopUp(e) {
     popUpEvent.endPopUpInfo();
 
     popUpEvent.setBody(event,popUpArrayKeys,popUpArrayLabels);
-    if(event['status'] !== 'Cancelled') {
+    if(event['status'] === 'Not active') {
         popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc,cancel:true},
             {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc,cancel:true}]);
     }
@@ -119,9 +143,9 @@ let updateFunc = async (e) => {
         updateValues['eventID'] = e.target.value;
         let result = await getData('./event/update', 'POST', {do:'update',data:updateValues});
         if(result['status']) {
-            console.log('updated');
+            flash.showMessage({type:'success',value:'Event Updated Successfully'},3000);
         } else {
-            console.log(result);
+            flash.showMessage({type:'error',value:'Event Update Failed'},3000);
         }
         popUpEvent.hidePopUp();
         document.getElementById(e.target.value).click();
@@ -138,9 +162,9 @@ let cancelFunc = async (e) => {
     else {
         let result = await getData('./event/update', 'POST', {do:'cancel',data:e.target.value});
         if(result['status']) {
-            console.log('Success');
+            flash.showMessage({type:'success',value:'Event Cancel Successfully'},3000);
         } else {
-            console.log(result);
+            flash.showMessage({type:'error',value:'Event cancel Failed'},3000);
         }
         popUpEvent.hidePopUp();
         document.getElementById('filterBtn').click();

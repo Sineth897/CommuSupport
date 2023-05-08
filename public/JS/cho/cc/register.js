@@ -12,9 +12,7 @@ document.getElementById('setLocation').addEventListener('click', async (e) => {
         })
     }
     else {
-        if(await mapMarker.changeLocationByCity(cityInput.value)) {
-            mapDiv.style.display = 'flex';
-        }
+        await mapMarker.changeLocationByCity(cityInput.value)
     }
 });
 

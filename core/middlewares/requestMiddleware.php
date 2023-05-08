@@ -13,6 +13,9 @@ class requestMiddleware extends Middleware
             'requestPopup' => [$this->ADMIN,$this->CHO,$this->MANAGER,$this->DONOR,$this->DONEE,$this->LOGISTIC],
             'setApproval' => [$this->MANAGER],
             'acceptRequest' => [$this->DONOR,$this->LOGISTIC],
+            'filterRequests' => [$this->DONOR,$this->LOGISTIC],
+            'filterRequestsAdmin' => [$this->ADMIN],
+            'filterOwnRequests' => [$this->DONEE],
         ];
     }
 }

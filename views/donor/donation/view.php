@@ -1,5 +1,8 @@
-<link rel="stylesheet" href="../public/CSS/button/button-styles.css">
-<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/cards/donor-donation-card.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/popup/popup-styles.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+
 <?php
 
 /** @var $model \app\models\donationModel */
@@ -7,13 +10,25 @@
 
 $categories = $model->getCategories();
 
+//$user = $user->findOne(['donorID' => $_SESSION['user']]);
+
+$donations = $model->getDonationsFromDonorsToViewByDonors($_SESSION['user']);
+
+$activeDonations = array_filter($donations, function($donation) {
+    return $donation['deliveryStatus'] === 'Ongoing' || $donation['deliveryStatus'] === 'Not Assigned';
+});
+
+$completedDonations = array_filter($donations, function($donation) {
+    return $donation['deliveryStatus'] === 'Completed';
+});
+
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();;
 
 $profile->end(); ?>
 
@@ -44,9 +59,18 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', \app\models\donationModel::getAllSubcategories(), 'filterCategory');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"Date","",'sortDate');
+$sortForm->checkBox($model, "Amount", "amount", 'sortAmount');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
@@ -60,15 +84,28 @@ $searchDiv->end();
 ?>
 
 
-<div class="content" id="activeDonations">
-    <h3>Ongoing Donations</h3>
+<div class="content">
+
+    <div class="card-container" id="activeDonations">
+
+        <?php $donationCards = new \app\core\components\cards\donationCard();
+
+        $donationCards->displayCards($activeDonations); ?>
+
+
+    </div>
+
+    <div class="card-container" id="completedDonations" style="display: none">
+
+        <?php $donationCards->displayCards($completedDonations); ?>
+
+    </div>
+
 </div>
 
-<div class="content" id="completedDonations">
-    <h3>Completed Donations</h3>
-</div>
 
-<div class="popup-background" id="donationDiv">
+
+<div class="popup-background" id="donationDiv" style="position: fixed">
 
     <div class="popup">
 
@@ -82,16 +119,23 @@ $searchDiv->end();
             <?php $donationForm->dropDownList($model,"Select item category",'category',$categories,'category'); ?>
 
             <?php foreach ($categories as $category => $name)  {?>
-                <div id=<?php echo $category ?> style="display: none">
-                <?php $donationForm->dropDownList($model, 'What item you need', 'item', $model->getSubcategories($category)); ?>
-
+                <div id=<?php echo $category ?> class="form-group" style="display: none;">
+                <?php $donationForm->dropDownList($model, 'What item you will donate', 'item', $model->getSubcategories($category)); ?>
+                </div>
             <?php } ?>
 
             <div id="amountInput" style="display: none">
-                <?php $donationForm->inputField($model, 'Amount','number','amount',); ?>
+                <?php $donationForm->inputField($model, 'Amount','number','amount','amount'); ?>
             </div>
 
         </div>
+
+        <div class="form-split">
+            <?php $donationForm->button('Confirm','button','confirmDonation',['btn-primary']); ?>
+
+            <?php $donationForm->button('Cancel','button','cancelDonation',['btn-secondary']); ?>
+        </div>
+
 
         <?php $donationForm::end(); ?>
 
