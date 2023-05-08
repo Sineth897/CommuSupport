@@ -35,11 +35,11 @@ class unverifiedDoneeCard
         echo "</div>";
         echo "<div class='info-section'>";
         $this->displayName($donee);
-        echo "<div class='info-box'>";
+        echo "<div class='stat-card'>";
         echo "<p>Mobile number: </p>";
         echo sprintf("<p>%s</p>", $donee['mobileVerification'] ? 'Verified' : 'Not Verified');
         echo "</div>";
-        echo "<div class='info-box'>";
+        echo "<div class='stat-card'>";
         echo "<p>Registered date: </p>";
         echo sprintf("<p>%s</p>", $donee['registeredDate']);
         echo "</div>";
@@ -49,20 +49,20 @@ class unverifiedDoneeCard
 
     private function displayName($donee) {
         if($donee['type'] === 'Individual') {
-            echo "<div class='info-box'>";
+            echo "<div class='stat-card'>";
             echo "<p>Name: </p>";
             echo sprintf("<p>%s %s</p>", $donee['fname'], $donee['lname']);
             echo "</div>";
-            echo "<div class='info-box'>";
+            echo "<div class='stat-card'>";
             echo "<p>NIC: </p>";
             echo sprintf("<p>%s</p>", $donee['NIC']);
             echo "</div>";
         } else {
-            echo "<div class='info-box'>";
+            echo "<div class='stat-card'>";
             echo "<p>Organization: </p>";
             echo sprintf("<p>%s</p>", $donee['organizationName']);
             echo "</div>";
-            echo "<div class='info-box'>";
+            echo "<div class='stat-card'>";
             echo "<p>Representative: </p>";
             echo sprintf("<p>%s</p>", $donee['representative']);
             echo "</div>";

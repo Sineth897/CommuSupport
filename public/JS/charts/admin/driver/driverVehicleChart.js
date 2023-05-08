@@ -1,11 +1,11 @@
-var ctx = document.getElementById('itemChart').getContext('2d');
+var ctx = document.getElementById('vehicleTypeChart').getContext('2d');
 var itemChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: Object.keys(itemData),
+        labels: Object.keys(chartData),
         datasets: [{
             label: 'My Pie Chart',
-            data: Object.values(itemData),
+            data: Object.values(chartData),
             backgroundColor: [
                 '#225E27',
                 '#3AAC43',
@@ -16,11 +16,13 @@ var itemChart = new Chart(ctx, {
     options: {
         title: {
             display: false,
-            text: 'Categories of Requests',
+            text: 'Categories of Donors',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'
         },
+        responsive: false,
+        maintainAspectRatio: false,
         legend: {
             display: true,
             position: 'top',
