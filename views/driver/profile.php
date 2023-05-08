@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="../public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/unreg-user/unreg-bar.css">
-<link rel="stylesheet" href="../public/CSS/profile/driverProfile.css">
+<link rel="stylesheet" href="../public/CSS/profile/profile.css">
 
 <?php
 

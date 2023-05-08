@@ -11,6 +11,9 @@ class profileMiddleware extends Middleware
             [
                 'viewProfile' => [$this->MANAGER, $this->CHO, $this->ADMIN, $this->LOGISTIC, $this->DONEE, $this->DONOR, $this->DRIVER],
                 'doneeProfile' => [$this->DONEE],
+                'donorProfile' => [$this->DONOR],
+                'logisticProfile' => [$this->LOGISTIC],
+                'managerProfile' => [$this->MANAGER],
             ];
     }
 

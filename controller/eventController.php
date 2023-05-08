@@ -106,7 +106,7 @@ class eventController extends Controller
 
     protected function eventPopUpUser(Request $request,Response $response) {
         $model = new eventModel();
-        $event = $model->retrieveWithJoin('eventCategory','eventCategoryID',$request->getJsonData())[0];
+        $event = $model->retrieveWithJoin('eventcategory','eventCategoryID',$request->getJsonData())[0];
         $eventCategoryIcons = eventModel::getEventCategoryIcons();
         $eventID = $request->getJsonData()['event.eventID'];
         $this->sendJson([

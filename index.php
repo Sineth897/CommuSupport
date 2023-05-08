@@ -253,7 +253,7 @@ $app->router->post('/manager/donations/filter', function ($request, $response) {
 });
 //Manager view donation
 $app->router->get('/manager/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("managerProfile",$request,$response);
 });
 
 
@@ -462,13 +462,13 @@ $app->router->get('/donee/profile',function($request,$response){
     $controller = new \app\controller\profileController('doneeProfile',$request,$response);
 });
 
+$app->router->get('/donor/profile',function($request,$response){
+    $controller = new \app\controller\profileController('donorProfile',$request,$response);
+});
+
 //$app->router->get('/donor/complaints/file',function ($request,$response){
 //   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
 //});
-
-
-
-
 
 
 
@@ -582,9 +582,9 @@ $app->router->post('/logistic/donations/filter', function ($request,$response) {
     $controller = new \app\controller\donationController("filterDonationsEmployee",$request,$response);
 });
 
-
-
-
+$app->router->get('/logistic/profile',function($request,$response){
+    $controller = new \app\controller\profileController('logisticProfile',$request,$response);
+});
 
 
 
