@@ -1,96 +1,157 @@
+<link rel="stylesheet" href="../public/CSS/profile/profile.css">
+
 <?php
 
-use app\core\Application;
+/**
+ *@var $manager managerModel
+ */
+
 use app\models\managerModel;
 
-$user = Application::session()->get('user');
-$manager = managerModel::getModel(['employeeID' => $user]);
+[ $personalInfo, $managerStat ] =  $manager->getManagerInformationForProfile();
+
+
+//echo '<pre>';
+//var_dump($doneeInfo['doneeStat']);
+//echo '</pre>';
 
 ?>
-<!-- Import material icons to the page-->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/layout.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/profile.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
+<div class="profile-container">
+    <div class="profile">
 
-<div class="parent">
-
-    <div class="profile-div">
-        <div class="profile-page-container">
-            <div class="profile-content-top">
-                <div class="profile-picture">
-                    <img src="https://www.cnet.com/a/img/resize/22b01fa0f0b66f2d66a7fa1b1306f974289bcb33/hub/2023/02/12/3e30ba7d-1fc3-44b3-ad02-85b4c69dc43e/the-flash-copy.png?auto=webp&fit=crop&height=1200&precrop=1638,920,x75,y0&width=1200"
-                         alt="profile picture">
-                </div>
-                <div class="profile-header">
-                    <h3 class="profile-name">Gineth Karu </h3>
-                    <h5 class="profile-position"><span>ccManager</span><span>#887122</span></h5>
-                </div>
-                <div class="profile-btns">
-                    <button class="btn btn-primary">Edit Profile</button>
-                    <button class="btn btn-secondary">Change Password</button>
-                </div>
-            </div>
-            <form class="profile-content-main">
-                <!--                <div class="form-split">-->
-                <!--                    <div class="split-item">-->
-                <!--                        <label class="form-label"for="fname">First Name</label>-->
-                <!--                        <input class="basic-input-field" type="text" id="fname" name="fname" value="Gineth" disabled>-->
-                <!--                    </div>-->
-                <!--                    <div class="split-item">-->
-                <!--                        <label class="form-label"for="lname">Last Name</label>-->
-                <!--                        <input class="basic-input-field" type="text" id="lname" name="lname" value="Karu" disabled>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!--                <div class="form-split">-->
-                <!--                    <div class="split-item">-->
-                <!--                        <label class="form-label"for="fname">First Name</label>-->
-                <!--                        <input class="basic-input-field" type="text" id="fname" name="fname" value="Gineth" disabled>-->
-                <!--                    </div>-->
-                <!--                    <div class="split-item">-->
-                <!--                        <label class="form-label"for="lname">Last Name</label>-->
-                <!--                        <input class="basic-input-field" type="text" id="lname" name="lname" value="Karu" disabled>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!--                <div class="form-split">-->
-                <!--                    <div class="split-item">-->
-                <!--                        <label class="form-label"for="fname">First Name</label>-->
-                <!--                        <input class="basic-input-field" type="text" id="fname" name="fname" value="Gineth" disabled>-->
-                <!--                    </div>-->
-                <!--                    <div class="split-item">-->
-                <!--                        <label class="form-label"for="lname">Last Name</label>-->
-                <!--                        <input class="basic-input-field" type="text" id="lname" name="lname" value="Karu" disabled>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!--                <div class="form-grid-1">-->
-                <!--                    <div class="form-group">-->
-                <!--                        <label class="form-label"for="fname">First Name</label>-->
-                <!--                        <input class="basic-input-field" type="text" id="fname" name="fname" value="Gineth" disabled>-->
-                <!--                        <input class="basic-input-field" type="text" id="lname" name="lname" value="Karu" disabled>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-            </form>
+        <div class="edit-change-password">
+            <p id="change-password"> Change Password </p>
+            <i class="material-icons" id="edit-details">edit_note</i>
         </div>
 
+        <div class="img-username-div">
+
+            <div class="profile-img">
+            </div>
+            <h1><?php echo $personalInfo['name'] ?></h1>
+            <p class="user-type"><?php echo '@' . $personalInfo['username'] ?></p>
+        </div>
+
+        <!--        each attribute is displayed as disabled input field-->
+        <!--        provide an id for the fields that can be updated-->
+        <form action="#" class="form-grid-1">
+
+            <div class="personal-details">
+
+                <div class="form-group">
+                    <label class="form-label"> Name </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['name'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> NIC </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> Age </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['age'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> Contact Number </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" disabled>
+                </div>
+
+            </div>
+
+            <div class="form-group description">
+                <label class="form-label"> Address </label>
+                <textarea class="basic-text-area"  disabled> <?php echo $personalInfo['address'] ?> </textarea>
+            </div>
+
+
+
+            <div class="personal-details">
+
+                <div class="form-group">
+                    <label class="form-label"> Community Center </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['city'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> District </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['district'] ?>" disabled>
+                </div>
+
+            </div>
+
+
+        </form>
+
     </div>
-    <div class="chart-div-1"></div>
-    <div class="div3">
-        <?php
-        $retrieved_data = $manager->retrieve(["employeeID" => $user]);
-        list($first_name, $last_name) = explode(" ", $retrieved_data[0]['name']);
-        echo $first_name;
-        echo " ";
-        echo $last_name;
-        ?>
+
+    <!--    display each stat and a block-->
+    <div class="stats display-grid columns-3 rows-2">
+
+        <?php foreach ($managerStat as $key => $value) {
+
+            // stat and the value
+            echo "<div class='stat'>";
+            echo "<h4 class='align-text-center'>{$key}</h4>";
+            echo "<h1 class='align-text-center'>{$value}</h1>";
+            echo "</div>";
+
+        }?>
+
     </div>
+    <div class="profile-notifications">
 
-    <div class="div4"></div>
+        <div class="profile-notif-container-">
 
-    <div class="div5"></div>
+            <?php
 
-    <div class="div6"></div>
+            $notificationIcon = [
+                'event' => 'event',
+                'directDonations' => 'local_shipping',
+                'request' => 'local_shipping',
+                'acceptedRequests' => 'local_shipping',
+                'delivery' => 'local_shipping',
+                'ccDonation' => 'local_shipping',
+            ];
 
+            $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
+
+            foreach ($notifications as $notification) {
+
+                echo "<div class='profile-notif-card'>";
+                echo "<div class='profile-notif-left-block'>";
+
+                // title and the message
+                echo "<div class='profile-notif-message'>";
+                echo sprintf("<h4> %s </h4>",$notification['title']);
+                echo sprintf("<p><small>%s</small></p>",$notification['message']);
+                echo "</div>";
+
+                // date and time
+                echo "<div class='profile-notif-date-time'>";
+                echo sprintf("<p class='date'>%s</p>",date('M d',strtotime($notification['dateCreated'])));
+                echo sprintf("<p class='time'>%s</p>",date('g:i a',strtotime($notification['dateCreated'])));
+                echo "</div>";
+
+                echo "</div>";
+
+                echo "<div class='profile-notif-right-block'>";
+
+                // icon for related process
+                echo    sprintf("<i class='material-icons'>%s</i>", $notificationIcon[$notification['related']]);
+
+                echo "</div>";
+
+                echo "</div>";
+
+            }
+
+            ?>
+
+        </div>
+
+
+    </div>
 </div>
-
