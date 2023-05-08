@@ -1,125 +1,157 @@
+<link rel="stylesheet" href="../public/CSS/profile/profile.css">
+
 <?php
 
-use app\core\Application;
+/**
+ *@var $manager managerModel
+ */
+
 use app\models\managerModel;
-use app\models\ccModel;
+
+[ $personalInfo, $managerStat ] =  $manager->getManagerInformationForProfile();
 
 
-$user = Application::session()->get('user');
-$manager = managerModel::getModel(['employeeID' => $user]);
+//echo '<pre>';
+//var_dump($doneeInfo['doneeStat']);
+//echo '</pre>';
 
-
-$retrieved_data = $manager->retrieve(["employeeID" => $user]);
-list($first_name, $last_name) = explode(" ", $retrieved_data[0]['name']);
-//var_dump($retrieved_data);
-$manager_cc = ccModel::getModel(['ccID' => ($retrieved_data[0]['ccID'])]);
-$manager_cc_details = $manager_cc->retrieve(['ccID' => ($retrieved_data[0]['ccID'])]);
-//var_dump($manager_cc_details);
-$NIC = $retrieved_data[0]['NIC'];
 ?>
-<!-- Import material icons to the page-->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/profile.css">
+<div class="profile-container">
+    <div class="profile">
 
-<link rel="stylesheet" href="/CommuSupport/public/CSS/layout.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
-<link rel="stylesheet" href="/CommuSupport/public/CSS/cards/delivery-card-log.css">
+        <div class="edit-change-password">
+            <p id="change-password"> Change Password </p>
+            <i class="material-icons" id="edit-details">edit_note</i>
+        </div>
 
-<div class="parent">
+        <div class="img-username-div">
 
-    <div class="profile-div">
-        <div class="profile-page-container">
-            <div class="profile-content-top">
-                <div class="profile-picture">
-                    <img src="https://www.cnet.com/a/img/resize/22b01fa0f0b66f2d66a7fa1b1306f974289bcb33/hub/2023/02/12/3e30ba7d-1fc3-44b3-ad02-85b4c69dc43e/the-flash-copy.png?auto=webp&fit=crop&height=1200&precrop=1638,920,x75,y0&width=1200"
-                         alt="profile picture">
-                </div>
-                <div class="profile-header">
-                    <h3 class="profile-name"><?php
-                        echo $first_name;
-                        echo " ";
-                        echo $last_name;
-                        ?></h3>
-                    <h5 class="profile-position"><span>
-                           Manager for  <?php
-                            echo $manager_cc_details[0]['city'];
-                            ?> Community Center
-                        </span></h5>
-                </div>
-                <div class="profile-btns">
-                    <button class="btn-small-primary">Edit Profile</button>
-                    <button class="btn-small-primary">Change Password</button>
-                </div>
+            <div class="profile-img">
             </div>
-            <form class="form-grid-2-2">
-                <div class="form-group">
-                    <label for="fname" class="form-label">First Name</label>
-                    <input type="text" class="basic-input-field" id="fname" disabled value="<?php echo $first_name ?>">
-                </div>
-                <div class="form-group">
-                    <label for="lname" class="form-label">Last Name</label>
-                    <input type="text" class="basic-input-field" id="lname" disabled value="<?php echo $last_name ?>">
-                </div>
-                <div class="form-group">
-                    <label for="nic" class="form-label">NIC</label>
-                    <input type="text" class="basic-input-field" id="nic" disabled value="<?php echo $NIC ?>">
-                </div>
-                <div class="form-group">
-                    <label for="age" class="form-label">Age</label>
-                    <input type="text" class="basic-input-field" id="age" disabled
-                           value="<?php echo $retrieved_data[0]['age'] ?>">
-                </div>
-                <div class="form-group">
-                    <label for="gender" class="form-label">Gender</label>
-                    <input type="text" class="basic-input-field" id="gender" disabled
-                           value="<?php echo $retrieved_data[0]['gender'] ?>">
-                </div>
-                <div class="form-group">
-                    <label for="contactNo" class="form-label">Contact Number</label>
-                    <input type="text" class="basic-input-field" id="contactNo" disabled
-                           value="<?php echo $retrieved_data[0]['contactNumber'] ?>">
-                </div>
-            </form>
-            <form action="" class="form-grid-1">
-                <div class="form-group">
-                    <label for="address-line-1" class="form-label">Personal Address</label>
-                    <input type="text" class="basic-input-field" id="address-line-1" disabled
-                           value="<?php echo $retrieved_data[0]['address'] ?>">
-                </div>
-                <div class="form-group">
-                    <label for="address-line-1" class="form-label">CC Address</label>
-                    <input type="text" class="basic-input-field" id="address-line-1" disabled
-                           value="<?php echo $manager_cc_details[0]['address'] ?>">
-                </div>
-            </form>
+            <h1><?php echo $personalInfo['name'] ?></h1>
+            <p class="user-type"><?php echo '@' . $personalInfo['username'] ?></p>
         </div>
+
+        <!--        each attribute is displayed as disabled input field-->
+        <!--        provide an id for the fields that can be updated-->
+        <form action="#" class="form-grid-1">
+
+            <div class="personal-details">
+
+                <div class="form-group">
+                    <label class="form-label"> Name </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['name'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> NIC </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> Age </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['age'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> Contact Number </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" disabled>
+                </div>
+
+            </div>
+
+            <div class="form-group description">
+                <label class="form-label"> Address </label>
+                <textarea class="basic-text-area"  disabled> <?php echo $personalInfo['address'] ?> </textarea>
+            </div>
+
+
+
+            <div class="personal-details">
+
+                <div class="form-group">
+                    <label class="form-label"> Community Center </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['city'] ?>" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"> District </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['district'] ?>" disabled>
+                </div>
+
+            </div>
+
+
+        </form>
 
     </div>
-    <div class="chart-div-1">
-<!--        Counts-->
-        <div class="stat-block positive">
-            <p>78 <i class="material-icons">arrow_upward</i></p>
-            <p>Registered Users</p>
-        </div>
-        <div class="stat-block positive">
-            <p>78</p>
-            <p>Registered Drivers</p>
-        </div>
-        <div class="stat-block negative">
-            <p>400<i class="material-icons">arrow_downward</i></p>
-            <p>Donations within CC</p>
-        </div>
-        <div class="stat-block negative">
-            <p>78<i class="material-icons">arrow_downward</i></p>
-            <p>Registered Users</p>
-        </div>
+
+    <!--    display each stat and a block-->
+    <div class="stats display-grid columns-3 rows-2">
+
+        <?php foreach ($managerStat as $key => $value) {
+
+            // stat and the value
+            echo "<div class='stat'>";
+            echo "<h4 class='align-text-center'>{$key}</h4>";
+            echo "<h1 class='align-text-center'>{$value}</h1>";
+            echo "</div>";
+
+        }?>
+
     </div>
+    <div class="profile-notifications">
 
-    <div class="div4"></div>
+        <div class="profile-notif-container-">
 
-    <div class="div5"></div>
+            <?php
 
+            $notificationIcon = [
+                'event' => 'event',
+                'directDonations' => 'local_shipping',
+                'request' => 'local_shipping',
+                'acceptedRequests' => 'local_shipping',
+                'delivery' => 'local_shipping',
+                'ccDonation' => 'local_shipping',
+            ];
+
+            $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
+
+            foreach ($notifications as $notification) {
+
+                echo "<div class='profile-notif-card'>";
+                echo "<div class='profile-notif-left-block'>";
+
+                // title and the message
+                echo "<div class='profile-notif-message'>";
+                echo sprintf("<h4> %s </h4>",$notification['title']);
+                echo sprintf("<p><small>%s</small></p>",$notification['message']);
+                echo "</div>";
+
+                // date and time
+                echo "<div class='profile-notif-date-time'>";
+                echo sprintf("<p class='date'>%s</p>",date('M d',strtotime($notification['dateCreated'])));
+                echo sprintf("<p class='time'>%s</p>",date('g:i a',strtotime($notification['dateCreated'])));
+                echo "</div>";
+
+                echo "</div>";
+
+                echo "<div class='profile-notif-right-block'>";
+
+                // icon for related process
+                echo    sprintf("<i class='material-icons'>%s</i>", $notificationIcon[$notification['related']]);
+
+                echo "</div>";
+
+                echo "</div>";
+
+            }
+
+            ?>
+
+        </div>
+
+
+    </div>
 </div>
-
