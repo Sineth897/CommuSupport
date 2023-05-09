@@ -2,6 +2,9 @@
 
 namespace app\core;
 
+/**
+ * @method expects(\PHPUnit\Framework\MockObject\Rule\InvokedCount $once)
+ */
 class Cookie
 {
 
@@ -23,8 +26,15 @@ class Cookie
         return $this->cookies[$key] ?? false;
     }
 
-    public function unsetCookie($key):void {
-        $this->setCookie($key, '', -1);
+    public function unsetCookie($key): bool {
+
+        if(isset($this->cookies[$key])) {
+            $this->setCookie($key, '', -1);
+            unset($this->cookies[$key]);
+            return true;
+        }
+        return false;
+
     }
 
     public function getAllCookies():array {

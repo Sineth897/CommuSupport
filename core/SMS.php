@@ -12,8 +12,8 @@ use app\models\userModel;
 
 class SMS
 {
-    private string $id = '';
-    private string $pw = '';
+    private ?string $id = '';
+    private ?string $pw = '';
     private string $baseURL = 'http://www.textit.biz/sendmsg';
 
     public function __construct(array $config)
@@ -91,6 +91,9 @@ class SMS
         }
         if(str_contains($id,'cho')){
             return choModel::getModel(['choID' => $id]);
+        }
+        if(str_contains($id,'cc')) {
+            return logisticModel::getModel(['ccID' => $id]);
         }
         return null;
     }

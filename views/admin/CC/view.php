@@ -30,7 +30,27 @@ $headerDiv->heading("Community Centers");
 $headerDiv->end();
 ?>
 
+<?php $infoDiv = new \app\core\components\layout\infoDiv([1,1,1]);?>
 
+
+<?php $infoDiv->statDivStart(); ?>
+<div class="stat-container">
+<?php
+
+$chartData = $model->getHighestPerformingCC();
+echo '<ol>';
+    foreach ($chartData as $city => $population) {
+    echo '<li>' . $city . '</li>';
+    }
+    echo '</ol>';
+
+    ?>
+</div>
+<?php $infoDiv->statDivEnd(); ?>
+
+
+
+<?php $infoDiv->End();?>
 
 <?php
 $searchDiv = new \app\core\components\layout\searchDiv();

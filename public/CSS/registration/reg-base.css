@@ -42,7 +42,7 @@ ul{
     /*overflow-y: scroll;*/
     /*width: 50%;*/
     background: white;
-    padding: 1.5rem 1.5rem;
+
     border-radius: 0.75rem;
     gap: 40px;
 }
@@ -53,10 +53,10 @@ ul{
     /*height: 60%;*/
     /*overflow-y: scroll;*/
     /*width: 50%;*/
-    background: white;
-    padding: 40px 40px;
+    background: transparent;
+    padding: 40px;
     border-radius: 12px;
-    gap: 40px;
+    gap: 10px;
 }
 
 
@@ -65,9 +65,37 @@ ul{
 {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     border-radius: 12px;
+    border: #9b9b9b solid 1px;
+    padding: 40px 60px;
+    gap: 20px;
+    font-size: 0.8rem;
+    background-color: white;
+    height: 100%;
+}
+
+
+.block-header{
+    text-align: center;
+}
+
+.block-header h1{
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.block-header p{
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--light);
+}
+
+
+
+.block ul{
+    width: 280px;
 }
 
 .block ul li
@@ -88,7 +116,7 @@ ul{
 .block button{
     background: var(--secondary-color);
     color: white;
-    padding: 20px 40px;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     font-size: 0.8rem;
@@ -101,4 +129,19 @@ ul{
     border: solid 1px var(--secondary-color);
 background: transparent;
 color: var(--secondary-color);
+}
+
+.popup .close{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    border-radius: 20%;
+}
+
+.close i{
+    color: white;
+    font-size: 1.2rem;
 }
