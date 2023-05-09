@@ -65,10 +65,10 @@
 
             if(cardContainers[i].children.length === 0) {
                 cardContainers[i].appendChild(noDataImg);
+                cardContainers[i].classList.remove('card-container');
                 cardContainers[i].classList.add('no-data');
             }
         }
-
     }
 
 </script>

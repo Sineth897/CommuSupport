@@ -14,9 +14,9 @@
 }
 
 .profile-container > div {
-    box-shadow: 0 0 10px #e1e5ee;
     padding: 20px;
     border-radius: 12px;
+    background-color: white;
 }
 
 .profile{
@@ -43,13 +43,13 @@
     flex-direction: column;
     justify-content: center;
     gap: .2rem;
-    text-align: center;
+    align-items: center;
 }
 
 .profile-img {
     border-radius: 50%;
-    width: 20rem;
-    height: 20rem;
+    width: 50px;
+    height: 50px;
     background-color: #00d776;
 }
 
@@ -122,14 +122,17 @@
 }
 
 .stat {
-    display: grid;
-    grid-template-rows: 1fr 1.5fr;
     /*flex-direction: column;*/
     padding: 5%;
     border-radius: 8%;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-    justify-content: center;
-    align-items: center;
+    text-align: left;
+}
+
+.stat h4{
+    font-size: 0.75rem;
+    font-weight:400;
+    color: #9b9b9b;
 }
 
 .align-text-center {
@@ -138,7 +141,6 @@
 
 .profile-notif-container-{
     width: 100%;
-    height: 100%;
     overflow: scroll;
     display: flex;
     flex-direction: column;

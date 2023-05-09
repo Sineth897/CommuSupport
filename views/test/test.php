@@ -2,62 +2,108 @@
 <link rel="stylesheet" href="./public/CSS/cards/cc-donation-card.css">
 <!--<link rel="stylesheet" href="./public/CSS/cards/postedRequestCard.css">-->
 <link rel="stylesheet" href="./public/CSS/cards/request-card.css">
-<?php
 
-$requestModel = new \app\models\requestModel();
+<div class="fake">
+    <div class="sidenav-fake">
 
-$requests = $requestModel->getOwnRequests($_SESSION['user']);
-
-?>
-
+    </div>
+    <div class="main-fake">
+        <div class="profile-container">
+            <div class="profile1">
+                <h1>Driver</h1>
+            </div>
+            <div class="stats1">
+                Stat
+            </div>
+            <div class="table">
+<p>Heading</p>
+                <div class="scroller">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
+    .sidenav-fake {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 300px;
+        background: var(--primary-color);
+        padding: 6px 14px;
+        z-index: 99;
+        transition: all 0.5s ease;
+    }
+
+    .main-fake {
+        position: absolute;
+        height: 100vh;
+        width: calc(100% - 300px);
+        left: 300px;
+        transition: all 0.5s ease;
+        background-color: #f3f3f3;
+        overflow-y: scroll;
+        margin: 0;
+    }
+
+    .profile-container {
+        height: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-areas:
+"profile1 stats1"
+"profile1 table"
+"profile1 table";
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+        width: 100%;
+        padding: 10px 10px;
+
+    }
+
+    .profile-container > div {
+        padding: 20px;
+        border-radius: 12px;
+        background-color: white;
+    }
+
+    .profile1 {
+        grid-area: profile1;
+    }
+
+    .stats1 {
+        grid-area: stats1;
+    }
+
+    .table{
+        grid-area: table;
+        display: block;
+        overflow-y: scroll;
+    }
+
+    .scroller{
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 40px;
+    }
+
+    .bar{
+        height: 100px;
+        background-color: #00b705;
+        width: 100%;
+    }
 
 
 
 
 </style>
-
-
-<div class="content">
-    <div class="card-container">
-
-        <?php
-
-        $requestCards = new \app\core\components\cards\requestcard();
-
-        $requestCards->displayRequests($requests['completedRequests'],[['View','viewAcceptedRequest']],true);
-
-        echo "<pre>";
-        print_r($requests['completedRequests']);
-        echo "</pre>";
-
-        ?>
-
-
-
-
-        </div>
-    </div>
-</div>
-
-<div class="rq-card" id="accepted64479cdfe7c7b8.">
-    <div class="rq-card-header">
-        <h1>Rice</h1>
-        <div class="rq-delivery-status">
-            <strong>Delivery : </strong><p>Completed</p>
-        </div>
-    </div>
-    <div class="rq-category">
-        <p>Food</p>
-    </div>
-    <div class="rq-description">
-        <p>For the dependents of our organization</p>
-    </div>
-    <div class="rq-btns">
-        <button class="rq-btn btn-primary viewActiveRequest" value="request63ff473a58aff3.5">View</button>
-    </div>
-    <p class="rq-accepted-date"><strong>2 users </strong> donated</p>
-</div>
-
-

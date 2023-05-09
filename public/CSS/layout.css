@@ -41,17 +41,8 @@ a {
 }
 
 /* Styles for the main container of the layout */
-.main {
-    display: block;
-    /*background-color: var(--background-main);*/
-    background-color: #f3f3f3;
-    padding: 10px 0;
-    height: 100vh;
-    overflow-y: scroll;
-    margin: 0;
-}
 
-/* Header structure is as follos*/
+/* Header structure is as follows*/
 /* .profile block = user profile and notification */
 /* .heading-pages block = page header and links for other pages */
 /* .search-filter block = search and filter divs */
@@ -94,6 +85,7 @@ a {
     gap: 10px;
     font-size: 0.8rem;
     margin-bottom: 10px;
+    position: relative;
 
 }
 
@@ -285,12 +277,29 @@ a {
 .filter-box {
     position: absolute;
     top: 50px;
-    left: 0;
+    left: 20px;
     background-color: white;
     border-radius: 12px;
     padding: 20px;
     width: 13rem;
     z-index: 2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sort-box {
+    position: absolute;
+    top: 50px;
+    left: 105px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 13rem;
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-box {
+    width: 800px;
 }
 
 .filter p i, .sort p i {
@@ -395,13 +404,9 @@ a {
 }
 
 .no-data {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 20px;
-    height: 100%;
-    background-color: white;
-    overflow-y: scroll;
+    width: 100%;
+    grid-area: span;
 }
