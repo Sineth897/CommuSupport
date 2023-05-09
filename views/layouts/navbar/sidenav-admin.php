@@ -2,6 +2,11 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/navbar/sidenav-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/navbar/main-styles.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/charts/charts.css">
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
 <div class="sidenav">
     <div class="logo_content">
         <div class="logo">
