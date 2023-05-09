@@ -152,6 +152,7 @@ use app\models\donorModel;
                 'acceptedRequests' => 'local_shipping',
                 'delivery' => 'local_shipping',
                 'ccDonation' => 'local_shipping',
+                'complaint' => 'report',
             ];
 
             $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
