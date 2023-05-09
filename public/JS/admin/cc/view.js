@@ -34,6 +34,10 @@ document.getElementById('filter').addEventListener('click', function(e) {
     }
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 document.getElementById('filterBtn').addEventListener('click', async function() {
     let data = {};
     if(cho.value) {

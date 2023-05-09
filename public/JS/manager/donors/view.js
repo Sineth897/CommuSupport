@@ -20,6 +20,10 @@ document.getElementById('sort').addEventListener('click', function(e) {
     }
 });
 
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 const sortBtn = document.getElementById('sortBtn');
 const searchBtn = document.getElementById('searchBtn');
 

@@ -98,6 +98,10 @@ document.getElementById('filter').addEventListener('click', function(e) {
 
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 let filterBtn = document.getElementById('filterBtn');
 let eventsDiv = document.getElementById('eventDisplay')
 

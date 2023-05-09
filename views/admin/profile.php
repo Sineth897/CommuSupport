@@ -37,7 +37,15 @@ use app\models\adminModel;
         <!--        provide an id for the fields that can be updated-->
         <form action="#" class="form-grid-1">
 
+            <div class="profile">
 
+                <button class="btn-cta-primary"> + Add a new category  </button>
+                <button class="btn-cta-primary"> + Add a new subcategory  </button>
+                <button class="btn-cta-primary"> + Add a new Event category  </button>
+                <button class="btn-cta-primary"> View inventory log  </button>
+<!--                <button class="btn-cta-primary"> + Add a new subcategory  </button>-->
+
+            </div>
 
 
         </form>

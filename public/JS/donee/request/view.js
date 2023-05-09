@@ -139,6 +139,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 // get the divs to show the deliveries
 const activeRequestsDiv = document.getElementById('activeRequests');
 const acceptedRequestsDiv = document.getElementById('acceptedRequests');

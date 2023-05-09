@@ -16,10 +16,6 @@ let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
 
-    if(e.target !== this ) {
-        return;
-    }
-
    if(filterOptions.style.display === 'block') {
        filterOptions.style.display = 'none';
    } else {
@@ -31,16 +27,20 @@ document.getElementById('filter').addEventListener('click', function(e) {
 
 document.getElementById('sort').addEventListener('click', function(e) {
 
-    if(e.target !== this) {
-        return;
-    }
-
     if(sortOptions.style.display === 'block') {
         sortOptions.style.display = 'none';
     } else {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 let filterBtn = document.getElementById('filterBtn');

@@ -85,6 +85,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 filterBtn.addEventListener('click', async function() {
     let filters = {};
     let sort = {DESC:[]};
