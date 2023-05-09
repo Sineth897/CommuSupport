@@ -51,17 +51,6 @@ class complaintModel extends DbModel
     {
         $this->complaintID = substr(uniqid('complaint', true), 0, 23);
         $this->filedBy=$_SESSION['user'];
-//        protected function getchoIDforComplaints($donorID)
-//    {
-//
-//        $statement= self::prepare("SELECT choID.cc from donor INNER JOIN communitycenter ON donor.ccID = communitycenter.ccID where donorID=:$donorID");
-//        $statement->bindValue(':userID',$donorID);
-//        $statement->execute();
-//        return $statement->fetchAll(\PDO::FETCH_ASSOC);
-//
-//    }
-//        $this->choID=$_SESSION['user'];
-
         return parent::save();
 
 
@@ -79,10 +68,13 @@ class complaintModel extends DbModel
 
     public function getAllComplaints(string $choID)
     {
-        $statement = self::prepare("SELECT u.username,c.filedDate,c.filedBy,s.subcategoryName,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c INNER JOIN users u ON c.filedBy=u.userID INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where choID=:choID");
+        $statement = self::prepare("SELECT u.username,c.filedDate,c.filedBy,c.subject,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c
+        INNER JOIN users u ON c.filedBy=u.userID where choID=:choID");
+
         $statement->bindValue(':choID', $choID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
 
 
     }
@@ -96,6 +88,9 @@ class complaintModel extends DbModel
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+
+    //submitting the solution for each complaint
+    //solution and related complaintID passing as query parameters
        public function submitSolution(string $solution,string $complaintID)
    {
        $updateDate=date('Y-m-d');
@@ -109,23 +104,19 @@ class complaintModel extends DbModel
        return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
    }
+
+    // select user types
     public function getUserType(): bool|array
     {
-        $statement = self::prepare("SELECT usrType FROM users");
+        $statement = self::prepare("SELECT userType FROM users");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+    // retrieve all complaints
     public function allComplaints()
     {
         $statement = self::prepare("SELECT * from complaint");
-        $statement->execute();
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function getID(string $userID)
-    {
-        $statement = self::prepare("SELECT complaintID from complaint where choID=:userID");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }

@@ -12,16 +12,8 @@
 use app\core\components\tables\table;
 
 $userID = \app\core\Application::session()->get('user');
-//
-//try{
-//    $complaint = $complaints->getAllComplaints($userID);
-////    $complaintID = $complaints->getID($userID);
-//
-//}
-//catch(\Exception $e){
-//    echo $e->getMessage();
-//}
 $complaint = $complaints->getAllComplaints($userID);
+
 ?>
 
 <?php
@@ -43,22 +35,22 @@ $headerDiv->heading("Complaints by Donors and Donees ");
 
 $headerDiv->end();
 ?>
+
 <?php
 
 $searchDiv = new \app\core\components\layout\searchDiv();
+
 $searchDiv ->filterDivStart();
+//filter complaints according to pending and completed
 $searchDiv->filterBegin();
 $filterForm = \app\core\components\form\form::begin('', '');
 $filterForm->dropDownList($complaints, "Select a Status", '',['pending'=>'Pending','completed'=>"Completed"], 'filterCategory');
 $filterForm::end();
-
-
 $searchDiv->filterEnd();
 
 
-
+// sort by reviewed date
 $searchDiv->sortBegin();
-
 $sort = \app\core\components\form\form::begin('', '');
 $sort->checkBox($complaints,"Reviewed Date","reviewedDate","registeredDateSort");
 $sort->end();
@@ -71,17 +63,14 @@ $searchDiv->end();
 
 ?>
 
-
-
-
 <div class="content">
 
     <?php
 
     $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-    $arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID','filedBy']],'reviewedDate'];
+    $arrayKeys = ['username','filedDate','subject','status',['solution','Add Solution','./complaints/solution',['complaintID','filedBy']],'reviewedDate'];
 
-
+   // creating a new table for display complaints
     $complaintsTable = new table($headers,$arrayKeys);
     $complaintsTable ->displayTable($complaint);
 
@@ -89,6 +78,7 @@ $searchDiv->end();
 
     <div class="no-complaint">
         <?php
+        // if there are no complaints filed
         if(empty($complaint)){
             echo "No Complaints has been filed.";
         }

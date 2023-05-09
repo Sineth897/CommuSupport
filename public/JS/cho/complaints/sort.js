@@ -3,6 +3,8 @@ const sort_btn = document.getElementById("sort")
 // sort_btn.addEventListener("click",sortTable);
 const sortOption = document.querySelectorAll("#sortOptions")[0]; //array 0th element
 const sort = document.getElementById("sortBtn")
+
+console.log(sortOption);
 sort_btn.addEventListener("click",function(){
 
     let display = document.getElementById("sortOptions").style.display;
@@ -13,6 +15,10 @@ sort_btn.addEventListener("click",function(){
             document.getElementById("sortOptions").style.display="block";
         }
 
+});
+
+sortOption.addEventListener("click",function (e){
+   e.stopPropagation();
 });
 
 sort.addEventListener("click",sortTable)
@@ -59,6 +65,7 @@ filterOption.addEventListener("click",function(){
 
 const table = document.querySelectorAll("tbody")[0];
 const rows = table.getElementsByTagName("tr");
+
 
 filter.addEventListener("click", function() {
     let selectedType = document.getElementById("filterCategory").value;

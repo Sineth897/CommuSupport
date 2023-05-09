@@ -18,6 +18,7 @@ class complaintController extends Controller
 
     }
 
+    //  retrieve complaints filed by users
     protected function viewComplaints(Request $request, Response $response)
     {
         $userType = $this->getUserType();
@@ -30,6 +31,7 @@ class complaintController extends Controller
         ]);
     }
 
+   // getting complaints filed by the donor
     public function donorFileComplaint(Request $request, Response $response)
     {
 
@@ -63,7 +65,7 @@ class complaintController extends Controller
         ]);
 
     }
-
+   // getting complaints filed by donee
     protected function doneeFileComplaint(Request $request, Response $response)
     {
         $this->checklink($request);
@@ -95,6 +97,8 @@ class complaintController extends Controller
 
         }
 
+
+        // cho review complaint and submit the solution for each problem
         protected function addSolution(Request $request,Response $response)
         {
 
@@ -108,7 +112,7 @@ class complaintController extends Controller
 
                 if(!empty($model->solution)){
                     $model->submitSolution($model->solution,$model->complaintID);
-                    notificationModel::setNotification("Your Solution has submitted","Solution",$model->filedBy,"","",$model->complaintID);
+                    notificationModel::setNotification("Complaint reviewed. Check Complaints page for solution ","Solution",$model->filedBy,"","",$model->complaintID);
                     $this->setFlash('result','Solution Added');
                 }
                 else{
@@ -118,8 +122,7 @@ class complaintController extends Controller
 
             }
 
-            echo $model->complaintID;
-
+            // check the request and get complaintID and filedBy from the complaint model
             if($request->isGet())
             {
                 $model->complaintID=$_GET['complaintID'];
@@ -129,9 +132,8 @@ class complaintController extends Controller
 
             echo $model->complaintID;
             $this->render("./cho/complaints/solution","Solution Submit",[
-
+                // render
                 'solution'=>$model,
-
 
             ]);
         }

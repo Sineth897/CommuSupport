@@ -79,9 +79,10 @@ class choModel extends DbModel
         return $stmnt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+    //community center view users registered under each
     public static function viewUsers($choID):array{
 
-        $statement =  self::prepare("SELECT u.userName,u.userType,d.email,d.address,d.contactNumber,d.type,d.registeredDate FROM users u  INNER JOIN DONOR d ON u.userID=d.donorID INNER JOIN communitycenter c ON d.ccID=c.ccID WHERE cho=:choID UNION SELECT u.userName,u.userType,d.email,d.address,d.contactNumber,d.type,d.registeredDate FROM users u  INNER JOIN DONEE d ON u.userID=d.doneeID INNER JOIN communitycenter c ON d.ccID=c.ccID WHERE cho=:choID");
+        $statement =  self::prepare("SELECT u.userName,u.userType,d.email,d.address,d.contactNumber,d.type,d.registeredDate FROM users u  INNER JOIN donor d ON u.userID=d.donorID INNER JOIN communitycenter c ON d.ccID=c.ccID WHERE cho=:choID UNION SELECT u.userName,u.userType,d.email,d.address,d.contactNumber,d.type,d.registeredDate FROM users u  INNER JOIN donee d ON u.userID=d.doneeID INNER JOIN communitycenter c ON d.ccID=c.ccID WHERE cho=:choID");
         $statement->bindValue(":choID",$choID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
