@@ -7,7 +7,7 @@
         <div class="logo">
             <img src="/CommuSupport/public/src/navlogo/CMS_CHO.svg" alt="" class="logo_name">
         </div>
-        <i class="material-icons" id="btn">menu</i>
+<!--        <i class="material-icons" id="btn">menu</i>-->
     </div>
     <ul class="nav_list">
         <li>

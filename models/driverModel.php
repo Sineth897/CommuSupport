@@ -108,7 +108,7 @@ class driverModel extends DbModel
         $sql = "SELECT COUNT(*) as count,vehicleType FROM driver GROUP BY vehicleType";
         $statement = self::prepare($sql);
         $statement->execute();
-        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         $chartData = array();
         // Loop through the result and update the corresponding value in the new array

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+
+
+=======
 <link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
 
@@ -18,6 +22,7 @@ use app\models\choModel;
 
 ?>
 
+>>>>>>> a58141fd720f1c101985d472ce0b0c2c8e551d02
 <div class="profile-container">
     <div class="profile">
 

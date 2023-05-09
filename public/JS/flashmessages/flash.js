@@ -66,7 +66,7 @@
                 let index = Flash.activeMessages.indexOf(msgDiv);
                 Flash.activeElements--;
                 Flash.activeMessages = Flash.activeMessages.splice(index,1);
-            },500);
+            },5000000);
         }
 
  }

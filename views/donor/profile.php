@@ -4,12 +4,12 @@
 <?php
 
 /**
- *@var $donor donorModel
+ * @var $donor donorModel
  */
 
 use app\models\donorModel;
 
-[ $personalInfo, $donorStat ] =  $donor->getDonorInformationForProfile();
+[$personalInfo, $donorStat] = $donor->getDonorInformationForProfile();
 
 
 //echo '<pre>';
@@ -20,19 +20,19 @@ use app\models\donorModel;
 
 <div class="profile-container">
     <div class="profile">
-
-        <div class="edit-change-password">
-            <p id="change-password"> Change Password </p>
-            <i class="material-icons" id="edit-details">edit_note</i>
-        </div>
-
         <div class="img-username-div">
-
-            <div class="profile-img">
-            </div>
-            <h1><?php echo $personalInfo['type'] === 'Individual'? $personalInfo['fname'] . " " . $personalInfo['lname'] : $personalInfo['fname'] ?></h1>
+            <!---->
+            <!--            <div class="profile-img">-->
+            <!--            </div>-->
+            <h1><?php echo $personalInfo['type'] === 'Individual' ? $personalInfo['fname'] . " " . $personalInfo['lname'] : $personalInfo['fname'] ?></h1>
             <p class="user-type"><?php echo '@' . $personalInfo['username'] ?></p>
         </div>
+        <div class="edit-change-password">
+            <p id="change-password"> Change Password <i class="material-icons">key</i></p>
+            <p> Edit Profile <i class="material-icons">edit_note</i></p>
+        </div>
+
+
 
         <!--        each attribute is displayed as disabled input field-->
         <!--        provide an id for the fields that can be updated-->
@@ -40,7 +40,7 @@ use app\models\donorModel;
 
             <div class="personal-details">
 
-                <?php if($personalInfo['type'] === 'Individual')  { ?>
+                <?php if ($personalInfo['type'] === 'Individual') { ?>
 
                     <div class="form-group">
                         <label class="form-label"> First Name </label>
@@ -62,9 +62,7 @@ use app\models\donorModel;
                         <input class="basic-input-field" value="<?php echo $personalInfo['age'] ?>" disabled>
                     </div>
 
-                <?php }
-
-                else {?>
+                <?php } else { ?>
 
                     <div class="form-group">
                         <label class="form-label"> Organization Name </label>
@@ -81,10 +79,10 @@ use app\models\donorModel;
                         <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" disabled>
                     </div>
 
-<!--                    <div class="form-group">-->
-<!--                        <label class="form-label"> Dependents </label>-->
-<!--                        <input class="basic-input-field" value="--><?php //echo $personalInfo['age'] ?? 'Not specified' ?><!--" disabled>-->
-<!--                    </div>-->
+                    <!--                    <div class="form-group">-->
+                    <!--                        <label class="form-label"> Dependents </label>-->
+                    <!--                        <input class="basic-input-field" value="--><?php //echo $personalInfo['age'] ?? 'Not specified' ?><!--" disabled>-->
+                    <!--                    </div>-->
 
                 <?php } ?>
 
@@ -97,14 +95,13 @@ use app\models\donorModel;
 
             <div class="form-group description">
                 <label class="form-label"> Email </label>
-                <textarea class="basic-text-area"  disabled>  <?php echo $personalInfo['email']?> </textarea>
+                <textarea class="basic-text-area" disabled>  <?php echo $personalInfo['email'] ?> </textarea>
             </div>
 
             <div class="form-group description">
                 <label class="form-label"> Address </label>
-                <textarea class="basic-text-area"  disabled> <?php echo $personalInfo['address'] ?> </textarea>
+                <textarea class="basic-text-area" disabled> <?php echo $personalInfo['address'] ?> </textarea>
             </div>
-
 
 
             <div class="personal-details">
@@ -137,7 +134,7 @@ use app\models\donorModel;
             echo "<h1 class='align-text-center'>{$value}</h1>";
             echo "</div>";
 
-        }?>
+        } ?>
 
     </div>
     <div class="profile-notifications">
@@ -156,9 +153,9 @@ use app\models\donorModel;
                 'complaint' => 'report',
             ];
 
-            $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
+            $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' => $_SESSION['userType']]);
 
-            if(empty($notifications)) {
+            if (empty($notifications)) {
                 echo "<h2 class='no-notification'> No notifications to show</h2>";
             }
 
@@ -169,14 +166,14 @@ use app\models\donorModel;
 
                 // title and the message
                 echo "<div class='profile-notif-message'>";
-                echo sprintf("<h4> %s </h4>",$notification['title']);
-                echo sprintf("<p><small>%s</small></p>",$notification['message']);
+                echo sprintf("<h4> %s </h4>", $notification['title']);
+                echo sprintf("<p><small>%s</small></p>", $notification['message']);
                 echo "</div>";
 
                 // date and time
                 echo "<div class='profile-notif-date-time'>";
-                echo sprintf("<p class='date'>%s</p>",date('M d',strtotime($notification['dateCreated'])));
-                echo sprintf("<p class='time'>%s</p>",date('g:i a',strtotime($notification['dateCreated'])));
+                echo sprintf("<p class='date'>%s</p>", date('M d', strtotime($notification['dateCreated'])));
+                echo sprintf("<p class='time'>%s</p>", date('g:i a', strtotime($notification['dateCreated'])));
                 echo "</div>";
 
                 echo "</div>";
@@ -184,7 +181,7 @@ use app\models\donorModel;
                 echo "<div class='profile-notif-right-block'>";
 
                 // icon for related process
-                echo    sprintf("<i class='material-icons'>%s</i>", $notificationIcon[$notification['related']]);
+                echo sprintf("<i class='material-icons'>%s</i>", $notificationIcon[$notification['related']]);
 
                 echo "</div>";
 
@@ -199,5 +196,5 @@ use app\models\donorModel;
 
     </div>
 </div>
-
 <script type="module" src="../public/JS/changePassword.js"></script>
+

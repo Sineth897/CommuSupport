@@ -80,7 +80,6 @@ h4
     flex-shrink: 0;
     border-radius: 8px;
     padding: 12px 16px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .driver h4{
