@@ -344,17 +344,31 @@ class loginController extends  Controller
         while(!($selector && $validator && $token)) {
             [$selector, $validator, $token] = $this->generateSelectorNValidator();
         }
+
+        // set remember me
         if($user->setRememberMe($selector, $validator,$days)) {
+
+            // set the flash message and cookie
             $this->setFlash('rememberMe', 'Remember me is set');
             $this->setCookie('rememberMe', $token,);
         }
         else {
+
+            // set the flash message
             $this->setFlash('rememberMe', 'Remember me is not set');
         }
+
     }
 
-    private function forgetMe() {
+
+    /**
+     * @return void
+     */
+    private function forgetMe() : void {
+
         $user = new userModel();
+
+        // unset remember me
         if($user->unsetRememberMe(Application::session()->get('user'))) {
             $this->setFlash('rememberMe', 'Remember me is unset');
             $this->unsetCookie('rememberMe');

@@ -105,7 +105,7 @@ filterBtn.addEventListener('click', async function() {
 
     toggle.checkNoData();
 
-    let viewBtns = document.querySelectorAll('a.btn-primary');
+    let viewBtns = document.querySelectorAll('.view');
 
     for(let i=0;i<viewBtns.length;i++) {
         viewBtns[i].addEventListener('click', showDriverPopup);
@@ -121,7 +121,7 @@ searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 })
 
-let viewBtns = document.querySelectorAll('a.btn-primary');
+let viewBtns = document.querySelectorAll('.view');
 
 for(let i=0;i<viewBtns.length;i++) {
     viewBtns[i].addEventListener('click', showDriverPopup);
