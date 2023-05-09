@@ -36,7 +36,7 @@ $profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Donees"); ?>
+<?php $headerDiv->heading("Individual Donees"); ?>
 
 <?php $headerDiv->pages(["individuals", "organizations"]); ?>
 
@@ -85,8 +85,6 @@ $searchDiv->end(); ?>
 
     if($donees['individuals']) {
         $individualTable->displayTable($donees['individuals']);
-    } else {
-        echo "No Individual Donees";
     } ?>
 
 </div>
@@ -99,8 +97,8 @@ $searchDiv->end(); ?>
 
     if($donees['organizations']) {
         $organizationTable->displayTable($donees['organizations']);
-    } else {
-        echo "No Organizations";
-    } ?>
+    }  ?>
 
 </div>
+
+<script type="module" src="/CommuSupport/public/JS/manager/donees/view.js"></script>

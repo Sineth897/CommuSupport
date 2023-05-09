@@ -25,6 +25,7 @@ class profileDiv
         'acceptedRequests' => 'local_shipping',
         'delivery' => 'local_shipping',
         'ccDonation' => 'local_shipping',
+        'complaint' => 'report'
     ];
 
     public function __construct()

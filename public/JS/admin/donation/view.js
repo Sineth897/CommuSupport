@@ -25,6 +25,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 const filterBtn = document.getElementById('filterBtn');
 const sortBtn = document.getElementById('sortBtn');
 const searchBtn = document.getElementById('searchBtn');

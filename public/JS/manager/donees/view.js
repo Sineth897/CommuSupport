@@ -5,7 +5,9 @@ import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 import {displayTable} from "../../components/table.js";
 
-const toggle = new togglePages([{btnId:'individual',pageId:'individualDoneeDisplay'},{btnId:'organization',pageId:'organizationDoneeDisplay'}]);
+const toggle = new togglePages([
+                                    {btnId:'individual',pageId:'individualDoneeDisplay',title:'Individual Donees'},
+                                    {btnId:'organization',pageId:'organizationDoneeDisplay',title:'Organization Donees'}]);
 
 let temp =  document.getElementsByClassName('pendingVerification');
 let pendingVerifications = {};
@@ -115,6 +117,11 @@ let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
+
+    if(e.target !== this) {
+        return;
+    }
+
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {
@@ -124,12 +131,25 @@ document.getElementById('filter').addEventListener('click', function(e) {
 });
 
 document.getElementById('sort').addEventListener('click', function(e) {
+
+    if(e.target !== this) {
+        return;
+    }
+
     if(sortOptions.style.display === 'block') {
         sortOptions.style.display = 'none';
     } else {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const filterBtn = document.getElementById('filterBtn');
@@ -160,7 +180,7 @@ filterBtn.addEventListener('click', async function(e) {
 
     let data = await getData('./donees/filter','post',{filters,sort,search});
 
-    // console.log(data);
+    console.log(data);
 
     if(!data['status']) {
         flash.showMessage({type:'error',value:data['msg']},3000);
@@ -185,7 +205,9 @@ filterBtn.addEventListener('click', async function(e) {
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 
-    let viewBtns = document.querySelectorAll('a.btn-primary');
+    toggle.checkNoData();
+
+    let viewBtns = document.querySelectorAll('.view');
 
     for(let i=0;i<viewBtns.length;i++) {
         viewBtns[i].addEventListener('click', showDoneePopup);
@@ -201,7 +223,7 @@ searchBtn.addEventListener('click', async function(e) {
     filterBtn.click();
 });
 
-let viewBtns = document.querySelectorAll('a.btn-primary');
+let viewBtns = document.querySelectorAll('.view');
 
 for(let i=0;i<viewBtns.length;i++) {
     viewBtns[i].addEventListener('click', showDoneePopup);

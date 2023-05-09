@@ -2,6 +2,9 @@ import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
 import {PopUp} from "../../popup/popUp.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages([{btnID:'drivers',pageId:'driverTable'}]);
 
 const driverTableDiv = document.getElementById('driverTable');
 
@@ -9,6 +12,11 @@ let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
+
+    if(e.target !== this) {
+        return;
+    }
+
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {
@@ -18,12 +26,25 @@ document.getElementById('filter').addEventListener('click', function(e) {
 });
 
 document.getElementById('sort').addEventListener('click', function(e) {
+
+    if(e.target !== this) {
+        return;
+    }
+
     if(sortOptions.style.display === 'block') {
         sortOptions.style.display = 'none';
     } else {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const filterBtn = document.getElementById('filterBtn');
@@ -68,6 +89,8 @@ filterBtn.addEventListener('click', async function() {
         return
     }
 
+    toggle.removeNoData();
+
     // console.log(result['drivers']);
 
     const tableData = {
@@ -79,6 +102,8 @@ filterBtn.addEventListener('click', async function() {
     displayTable(driverTableDiv,tableData);
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    toggle.checkNoData();
 
     let viewBtns = document.querySelectorAll('a.btn-primary');
 

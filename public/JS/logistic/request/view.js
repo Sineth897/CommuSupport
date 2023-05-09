@@ -169,6 +169,7 @@ const confirm = async (e) => {
 
 const filterOptions = document.getElementById('filterOptions');
 const sortOptions = document.getElementById('sortOptions');
+
 document.getElementById('filter').addEventListener('click', function(e) {
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
@@ -185,6 +186,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const requestDisplay = document.getElementById('postedRequests');

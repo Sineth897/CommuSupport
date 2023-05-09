@@ -55,13 +55,14 @@
 
 
     const cardContainers = document.querySelectorAll('.card-container');
+    const contenConatainers = document.querySelectorAll('.content');
 
     if(cardContainers) {
 
-        const noDataImg = document.createElement('img');
-        noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
-
         for(let i=0; i < cardContainers.length; i++) {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
 
             if(cardContainers[i].children.length === 0) {
                 cardContainers[i].appendChild(noDataImg);
@@ -69,6 +70,21 @@
                 cardContainers[i].classList.add('no-data');
             }
         }
+    }
+
+    if(contenConatainers) {
+
+        for(let i=0; i < contenConatainers.length; i++) {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+            if(contenConatainers[i].children.length === 0) {
+                contenConatainers[i].appendChild(noDataImg);
+                contenConatainers[i].classList.add('no-data');
+            }
+        }
+
     }
 
 </script>

@@ -2,13 +2,15 @@
 
 <?php
 
-/** @var $model \app\models\eventModel */
+/** @var $model eventModel */
 
-echo \app\core\Application::session()->getFlash('result');
+use app\core\components\form\form;
+use app\core\components\layout\profileDiv;
+use app\models\eventModel;
 
 ?>
 
-<?php $profile = new \app\core\components\layout\profileDiv();
+<?php $profile = new profileDiv();
 
 $profile->profile();
 
@@ -20,7 +22,7 @@ $profile->end(); ?>
     <div class="form-box">
     <h3>Publish Event</h3>
 
-<?php $creatEventForm = \app\core\components\form\form::begin('./create', 'post'); ?>
+<?php $creatEventForm = form::begin('./create', 'post'); ?>
 
     <?php $creatEventForm->dropDownList($model, 'Event category', 'eventCategoryID', $model->getEventCategories()); ?>
 

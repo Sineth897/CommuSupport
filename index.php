@@ -119,9 +119,9 @@ $app->router->post('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
 
-
-
-
+$app->router->post('/changepassword', function($request,$response) {
+    $controller = new loginController('changePasswordFromProfile',$request,$response);
+});
 
 
 
@@ -619,7 +619,7 @@ $app->router->get('/driver/deliveries/completed', function ($request,$response) 
 });
 
 $app->router->get('/driver/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("driverProfile",$request,$response);
 });
 
 $app->router->post('/driver/deliveries/popup', function ($request,$response) {
@@ -725,7 +725,7 @@ $app->router->post("/cho/complaints/solution",function ($request,$response){
 });
 
 $app->router->get('/cho/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("choProfile",$request,$response);
 });
 
 
@@ -889,7 +889,7 @@ $app->router->get('/admin/complaints',function ($request,$response)
 });
 
 $app->router->get('/admin/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("adminProfile",$request,$response);
 });
 
 
