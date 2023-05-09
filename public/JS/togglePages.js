@@ -10,7 +10,7 @@ class TogglePages {
 
     constructor(pages,displayType = 'block') {
          for(let i = 0; i < pages.length; i++) {
-             // console.log(pages[i]);
+
              let btn = document.getElementById(pages[i].btnId);
             this.pages.push(
                 {
@@ -19,14 +19,20 @@ class TogglePages {
                     title: pages[i].title ? pages[i].title : null
                 }
             );
-            btn.addEventListener('click', (e) => {
-                this.togglePages(e);
-            });
+
+            if(btn) {
+                btn.addEventListener('click', (e) => {
+                    this.togglePages(e);
+                });
+            }
+
          }
             this.displayType = displayType;
+
     }
 
     togglePages(e) {
+
         let element = e.target;
         while(element.classList.contains('page') === false) {
             element = element.parentElement;
@@ -61,6 +67,18 @@ class TogglePages {
 
     removeNoData() {
         this.pages.forEach((page) => {
+
+            const img = page['page'].querySelector('img');
+
+            if(!img) {
+                return;
+            }
+
+            img.remove();
+
+            if(page['page'].className !== 'content') {
+                page['page'].classList.add('card-container');
+            }
             page['page'].classList.remove('no-data');
         });
     }
@@ -73,8 +91,13 @@ class TogglePages {
             noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
 
             if(page['page'].innerHTML === '') {
+                if(page['page'].className !== 'content') {
+                    page['page'].classList.remove('card-container');
+                }
                 page['page'].classList.add('no-data');
                 page['page'].append(noDataImg);
+            } else {
+
             }
         });
     }

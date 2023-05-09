@@ -119,9 +119,9 @@ $app->router->post('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
 
-
-
-
+$app->router->post('/changepassword', function($request,$response) {
+    $controller = new loginController('changePasswordFromProfile',$request,$response);
+});
 
 
 

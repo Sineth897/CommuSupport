@@ -4,6 +4,8 @@ namespace app\controller;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\exceptions\forbiddenException;
+use app\core\exceptions\methodNotFound;
 use app\core\middlewares\eventMiddleware;
 use app\core\Request;
 use app\core\Response;
@@ -12,14 +14,27 @@ use app\models\managerModel;
 
 class eventController extends Controller
 {
-    public function __construct(string $func,Request $request,Response $response)
+    /**
+     * @param string $func
+     * @param Request $request
+     * @param Response $response
+     * @throws methodNotFound
+     * @throws forbiddenException
+     */
+    public function __construct(string $func, Request $request, Response $response)
     {
         $this->middleware = new eventMiddleware();
         parent::__construct($func, $request, $response);
 
     }
 
-    protected function viewEvents(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     * @throws forbiddenException
+     */
+    protected function viewEvents(Request $request, Response $response) : void {
 
         $this->checkLink($request);
 
@@ -31,7 +46,13 @@ class eventController extends Controller
         ]);
     }
 
-    protected function createEvent(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     * @throws forbiddenException
+     */
+    protected function createEvent(Request $request, Response $response) : void {
 
         $this->checkLink($request);
 
@@ -40,11 +61,11 @@ class eventController extends Controller
         if($request->isPost()) {
             $model->getData($request->getBody());
             if($model->validate($request->getBody()) && $model->save()) {
-                $this->setFlash('result', 'Event created successfully');
+                $this->setFlash('success', 'Event created successfully');
                 $model->reset();
             }
             else {
-                $this->setFlash('result', 'Event creation failed');
+                $this->setFlash('error', 'Event creation failed');
             }
         }
 
@@ -54,7 +75,12 @@ class eventController extends Controller
 
     }
 
-    protected function filterEvents(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterEvents(Request $request, Response $response) : void {
         try {
             $model = new eventModel();
             $user = managerModel::getModel(['employeeID'=>Application::session()->get('user')]);
@@ -80,7 +106,12 @@ class eventController extends Controller
         }
     }
 
-    protected function filterEventsUser(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterEventsUser(Request $request, Response $response) : void {
 
         $model = new eventModel();
         $filters = $request->getJsonData()['filters'];
@@ -93,7 +124,12 @@ class eventController extends Controller
         ]);
     }
 
-    protected function eventPopUp(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function eventPopUp(Request $request, Response $response) : void {
         $model = new eventModel();
         $event = $model->retrieveWithJoin('eventcategory','eventCategoryID',$request->getJsonData())[0];
         $eventCategoryIcons = eventModel::getEventCategoryIcons();
@@ -104,7 +140,12 @@ class eventController extends Controller
         ]);
     }
 
-    protected function eventPopUpUser(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function eventPopUpUser(Request $request, Response $response) : void {
         $model = new eventModel();
         $event = $model->retrieveWithJoin('eventcategory','eventCategoryID',$request->getJsonData())[0];
         $eventCategoryIcons = eventModel::getEventCategoryIcons();
@@ -114,11 +155,15 @@ class eventController extends Controller
             'icons' => $eventCategoryIcons,
             'data' => $request->getJsonData(),
             'isGoing' => $model->isGoing($eventID),
-            'test' => $eventID,
         ]);
     }
 
-    protected  function participate(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected  function participate(Request $request, Response $response) : void {
         $model = new eventModel();
         $data = $request->getJsonData();
         $data = $data['eventID'];
@@ -139,7 +184,14 @@ class eventController extends Controller
         }
     }
 
-    protected function updateEvent(Request $request,Response $response) {
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     * @throws forbiddenException
+     */
+    protected function updateEvent(Request $request, Response $response) : void {
         $this->checkLink($request);
 
         $data = $request->getJsonData();
@@ -172,18 +224,38 @@ class eventController extends Controller
         }
     }
 
-    private function updateFields($eventID,$data) {
+    /**
+     * @param $eventID
+     * @param $data
+     * @return void
+     */
+    private function updateFields($eventID, $data) : void {
+
         $model = new eventModel();
         unset($data['eventID']);
+
         $model->update(['eventID'=>$eventID],$data);
+
     }
 
-    private function cancelEvent($eventID) {
+    /**
+     * @param $eventID
+     * @return void
+     */
+    private function cancelEvent($eventID) : void {
+
         $model = new eventModel();
+
         $model->update(['eventID'=>$eventID],['status'=>'Cancelled']);
+
     }
 
-    protected function filterEventsAdmin(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterEventsAdmin(Request $request, Response $response) : void {
         $data = $request->getJsonData();
         $filters = $data['filters'];
         $sort = $data['sortBy'];

@@ -8,6 +8,7 @@ use app\core\middlewares\loginMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\doneeModel;
+use app\models\donorModel;
 use app\models\userModel;
 use http\Exception;
 
@@ -253,6 +254,40 @@ class loginController extends  Controller
             return 0;
         }
 
+
+    }
+
+    protected function changePasswordFromProfile(Request $request,Response $response) {
+
+        $data = $request->getJsonData();
+
+        $newPassword = $data['newPassword'];
+        $currentPassword = $data['currentPassword'];
+
+        $user = userModel::getModel(['username' => Application::session()->get('username')]);
+
+        if(!password_verify($currentPassword,$user->password)) {
+
+            $this->sendJson(['status' => 0 , 'message' => 'Provided password is incorrect']);
+            return;
+        }
+
+        try {
+
+            $this->startTransaction();
+
+            $user->update(['userID' => $_SESSION['user']],['password' => password_hash($newPassword,PASSWORD_DEFAULT)]);
+
+            $this->commitTransaction();
+
+            $this->sendJson(['status' => 1 , 'message' => 'Password changed successfully']);
+
+        }
+        catch(\Exception $e) {
+            $this->rollbackTransaction();
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
+            return;
+        }
 
     }
 

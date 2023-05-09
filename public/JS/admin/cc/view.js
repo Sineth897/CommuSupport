@@ -22,6 +22,11 @@ const cho = document.getElementById('cho');
 const ccTable = document.getElementById('ccTable');
 
 document.getElementById('filter').addEventListener('click', function(e) {
+
+    if(e.target !== this) {
+        return;
+    }
+
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {

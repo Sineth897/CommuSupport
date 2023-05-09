@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
 
 <?php
@@ -157,3 +158,6 @@ use app\models\logisticModel;
 
     </div>
 </div>
+
+<script type="module" src="../public/JS/changePassword.js"></script>
+

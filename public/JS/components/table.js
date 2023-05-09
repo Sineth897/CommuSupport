@@ -6,6 +6,10 @@ function displayTable(tableDiv, array) {
     //clearing the div
     tableDiv.innerHTML = '';
 
+    if(array['data'].length === 0) {
+        return;
+    }
+
     //getting the array keys
     tableKeys = array['keys'];
     let table = document.createElement('table');

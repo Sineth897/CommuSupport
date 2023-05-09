@@ -211,3 +211,34 @@
 #change-password:hover {
     color: var(--danger-color);
 }
+
+.change-password-header {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.form-group-password {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    font-size: .8rem;
+    padding: 5px;
+}
+
+.pass-requirement {
+    font-size: .9rem;
+    padding: 5px 15px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.valid {
+    color: var(--secondary-dark)
+}
+
+.confirm-btn {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
+}

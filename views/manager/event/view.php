@@ -82,22 +82,27 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class="content" id="upcomingEvents">
-<?php
-$eventCards = new \app\core\components\cards\eventcard();
-$eventCards->displayEvents($ongoingEvents,'ongoingEventsDisplay');
+<div class="content">
 
-?>
+    <div class="card-container" id="upcomingEvents">
+        <?php
+        $eventCards = new \app\core\components\cards\eventcard();
+        $eventCards->displayEvents($ongoingEvents,'ongoingEventsDisplay');
+
+        ?>
+    </div>
+
+    <div class="card-container" id="finishedEvents" style="display: none">
+
+        <?php $eventCards->displayEvents($finishedEvents,'finishedEventsDisplay'); ?>
+    </div>
+
+    <div class="card-container" id="cancelledEvents" style="display: none">
+        <?php $eventCards->displayEvents($cancelledEvents,'cancelledEventsDisplay'); ?>
+    </div>
+
 </div>
 
-<div class="content" id="finishedEvents" style="display: none">
-
-    <?php $eventCards->displayEvents($finishedEvents,'finishedEventsDisplay'); ?>
-</div>
-
-<div class="content" id="cancelledEvents" style="display: none">
-    <?php $eventCards->displayEvents($cancelledEvents,'cancelledEventsDisplay'); ?>
-</div>
 
 
 

@@ -13,7 +13,8 @@ class loginMiddleware extends Middleware
             'logout' => [$this->GUEST, $this->DONEE, $this->DONOR, $this->DRIVER, $this->LOGISTIC, $this->MANAGER, $this->CHO, $this->ADMIN],
             'forgetPassword' => [$this->GUEST],
             'lockedAccount' => [$this->GUEST],
-            'verifyMobile' => [$this->DONOR,$this->DONEE]
+            'verifyMobile' => [$this->DONOR,$this->DONEE],
+            'changePasswordFromProfile' => [$this->DONOR,$this->DONEE,$this->DRIVER,$this->LOGISTIC,$this->MANAGER,$this->CHO,$this->ADMIN],
         ];
     }
 

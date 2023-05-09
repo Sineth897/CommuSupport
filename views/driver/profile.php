@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
 
 <?php
@@ -93,6 +94,8 @@ use app\models\driverModel;
 
         <?php foreach ($driverStat as $key => $value) {
 
+            $value = $value ?? 0;
+
             // stat and the value
             echo "<div class='stat'>";
             echo "<h4 class='align-text-center'>{$key}</h4>";
@@ -157,3 +160,5 @@ use app\models\driverModel;
 
     </div>
 </div>
+
+<script type="module" src="../public/JS/changePassword.js"></script>

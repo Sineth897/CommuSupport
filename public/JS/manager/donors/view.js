@@ -39,10 +39,12 @@ sortBtn.addEventListener('click', async function(e) {
 
     let data = await getData('./donors/filter','post',{sort:sort,search:search});
 
+    toggle.checkNoData();
+
     // console.log(data);
 
     if(!data['status']) {
-        flash.showMessage({type:'error',value:data['msg']},3000);
+        flash.showMessage({type:'error',value:data['message']},3000);
         return;
     }
 
@@ -63,7 +65,9 @@ sortBtn.addEventListener('click', async function(e) {
 
     sortOptions.style.display = 'none';
 
-    let viewBtns = document.querySelectorAll('a.btn-primary');
+    toggle.checkNoData();
+
+    let viewBtns = document.querySelectorAll('view');
 
     for(let i=0;i<viewBtns.length;i++) {
         viewBtns[i].addEventListener('click', showDonorPopup);
@@ -75,7 +79,7 @@ searchBtn.addEventListener('click', async function(e) {
     sortBtn.click();
 });
 
-let viewBtns = document.querySelectorAll('a.btn-primary');
+let viewBtns = document.querySelectorAll('view');
 
 for(let i=0;i<viewBtns.length;i++) {
     viewBtns[i].addEventListener('click', showDonorPopup);
