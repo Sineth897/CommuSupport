@@ -79,7 +79,7 @@ class complaintModel extends DbModel
 
     public function getAllComplaints(string $choID)
     {
-        $statement = self::prepare("SELECT u.username,c.filedDate,s.subcategoryName,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c INNER JOIN users u ON c.filedBy=u.userID INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where choID=:choID");
+        $statement = self::prepare("SELECT u.username,c.filedDate,c.filedBy,s.subcategoryName,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c INNER JOIN users u ON c.filedBy=u.userID INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where choID=:choID");
         $statement->bindValue(':choID', $choID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);

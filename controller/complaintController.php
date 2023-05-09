@@ -7,6 +7,7 @@ use app\core\middlewares\complaintMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\complaintModel;
+use app\models\notificationModel;
 
 class complaintController extends Controller
 {
@@ -107,6 +108,7 @@ class complaintController extends Controller
 
                 if(!empty($model->solution)){
                     $model->submitSolution($model->solution,$model->complaintID);
+                    notificationModel::setNotification("Your Solution has submitted","Solution",$model->filedBy,"","",$model->complaintID);
                     $this->setFlash('result','Solution Added');
                 }
                 else{
@@ -121,6 +123,7 @@ class complaintController extends Controller
             if($request->isGet())
             {
                 $model->complaintID=$_GET['complaintID'];
+                $model->filedBy=$_GET['filedBy'];
 
             }
 

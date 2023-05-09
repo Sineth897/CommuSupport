@@ -54,6 +54,7 @@ $headerDiv->end();
         <div style="display:none;">
 
             <?php $solutionForm->inputField($solution,'ComplaintID','text','complaintID') ?>
+            <?php $solutionForm->inputField($solution,'FiledBy','text','filedBy') ?>
         </div>
 
 

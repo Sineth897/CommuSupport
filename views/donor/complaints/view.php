@@ -36,31 +36,34 @@ $profile->end();
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("My Complaints");
+$headerDiv->heading("My Complaints ");
 
 $headerDiv->pages(['pending','completed']);
 
 $headerDiv->end();
 ?>
 
-<div class="content">
-    <div class="filters">
 
-        <p ><i class="material-icons"  >
-                <select id="filter">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="completed">Completed</option>
-                </select></i>
-            <span>Filter</span>
-        </p>
+<?php
 
-        <div class="sort" id="sort-btn">
-            <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort</span></p>
-        </div>
-    </div>
+$searchDiv = new \app\core\components\layout\searchDiv();
+$searchDiv ->filterDivStart();
 
-</div>
+$searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($complaints,"Reviewed Date","reviewedDate","registeredDateSort");
+$sort->end();
+$sort::end();
+
+
+$searchDiv->sortEnd();
+$searchDiv->filterDivEnd();
+$searchDiv->end();
+
+
+?>
+
 
 
 <?php

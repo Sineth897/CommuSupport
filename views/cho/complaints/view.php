@@ -77,8 +77,9 @@ $searchDiv->end();
 <div class="content">
 
     <?php
+
     $headers = ['Filed By','Filed Date','Subject','Status','Solution','Reviewed Date'];
-    $arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID']],'reviewedDate'];
+    $arrayKeys = ['username','filedDate','subcategoryName','status',['solution','Add Solution','./complaints/solution',['complaintID','filedBy']],'reviewedDate'];
 
 
     $complaintsTable = new table($headers,$arrayKeys);
@@ -100,7 +101,7 @@ $searchDiv->end();
 </div>
 
 
-
+<!---->
 <script type="module" src="../public/JS/cho/complaints/sort.js"></script>
 
 

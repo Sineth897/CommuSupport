@@ -1,6 +1,21 @@
 
-const sort_btn = document.getElementById("sortBtn")
-sort_btn.addEventListener("click",sortTable);
+const sort_btn = document.getElementById("sort")
+// sort_btn.addEventListener("click",sortTable);
+const sortOption = document.querySelectorAll("#sortOptions")[0]; //array 0th element
+const sort = document.getElementById("sortBtn")
+sort_btn.addEventListener("click",function(){
+
+    let display = document.getElementById("sortOptions").style.display;
+    if(display==="block"){
+        document.getElementById("sortOptions").style.display="none";
+    }
+      else{
+            document.getElementById("sortOptions").style.display="block";
+        }
+
+});
+
+sort.addEventListener("click",sortTable)
 
 function sortTable() {
     let table, rows, switching, i, x, y, shouldSwitch;
@@ -24,19 +39,32 @@ function sortTable() {
         }
     }
 
-
+    document.getElementById("sortOptions").style.display="none";
 }
+
 
 
 //sorting by date field
 const filter = document.getElementById("filterBtn");
+const filterOption = document.querySelectorAll("#filter")[0];
+filterOption.addEventListener("click",function(){
+
+    let display = document.getElementById("filterOptions").style.display;
+    if (display==="block"){
+        document.getElementById("filterOptions").style.display ="none";
+    }else{
+        document.getElementById("filterOptions").style.display="block";
+    }
+})
+
 const table = document.querySelectorAll("tbody")[0];
 const rows = table.getElementsByTagName("tr");
 
-filter.addEventListener("change", function() {
-    var selectedType = this.value
+filter.addEventListener("click", function() {
+    let selectedType = document.getElementById("filterCategory").value;
     // console.log(selectedType)
-    for (var i = 0; i < rows.length; i++) {
+    console.log(rows)
+    for (let i = 0; i < rows.length; i++) {
         var row = rows[i];
         var type = row.getElementsByTagName("td")[3].textContent.toLowerCase();
         console.log(type)
@@ -46,6 +74,7 @@ filter.addEventListener("change", function() {
             row.style.display = "none";
         }
     }
+    document.getElementById("filterOptions").style.display ="none";
 });
 
 
