@@ -370,45 +370,88 @@ class loginController extends  Controller
 
         // unset remember me
         if($user->unsetRememberMe(Application::session()->get('user'))) {
+
+            // set the flash message and unset cookie
             $this->setFlash('rememberMe', 'Remember me is unset');
             $this->unsetCookie('rememberMe');
         }
         else {
+
+            // set the flash message
             $this->setFlash('rememberMe', 'Remember me is not unset');
         }
+
     }
 
-    private function generateSelectorNValidator():array {
+    /**
+     * @return array
+     */
+    private function generateSelectorNValidator() : array {
         try {
+
+            // generate a selector and a validator
+            // this function is proven to throw exceptions if it cannot generate valid valur
             $selector = bin2hex(random_bytes(16));
             $validator = bin2hex(random_bytes(32));
             return [$selector, $validator, $selector . ":" . $validator];
+
         } catch (\Exception $e) {
+
+            // if it throws an exception just return an empty array
             return [];
+
         }
+
     }
 
-    protected function verifyMobile(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function verifyMobile(Request $request, Response $response) : void {
+
         $model = new userModel();
 
+        // if it is a get request render view
         if($request->isGet()) {
+
+            // render without the navbar
             $this->renderOnlyView('/mobileVerification/mobileVerification','Verify your mobile',[
                 'user' => $model,
             ]);
+
         }
+
+        // if it is a post request
         else {
             try{
-                    $data = $request->getJsonData();
-                    $func = $data['do'];
-                    unset($data['do']);
-                    $data['username'] = Application::session()->get("username");
-                    $result = $this->$func($data);
-                    if($func === 'checkOTP' && $result['success'] === 1) {
-                        $result['success'] = $this->updateVerification();
-                    }
-                    $this->sendJson($result);
+
+                // get data from JSON request
+                $data = $request->getJsonData();
+
+                // get the function to be executed and unset it from the data
+                $func = $data['do'];
+                unset($data['do']);
+
+                // get the username from the username
+                $data['username'] = Application::session()->get("username");
+
+                // call the function mentioned
+                $result = $this->$func($data);
+
+                // if request is for checking the OTP, and it matches send success message
+                if($func === 'checkOTP' && $result['success'] === 1) {
+                    $result['success'] = $this->updateVerification();
+                }
+
+                // send the success message
+                $this->sendJson($result);
+
             }
             catch(\Exception $e) {
+
+                // if unsuccessful send error message
                 $this->sendJson(['success' => 0, 'message' => $e->getMessage()]);
             }
 
@@ -416,10 +459,17 @@ class loginController extends  Controller
 
     }
 
+
+    /**
+     * @return bool
+     */
     private function updateVerification(): bool
     {
-        $user = null;
+
         try {
+
+            // get user type according to logged-in user
+            // update mobileVerification field
             if($this->getUserType() === 'donee' ) {
                 $user = doneeModel::getModel(['doneeID' => Application::session()->get('user')]);
                 $user->update(['doneeID' => $user->doneeID],['mobileVerification' => 1]);
@@ -428,49 +478,69 @@ class loginController extends  Controller
                 $user = donorModel::getModel(['donorID' => Application::session()->get('user')]);
                 $user->update(['donorID' => $user->donorID],['mobileVerification' => 1]);
             }
+
+            // if successful return 1 (true)
             return 1;
+
         }
         catch(\Exception $e) {
-            return 0;
-        }
 
+            // else return 0 (false)
+            return 0;
+
+        }
 
     }
 
-    protected function changePasswordFromProfile(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function changePasswordFromProfile(Request $request, Response $response) : void {
 
+        // get data from JSON request
         $data = $request->getJsonData();
 
+        // get new password and current password
         $newPassword = $data['newPassword'];
         $currentPassword = $data['currentPassword'];
 
+        // get the user model from the database
         $user = userModel::getModel(['username' => Application::session()->get('username')]);
 
+        // verify the password is same
         if(!password_verify($currentPassword,$user->password)) {
 
+            // if not send password incorrect error message
             $this->sendJson(['status' => 0 , 'message' => 'Provided password is incorrect']);
             return;
+
         }
 
         try {
 
             $this->startTransaction();
 
+            // update the new password
             $user->update(['userID' => $_SESSION['user']],['password' => password_hash($newPassword,PASSWORD_DEFAULT)]);
 
             $this->commitTransaction();
 
+            // if happened successfully send success message
             $this->sendJson(['status' => 1 , 'message' => 'Password changed successfully']);
 
         }
         catch(\Exception $e) {
+
+            // if not rollback and send the error message
             $this->rollbackTransaction();
             $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
             return;
+
         }
 
     }
-
 
 }
 
