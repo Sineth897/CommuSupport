@@ -56,6 +56,7 @@ class complaintController extends Controller
 
             $model->subject=$_GET['processID'];
 
+
         }
 
         $this->render("./donor/complaints/file",'File a Complaint',[
@@ -112,7 +113,7 @@ class complaintController extends Controller
 
                 if(!empty($model->solution)){
                     $model->submitSolution($model->solution,$model->complaintID);
-                    notificationModel::setNotification("Complaint reviewed. Check Complaints page for solution ","Solution",$model->filedBy,"","",$model->complaintID);
+                    notificationModel::setNotification("Complaint reviewed. Check Complaints page for solution ","Solution",$model->filedBy,"","complaint",$model->complaintID);
                     $this->setFlash('result','Solution Added');
                 }
                 else{

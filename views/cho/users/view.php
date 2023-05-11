@@ -76,8 +76,6 @@ $searchDiv->end();
 
 
 <div class="content">
-
-
   <?php
 
 

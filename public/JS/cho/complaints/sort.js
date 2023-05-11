@@ -51,9 +51,9 @@ function sortTable() {
 
 
 //sorting by date field
-const filter = document.getElementById("filterBtn");
-const filterOption = document.querySelectorAll("#filter")[0];
-filterOption.addEventListener("click",function(){
+const filter = document.querySelectorAll('#filter p')[0];
+const filterBtn = document.querySelectorAll("#filterBtn")[0];
+filter.addEventListener("click",function(){
 
     let display = document.getElementById("filterOptions").style.display;
     if (display==="block"){
@@ -67,7 +67,7 @@ const table = document.querySelectorAll("tbody")[0];
 const rows = table.getElementsByTagName("tr");
 
 
-filter.addEventListener("click", function() {
+filterBtn.addEventListener("click", function() {
     let selectedType = document.getElementById("filterCategory").value;
     // console.log(selectedType)
     console.log(rows)

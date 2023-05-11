@@ -39,9 +39,7 @@ $headerDiv->end();
      <!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
 <div class="content">
             <div class="register">
-                <form method="get" action="../cho/communitycenter/register">
-                    <button class="btn-cta-primary" > Register CC </button>
-                </form>
+
             </div>
 
         </div>
@@ -52,7 +50,9 @@ $headerDiv->end();
                 <input type="text" placeholder="Search" name="find" id="search">
                 <a href="#"><i class="material-icons">search</i></a>
             </div>
-
+            <form method="get" action="../cho/communitycenter/register">
+                <button class="btn-cta-primary" > Register CC </button>
+            </form>
         </div>
 
         <!--        Content Block-->

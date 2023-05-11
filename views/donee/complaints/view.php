@@ -96,4 +96,4 @@ if($checkVerification->notVerified()) {
 </div>
 
 
-<script type="module" src="../public/JS/donor/complaints/sort.js"></script>
+<script type="module" src="../public/JS/donee/complaints/sort.js"></script>

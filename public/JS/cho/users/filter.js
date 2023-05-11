@@ -1,4 +1,4 @@
-// live search on donee
+
 
 const searchInput = document.getElementById('search');
 const rows = document.querySelectorAll("tbody tr");
@@ -35,10 +35,10 @@ searchInput.addEventListener('keyup',function (event) {
 
 // filtering donee donr organizaton indiviual
 
-const filter = document.getElementById("filterBtn");
-const filterOption = document.querySelectorAll("#filter")[0];
+const filter = document.querySelectorAll('#filter p')[0];
+const filterBtn = document.querySelectorAll("#filterBtn")[0];
 
-filterOption.addEventListener("click",function (){
+filter.addEventListener("click",function (){
 
     let display = document.getElementById("filterOptions").style.display;
     if(display==="block"){
@@ -52,7 +52,7 @@ filterOption.addEventListener("click",function (){
 const table = document.querySelectorAll("tbody")[0];
 const sortRows = table.getElementsByTagName("tr");
 
-filter.addEventListener("click",function(){
+filterBtn.addEventListener("click",function(){
     let selectedType = document.getElementById("filterCategory").value;
 
     for(let i=0;i<sortRows.length;i++)
@@ -69,6 +69,6 @@ filter.addEventListener("click",function(){
             row.style.display="none";
         }
     }
-    document.getElementById("filterOptioons").style.display="none";
+    document.getElementById("filterOptions").style.display="none";
 })
 

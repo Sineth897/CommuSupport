@@ -7,19 +7,7 @@
 /** @var $complaint \app\models\complaintModel */
 /** @var $user \app\models\donorModel */
 /** @var $model \app\models\donationModel */
-//
-//
-//$donationID= \app\core\Application::session('user');
-//$donationDetails=$donation->getDonationDetails($donationID);
 
-//
-//$categories = $model->getCategories();
-//
-//$donations = $model->retrieve(['createdBy' => $_SESSION['user']]);
-//
-//$activeDonations = array_filter($donations, function($donation) {
-//    return $donation['deliveryStatus'] === 'Ongoing' || $donation['deliveryStatus'] === 'Not assigned';
-//});
 
 ?>
 

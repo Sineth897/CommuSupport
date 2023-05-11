@@ -5,6 +5,7 @@ namespace app\models;
 use app\core\DbModel;
 use app\core\Model;
 use app\core\notificationModel;
+use mysql_xdevapi\Exception;
 
 class complaintModel extends DbModel
 {
@@ -49,8 +50,17 @@ class complaintModel extends DbModel
 
     public function save(): bool
     {
+
+        try {
         $this->complaintID = substr(uniqid('complaint', true), 0, 23);
         $this->filedBy=$_SESSION['user'];
+
+            $this->choID = $this->getchoIDofDonor($_SESSION['user']);
+        }
+        catch (Exception $e) {
+            echo 'aul';
+        }
+
         return parent::save();
 
 
@@ -58,12 +68,10 @@ class complaintModel extends DbModel
 
     private function getchoIDofDonor($donorID)
     {
-        $statement = self::prepare("SELECT c.cho from communitycenter c INNER JOIN donor d ON c.ccID = d.ccID WHERE d.donorID=:donorID ");
+        $statement = self::prepare("SELECT c.cho from communitycenter c INNER JOIN donor d ON c.ccID = d.ccID WHERE d.donorID=:donorID LIMIT 1");
         $statement->bindValue(':donorID', $donorID);
         $statement->execute();
-        return $statement->fetch(\PDO::FETCH_ASSOC);
-
-
+        return $statement->fetch(\PDO::FETCH_COLUMN);
     }
 
     public function getAllComplaints(string $choID)
