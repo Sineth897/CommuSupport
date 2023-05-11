@@ -199,6 +199,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     const requests = result['requests'];
     const acceptedRequests = result['acceptedRequests'];
 
@@ -210,6 +212,8 @@ filterBtn.addEventListener('click', async function(e) {
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    toggle.checkNoData();
 
     let newRequests = document.querySelectorAll('.requestView');
 

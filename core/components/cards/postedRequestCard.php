@@ -57,11 +57,11 @@ class postedRequestCard
 
         // if the request is not approved by the manager
         if($request['approval'] === 'Pending') {
-            echo sprintf("<p><strong> Your request haven't been approved by the manager yet! </strong> </p>");
+            echo "<p><strong> Your request haven't been approved by the manager yet! </strong> </p>";
         }
         // if the request is approved but no user has accepted the request
         else if($request['users'] === 0) {
-            echo sprintf("<p><strong> No user have accepted your request yet </strong> </p>");
+            echo "<p><strong> No user have accepted your request yet </strong> </p>";
         }
         // if the request is approved and users have accepted the request
         else {

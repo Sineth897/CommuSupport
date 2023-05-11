@@ -1,19 +1,112 @@
-import {getData} from "../../request.js";
+import {getData, getTextData} from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
+import flash from "../../flashmessages/flash.js";
+import requestcard from "../../components/requestcard.js";
 
-let toggle = new togglePages([{btnId:'pending',pageId:'pendingRequests'},{btnId:'posted',pageId:'postedRequests'},{btnId:'history',pageId:'completedRequests'}],'grid');
+let toggle = new togglePages([
+                                        {btnId:'pending',pageId:'pendingRequests',title:'Pending Requests'},
+                                        {btnId:'posted',pageId:'postedRequests',title:'Posted Requests'},
+                                        {btnId:'history',pageId:'completedRequests',title:'Completed Requests'}],
+                                        'grid');
 
-let requests = document.querySelectorAll('.pendingRequestView');
-requests = Array.from(requests);
+function addEventListeners() {
 
-for(let i = 0; i < requests.length; i++) {
-    requests[i].addEventListener('click', (e) => showPendingReqPopUp(e));
+    let requests = document.querySelectorAll('.pendingRequestView');
+    requests = Array.from(requests);
+
+    for(let i = 0; i < requests.length; i++) {
+        requests[i].addEventListener('click', (e) => showPendingReqPopUp(e));
+    }
+
+    let postedRequests = document.querySelectorAll('.postedRequestView');
+    postedRequests = Array.from(postedRequests);
+
+    for(let i = 0; i < postedRequests.length; i++) {
+        postedRequests[i].addEventListener('click', (e) => showPostedReqPopUp(e));
+    }
+
+    let completedRequests = document.querySelectorAll('.completedRequestView');
+    completedRequests = Array.from(completedRequests);
+
+    for(let i = 0; i < completedRequests.length; i++) {
+        completedRequests[i].addEventListener('click', (e) => showCompletedReqPopUp(e));
+    }
+
 }
 
+addEventListeners();
 
 let popUpRequest = new PopUp();
+
+async function showCompletedReqPopUp(e) {
+
+    let parent = e.target.parentNode;
+
+    while(!parent.id) {
+        parent = parent.parentNode;
+    }
+
+    const result = await getData('./requests/popup/completed', 'POST', {"r.requestID": parent.id,'completed':true});
+
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['message']});
+    }
+
+    const request = result['request'];
+
+    popUpRequest.clearPopUp();
+
+    popUpRequest.setHeader('Request Details');
+    popUpRequest.startSplitDiv();
+    popUpRequest.setBody(request,['requestID','postedDate','subcategoryName'],['ID','Date Posted','Item']);
+    popUpRequest.setBody(request,['address','urgency','amount'],['Address','Urgency','Amount']);
+    popUpRequest.endSplitDiv()
+
+    const acceptedUsers = document.createElement('div');
+    acceptedUsers.innerHTML = `<p style="font-size: 0.9rem"> <strong>${request['users']} users</strong> have donated ${request['acceptedAmount']}</p>`;
+    popUpRequest.container().append(acceptedUsers);
+
+    popUpRequest.showPopUp();
+
+}
+
+async function showPostedReqPopUp(e) {
+
+    let parent = e.target.parentNode;
+
+    while(!parent.id) {
+        parent = parent.parentNode;
+    }
+
+    const result = await getData('./requests/popup/posted', 'POST', {"r.requestID": parent.id,'completed':false});
+
+    // console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['message']});
+    }
+
+    const request = result['request'];
+
+    popUpRequest.clearPopUp();
+
+    popUpRequest.setHeader('Request Details');
+    popUpRequest.startSplitDiv();
+    popUpRequest.setBody(request,['requestID','postedDate','subcategoryName'],['ID','Date Posted','Item']);
+    popUpRequest.setBody(request,['address','urgency','amount'],['Address','Urgency','Amount']);
+    popUpRequest.endSplitDiv()
+
+    const acceptedUsers = document.createElement('div');
+    acceptedUsers.innerHTML = `<p style="font-size: 0.9rem"> <strong>${request['users']} users</strong> have donated ${request['acceptedAmount']}</p>`;
+    popUpRequest.container().append(acceptedUsers);
+
+    popUpRequest.showPopUp();
+
+}
 
 async function showPendingReqPopUp(e) {
 
@@ -91,6 +184,7 @@ let observer = new MutationObserver((mutations) => {
 });
 
 let rejectFun = async (e) => {
+
     if(e.target.innerText === 'Reject') {
         e.target.innerText = 'Confirm';
         popUpFunctions.hideAllElementsWithin(e.target.parentNode);
@@ -118,4 +212,114 @@ let rejectFun = async (e) => {
         }
         popUpRequest.hidePopUp();
     }
+
 }
+
+let filterOptions = document.getElementById('filterOptions');
+let sortOptions = document.getElementById('sortOptions');
+
+document.getElementById('filter').addEventListener('click', function(e) {
+
+    if(filterOptions.style.display === 'block') {
+        filterOptions.style.display = 'none';
+    } else {
+        filterOptions.style.display = 'block';
+    }
+    sortOptions.style.display = 'none';
+});
+
+document.getElementById('sort').addEventListener('click', function(e) {
+
+    if(sortOptions.style.display === 'block') {
+        sortOptions.style.display = 'none';
+    } else {
+        sortOptions.style.display = 'block';
+    }
+    filterOptions.style.display = 'none';
+
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+const pendingRequestsDiv = document.getElementById('pendingRequests');
+const postedRequestsDiv = document.getElementById('postedRequests');
+const completedRequestsDiv = document.getElementById('completedRequests');
+
+const filterBtn = document.getElementById('filterBtn');
+const sortBtn = document.getElementById('sortBtn');
+
+const category = document.getElementById('filterCategory');
+
+const datePosted = document.getElementById('sortByDatePosted');
+const amount = document.getElementById('sortByAmount');
+
+filterBtn.addEventListener('click', async function(e) {
+
+    let filters = {};
+
+    if(category.value) {
+        filters['item'] = category.value;
+    }
+
+    let sort = {DESC:[]};
+
+    if(datePosted.checked) {
+        sort['DESC'].push('postedDate');
+    }
+
+    if(amount.checked) {
+        sort['DESC'].push('amount');
+    }
+
+    const result = await getData('./requests/filter', 'POST', {filters:filters,sort:sort});
+
+    // console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:'Something went wrong! Please try again later.'});
+        return;
+    }
+
+    toggle.removeNoData();
+
+    const requests = result['requests'];
+    const completedRequests = result['completedRequests'];
+
+    const pendingRequests = requests.filter((request) => {
+        return request['approval'] === 'Pending';
+    })
+
+    const postedRequests = requests.filter((request) => {
+        return request['approval'] === 'Approved';
+    });
+
+    // console.log(pendingRequests,postedRequests,completedRequests);
+
+    pendingRequestsDiv.innerHTML = '';
+    postedRequestsDiv.innerHTML = '';
+    completedRequestsDiv.innerHTML = '';
+
+    requestcard.showCards(pendingRequests,pendingRequestsDiv,[['View','pendingRequestView']]);
+    requestcard.showCards(postedRequests,postedRequestsDiv,[['View','postedRequestView']]);
+    requestcard.showCards(completedRequests,completedRequestsDiv,[['View','completedRequestView']],true);
+
+    toggle.checkNoData();
+
+    filterOptions.style.display = 'none';
+    sortOptions.style.display = 'none';
+
+    addEventListeners();
+
+});
+
+sortBtn.addEventListener('click', async function(e) {
+   filterBtn.click();
+});
+
+

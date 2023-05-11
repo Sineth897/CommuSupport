@@ -7,7 +7,8 @@ import {displayTable} from "../../components/table.js";
 
 const toggle = new togglePages([
                                     {btnId:'individual',pageId:'individualDoneeDisplay',title:'Individual Donees'},
-                                    {btnId:'organization',pageId:'organizationDoneeDisplay',title:'Organization Donees'}]);
+                                    {btnId:'organization',pageId:'organizationDoneeDisplay',title:'Organization Donees'}
+                                ]);
 
 let temp =  document.getElementsByClassName('pendingVerification');
 let pendingVerifications = {};
@@ -142,6 +143,7 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+
 });
 
 filterOptions.addEventListener('click', function(e) {

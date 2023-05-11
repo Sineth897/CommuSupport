@@ -83,7 +83,7 @@ function createButton(btnInfo,row) {
 
     //creating the button using a anchor tag
     const btn = document.createElement('a');
-    btn.classList.add('btn-primary');
+    btn.classList.add('view');
     if(btnInfo[4]) {
         btn.id = row[btnInfo[4]];
     }

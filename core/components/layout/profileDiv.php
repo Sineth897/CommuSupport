@@ -39,7 +39,6 @@ class profileDiv
     }
 
 
-//<div class='header-right-block' id='close-notification'><i class='material-icons' >close</i></div>
     public function notification(): void
     {
         echo "<div class='notif-box' id='notif-btn'>";
@@ -76,7 +75,7 @@ class profileDiv
         echo "</div>";
     }
 
-    public function profile(): void
+    public function profile() : void
     {
         echo sprintf("<a class='profile-box' href='/CommuSupport/%s/profile'>", $_SESSION['userType']);
         echo "<div class='name-box'>";

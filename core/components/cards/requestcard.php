@@ -33,7 +33,7 @@ class requestcard
         $this->btns = $btns;
 
         if(!$requests) {
-            echo "<img src='/CommuSupport/public/src/errors/NoData.svg'>";
+            return;
         }
 
         // loop through the requests and display them
@@ -90,7 +90,7 @@ class requestcard
     {
 
         if(!$requests) {
-            echo "<img src='/CommuSupport/public/src/errors/NoData.svg'>";
+            return;
         }
 
         // loop through the requests and display them

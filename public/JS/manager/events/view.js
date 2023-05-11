@@ -53,8 +53,8 @@ let sortByDate = document.getElementById('sortByDate');
 let sortByParticipation = document.getElementById('sortByParticipation');
 // console.log(sortByParticipation);
 
-let popUpArrayKeys = ['organizedBy','date','time','location','description'];
-let popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
+const popUpArrayKeys = ['organizedBy','date','time','location','description'];
+const popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
 
 updateEventCardOnClick();
 filterBtn.addEventListener('click', async function() {

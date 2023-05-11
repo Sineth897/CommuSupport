@@ -5,7 +5,10 @@ import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 import {displayTable} from "../../components/table.js";
 
-const toggle = new togglePages([{btnId:'individual',pageId:'individualDonorDisplay'},{btnId:'organization',pageId:'organizationDonorDisplay'}]);
+const toggle = new togglePages([
+                                    {btnId:'individual',pageId:'individualDonorDisplay',title:'Individual Donors'},
+                                    {btnId:'organization',pageId:'organizationDonorDisplay',title:'Organization Donors'}
+                                ]);
 
 const individualDonorDisplay = document.getElementById('individualDonorDisplay');
 const organizationDonorDisplay = document.getElementById('organizationDonorDisplay');
@@ -71,7 +74,7 @@ sortBtn.addEventListener('click', async function(e) {
 
     toggle.checkNoData();
 
-    let viewBtns = document.querySelectorAll('view');
+    let viewBtns = document.querySelectorAll('.view');
 
     for(let i=0;i<viewBtns.length;i++) {
         viewBtns[i].addEventListener('click', showDonorPopup);
@@ -83,7 +86,7 @@ searchBtn.addEventListener('click', async function(e) {
     sortBtn.click();
 });
 
-let viewBtns = document.querySelectorAll('view');
+let viewBtns = document.querySelectorAll('.view');
 
 for(let i=0;i<viewBtns.length;i++) {
     viewBtns[i].addEventListener('click', showDonorPopup);

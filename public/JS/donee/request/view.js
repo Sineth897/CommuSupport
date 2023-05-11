@@ -196,6 +196,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     const activeRequests = result['activeRequests'];
     const acceptedRequests = result['acceptedRequests'];
     const completedRequests = result['completedRequests'];

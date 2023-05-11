@@ -238,8 +238,8 @@ class donorModel extends DbModel
      */
     private function getPersonalInfo() : array {
 
-        $colsIndividual = "u.*,d.*,di.fname,di.lname,di.NIC,di.age,c.city,c2.district";
-        $colsOrganization = "u.*,d.*,do.organizationName,do.representative,do.representativeContact,c.city,c.fax,c2.district";
+        $colsIndividual = "u.*,d.*,c.city,c2.district,di.fname,di.lname,di.NIC,di.age";
+        $colsOrganization = "u.*,d.*,c.city,c2.district,do.organizationName,do.representative,do.representativeContact,c.fax";
 
         $sqlIndividual = "SELECT {$colsIndividual} FROM users u 
                             INNER JOIN donor d ON u.userID = d.donorID
