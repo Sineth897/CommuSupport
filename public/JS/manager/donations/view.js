@@ -5,7 +5,10 @@ import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 import donationCard from "../../components/donationCard.js";
 
-let toggle = new togglePages([{btnId:'ongoing',pageId:'ongoingDonations'},{btnId:'completed',pageId:'completedDonations'},],'grid');
+let toggle = new togglePages([
+                                {btnId:'ongoing',pageId:'ongoingDonations',title:'Ongoing Donations'},
+                                {btnId:'completed',pageId:'completedDonations',title:'Completed Donations' },],
+                                'grid');
 
 
 let filterOptions = document.getElementById('filterOptions');
@@ -77,6 +80,8 @@ filterBtn.addEventListener('click', async function(e) {
             return;
         }
 
+        toggle.removeNoData();
+
         const donations = result['donations'];
 
         const completedDonations = donations.filter(donation => donation['deliveryStatus'] === 'Completed');
@@ -85,14 +90,16 @@ filterBtn.addEventListener('click', async function(e) {
         donationCards.displayDonationCards(ongoingDonationsDiv,ongoingDonations);
         donationCards.displayDonationCards(completedDonationsDiv,completedDonations);
 
-    filterOptions.style.display = 'none';
-    sortOptions.style.display = 'none';
+        toggle.checkNoData();
 
-    let donationViewBtns = document.getElementsByClassName('don-del-primary');
+        filterOptions.style.display = 'none';
+        sortOptions.style.display = 'none';
 
-    for(let i=0;i<donationViewBtns.length;i++) {
-        donationViewBtns[i].addEventListener('click', showPopup);
-    }
+        let donationViewBtns = document.getElementsByClassName('don-del-primary');
+
+        for(let i=0;i<donationViewBtns.length;i++) {
+            donationViewBtns[i].addEventListener('click', showPopup);
+        }
 
 });
 

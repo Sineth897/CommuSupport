@@ -40,7 +40,7 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Events");
+$headerDiv->heading("Upcoming Events");
 
 $headerDiv->pages(["upcoming", "completed", "cancelled"]);
 

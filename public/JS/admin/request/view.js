@@ -1,9 +1,13 @@
-import {getData} from "../../request.js";
+import {getData, getTextData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
 import togglePages from "../../togglePages.js";
+import {PopUp} from "../../popup/popUp.js";
 
-const toggle = new togglePages([{btnId:'pending',pageId:'pendingRequestsTable'},{btnId:'accepted',pageId:'acceptedRequestsTable'}],'block');
+const toggle = new togglePages([
+                                    {btnId:'pending',pageId:'pendingRequestsTable',title:'Pending Requests'},
+                                    {btnId:'accepted',pageId:'acceptedRequestsTable',title:"Accepted Requests"}],
+                                    'grid');
 
 const pendingRequestsTableDiv = document.getElementById('pendingRequestsTable');
 const acceptedRequestsTableDiv = document.getElementById('acceptedRequestsTable');
@@ -83,6 +87,8 @@ filterBtn.addEventListener('click', async function() {
         return;
     }
 
+    toggle.removeNoData();
+
     // console.log(data);
 
     const pendingRequestsTableData = {
@@ -100,8 +106,12 @@ filterBtn.addEventListener('click', async function() {
     displayTable(pendingRequestsTableDiv, pendingRequestsTableData);
     displayTable(acceptedRequestsTableDiv, acceptedRequestsTableData);
 
+    toggle.checkNoData();
+
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    addEventListeners();
 
 });
 
@@ -112,3 +122,77 @@ sortBtn.addEventListener('click', async function() {
 searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 });
+
+function addEventListeners() {
+
+    const requests = Array.from(document.getElementsByClassName('view'));
+
+    requests.forEach(request => {
+        request.addEventListener('click', requestPopUp);
+    });
+
+}
+
+addEventListeners();
+
+const popup = new PopUp();
+
+async function requestPopUp(e) {
+
+    const requestID = e.target.id;
+
+    const result = await getData('./request/popup','post',{requestID:requestID});
+
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['message']});
+        return;
+    }
+
+    let request = result['request'];
+
+    // console.log(request);
+
+    popup.clearPopUp();
+
+    if(requestID.includes('accepted')) {
+
+        const users = result['users'];
+
+        request['acceptedBy'] = users[request['acceptedBy']];
+
+        popup.startSplitDiv();
+        popup.startDiv();
+
+    }
+
+    popup.setSubHeading('Request Details');
+    popup.startSplitDiv();
+    popup.setBody(request,['username','subcategoryName','amount'],['Posted By','Item','Amount']);
+    popup.setBody(request,['postedDate','approval','urgency'],['Posted Date','Approval',"Urgency"]);
+    popup.endSplitDiv();
+
+    const description = request['notes'] === '' ? "User haven't added any description" : request['notes'];
+
+    popup.setBody({description:description},['description'],[['Description','textarea']]);
+
+    if(requestID.includes('accepted')) {
+
+        popup.endDiv();
+
+        popup.startDiv()
+        popup.setSubHeading('Accepted Details');
+        popup.startSplitDiv();
+        popup.setBody(request,['acceptedBy','deliveryStatus'],['Accepted By','Delivery']);
+        popup.setBody(request,['acceptedDate',],['Accepted Date',]);
+        popup.endSplitDiv();
+        popup.endDiv();
+        popup.endSplitDiv();
+
+    }
+
+
+    popup.showPopUp();
+
+}

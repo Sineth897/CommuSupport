@@ -19,6 +19,7 @@ use app\models\donorModel;
 ?>
 
 <div class="profile-container">
+
     <div class="profile">
         <div class="img-username-div">
             <!---->
@@ -78,11 +79,6 @@ use app\models\donorModel;
                         <label class="form-label"> Representative Contact </label>
                         <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" disabled>
                     </div>
-
-                    <!--                    <div class="form-group">-->
-                    <!--                        <label class="form-label"> Dependents </label>-->
-                    <!--                        <input class="basic-input-field" value="--><?php //echo $personalInfo['age'] ?? 'Not specified' ?><!--" disabled>-->
-                    <!--                    </div>-->
 
                 <?php } ?>
 

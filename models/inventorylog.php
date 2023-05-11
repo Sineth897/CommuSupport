@@ -84,4 +84,16 @@ class inventorylog extends DbModel
         $statement->execute();
     }
 
+    public static function getInventoryLog() : array {
+
+        $sql = "SELECT *,CONCAT(i.amount,' ',s.scale) AS amount FROM inventorylog i 
+                            INNER JOIN subcategory s ON i.item = s.subcategoryID 
+                            INNER JOIN communitycenter c ON i.ccID = c.ccID ORDER BY i.dateReceived DESC";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
 }

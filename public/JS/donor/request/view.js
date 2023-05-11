@@ -5,7 +5,10 @@ import flash from "../../flashmessages/flash.js";
 import requestCard from "../../components/requestcard.js";
 import togglePages from "../../togglePages.js";
 
-let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'accepted',pageId:'acceptedRequests'}],'grid');
+let toggle = new togglePages([
+                                {btnId:'posted',pageId:'postedRequests',title:"Posted Requests"},
+                                {btnId:'accepted',pageId:'acceptedRequests',title:'Accepted Requests'}],
+                        'grid');
 
 let popUpRequest = new PopUp();
 
@@ -199,6 +202,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     const requests = result['requests'];
     const acceptedRequests = result['acceptedRequests'];
 
@@ -210,6 +215,8 @@ filterBtn.addEventListener('click', async function(e) {
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    toggle.checkNoData();
 
     let newRequests = document.querySelectorAll('.requestView');
 

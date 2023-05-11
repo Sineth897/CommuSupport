@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 
 <?php
 
@@ -39,11 +40,10 @@ use app\models\adminModel;
 
             <div class="profile">
 
-                <button class="btn-cta-primary"> + Add a new category  </button>
-                <button class="btn-cta-primary"> + Add a new subcategory  </button>
-                <button class="btn-cta-primary"> + Add a new Event category  </button>
-                <button class="btn-cta-primary"> View inventory log  </button>
-<!--                <button class="btn-cta-primary"> + Add a new subcategory  </button>-->
+                <button class="btn-cta-primary"  id="newCategoryBtn"> + Add a new category  </button>
+                <button class="btn-cta-primary" id="newSubcategoryBtn"> + Add a new subcategory  </button>
+                <a href="./viewinventorylog" class="btn-cta-primary"> View inventory log  </a>
+
 
             </div>
 
@@ -121,4 +121,6 @@ use app\models\adminModel;
 
     </div>
 </div>
+
+<script type="module" src="../public/JS/admin/profile.js"></script>
 

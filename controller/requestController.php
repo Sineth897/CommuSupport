@@ -4,6 +4,8 @@ namespace app\controller;
 
 use app\core\Controller;
 use app\core\DbModel;
+use app\core\exceptions\forbiddenException;
+use app\core\exceptions\methodNotFound;
 use app\core\middlewares\requestMiddleware;
 use app\core\Request;
 use app\core\Response;
@@ -14,45 +16,80 @@ use app\models\doneeModel;
 use app\models\donorModel;
 use app\models\inventorylog;
 use app\models\logisticModel;
+use app\models\managerModel;
 use app\models\requestModel;
 use app\models\subdeliveryModel;
 
 class requestController extends Controller
 {
+    /**
+     * @param $func
+     * @param Request $request
+     * @param Response $response
+     * @throws forbiddenException
+     * @throws methodNotFound
+     */
     public function __construct($func, Request $request, Response $response)
     {
         $this->middleware = new requestMiddleware();
         parent::__construct($func, $request, $response);
     }
 
-    protected function viewRequests(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     * @throws forbiddenException
+     */
+    protected function viewRequests(Request $request, Response $response) : void {
 
+        // check the link
         $this->checkLink($request);
 
+        // get user type, request model and relevant user's model
         $userType = $this->getUserType();
         $model = new requestModel();
         $accepted = new acceptedModel();
         $user = $this->getUserModel();
+
+        // pass all variables to the view
         $this->render($userType ."/request/view","View Requests",[
             'model' => $model,
             'accepted' => $accepted,
             'user' => $user
         ]);
+
     }
 
-    protected function postRequest(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     * @throws forbiddenException
+     */
+    protected function postRequest(Request $request, Response $response) : void {
 
+        // check link
         $this->checkLink($request);
 
         $requestmodel = new requestModel();
 
+        // if the request is a post request
         if($request->isPost()) {
+
+            // load data to the model from the request
             $requestmodel->getData($request->getBody());
+
+            // validate and save on the database
             if($requestmodel->validate($request->getBody()) && $requestmodel->save()) {
+
+                // if successful set the flash message and redirect to view requests page
                 $this->setFlash('success','Request posted successfully');
                 $response->redirect('/donee/request');
                 return;
+
             }
+
         }
 
         $this->render('donee/request/create','Post a request',[
@@ -60,30 +97,44 @@ class requestController extends Controller
         ]);
     }
 
-    protected function requestPopup(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function requestPopup(Request $request, Response $response) : void {
 
+        // is request is by donee
         if($_SESSION['userType'] === 'donee') {
             $this->getRequestPopupForDonee($request);
             return;
         }
 
+        // else get data
         $where = $request->getJsonData();
 
+        // if the request is for an accepted request
         if(str_contains($where['r.requestID'],'accepted')) {
             $this->getAcceptedRequestPopup($where);
             return;
         }
 
-
+        // prepare WHERE clause
         $where = array_key_first($where) . " = '" . $where[array_key_first($where)] . "'";
+
         try {
-            $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM request r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID WHERE $where";
+            $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM request r 
+                            INNER JOIN subcategory s ON r.item = s.subcategoryID 
+                            INNER JOIN category c ON s.categoryID = c.categoryID WHERE $where";
+
             $stmnt = requestModel::prepare($sql);
             $stmnt->execute();
-            $requestDetails = $stmnt->fetch(\PDO::FETCH_ORI_FIRST);
+            $requestDetails = $stmnt->fetch(\PDO::FETCH_ORI_FIRST); // fetch only the first row
 
+            // get the donee model from the database
             $donee = doneeModel::getModel(['doneeID' => $requestDetails['postedBy']]);
 
+            // if donee is an individual
             if($donee->type === 'Individual') {
                 $donee = $donee->retrieveWithJoin('doneeIndividual','doneeID',['donee.doneeID' => $donee->doneeID]);
                 $donee = $donee[0];
@@ -93,27 +144,50 @@ class requestController extends Controller
                 $donee = $donee->retrieveWithJoin('doneeOrganization','doneeID',['donee.doneeID' => $donee->doneeID]);
             };
 
+            // send the response
             $this->sendJson([
                 'status' => 1,
                 'requestDetails' => $requestDetails,
                 'donee' => $donee
             ]);
+
         }
         catch (\PDOException $e) {
             $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
         }
+
     }
 
+    /**
+     * @param $where
+     * @return void
+     */
     private function getAcceptedRequestPopup($where) : void {
-        $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
-        $sqldeliveries = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s LEFT JOIN delivery d ON s.deliveryID = d.deliveryID LEFT JOIN acceptedrequest r ON d.deliveryID = r.deliveryID";
+
+        //get request details
+        $sql = "SELECT *,CONCAT(amount,' ',scale) as amount FROM acceptedrequest r 
+                    INNER JOIN subcategory s ON r.item = s.subcategoryID 
+                    INNER JOIN category c ON s.categoryID = c.categoryID";
+
+        // get delivery details
+        $sqldeliveries = "SELECT s.*,d.*,s.status AS deliveryStatus FROM subdelivery s 
+                    LEFT JOIN delivery d ON s.deliveryID = d.deliveryID 
+                    LEFT JOIN acceptedrequest r ON d.deliveryID = r.deliveryID";
 
         try {
-            $this->sendJson(['status' => 1 , 'requestDetails' => acceptedModel::runCustomQuery($sql,['acceptedID' => $where['r.requestID']])[0], 'deliveries' => subdeliveryModel::runCustomQuery($sqldeliveries,['r.acceptedID' => $where['r.requestID']])]);
+            $this->sendJson([
+                'status' => 1 ,
+                'requestDetails' => acceptedModel::runCustomQuery($sql,['acceptedID' => $where['r.requestID']])[0],
+                'deliveries' => subdeliveryModel::runCustomQuery($sqldeliveries,['r.acceptedID' => $where['r.requestID']])
+            ]);
         }
         catch (\PDOException $e) {
-            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
+            $this->sendJson([
+                'status' => 0 ,
+                'message' => $e->getMessage()
+            ]);
         }
+
     }
 
     private function getRequestPopupForDonee(Request $request) : void {
@@ -351,7 +425,7 @@ class requestController extends Controller
     }
 
     private function getPendingRequestsAdmin($filters,$sort,$search) : array {
-        $cols = "u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount";
+        $cols = "u.username,r.approval,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount,r.requestID";
         $sql = 'SELECT ' . $cols . ' FROM request r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
 
         $where = " WHERE ";
@@ -378,7 +452,7 @@ class requestController extends Controller
     }
 
     private function getAcceptedRequestsAdmin($filters,$sort,$search) : array {
-        $cols = "u.username,r.acceptedBy,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount, r.deliveryStatus";
+        $cols = "u.username,r.acceptedBy,r.postedDate,s.subcategoryName, CONCAT(r.amount,' ',s.scale) as amount, r.deliveryStatus,r.acceptedID";
         $sql = 'SELECT ' . $cols . ' FROM acceptedrequest r INNER JOIN users u ON r.postedBy = u.userID INNER JOIN subcategory s on r.item = s.subcategoryID';
 
         $where = " WHERE ";
@@ -495,5 +569,80 @@ class requestController extends Controller
         }
     }
 
+    protected function filterRequestsManager(Request $request,Response $response) : void {
+
+        $data = $request->getJsonData();
+
+        $filters = $data['filters'];
+        $sort = $data['sort'];
+
+        try {
+
+            $manager = managerModel::getModel(['employeeID' => $_SESSION['user']]);
+
+            $this->sendJson([
+                'status' => 1,
+                'requests' => requestModel::getRequestsUnderCCFilteredAndSorted($manager->ccID,$filters,$sort),
+                'completedRequests' => acceptedModel::getCompletedReqeustsUnderCCFilteredAndSorted($manager->ccID,$filters,$sort)
+            ]);
+
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+
+    }
+
+    protected function requestPopupManager(Request $request, Response $response) : void {
+
+        $data = $request->getJsonData();
+
+        $completed  = $data['completed'];
+
+        unset($data['completed']);
+
+        try {
+
+            if( $completed ) {
+                $this->requestPopupManagerCompleted($data);
+            }
+            else {
+                $this->requestPopupManagerPosted($data);
+            }
+
+        }
+        catch (\PDOException $e) {
+            $this->sendJson(["status"=> 0,"message" => $e->getMessage()]);
+            return;
+        }
+
+    }
+
+    private function requestPopupManagerPosted($data) : void {
+
+        $sql = "SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName,COUNT(a.acceptedBy) AS users,CONCAT(SUM(a.amount),' ',s.scale) AS acceptedAmount FROM request r LEFT JOIN subcategory s ON r.item = s.subcategoryID LEFT JOIN acceptedrequest a ON a.requestID = r.requestID";
+
+        $request = requestModel::runCustomQuery($sql,['r.requestID' => $data['r.requestID']],[],[],'a.requestID');
+
+        $this->sendJson([
+            'status' => 1,
+            'request' => $request[0]
+        ]);
+
+    }
+
+    private function requestPopupManagerCompleted($data) : void {
+
+        $sql = "SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users,CONCAT(SUM(r.amount),' ',s.scale) AS acceptedAmount FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+
+        $request = acceptedModel::runCustomQuery($sql,['r.acceptedID' => $data['r.requestID']],[],[],'r.requestID');
+
+        $this->sendJson([
+            'status' => 1,
+            'request' => $request[0]
+        ]);
+
+    }
 
 }

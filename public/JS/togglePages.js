@@ -76,6 +76,13 @@ class TogglePages {
 
             img.remove();
 
+            if(page['page'].classList.contains('posted-rq-flag')) {
+                page['page'].classList.remove('posted-rq-flag');
+                page['page'].classList.add('posted-rq-card-container');
+                page['page'].classList.remove('no-data');
+                return;
+            }
+
             if(page['page'].className !== 'content') {
                 page['page'].classList.add('card-container');
             }
@@ -91,6 +98,15 @@ class TogglePages {
             noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
 
             if(page['page'].innerHTML === '') {
+
+                if(page['page'].classList.contains('posted-rq-card-container')) {
+                    page['page'].classList.remove('posted-rq-card-container');
+                    page['page'].classList.add('posted-rq-flag');
+                    page['page'].classList.add('no-data');
+                    page['page'].append(noDataImg);
+                    return;
+                }
+
                 if(page['page'].className !== 'content') {
                     page['page'].classList.remove('card-container');
                 }

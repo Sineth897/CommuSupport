@@ -198,6 +198,7 @@ sortOptions.addEventListener('click', function(e) {
 
 const requestDisplay = document.getElementById('postedRequests');
 const acceptedDisplay = document.getElementById('acceptedRequests');
+const completedDisplay = document.getElementById('completedRequests');
 
 const filterBtn = document.getElementById('filterBtn');
 const sortBtn = document.getElementById('sortBtn');
@@ -233,21 +234,31 @@ filterBtn.addEventListener('click', async function(e) {
 
     const result = await getData('./requests/filter', 'POST', {filters:filter, sort:sort});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type:'error',value:'Something went wrong! Please try again later!'});
         return;
     }
 
+    toggle.removeNoData();
+
     const requests = result['requests'];
-    const acceptedRequests = result['acceptedRequests'];
+    const acceptedRequestsBeforeFilter = result['acceptedRequests'];
+
+    const completedRequests = acceptedRequestsBeforeFilter.filter(request => request['deliveryStatus'] === 'Completed' );
+    const acceptedRequests = acceptedRequestsBeforeFilter.filter(request => request['deliveryStatus'] !== 'Completed' );
 
     requestDisplay.innerHTML = '';
     requestCard.showCards(requests,requestDisplay,[["View","requestView"]]);
 
     acceptedDisplay.innerHTML = '';
     requestCard.showCards(acceptedRequests,acceptedDisplay,[["View","requestView"]],true);
+
+    completedDisplay.innerHTML = '';
+    requestCard.showCards(completedRequests,completedDisplay,[["View","requestView"]],true);
+
+    toggle.checkNoData();
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';

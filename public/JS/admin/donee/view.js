@@ -1,6 +1,10 @@
 import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages(
+                            [{btnId:'donees',pageId:'doneeTable',title:''}]);
 
 const doneeTableDiv = document.getElementById('doneeTable');
 
@@ -77,7 +81,10 @@ filterBtn.addEventListener('click', async function() {
 
     if(!result['status']) {
         flash.showMessage({type:'error', value:result['message']});
+        return;
     }
+
+    toggle.removeNoData();
 
     result['donees'].forEach( (donee) => {
         donee['cc'] = result['CCs'][donee['ccID']];
@@ -90,6 +97,8 @@ filterBtn.addEventListener('click', async function() {
     }
 
     displayTable(doneeTableDiv, tableData);
+
+    toggle.checkNoData();
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';

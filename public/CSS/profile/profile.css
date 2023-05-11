@@ -279,3 +279,8 @@
     justify-content: flex-end;
     padding: 5px;
 }
+
+li i {
+    height: .8rem;
+}
+

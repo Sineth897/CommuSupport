@@ -13,23 +13,16 @@ let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
 
-    if(e.target !== this) {
-        return;
-    }
-
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {
         filterOptions.style.display = 'block';
     }
     sortOptions.style.display = 'none';
+
 });
 
 document.getElementById('sort').addEventListener('click', function(e) {
-
-    if(e.target !== this) {
-        return;
-    }
 
     if(sortOptions.style.display === 'block') {
         sortOptions.style.display = 'none';
@@ -37,6 +30,7 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+
 });
 
 filterOptions.addEventListener('click', function(e) {
@@ -120,6 +114,12 @@ sortBtn.addEventListener('click', async function() {
 searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 })
+
+searchInput.addEventListener('keyup', async function(e) {
+    if(e.key === 'Enter') {
+        sortBtn.click();
+    }
+});
 
 let viewBtns = document.querySelectorAll('.view');
 

@@ -6,9 +6,9 @@ import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 
 let toggle = new togglePages([
-                                {btnId:'upcoming',pageId:'upcomingEvents'},
-                                {btnId:'completed',pageId:'finishedEvents'},
-                                {btnId:'cancelled',pageId:'cancelledEvents'}]
+                                {btnId:'upcoming',pageId:'upcomingEvents',title:'Upcoming Events'},
+                                {btnId:'completed',pageId:'finishedEvents',title:'Completed Events'},
+                                {btnId:'cancelled',pageId:'cancelledEvents',title:'Cancelled Events'}]
                                 ,'grid');
 
 let filterOptions = document.getElementById('filterOptions');
@@ -53,8 +53,8 @@ let sortByDate = document.getElementById('sortByDate');
 let sortByParticipation = document.getElementById('sortByParticipation');
 // console.log(sortByParticipation);
 
-let popUpArrayKeys = ['organizedBy','date','time','location','description'];
-let popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
+const popUpArrayKeys = ['organizedBy','date','time','location','description'];
+const popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
 
 updateEventCardOnClick();
 filterBtn.addEventListener('click', async function() {
@@ -75,6 +75,8 @@ filterBtn.addEventListener('click', async function() {
     }
 
     const array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+
+    toggle.removeNoData();
 
     // console.log(array);
 

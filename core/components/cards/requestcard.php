@@ -26,24 +26,31 @@ class requestcard
 
     }
 
-    public function displayRequests(array $requests = [],array $btns = [],bool $accepted = false): void
+    /**
+     * @param array $requests
+     * @param array $btns
+     * @param bool $accepted
+     * @param bool $donee
+     * @return void
+     */
+    public function displayRequests(array $requests = [], array $btns = [], bool $accepted = false, bool $donee = false): void
     {
         // set private variables to passed arguments
         $this->accepted = $accepted;
         $this->btns = $btns;
 
         if(!$requests) {
-            echo "<img src='/CommuSupport/public/src/errors/NoData.svg'>";
+            return;
         }
 
         // loop through the requests and display them
         foreach ($requests as $request) {
-            $this->requestCard($request);
+            $this->requestCard($request, $donee);
         }
 
     }
 
-    private function requestCard(array $request): void
+    private function requestCard(array $request,bool $donee): void
     {
         echo sprintf("<div class='rq-card' id='%s'>",$this->accepted ? $request['acceptedID'] : $request['requestID']);
         echo "<div class='rq-card-header'>";
@@ -62,7 +69,7 @@ class requestcard
         echo "</div>";
         $this->displayBtns($request);
         if($this->accepted) {
-            if($request['deliveryStatus'] === "Completed") {
+            if($request['deliveryStatus'] === "Completed" && $donee) {
                 echo "<p class='rq-accepted-date'>";
                 echo sprintf("<strong>%s users </strong> donated",$request['users']);
                 echo "</p>";
@@ -90,7 +97,7 @@ class requestcard
     {
 
         if(!$requests) {
-            echo "<img src='/CommuSupport/public/src/errors/NoData.svg'>";
+            return;
         }
 
         // loop through the requests and display them

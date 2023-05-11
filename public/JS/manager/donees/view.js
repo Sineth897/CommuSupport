@@ -7,7 +7,8 @@ import {displayTable} from "../../components/table.js";
 
 const toggle = new togglePages([
                                     {btnId:'individual',pageId:'individualDoneeDisplay',title:'Individual Donees'},
-                                    {btnId:'organization',pageId:'organizationDoneeDisplay',title:'Organization Donees'}]);
+                                    {btnId:'organization',pageId:'organizationDoneeDisplay',title:'Organization Donees'}
+                                ],);
 
 let temp =  document.getElementsByClassName('pendingVerification');
 let pendingVerifications = {};
@@ -118,10 +119,6 @@ let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
 
-    if(e.target !== this) {
-        return;
-    }
-
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {
@@ -132,16 +129,13 @@ document.getElementById('filter').addEventListener('click', function(e) {
 
 document.getElementById('sort').addEventListener('click', function(e) {
 
-    if(e.target !== this) {
-        return;
-    }
-
     if(sortOptions.style.display === 'block') {
         sortOptions.style.display = 'none';
     } else {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+
 });
 
 filterOptions.addEventListener('click', function(e) {
@@ -187,6 +181,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     const individualDoneeTableData = {
         headings: ["First Name","Last Name","Is Verified","Contact Number","Email",],
         keys: ["fname","lname",['verificationStatus','bool',['No','Yes']],"contactNumber","email",['','View','#',[],'doneeID']],
@@ -201,6 +197,8 @@ filterBtn.addEventListener('click', async function(e) {
 
     displayTable(individualDoneeDisplay,individualDoneeTableData);
     displayTable(organizationDoneeDisplay,organizationDoneeTableData);
+
+    toggle.checkNoData();
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
@@ -221,6 +219,12 @@ sortBtn.addEventListener('click', async function(e) {
 
 searchBtn.addEventListener('click', async function(e) {
     filterBtn.click();
+});
+
+searchInput.addEventListener('keyup', async function(e) {
+    if(e.key === 'Enter') {
+        sortBtn.click();
+    }
 });
 
 let viewBtns = document.querySelectorAll('.view');

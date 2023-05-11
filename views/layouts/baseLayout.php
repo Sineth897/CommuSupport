@@ -51,6 +51,7 @@
 
     const cardContainers = document.querySelectorAll('.card-container');
     const contenConatainers = document.querySelectorAll('.content');
+    const postedRequestCardContainers = document.querySelectorAll('.posted-rq-card-container');
 
     if(cardContainers) {
 
@@ -77,6 +78,23 @@
             if(contenConatainers[i].children.length === 0) {
                 contenConatainers[i].appendChild(noDataImg);
                 contenConatainers[i].classList.add('no-data');
+            }
+        }
+
+    }
+
+    if(postedRequestCardContainers) {
+
+        for(let i=0; i < postedRequestCardContainers.length; i++) {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+            if(postedRequestCardContainers[i].children.length === 0) {
+                postedRequestCardContainers[i].appendChild(noDataImg);
+                postedRequestCardContainers[i].classList.add('no-data');
+                postedRequestCardContainers[i].classList.remove('posted-rq-card-container');
+                postedRequestCardContainers[i].classList.add('posted-rq-flag')
             }
         }
 

@@ -1,6 +1,10 @@
 import { getData } from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages([{btnId:'inventory',pageId:'inventoryDisplay',title:'Inventory'}]);
+
 
 let addBtn = document.getElementById('addBtn');
 let filterBtn = document.getElementById('filterBtn');
@@ -107,6 +111,8 @@ filterBtn.addEventListener('click', async function() {
     }
     let array = await getData('./inventory/filter', 'POST', { filters: filters, sortBy: sort });
 
+    toggle.removeNoData();
+
     let data = {
         headings: ['Item Name', 'Amount', 'Unit', 'Last Updated'],
         keys: ['subcategoryName', 'amount', 'scale', 'updatedTime'],
@@ -114,6 +120,9 @@ filterBtn.addEventListener('click', async function() {
     };
     filterOptions.style.display = 'none';
     displayTable(inventoryDisplay, data);
+
+    toggle.checkNoData();
+
 });
 
 document.getElementById('sortBtn').addEventListener('click', function() {

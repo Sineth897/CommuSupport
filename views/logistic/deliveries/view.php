@@ -49,7 +49,7 @@ $profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Deliveries"); ?>
+<?php $headerDiv->heading("Pending Deliveries"); ?>
 
 <?php $headerDiv->pages(["pending", "completed"]); ?>
 

@@ -5,7 +5,11 @@ import {PopUp} from "../../popup/popUp.js";
 import CCDonationCard from "../../components/ccDonationCard.js";
 
 // toggle pages
-let toggle = new togglePages([{btnId:'posted',pageId:'postedDonations'},{btnId:'ongoing',pageId:'ongoingDonations'},{btnId:'completed',pageId:'completedDonations'}],'grid');
+let toggle = new togglePages([
+                                {btnId:'posted',pageId:'postedDonations',title:'Posted Donations'},
+                                {btnId:'ongoing',pageId:'ongoingDonations',title:'Ongoing Donations'},
+                                {btnId:'completed',pageId:'completedDonations',title:'Completed Donations'}],
+                                'grid');
 
 // get all CC donation cards with a accept btn
 let acceptBtns = document.querySelectorAll('.accept');
@@ -299,6 +303,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     // if the status is true then get the data from the response
     const ccDonations = result['ccDonations'];
     const communitycenters = result['communitycenters'];
@@ -329,6 +335,8 @@ filterBtn.addEventListener('click', async function(e) {
     CCDonationCard.displayCards(postedDonationsDiv, postedDonations, CC, 'posted');
     CCDonationCard.displayCards(ongoingDonationsDiv, ongoingDonations, CC, 'ongoing');
     CCDonationCard.displayCards(completedDonationsDiv, completedDonations, CC, 'completed');
+
+    toggle.checkNoData();
 
     // hide the filter and sort options
     filterOptions.style.display = 'none';
