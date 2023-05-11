@@ -1,0 +1,162 @@
+input:disabled {
+    outline: none;
+    border: none;
+}
+
+.profile-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    padding: 0 10px;
+    height: 100%;
+}
+
+.profile-container > div {
+    border-radius: 12px;
+    background-color: white;
+}
+
+
+.stat1 {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.stat2 {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.stat3 {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.stat4 {
+    grid-area: 1 / 4 / 2 / 5;
+}
+
+.profile-block {
+    grid-area: 2 / 1 / 5 / 3;
+}
+
+.user-activity {
+    grid-area: 2 / 3 / 5 / 5;
+    padding: 20px;
+}
+
+
+.stat-card {
+    border-radius: 0.5rem;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+}
+
+.stat-title {
+    font-size: 0.75rem;
+    font-weight: 400;
+
+    color: #00c615;
+}
+
+.stat-value {
+    color: #1a1a1a;
+    font-size: 4rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    gap: 20px;
+}
+
+/*.stat-movement {*/
+/*    position: absolute;*/
+/*    display: flex;*/
+/*    bottom: 20px;*/
+/*    right: 20px;*/
+/*    flex-direction: row;*/
+/*    align-items: center;*/
+/*    justify-content: flex-end;*/
+/*    font-weight: bold;*/
+/*    font-size: 1.5rem;*/
+/*}*/
+
+/*.dec {*/
+/*    color: #b43636;*/
+/*}*/
+
+/*.inc {*/
+/*    color: #2ba62b;*/
+/*}*/
+
+.stat-icon{
+height: 100px;
+width: 100px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display:grid;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+}
+
+.stat-icon i{
+    color: white;
+    font-size: 2.5rem;
+}
+
+.img-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.img {
+    width: 80px;
+    height: 80px;
+    background-color: #00b705;
+    border-radius: 50%;
+}
+
+
+.user-activity p {
+    padding: 20px 0;
+    height: 60px;
+    font-size: 1.2rem;
+    font-weight: 500;
+
+}
+
+.activity-scroller {
+    height: calc(100% - 60px);
+    overflow: auto;
+}
+
+
+.activity-card {
+    margin-top: 10px;
+    height: 80px;
+    background-color: #dcffe0;
+    border-radius: 14px;
+}
+
+.profile-block {
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-div {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}

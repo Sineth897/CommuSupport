@@ -106,7 +106,7 @@ $searchDiv->end(); ?>
     }
 
     $headers = ["Username",'Registered Date','Community Center',"Contact Number","Type"];
-    $arrayKeys = ["username",'registeredDate','cc','contactNumber','type',['','View','#',[],'donorID']];
+    $arrayKeys = ["username",'registeredDate','cc','contactNumber','type',['','View','./donors/individual/view',['donorID'],'donorID']];
 
     $individualTable = new \app\core\components\tables\table($headers,$arrayKeys);
 

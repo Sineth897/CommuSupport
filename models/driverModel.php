@@ -181,4 +181,26 @@ class driverModel extends DbModel
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+    public function getDriverStatisticsForAdmin(string $employeeID) : array {
+// Getting details for all completed deliveries, currently assigned deliveries and number of deliveries less than 10km and more than 10km using SUM and COUNT functions.
+        $sql =
+            "SELECT 
+  COUNT(CASE WHEN subdelivery.status = 'Completed' THEN 1 ELSE NULL END) AS completed,
+  COUNT(CASE WHEN subdelivery.status = 'Ongoing' THEN 1 ELSE NULL END) AS assigned,
+  SUM(CASE WHEN subdelivery.distance < 10 THEN 1 ELSE 0 END) AS lessThan10,
+  SUM(CASE WHEN subdelivery.distance > 10 THEN 1 ELSE 0 END) AS greaterThan10
+FROM subdelivery
+JOIN driver ON subdelivery.deliveredBy = driver.employeeID
+WHERE driver.employeeID = '$employeeID'";
+        // replace employee ID with :employeeID
+
+        $statement = self::prepare($sql);
+//         bind the employeeID to :employeeID
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
 }

@@ -118,7 +118,15 @@ class driverController extends Controller
         }
     }
 
-   
+    protected function viewIndividualDriver(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+        $model = new driverModel();
 
+        $this->render("admin/drivers/Individual", "View Individual Driver", [
+            'model' => $model,
+            'employeeID' => $request->getBody()['employeeID']
+        ]);
+    }
 }
 

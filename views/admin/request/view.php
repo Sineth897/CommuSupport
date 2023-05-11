@@ -37,7 +37,8 @@ $chartData1 = $model->getRequestDatabyCategory();
 ?>
 
 <script>
-    const itemData = <?php echo json_encode($chartData1); ?>;
+    const itemData = <?php echo json_encode($chartData1)?>;
+    console.log(itemData);
 </script>
 <script src="../public/JS/charts/admin/request/subcategoryChart.js"></script>
 <!-- Summary of ALl Statistics in this div-->

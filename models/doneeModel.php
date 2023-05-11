@@ -256,7 +256,11 @@ class doneeModel extends DbModel
         $statement = self::prepare(implode(" UNION ",$arrayOfSql));
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 
+    public function getDoneePersonalInfo($doneeID){
+//        select all details of the donee from
+        $sql =
     }
 
 }

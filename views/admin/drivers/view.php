@@ -37,7 +37,7 @@ $chartData = $model->getDriverbyVehicle();
     const chartData = <?php echo json_encode($chartData); ?>;
 </script>
 <div class="stat-container">
-    <p>Hello MF</p>
+    <p>Driver Vehicles</p>
     <canvas id="vehicleTypeChart" width="500">
     </canvas>
 </div>
@@ -123,7 +123,7 @@ $searchDiv->end(); ?>
 
     $header = ["Name", "Age", "ContactNumber", 'Vehicle', "Vehicle No", "Community Center"];
 
-    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', '#', [], 'employeeID']];
+    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', './drivers/individual/view', ['employeeID'], 'employeeID']];
 
     $driverTable = new table($header, $arrayKey);
 
