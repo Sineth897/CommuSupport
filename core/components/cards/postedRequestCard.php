@@ -11,7 +11,7 @@ class postedRequestCard
     public static function displayCards($requests) {
 
         if(!$requests) {
-            echo "<img src='/CommuSupport/public/src/errors/NoData.svg'>";
+            return;
         }
 
         //traverse through the array to display each card

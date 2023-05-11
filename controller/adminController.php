@@ -39,27 +39,37 @@ class adminController extends Controller
 
         $category = new categoryModel();
 
+        // Validate the data
         if(!$category->validate($request->getJsonData())) {
             $response->setStatusCode(400);
             $this->sendJson(['status' => 0,'message' => $category->getFirstError('categoryName')]);
             return;
         }
 
+        // load data to the model
         $category->getData($request->getJsonData());
 
+        // Save the data and if fails send failure message
         if(!$category->save()) {
             $response->setStatusCode(500);
             $this->sendJson(['status' => 0,'message' => 'Something went wrong']);
             return;
         }
 
+        // Send success message
         $this->sendJson(['status' => 1,'message' => 'Category added successfully']);
 
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
     protected function getCategories(Request $request, Response $response) : void {
 
         try {
+            // get all categories and then
             $categories = categoryModel::getCategories();
             $this->sendJson(['status' => 1,'data' => $categories]);
         } catch (\PDOException $e) {
@@ -78,20 +88,24 @@ class adminController extends Controller
 
         $subcategory = new subcategoryModel();
 
+        // Validate the data
         if(!$subcategory->validate($request->getJsonData())) {
             $response->setStatusCode(400);
             $this->sendJson(['status' => 0,'message' => $subcategory->getFirstError('categoryName')]);
             return;
         }
 
+        // load data to the model
         $subcategory->getData($request->getJsonData());
 
+        // Save the data and if fails send failure message
         if(!$subcategory->save()) {
             $response->setStatusCode(500);
             $this->sendJson(['status' => 0,'message' => 'Something went wrong']);
             return;
         }
 
+        // Send success message
         $this->sendJson(['status' => 1,'message' => 'Subcategory added successfully']);
 
     }
@@ -103,6 +117,7 @@ class adminController extends Controller
      */
     protected function viewInventoryLog(Request $request, Response $response) : void {
 
+        // redirect to inventory model
         $this->render('admin/inventoryLog', "Inventory Log");
 
     }

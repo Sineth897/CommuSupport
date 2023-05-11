@@ -6,9 +6,9 @@ import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 
 let toggle = new togglePages([
-                                {btnId:'upcoming',pageId:'upcomingEvents'},
-                                {btnId:'completed',pageId:'finishedEvents'},
-                                {btnId:'cancelled',pageId:'cancelledEvents'}]
+                                {btnId:'upcoming',pageId:'upcomingEvents',title:'Upcoming Events'},
+                                {btnId:'completed',pageId:'finishedEvents',title:'Completed Events'},
+                                {btnId:'cancelled',pageId:'cancelledEvents',title:'Cancelled Events'}]
                                 ,'grid');
 
 let filterOptions = document.getElementById('filterOptions');
@@ -75,6 +75,8 @@ filterBtn.addEventListener('click', async function() {
     }
 
     const array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+
+    toggle.removeNoData();
 
     // console.log(array);
 

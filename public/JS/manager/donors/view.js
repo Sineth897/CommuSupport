@@ -8,7 +8,7 @@ import {displayTable} from "../../components/table.js";
 const toggle = new togglePages([
                                     {btnId:'individual',pageId:'individualDonorDisplay',title:'Individual Donors'},
                                     {btnId:'organization',pageId:'organizationDonorDisplay',title:'Organization Donors'}
-                                ]);
+                                ], 'block');
 
 const individualDonorDisplay = document.getElementById('individualDonorDisplay');
 const organizationDonorDisplay = document.getElementById('organizationDonorDisplay');
@@ -84,6 +84,12 @@ sortBtn.addEventListener('click', async function(e) {
 
 searchBtn.addEventListener('click', async function(e) {
     sortBtn.click();
+});
+
+searchInput.addEventListener('keyup', async function(e) {
+    if(e.key === 'Enter') {
+        sortBtn.click();
+    }
 });
 
 let viewBtns = document.querySelectorAll('.view');

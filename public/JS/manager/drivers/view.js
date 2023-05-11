@@ -115,6 +115,12 @@ searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 })
 
+searchInput.addEventListener('keyup', async function(e) {
+    if(e.key === 'Enter') {
+        sortBtn.click();
+    }
+});
+
 let viewBtns = document.querySelectorAll('.view');
 
 for(let i=0;i<viewBtns.length;i++) {
