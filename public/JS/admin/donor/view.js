@@ -1,6 +1,10 @@
 import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages(
+                            [{btnId:'donors',pageId:'donorTable',title:''}]);
 
 const donorTableDiv = document.getElementById('donorTable');
 
@@ -74,6 +78,8 @@ filterBtn.addEventListener('click', async function() {
         return
     }
 
+    toggle.removeNoData();
+
     result['donors'].forEach( (donor) => {
         donor['cc'] = result['CCs'][donor['ccID']];
     });
@@ -85,6 +91,8 @@ filterBtn.addEventListener('click', async function() {
     }
 
     displayTable(donorTableDiv, tableData);
+
+    toggle.checkNoData();
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';

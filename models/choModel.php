@@ -40,14 +40,13 @@ class choModel extends DbModel
 
     public function save(): bool
     {
-        $this->choID = uniqid('cho',true);
+        $this->choID = substr(uniqid('cho',true),0,23);
+        $this->user->userID = $this->choID;
+        $this->user->password = password_hash($this->user->password, PASSWORD_DEFAULT);
+        $this->user->userType = "cho";
         if(parent::save()){
             if($this->user->save()){
                 return true;
-            }
-            else {
-                $this->delete(['choID' => $this->choID]);
-                return false;
             }
         }
         return false;

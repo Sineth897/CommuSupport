@@ -1001,4 +1001,8 @@ $app->router->post('/admin/event/popup', function ($request, $response) {
     $controller = new \app\controller\adminController("getEventPopup",$request,$response);
 });
 
+$app->router->post('/admin/donation/popup', function ($request, $response) {
+    $controller = new \app\controller\adminController("getDonationPopup",$request,$response);
+});
+
 $app->run();

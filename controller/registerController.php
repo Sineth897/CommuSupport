@@ -82,6 +82,7 @@ class registerController extends Controller
                         $user->reset();
                     }
                     $this->commitTransaction();
+                    $response->redirect('/admin/communityheadoffices');
                 } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('error', 'Unable to save on database');

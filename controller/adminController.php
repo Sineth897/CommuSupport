@@ -198,4 +198,37 @@ class adminController extends Controller
 
     }
 
+    protected function getDonationPopup(Request $request, Response $response) : void {
+
+        $donationID = $request->getJsonData()['donationID'];
+
+        try {
+
+            $sql = "SELECT *,CONCAT(d.amount,' ',s.scale) AS amount,CONCAT(c.city,' (CC)') AS cc FROM donation d
+                        INNER JOIN users u ON d.createdBy = u.userID
+                        INNER JOIN subcategory s on d.item = s.subcategoryID
+                        INNER JOIN communitycenter c on d.donateTo = c.ccID";
+
+            $sqlDeliveries = "SELECT s.*,d.*,s.status AS deliveryStatus FROM delivery d 
+                                    LEFT JOIN subdelivery s ON d.deliveryID = s.deliveryID 
+                                    LEFT JOIN donation don ON s.deliveryID = don.deliveryID";
+
+            $this->sendJson([
+                'status' => 1,
+                'donation' => requestModel::runCustomQuery($sql, ['d.donationID' => $donationID]) [0],
+                'deliveries' => requestModel::runCustomQuery($sqlDeliveries, ['don.donationID' => $donationID]),
+            ]);
+
+        }
+        catch(\Exception $e) {
+            $this->sendJson([
+                'status' => 0,
+                'message' => $e->getMessage()
+            ]);
+            return;
+
+        }
+
+    }
+
 }

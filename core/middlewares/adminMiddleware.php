@@ -15,6 +15,7 @@ class adminMiddleware extends Middleware
             'viewInventoryLog' => [$this->ADMIN],
             'requestPopup' => [$this->ADMIN],
             'getEventPopup' => [$this->ADMIN],
+            'getDonationPopup' => [$this->ADMIN],
         ];
 
     }
