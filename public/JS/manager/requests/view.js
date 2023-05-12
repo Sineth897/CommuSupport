@@ -143,11 +143,11 @@ async function showPendingReqPopUp(e) {
     popUpRequest.startSplitDiv();
     popUpRequest.setBody(reqDetails,['requestID','postedDate','subcategoryName'],['ID','Date Posted','Item']);
     popUpRequest.setBody(reqDetails,['address','urgency','amount'],['Address','Urgency','Amount']);
-    popUpRequest.setBody(reqDetails,['notes'],['Additional Notes']);
     popUpRequest.endSplitDiv();
-    popUpRequest.endSplitDiv();
+    popUpRequest.setBody(reqDetails,['notes'],[['Additional Notes','textarea']]);
     popUpRequest.setButtons([{text:'Approve',classes:['btn-primary'],value:reqDetails['requestID'],func:approveFun,cancel:true},
         {text:'Reject',classes:['btn-danger'],value:reqDetails['requestID'],func:rejectFun,cancel:true}]);
+    popUpRequest.endSplitDiv();
     popUpRequest.showPopUp();
 }
 
@@ -178,6 +178,7 @@ let approveFun = async (e) => {
 let observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
         if(mutation.type === 'attributes' && mutation.attributeName === 'style' && mutation.target.style.display === 'none') {
+            document.getElementById('rejectedReason').nextElementSibling.remove();
             document.getElementById('rejectedReason').remove();
         }
     });
@@ -197,6 +198,7 @@ let rejectFun = async (e) => {
         reasonDiv.append(reasonLabel,reasonInput);
         parent.append(reasonDiv);
         e.target.parentNode.parentNode.insertBefore(parent,e.target.parentNode);
+        e.target.parentNode.parentNode.insertBefore(document.createElement('div'),e.target.parentNode);
 
         observer.observe(e.target.nextElementSibling,{attributes:true,attributeFilter:['style']});
 
