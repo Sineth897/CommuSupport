@@ -15,14 +15,14 @@ var itemChart = new Chart(ctx, {
     },
     options: {
         title: {
-            display: true,
+            display: false,
             text: 'Categories of Donees',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'
         },
-        responsive: true,
-        maintainAspectRatio: false,
+        // responsive: true,
+        // maintainAspectRatio: false,
         legend: {
             display: true,
             position: 'top',

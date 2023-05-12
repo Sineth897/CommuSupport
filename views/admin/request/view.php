@@ -23,6 +23,17 @@ $profile->profile();
 
 $profile->end(); ?>
 
+
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Pending Requests"); ?>
+
+<?php $headerDiv->pages(["pending", 'accepted']) ?>
+
+<?php $headerDiv->end(); ?>
+
+
+
 <!-- Inforgraphic Cards Layout -->
 <?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
 
@@ -68,16 +79,38 @@ $chartData2 = $model->getRequestDataMonthly();
 <script src="../public/JS/charts/admin/request/totalChart.js"></script>
 
 <?php $infoDiv->chartDivEnd();
+?>
+
+<div class="stat-box-2-h">
+    <div class="stat-card">
+        <span class="stat-title">
+Pending Requests        </span>
+        <span class="stat-value">
+            100
+        </span>
+        <span class="stat-movement dec">
+            <i class="material-icons">arrow_downward</i>10%
+        </span>
+
+    </div>
+    <div class="stat-card">
+                <span class="stat-title">
+Completed Requests        </span>
+        <span class="stat-value">
+            100
+
+        </span>
+        <span class="stat-movement inc">
+            <i class="material-icons">arrow_upward</i>10%
+        </span>
+
+    </div>
+</div>
+
+<?php
 $infoDiv->end(); ?>
 
 
-<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
-
-<?php $headerDiv->heading("Pending Requests"); ?>
-
-<?php $headerDiv->pages(["pending", 'accepted']) ?>
-
-<?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
 

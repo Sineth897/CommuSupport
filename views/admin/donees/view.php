@@ -8,6 +8,8 @@ $CCs = \app\models\ccModel::getCCs();
 
 ?>
 
+
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
@@ -16,14 +18,74 @@ $profile->profile();
 
 $profile->end(); ?>
 
-<!-- Inforgraphic Cards Layout -->
-<?php $infoDiv = new \app\core\components\layout\infoDiv([2,3]);
 
+
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Donees"); ?>
+
+<?php $headerDiv->end(); ?>
+
+
+<!-- Inforgraphic Cards Layout -->
+<?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
+?>
+
+<div class="stat-box-2-h">
+    <div class="stat-card">
+        <span class="stat-title">
+Registrations       </span>
+        <span class="stat-value">
+            100
+        </span>
+        <span class="stat-movement dec">
+            <i class="material-icons">arrow_downward</i>10%
+        </span>
+
+    </div>
+    <div class="stat-card">
+                <span class="stat-title">
+Verified Donors    </span>
+        <span class="stat-value">
+            100
+
+        </span>
+        <span class="stat-movement inc">
+            <i class="material-icons">arrow_upward</i>10%
+        </span>
+
+    </div>
+</div>
+
+
+<!--Second Long Div with Bar Chart-->
+<?php $infoDiv->chartDivStart(); ?>
+<div class="chart-container">
+<!--    --><?php //$infoDiv->chartCanvas("totalRegChart"); ?>
+    Total Registrations
+    <canvas id="totalRegChart" height="120px"></canvas>
+</div>
+
+<?php
+$chartData2 = $model->getDoneeRegMonthly();
+?>
+
+<script>
+    const monthData = <?php echo json_encode($chartData2); ?>;
+</script>
+<script src="../public/JS/charts/admin/donee/totalRegChart.js"></script>
+
+<?php $infoDiv->chartDivEnd();
+?>
+
+
+<?php
 // First Block of Statistics
 $infoDiv->chartDivStart();
 //?>
 <div class="chart-container">
-<canvas id="doneeCategoryChart"></canvas>
+<p>Category of Donors</p>
+    <canvas id="doneeCategoryChart" height="240px"></canvas>
 </div>
 
 <?php
@@ -41,31 +103,12 @@ $infoDiv->chartDivEnd();
 ?>
 
 
-<!--Second Long Div with Bar Chart-->
-<?php $infoDiv->chartDivStart(); ?>
-<div class="chart-container">
-<!--    --><?php //$infoDiv->chartCanvas("totalRegChart"); ?>
-    <canvas id="totalRegChart" width="400" height="250"></canvas>
-</div>
-
 <?php
-$chartData2 = $model->getDoneeRegMonthly();
-?>
 
-<script>
-    const monthData = <?php echo json_encode($chartData2); ?>;
-</script>
-<script src="../public/JS/charts/admin/donee/totalRegChart.js"></script>
 
-<?php $infoDiv->chartDivEnd();
 $infoDiv->end(); ?>
 
 
-<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
-
-<?php $headerDiv->heading("Donees"); ?>
-
-<?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
 

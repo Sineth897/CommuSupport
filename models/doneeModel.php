@@ -269,7 +269,7 @@ class doneeModel extends DbModel
     public function getDoneePersonalInfo($doneeID)
     {
 // basic fields from the donee table
-        $sql = "SELECT d.doneeID, d.ccID, d.registeredDate, d.verificationStatus, d.email, d.address, d.contactNumber, d.type, d.mobileVerification, d.longitude, d.latitude, ";
+        $sql = "SELECT d.doneeID, d.registeredDate, d.verificationStatus, d.email, d.address, d.contactNumber, d.type, d.mobileVerification, d.longitude, d.latitude, ";
 // conditional sql to find the donee name based on the type of donee
         $sqlconditional = "CASE WHEN d.type = 'individual' THEN CONCAT(i.fname, ' ', i.lname) ELSE o.organizationName END AS doneeName, ";
         // fields from the individual table and organization table
