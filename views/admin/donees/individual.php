@@ -59,6 +59,9 @@ Donations             </div>
         </div>
     </div>    <div class="stat-card event"> Events Participated</div>
     <div class="profile-block">
+        <?php
+        var_dump($model->get
+        ?>
         <p>Name</p>
         <p>Contact Number</p>
         <p>ID Number</p>
