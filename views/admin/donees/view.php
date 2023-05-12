@@ -8,33 +8,6 @@ $CCs = \app\models\ccModel::getCCs();
 
 ?>
 
-<style>
-
-    @media print {
-
-        @page {
-            size: landscape;
-        }
-
-        .sidenav, .profile, .search-filter {
-            display: none;
-        }
-
-        .main {
-            width: 100vw;
-            left: 0;
-            height: 100%;
-            overflow: visible;
-        }
-
-        tbody td:last-child {
-            display: none;
-        }
-
-    }
-
-</style>
-
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
@@ -120,8 +93,6 @@ $searchDiv->filterDivEnd();
 
 $searchDiv->search();
 
-echo "<button class='btn-cta-primary' id='doneePrint'>Print</button>";
-
 $searchDiv->end(); ?>
 
 
@@ -146,13 +117,3 @@ $searchDiv->end(); ?>
 
 
 <script type="module" src="../public/JS/admin/donee/view.js"></script>
-
-<script>
-
-    window.onload = function () {
-        document.getElementById("doneePrint").onclick = function () {
-            window.print();
-        }
-    }
-
-</script>

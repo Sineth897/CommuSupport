@@ -155,7 +155,7 @@ $searchDiv->end(); ?>
 
     $header = ["Name", "Age", "ContactNumber", 'Vehicle', "Vehicle No", "Community Center"];
 
-    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', '#', [], 'employeeID']];
+    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', './drivers/individual/view', ['employeeID'], 'employeeID']];
 
     $driverTable = new table($header, $arrayKey);
 

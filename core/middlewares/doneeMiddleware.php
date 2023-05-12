@@ -13,7 +13,8 @@ class doneeMiddleware extends Middleware
                 'verifyDonee' => [$this->MANAGER],
                 'doneesFilterAdmin' => [$this->ADMIN,],
                 'filterDonees' => [$this->MANAGER],
-                'doneePopup' => [$this->MANAGER]
+                'doneePopup' => [$this->MANAGER],
+                'viewIndividualDonee' => [$this->ADMIN]
             ];
 
         }

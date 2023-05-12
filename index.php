@@ -897,6 +897,25 @@ $app->router->get('/admin/profile', function ($request, $response) {
     $controller = new \app\controller\profileController("adminProfile",$request,$response);
 });
 
+// admin view individual CC
+$app->router->get('/admin/communitycenters/individual/view', function ($request, $response) {
+    $controller = new \app\controller\ccController("viewIndividualCC",$request,$response);
+});
+
+// admin view individual donee
+$app->router->get('/admin/donees/individual/view', function ($request, $response) {
+    $controller = new \app\controller\doneeController("viewIndividualDonee",$request,$response);
+});
+
+// admin view individual donor
+$app->router->get('/admin/donors/individual/view', function ($request, $response) {
+    $controller = new \app\controller\donorController("viewIndividualDonor",$request,$response);
+});
+
+// admin view driver profile
+$app->router->get('/admin/drivers/individual/view', function ($request, $response) {
+    $controller = new \app\controller\driverController("viewIndividualDriver",$request,$response);
+});
 
 
 

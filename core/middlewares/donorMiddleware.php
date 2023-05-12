@@ -11,7 +11,8 @@ class donorMiddleware extends Middleware
             'viewDonors' => [$this->MANAGER, $this->ADMIN],
             'donorsFilterAdmin' => [$this->ADMIN],
             'filterDonors' => [$this->MANAGER],
-            'donorPopup' => [$this->MANAGER]
+            'donorPopup' => [$this->MANAGER],
+            'viewIndividualDonor' => [$this->ADMIN],
         ];
 
     }
