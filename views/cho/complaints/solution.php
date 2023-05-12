@@ -8,6 +8,9 @@
 /** @var $solution \app\models\complaintModel */
 /** @var $user \app\models\choModel */
 
+print_r($solutions);
+
+
 
 
 ?>
@@ -42,6 +45,46 @@ $headerDiv->end();
     <?php $solutionForm = \app\core\components\form\form::begin('','post') ?>
 
     <div class="form-box">
+
+        <div class="form-group">
+            <label for="" class="form-label">
+                Complaint
+            </label>
+            <input  class="basic-input-field" type="text" value="<?php echo $solutions[0]['complaint']?>" disabled>
+
+        </div>
+        <div class="form-group">
+            <label for="" class="form-label">
+                Complaint Filed By
+            </label>
+            <input  class="basic-input-field" type="text" value="<?php echo $solutions[0]['username']?>" disabled>
+
+        </div>
+
+
+        <div class="form-group">
+            <label for="" class="form-label">
+                Complaint Regarding
+            </label>
+            <input class="basic-input-field" type="text" value="<?php echo $solutions[0]['subject']?>" disabled>
+
+        </div>
+
+        <div class="form-group">
+            <label for="" class="form-label">
+                Complaint Filed Date
+            </label>
+            <input class="basic-input-field" type="text" value="<?php echo $solutions[0]['filedDate']?>" disabled>
+
+        </div>
+        <div class="form-group">
+            <label for="" class="form-label">
+                Status
+            </label>
+            <input class="basic-input-field" type="text" value="<?php echo $solutions[0]['status']?>" disabled>
+
+        </div>
+
 
 
         <div >

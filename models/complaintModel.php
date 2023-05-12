@@ -129,5 +129,24 @@ class complaintModel extends DbModel
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function provideSolution(string $donorID,string $complaintID)
+    {  $statement = self::prepare("SELECT u.username,c.complaint,c.filedDate,c.filedBy,c.subject,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c
+        INNER JOIN users u ON c.filedBy=u.userID where filedBy=:filedBy and complaintID=:complaintID");
+//        $statement = self::prepare("SELECT * from complaint c INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where filedBy=:filedBy and complaintID=:complaintID");
+        $statement->bindValue(':filedBy', $donorID);
+        $statement->bindValue(':complaintID',$complaintID);
 
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function requestComplaints($requestID)
+    {
+        $statement = self::prepare("SELECT r.approvedDate,r.item,r.amount,r.urgency,
+        r.postedDate,r.expDate,r.notes FROM acceptedrequest r where acceptedID=:requestID");
+        $statement->bindValue(':requestID',$requestID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
 }

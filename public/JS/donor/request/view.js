@@ -27,7 +27,7 @@ async function showReqPopUp(e) {
 
     let result = await getData('./requests/popup', 'POST', {"r.requestID": element.id});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({'type':'error','value':result['message']});
@@ -35,10 +35,11 @@ async function showReqPopUp(e) {
     }
 
     let data = result['requestDetails'];
+    console.log(data)
 
     if( element.id.includes('accepted')) {
         popUpRequest.clearPopUp();
-        popUpRequest.setComplaintIcon('acceptedID','acceptedRequest');
+        popUpRequest.setComplaintIcon(data.acceptedID,'request');
         popUpRequest.setHeader('Request Details');
 
         popUpRequest.startSplitDiv();

@@ -1,14 +1,29 @@
 <link rel="stylesheet" href="./public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="./public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="./public/CSS/flashMessages.css">
-
+<link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="../public/CSS/form/form.css" type="text/css" rel="stylesheet">
+<style>
+    .form-group{
+        width: 300px;
+    }
+</style>
 <?php
 
 /** @var $complaint \app\models\complaintModel */
 /** @var $user \app\models\donorModel */
-/** @var $model \app\models\donationModel */
+/** @var $model donationModel */
 
+$donations = $model->getDonationDetails($_GET['processID']);
 
+?>
+
+<?php
+$headerDiv = new \app\core\components\layout\headerDiv();
+
+$headerDiv->heading("Submit a complaint");
+
+$headerDiv->end();
 ?>
 
 
@@ -23,20 +38,6 @@ $profile->end();
 ?>
 
 
-<!--<div class="content" id="activeDonations">-->
-<!---->
-<!--    --><?php
-//    foreach ($activeDonations as $donation) {
-//        echo "<pre>";
-//        echo "<p>Donation ID : {$donation['donationID']}</p>";
-//        echo "<p>Item : {$donation['item']}</p>";
-//        echo "<p>Amount : {$donation['amount']}</p>";
-//        echo "<p>Delivery : {$donation['deliveryStatus']}</p>";
-//        echo "<button id='{$donation['donationID']}' class='donation-view-btn vtn- primary'>View</button>";
-//        echo "</pre>";
-//    }
-//    ?>
-<!--</div>-->
 
 
 <div class="content-form">
@@ -44,10 +45,45 @@ $profile->end();
     <?php $complaintRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 
     <div class="form-box">
+  <div class="form-group">
+      <label for="" class="form-label">
+          Item
+      </label>
+      <input  class="basic-input-field" type="text" value="<?php echo $donations['subcategoryName']?>" disabled>
+
+  </div>
 
 
+        <div class="form-group">
+            <label for="" class="form-label">
+                Amount
+            </label>
+            <input class="basic-input-field" type="text" value="<?php echo $donations['amount']?>" disabled>
 
-        <div >
+        </div>
+
+        <div class="form-group">
+            <label for="" class="form-label">
+                Date
+            </label>
+            <input class="basic-input-field" type="text" value="<?php echo $donations['date']?>" disabled>
+
+        </div>
+        <div class="form-group">
+            <label for="" class="form-label">
+                Delivery Status
+            </label>
+            <input class="basic-input-field" type="text" value="<?php echo $donations['deliveryStatus']?>" disabled>
+
+        </div>
+        <div class="form-group">
+            <label for="" class="form-label">
+                Driver Name
+            </label>
+            <input class="basic-input-field" type="text" value="<?php echo $donations['name']?>" disabled>
+
+        </div>
+
 
 
             <?php $complaintRegistrationForm->textArea($complaint,"Please provide the complaint" ,"complaint") ?>
@@ -70,5 +106,13 @@ $profile->end();
     </div>
 
     <?php $complaintRegistrationForm->end() ?>
+
+
+
+
+
+
+
+
 
 </div>

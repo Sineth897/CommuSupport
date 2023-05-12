@@ -7,6 +7,7 @@ use app\core\middlewares\complaintMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\complaintModel;
+use app\models\donationModel;
 use app\models\notificationModel;
 
 class complaintController extends Controller
@@ -38,10 +39,16 @@ class complaintController extends Controller
         $this->checkLink($request);
         //creating model to make new complaint from donor
         $model =new complaintModel();
+        $dModel=new donationModel();
+        $donations = $dModel->getDonationDetails($_GET['processID']);
+        $deliveryStatus = $donations['deliveryStatus'];
+        $driver = $donations['deliveredBy'];
 
+//        var_dump($donations);
 
         if($request->isPost()){
             $model ->getData($request->getBody());
+
 
             if($model->validate($request->getBody()) && $model->save()){
                 $this->setFlash("result",'Complaint submitted');
@@ -52,6 +59,7 @@ class complaintController extends Controller
                 $this->setFlash('result', 'Complaint failed to submitted');
             }
         }
+
         if($request->isGet()){
 
             $model->subject=$_GET['processID'];
@@ -59,11 +67,31 @@ class complaintController extends Controller
 
         }
 
-        $this->render("./donor/complaints/file",'File a Complaint',[
-            'complaint'=>$model,
+        if($deliveryStatus==='Ongoing'){
+
+            notificationModel::setNotification("Didn't receive yet. Check my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
+
+        }
+        else{
+            notificationModel::setNotification("Please send my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
+
+        }
+        $process=$_GET['process'];
+        if ($process==='request'){
+            $this->render("./donor/complaints/reqFile",'File a Complaint',[
+                'complaint'=>$model,
+                'model'=>$dModel
 
 
-        ]);
+            ]);
+        }else{
+            $this->render("./donor/complaints/file",'File a Complaint',[
+                'complaint'=>$model,
+                'model'=>$dModel
+
+
+            ]);
+        }
 
     }
    // getting complaints filed by donee
@@ -90,6 +118,7 @@ class complaintController extends Controller
         if($request->isGet())
         {
             $model->subject=$_GET['processID'];
+
         }
 
         $this->render("./donee/complaints/file",'File a Complaint',[
@@ -128,17 +157,52 @@ class complaintController extends Controller
             {
                 $model->complaintID=$_GET['complaintID'];
                 $model->filedBy=$_GET['filedBy'];
-
             }
+            $solutions = $model->provideSolution($model->filedBy,$model->complaintID);
 
-            echo $model->complaintID;
+
             $this->render("./cho/complaints/solution","Solution Submit",[
                 // render
                 'solution'=>$model,
+                'solutions'=>$solutions
 
             ]);
         }
 
+// getting complaints filed by donee
+    protected function donorFileRequestComplaint(Request $request, Response $response)
+    {
+        $this->checklink($request);
+        //creating model to make a new complaint from donee
+        $model = new complaintModel();
+        if($request->isPost())
+        {
+            $model->getData($request->getBody());
+
+            if($model->validate($request->getBody()) && $model->save())
+            {
+                $this->setFlash('result','Complaint submitted');
+                $model->reset();
+            }
+            else {
+
+                $this->setFlash('result', 'Complaint failed to submitted');
+            }
+        }
+        var_dump($this->getUserType());
+        exit();
+
+        if($request->isGet())
+        {
+            $model->subject=$_GET['processID'];
+
+        }
+
+        $this->render("./donor/complaints/reqFile",'File a Complaint',[
+            'complaint'=>$model
+        ]);
+
+    }
 
 
 }
