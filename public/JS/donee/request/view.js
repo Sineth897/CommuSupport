@@ -83,7 +83,7 @@ async function showPopup(e) {
     popUp.clearPopUp();
 
     // add complaint for request
-    popUp.setComplaintIcon(request['requestID'],'acceptedRequest');
+    popUp.setComplaintIcon(request['acceptedID'],'acceptedRequest');
 
     // pop up heading
     popUp.setHeader('Request Details');

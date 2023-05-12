@@ -3,6 +3,27 @@
 
 ?>
 
+<style>
+
+    @media print {
+
+        .sidenav, .profile, .search-filter {
+            display: none;
+        }
+
+        .main {
+            width: 100vw;
+            left: 0;
+        }
+
+        .heading-pages {
+            justify-content: center;
+        }
+
+    }
+
+</style>
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->profile();
@@ -18,6 +39,12 @@ $headerDiv->heading("Inventory Log");
 
 $headerDiv->end();
 ?>
+
+<?php $searchDiv = new \app\core\components\layout\searchDiv();
+
+echo "<button class='btn-cta-primary'>Print</button>";
+
+$searchDiv->end(); ?>
 
 <div class="content">
 
@@ -35,3 +62,14 @@ $headerDiv->end();
     ?>
 
 </div>
+
+<script>
+
+    window.onload = function(){
+        document.querySelector("button.btn-cta-primary").addEventListener("click", function(){
+            window.print();
+        })
+    }
+
+
+</script>

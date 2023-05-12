@@ -39,8 +39,8 @@ class CCcard
             </div>",$cc['fax']);
         echo sprintf("<div class='details-group'>
                 <p><strong>Email : </strong>%s</p>
-                <div class='icon-button'><i class='material-icons'>email</i></div>
-            </div>",$cc['email']);
+                <div class='icon-button'><a href='mailto:%s'<i class='material-icons'>email</i></a></div>
+            </div>",$cc['email'],$cc['email']);
         echo '</div>';
         echo "</div>";
     }
