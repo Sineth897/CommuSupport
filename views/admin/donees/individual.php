@@ -6,6 +6,7 @@ $doneeID = $_GET['doneeID'];
 ?>
 
 <link rel="stylesheet" href="/CommuSupport/public/CSS/individual/donee.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
 
 
 <div class="profile-container">
