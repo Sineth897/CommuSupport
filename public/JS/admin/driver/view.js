@@ -1,6 +1,10 @@
 import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages(
+    [{btnId:'driverss',pageId:'driverTable',title:''}]);
 
 const driverTableDiv = document.getElementById('driverTable');
 
@@ -23,6 +27,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+   e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const filterBtn = document.getElementById('filterBtn');
@@ -72,6 +84,8 @@ filterBtn.addEventListener('click', async function() {
         return
     }
 
+    toggle.removeNoData();
+
     result['drivers'].forEach( (driver) => {
         driver['cc'] = result['CCs'][driver['ccID']];
     });
@@ -85,6 +99,9 @@ filterBtn.addEventListener('click', async function() {
     }
 
     displayTable(driverTableDiv,tableData);
+
+    toggle.checkNoData();
+
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 

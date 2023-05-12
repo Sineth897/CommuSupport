@@ -8,27 +8,25 @@
     align-items: flex-end;
     justify-content: flex-end;
     max-width: 20vw;
-    /*padding: 0.5rem;*/
 }
 
 .flash-msg {
     position: relative;
-    background-color: #f2dede;
-    color: #a94442;
     padding: 1.2rem;
     margin-bottom: 1rem;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: 12px;
     max-width: 20vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-.flash-close {
-    position: absolute;
-    top: 0;
-    right: 0;
+.flash-msg i{
+    color: #ffffff;
     cursor: pointer;
-    color: #1a1a1a;
-    font-size: 0.8rem;
+    font-size: 1.5rem;
 }
 
 
@@ -84,4 +82,24 @@
         transform: translateY(100%);
         opacity: 1;
     }
+}
+
+.successFlash
+{
+    background-color: #e9ffeb;
+    color: #29ab37;
+}
+
+.successFlash i{
+    color: #29ab37;
+}
+
+.errorFlash
+{
+    background-color: #ffe9e9;
+    color: #a94442;
+}
+
+.errorFlash i{
+    color: #a94442;
 }

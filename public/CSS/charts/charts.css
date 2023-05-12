@@ -1,0 +1,76 @@
+.info-container p {
+    text-align: center;
+}
+
+.stat-box, .chart-box {
+    background-color: white;
+    border-radius: 10px;
+    position: relative;
+    height: 300px;
+}
+.stat-box, .chart-box {
+    display: grid;
+}
+
+.stat-box-2-h{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+}
+
+.chart-container, .stat-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 100%;
+    padding: 10px;
+}
+
+
+.stat-card {
+    border-radius: 0.5rem;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.stat-title{
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #a6a6a6;
+}
+
+.stat-value{
+    font-size: 3rem;
+    font-weight: 500;
+    color: #333;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+    gap: 20px;
+}
+
+.stat-movement
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.dec{
+    color: #b43636;
+}
+.inc{
+    color: #2ba62b;
+}
+
+
+
+

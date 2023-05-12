@@ -2,6 +2,9 @@ import {getData,getTextData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import {PopUp} from "../../popup/popUp.js";
 import flash from "../../flashmessages/flash.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages([{btnID:'drivers',pageId:'driverDisplay'}]);
 
 const driverTableDiv = document.getElementById('driverDisplay');
 
@@ -24,6 +27,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const filterBtn = document.getElementById('filterBtn');
@@ -68,6 +79,8 @@ filterBtn.addEventListener('click', async function() {
         return
     }
 
+    toggle.removeNoData();
+
     // console.log(result['drivers']);
 
     const tableData = {
@@ -77,6 +90,9 @@ filterBtn.addEventListener('click', async function() {
     }
 
     displayTable(driverTableDiv,tableData);
+
+    toggle.checkNoData();
+
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 

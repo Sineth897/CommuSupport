@@ -3,6 +3,7 @@ import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import flash from "../../flashmessages/flash.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
+import togglePages from "../../togglePages";
 
 let eventCards = document.getElementsByClassName('event-card');
 
@@ -84,12 +85,21 @@ let markParticipation = async (e) => {
 
 let filterOptions = document.getElementById('filterOptions');
 document.getElementById('filter').addEventListener('click', function(e) {
+
+    if(e.target !== this) {
+        return;
+    }
+
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {
         filterOptions.style.display = 'block';
     }
-    sortOptions.style.display = 'none';
+
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 let filterBtn = document.getElementById('filterBtn');
@@ -116,6 +126,7 @@ filterBtn.addEventListener('click', async function() {
     filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);
     updateEventCardOnClick();
+
 
 });
 

@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="../public/CSS/table/table-styles.css">
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <script
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
@@ -23,13 +24,14 @@ $profile->profile();
 $profile->end(); ?>
 
 <!-- Inforgraphic Cards Layout -->
-<?php $infoDiv = new \app\core\components\layout\infoDiv([2,3]);
+<?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
 
 // First Block of Statistics
 $infoDiv->chartDivStart();
 //?>
 <div class="chart-container">
-    <canvas id="itemChart"></canvas>
+    <p>Category</p>
+    <canvas id="itemChart" height="240px"></canvas>
 </div>
 <?php
 $chartData1 = $model->getRequestDatabyCategory();
@@ -50,7 +52,8 @@ $infoDiv->chartDivEnd();
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
 <div class="chart-container">
-    <canvas id="totalChart" width="600"></canvas>
+    <p>Request Data </p>
+    <canvas id="totalChart" height="120px"></canvas>
 </div>
 <?php
 $urgencies = array("Within 7 days", "Within a month");
@@ -69,7 +72,7 @@ $infoDiv->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Requests"); ?>
+<?php $headerDiv->heading("Pending Requests"); ?>
 
 <?php $headerDiv->pages(["pending", 'accepted']) ?>
 

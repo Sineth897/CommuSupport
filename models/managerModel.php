@@ -96,26 +96,29 @@ class managerModel extends DbModel
     private function getManagerStatistics() : array {
 
         $arrayOfSql = [
-            $sqlDonationsReceived = "SELECT 'Active Events',COUNT(*) FROM event e 
+            $sqlActiveEvents = "SELECT 'Active Events',COUNT(*) FROM event e 
                                             INNER JOIN manager m ON e.ccID = m.ccID 
-                                            WHERE m.employeeID = '{$_SESSION['user']}'",
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND e.status IN ('Upcoming','Active')",
 
-            $sqlAcceptedRequesrts = "SELECT 'Requests Accepted',COUNT(*) FROM acceptedrequest a 
-                                            INNER JOIN logisticofficer l ON a.acceptedBy = l.ccID 
-                                            WHERE l.employeeID = '{$_SESSION['user']}' 
-                                            GROUP BY a.requestID",
+            $sqlCompletedEvents = "SELECT 'Finished Events',COUNT(*) FROM event e 
+                                            INNER JOIN manager m ON e.ccID = m.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND e.status = 'Finished'",
 
-            $sqlccDonationsRequested = "SELECT 'CCDonations Requested',COUNT(*) FROM ccdonation c 
-                                            INNER JOIN logisticofficer l ON c.toCC = l.ccID 
-                                            WHERE l.employeeID = '{$_SESSION['user']}' ",
+            $sqlCancelledEvents = "SELECT 'Cancelled Events',COUNT(*) FROM event e 
+                                            INNER JOIN manager m ON e.ccID = m.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND e.status = 'Cancelled'",
 
-            $sqlccDonationsAccepted = "SELECT 'CCDonations Donated',COUNT(*) FROM ccdonation c 
-                                            INNER JOIN logisticofficer l ON c.fromCC = l.ccID 
-                                            WHERE l.employeeID = '{$_SESSION['user']}' ",
+            $sqlccDonorsRegistered = "SELECT 'Registered Donors',COUNT(*) FROM donor d 
+                                            INNER JOIN manager m ON m.ccID = d.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' ",
 
-            $sqlDriversAvailable = "SELECT 'Available Drivers',COUNT(*) FROM driver d 
-                                            INNER JOIN logisticofficer l ON l.ccID = d.ccID 
-                                            WHERE l.employeeID = '{$_SESSION['user']}'"
+            $sqlccDoneesRegistered = "SELECT 'Registered Donees',COUNT(*) FROM donee d 
+                                            INNER JOIN manager m ON m.ccID = d.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' ",
+
+            $sqlccDoneesRegistered = "SELECT 'Donees Waiting For Verification',COUNT(*) FROM donee d 
+                                            INNER JOIN manager m ON m.ccID = d.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND d.verificationStatus = 0 ",
 
 
         ];

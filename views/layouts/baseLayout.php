@@ -14,12 +14,7 @@
     <link rel="stylesheet" href="/Commusupport/public/CSS/form/form.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/button/button-styles.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/flashMessages.css">
-    <link rel="stylesheet" href="/Commusupport/public/CSS/statistics/statDivBase.css">
     <link rel="stylesheet" href="/Commusupport/public/CSS/notification/notification.css">
-    <link rel="stylesheet" href="/CommuSupport/public/CSS/statistics/charts/charts.css">
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-    </script>
     <!--    {styles}-->
 </head>
 
@@ -55,17 +50,51 @@
 
 
     const cardContainers = document.querySelectorAll('.card-container');
+    const contenConatainers = document.querySelectorAll('.content');
+    const postedRequestCardContainers = document.querySelectorAll('.posted-rq-card-container');
 
     if(cardContainers) {
 
-        const noDataImg = document.createElement('img');
-        noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
-
         for(let i=0; i < cardContainers.length; i++) {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
 
             if(cardContainers[i].children.length === 0) {
                 cardContainers[i].appendChild(noDataImg);
+                cardContainers[i].classList.remove('card-container');
                 cardContainers[i].classList.add('no-data');
+            }
+        }
+    }
+
+    if(contenConatainers) {
+
+        for(let i=0; i < contenConatainers.length; i++) {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+            if(contenConatainers[i].children.length === 0) {
+                contenConatainers[i].appendChild(noDataImg);
+                contenConatainers[i].classList.add('no-data');
+            }
+        }
+
+    }
+
+    if(postedRequestCardContainers) {
+
+        for(let i=0; i < postedRequestCardContainers.length; i++) {
+
+            const noDataImg = document.createElement('img');
+            noDataImg.src = '/Commusupport/public/src/errors/NoData.svg';
+
+            if(postedRequestCardContainers[i].children.length === 0) {
+                postedRequestCardContainers[i].appendChild(noDataImg);
+                postedRequestCardContainers[i].classList.add('no-data');
+                postedRequestCardContainers[i].classList.remove('posted-rq-card-container');
+                postedRequestCardContainers[i].classList.add('posted-rq-flag')
             }
         }
 

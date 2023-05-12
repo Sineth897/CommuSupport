@@ -105,7 +105,7 @@ class test_Models extends TestCase
 
         // assert whether the data has been assigned
         foreach ($model->rules() as $key => $value) {
-            echo $key;
+//            echo $key;
             $this->assertNotEmpty($model->{$key});
         }
 

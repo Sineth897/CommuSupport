@@ -7,6 +7,34 @@ $CCs = \app\models\ccModel::getCCs();
 
 ?>
 
+<style>
+
+    @media print {
+
+        @page {
+            size: landscape;
+        }
+
+        .sidenav {
+            display: none;
+        }
+
+        .main {
+            width: 100vw;
+            left: 0;
+            height: 100%;
+            overflow: visible;
+        }
+
+        tbody td:last-child {
+            display: none;
+        }
+
+    }
+
+
+</style>
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
@@ -92,6 +120,8 @@ $searchDiv->filterDivEnd();
 
 $searchDiv->search();
 
+echo "<button class='btn-cta-primary' id='donorPrint'>Print</button>";
+
 $searchDiv->end(); ?>
 
 
@@ -110,10 +140,21 @@ $searchDiv->end(); ?>
 
     $individualTable = new \app\core\components\tables\table($headers,$arrayKeys);
 
+        $donor = array_merge($donors,$donors,$donors);
 
-    $individualTable->displayTable($donors);
+    $individualTable->displayTable($donor);
     ?>
 
 </div>
 
 <script type="module" src="../public/JS/admin/donor/view.js"></script>
+
+<script>
+
+    window.onload = function () {
+        document.getElementById("donorPrint").addEventListener("click", function() {
+            window.print();
+        })
+    }
+
+</script>

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
 
 <?php
@@ -152,6 +153,7 @@ use app\models\doneeModel;
                                     'acceptedRequests' => 'local_shipping',
                                     'delivery' => 'local_shipping',
                                     'ccDonation' => 'local_shipping',
+                                    'complaint' => 'report',
                                 ];
 
             $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
@@ -193,3 +195,5 @@ use app\models\doneeModel;
 
     </div>
 </div>
+
+<script type="module" src="../public/JS/changePassword.js"></script>

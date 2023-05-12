@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
-
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 
 <?php
 

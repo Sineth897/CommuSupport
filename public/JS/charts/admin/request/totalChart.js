@@ -24,14 +24,13 @@ const totalChart = new Chart(canvas, {
         },]
     }, options: {
         title: {
-            display: true,
+            display: false,
             text: 'Variation of the Requests over the months',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'
         },
-
-        responsive: false, maintainAspectRatio: false, scales: {
+        scales: {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,

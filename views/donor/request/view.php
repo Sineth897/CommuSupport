@@ -26,7 +26,7 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Requests");
+$headerDiv->heading("Posted Requests");
 
 $headerDiv->pages(["posted", "accepted"]);
 
