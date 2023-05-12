@@ -116,6 +116,9 @@ a {
 .info-container.grid-1-2-1{
     grid-template-columns:1fr 2fr 1fr;
 }
+.info-container.grid-1-2{
+    grid-template-columns:1fr 2fr;
+}
 
 /* ------------------- intricate CSS for each block -------------------*/
 
@@ -397,4 +400,11 @@ a {
     align-items: center;
     width: 100%;
     grid-area: span;
+}
+
+.btn-together {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }

@@ -1,42 +1,27 @@
-
-<link rel="stylesheet" href="./public/CSS/cards/driver-delivery-card.css">
-
-<style>
-
-    @media print {
-
-        .sidenav {
-            display: none;
-        }
-
-    }
-
-</style>
-
 <?php
 
-//$sql
+$logistic = \app\models\logisticModel::getModel(['employeeID' => $_SESSION['user']]);
 
+$inventory = \app\models\inventorylog::getInventoryLogsOfCC($logistic->ccID);
 
+echo "<pre>";
+print_r($inventory);
+echo "</pre>";
 
 ?>
 
-<button id="btn">Click</button>
+<div class="content">
 
-<script>
+    <?php
 
-    window.onload = function(){
-        console.log("loaded");
-        document.querySelector("#btn").addEventListener("click", function(){
-            console.log("clicked");
-            window.print();
-        })
-    }
+    $tableHeaders = ['Item', 'Amount', 'Remark', 'Date'];
+    $arrayKeys = ['subcategoryName', 'amount', 'remark', 'dateReceived'];
 
+    $inventoryLogTable = new \app\core\components\tables\table($tableHeaders, $arrayKeys);
 
+    $inventoryLogTable->displayTable($inventory);
 
-
-    // window.print();
+    ?>
 
 
-</script>
+</div>

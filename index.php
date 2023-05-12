@@ -520,6 +520,10 @@ $app->router->post('/logistic/inventory/filter', function ($request,$response) {
     $controller = new \app\controller\inventoryController("filterInventory",$request,$response);
 });
 
+$app->router->get('/logistic/inventory/logs', function ($request,$response) {
+    $controller = new \app\controller\inventoryController("inventoryLog",$request,$response);
+});
+
 $app->router->get('/logistic/deliveries', function ($request,$response) {
     $controller = new \app\controller\deliveryController("viewDeliveries",$request,$response);
 });
@@ -590,10 +594,6 @@ $app->router->post('/logistic/donations/filter', function ($request,$response) {
 $app->router->get('/logistic/profile',function($request,$response){
     $controller = new \app\controller\profileController('logisticProfile',$request,$response);
 });
-
-
-
-
 
 
 

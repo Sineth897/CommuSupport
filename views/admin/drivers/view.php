@@ -9,6 +9,36 @@ use app\core\components\tables\table;
 $CCs = \app\models\ccModel::getCCs();
 
 ?>
+
+<style>
+
+    @media print {
+
+        @page {
+            size: landscape;
+        }
+
+        .sidenav, .profile, .search-filter {
+            display: none;
+        }
+
+        .main {
+            background-color: var(--background-main) !important;
+            -webkit-print-color-adjust: exact;
+            width: 100vw;
+            left: 0;
+            height: 100%;
+            overflow: visible;
+        }
+
+        tbody td:last-child {
+            display: none;
+        }
+
+    }
+
+</style>
+
 <!--        Profile Details-->
 
 <?php $profile = new \app\core\components\layout\profileDiv();
@@ -37,7 +67,7 @@ $chartData = $model->getDriverbyVehicle();
     const chartData = <?php echo json_encode($chartData); ?>;
 </script>
 <div class="stat-container">
-    <p>Hello MF</p>
+    <p>Driver Vehicles</p>
     <canvas id="vehicleTypeChart" width="500">
     </canvas>
 </div>
@@ -110,6 +140,8 @@ $searchDiv->filterDivEnd();
 
 $searchDiv->search();
 
+echo "<button class='btn-cta-primary' id='driverPrint'>Print</button>";
+
 $searchDiv->end(); ?>
 
 <!--        Content Block-->
@@ -133,5 +165,15 @@ $searchDiv->end(); ?>
 </div>
 
 <script type="module" src="../public/JS/admin/driver/view.js"></script>
+
+<script>
+
+    window.onload = function () {
+        document.getElementById('driverPrint').addEventListener('click', function () {
+            window.print();
+        })
+    }
+
+</script>
 
 

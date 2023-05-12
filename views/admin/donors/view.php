@@ -15,7 +15,7 @@ $CCs = \app\models\ccModel::getCCs();
             size: landscape;
         }
 
-        .sidenav {
+        .sidenav, .profile, .search-filter {
             display: none;
         }
 
@@ -140,9 +140,7 @@ $searchDiv->end(); ?>
 
     $individualTable = new \app\core\components\tables\table($headers,$arrayKeys);
 
-        $donor = array_merge($donors,$donors,$donors);
-
-    $individualTable->displayTable($donor);
+    $individualTable->displayTable($donors);
     ?>
 
 </div>

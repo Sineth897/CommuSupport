@@ -92,4 +92,20 @@ class inventoryModel extends DbModel
         $stmnt->bindValue(':subcategoryID', $subcategoryID);
         $stmnt->execute();
     }
+
+    /**
+     * @param string $ccID
+     * @return array
+     */
+    public static function getCurrentInventoryOfGivenCCByCategories(string $ccID) : array {
+
+        $sql =  "SELECT c.categoryName,SUM(amount) FROM inventory i INNER JOIN subcategory s on i.subcategoryID = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID WHERE i.ccID = :ccID GROUP BY c.categoryName";
+
+        $stmt = self::prepare($sql);
+
+        $stmt->bindValue(':ccID', $ccID);
+
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 }
