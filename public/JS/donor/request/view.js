@@ -116,7 +116,11 @@ const confirm = async (e) => {
     const amount = acceptPopUp.querySelector('#amount').value;
     const reqId = acceptPopUp.querySelector('#confirm').value;
 
-    let result = await getData('./requests/accept', 'POST', {"requestID": reqId, "amount": acceptedAmount, "remaining": amount-acceptedAmount});
+    // console.log(parseInt(amount)-acceptedAmount);
+
+    let result = await getData('./requests/accept', 'POST', {"requestID": reqId, "amount": acceptedAmount, "remaining": parseInt(amount)-acceptedAmount});
+
+    console.log(result);
 
     if(result['success']) {
         flash.showMessage({type:'success',value:'Request accepted successfully!'});
@@ -125,6 +129,7 @@ const confirm = async (e) => {
         acceptPopUp.remove();
         document.querySelector('#popUpContainer').style.display = 'block';
         document.getElementById(reqId).querySelector('button').click();
+        filterBtn.click();
     } else {
         flash.showMessage({type:'error',vallue:'Something went wrong! Please try again later!'});
     }

@@ -141,7 +141,7 @@ class requestController extends Controller
                 $donee['name'] = $donee['fname'] . " " . $donee['lname'];
             }
             else {
-                $donee = $donee->retrieveWithJoin('doneeOrganization','doneeID',['donee.doneeID' => $donee->doneeID]);
+                $donee = $donee->retrieveWithJoin('doneeOrganization','doneeID',['donee.doneeID' => $donee->doneeID])[0];
             };
 
             // send the response
@@ -241,19 +241,34 @@ class requestController extends Controller
             ]);
         }
         catch (\PDOException $e) {
+            $this->rollbackTransaction();
             $this->sendJson($e->getMessage());
         }
     }
 
     private function approveRequest($data) {
-        $requestmodel = new requestModel();
+
+        $this->startTransaction();
+        $requestmodel = requestModel::getModel(['requestID' => $data['requestID']]);
         $requestmodel->update($data,['approval' => 'Approved','approvedDate' => date('Y-m-d')]);
+        $this->setNotification('Your request has been approved. You can view. request details under active requests page','Request Approved',$requestmodel->postedBy,'','request',$data['requestID']);
+        $this->sendSMSByUserID('Your request has been approved. You can view. request details under active requests page',$requestmodel->postedBy);
+
+        $this->commitTransaction();
     }
 
     private function rejectRequest($data) {
+
+        $this->startTransaction();
+
         $requestID = $data['requestID'];
         $req = requestModel::getModel(['requestID' => $requestID]);
         $req->rejectRequest($data['rejectedReason']);
+        $donee = doneeModel::getModel(['doneeID' => $req->postedBy]);
+        $this->setNotification('Your request has been rejected. Reason : {$data["rejectedReason"]}','Request Rejected',$donee->doneeID,'','request',$requestID);
+        $this->sendSMSByUserID("Your request has been rejected. Reason : {$data['rejectedReason']}",$donee->doneeID);
+
+        $this->commitTransaction();
     }
 
     protected function acceptRequest(Request $request,Response $response) {
@@ -287,22 +302,22 @@ class requestController extends Controller
             inventorylog::logInventoryAcceptingRequest($acceptedRequest->acceptedID);
             $this->setNotification('Your request has been accepted. Check accepted requests for more details','Request is accepted',$req->postedBy,'donee','request',$acceptedRequest->acceptedID);
 
-            $remove = 0;
+            if(!$result) {
+                $this->rollbackTransaction();
+                $this->sendJson(["success"=> 0,"error" => "Error accepting request"]);
+                return;
+            }
 
             if($data['remaining']) {
                 $req->update(['requestID' => $reqID],['amount' => $data['remaining']]);
+                $this->sendJson(["success"=> 1,'']);
             }
             else {
                 $req->delete(['requestID' => $reqID]);
-                $remove = 1;
+                $this->sendJson(["success"=> 1]);
             }
             $this->commitTransaction();
 
-            if(!$result) {
-                $this->rollbackTransaction();
-                $this->sendJson(["success"=> 0,"error" => "Error accepting request","remove" => $remove]);
-                return;
-            }
         }
         catch (\PDOException $e) {
             $this->rollbackTransaction();
@@ -310,7 +325,6 @@ class requestController extends Controller
             return;
         }
 
-        $this->sendJson(["success"=> 1]);
     }
 
     private function acceptedUserDetails(): array {

@@ -292,12 +292,12 @@ class deliveryController extends Controller
         if($subdelivery->deliveryStage === 2) {
             $nextSubdelivery->saveFinalStagedetails($subdelivery);
             $this->sendSMSByUserID('Your delivery arrived at your community center. Please expect delivery soon',$nextSubdelivery->end);
-            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center. Please expect delivery soon',$nextSubdelivery->end,'','delivery',$nextSubdelivery->subdeliveryID);
+            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center.',$nextSubdelivery->end,'','delivery',$nextSubdelivery->subdeliveryID);
         }
         else {
             $nextSubdelivery->save2ndStagedetails($subdelivery);
             $this->sendSMSByUserID('Your delivery arrived at your community center. Please expect delivery soon',$subdelivery->start);
-            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center. Please expect delivery soon',$subdelivery->start,'','delivery',$nextSubdelivery->subdeliveryID);
+            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center.',$subdelivery->start,'','delivery',$nextSubdelivery->subdeliveryID);
         }
         $this->logtransactionNext($subdelivery,$process);
         return true;

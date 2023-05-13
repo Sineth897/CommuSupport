@@ -102,6 +102,7 @@ button {
     resize: none;
     border: none;
     outline: none;
+    height: 100px;
 }
 
 .form-group label i {

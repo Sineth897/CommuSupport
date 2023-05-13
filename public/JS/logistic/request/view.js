@@ -159,6 +159,7 @@ const confirm = async (e) => {
         }
         document.querySelector('#popUpContainer').style.display = 'block';
         document.getElementById(reqId).querySelector('button').click();
+        filterBtn.click();
     } else {
         flash.showMessage({type:'error',vallue:'Something went wrong! Please try again later!'});
         console.log(result);

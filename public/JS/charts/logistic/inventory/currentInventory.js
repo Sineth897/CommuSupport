@@ -1,4 +1,5 @@
 const currentInventoryDoghnut = document.getElementById('currentInventory').getContext('2d');
+console.log(currentInventory);
 const itemChart = new Chart(currentInventoryDoghnut, {
     type: 'doughnut',
     data: {
@@ -21,8 +22,8 @@ const itemChart = new Chart(currentInventoryDoghnut, {
             fontColor: '#000',
             fontFamily: 'inter'
         },
-        responsive: false,
-        maintainAspectRatio: false,
+        // responsive: false,
+        // maintainAspectRatio: false,
         legend: {
             display: true,
             position: 'top',
