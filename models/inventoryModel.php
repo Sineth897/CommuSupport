@@ -99,7 +99,10 @@ class inventoryModel extends DbModel
      */
     public static function getCurrentInventoryOfGivenCCByCategories(string $ccID) : array {
 
-        $sql =  "SELECT c.categoryName,SUM(amount) FROM inventory i INNER JOIN subcategory s on i.subcategoryID = s.subcategoryID INNER JOIN category c on s.categoryID = c.categoryID WHERE i.ccID = :ccID GROUP BY c.categoryName";
+        $sql =  "SELECT c.categoryName,SUM(amount) FROM inventory i 
+                        INNER JOIN subcategory s on i.subcategoryID = s.subcategoryID 
+                        INNER JOIN category c on s.categoryID = c.categoryID 
+                        WHERE i.ccID = :ccID GROUP BY c.categoryName";
 
         $stmt = self::prepare($sql);
 

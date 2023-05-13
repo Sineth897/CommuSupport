@@ -1,11 +1,11 @@
-const currentInventoryDoghnut = document.getElementById('currentInventory').getContext('2d');
-const itemChart = new Chart(currentInventoryDoghnut, {
+const distanceDoghnut = document.getElementById('chartByDistance').getContext('2d');
+const itemChart = new Chart(distanceDoghnut, {
     type: 'doughnut',
     data: {
-        labels: Object.keys(currentInventory),
+        labels: Object.keys(deliveryByDistance),
         datasets: [{
             label: 'My Pie Chart',
-            data: Object.values(currentInventory),
+            data: Object.values(deliveryByDistance),
             backgroundColor: [
                 '#225E27',
                 '#3AAC43',

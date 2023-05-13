@@ -506,7 +506,9 @@ $app->router->post('/logistic/drivers/filter', function ($request,$response) {
 $app->router->post('/logistic/driver/popup', function ($request,$response) {
     $controller = new \app\controller\driverController("driverPopup",$request,$response);
 });
-
+$app->router->get('/logistic/drivers/stat', function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDriverStat",$request,$response);
+});
 //logistic view inventory
 $app->router->get("/logistic/inventory", function ($request,$response) {
     $controller = new \app\controller\inventoryController("viewInventory",$request,$response);

@@ -53,7 +53,12 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+echo "<div class='btn-together'>";
+
 $searchDiv->search();
+
+echo "<a class='btn-cta-primary' href='./drivers/stat'>View Driver Statistics</a>";
+echo "</div>";
 
 $searchDiv->end(); ?>
 

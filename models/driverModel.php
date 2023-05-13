@@ -202,5 +202,24 @@ WHERE driver.employeeID = '$employeeID'";
         return $result;
     }
 
+    /**
+     * @param string $ccID
+     * @return array
+     */
+    public static function getDriverDeliveryCountStatisticsUnderCCMonthBack(string $ccID) : array {
+
+        $sql = "SELECT name,vehicleType,preference,COUNT(*) AS deliveries,CONCAT(ROUND(SUM(s.distance),2),' km') AS distance FROM subdelivery s
+                INNER JOIN driver d ON s.deliveredBy = d.employeeID
+                INNER JOIN users u ON d.employeeID = u.userID
+                INNER JOIN communitycenter c ON d.ccID = c.ccID
+                WHERE d.ccID = '$ccID' AND s.status = 'Completed' AND s.completedDate >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                GROUP BY d.employeeID";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
 
 }

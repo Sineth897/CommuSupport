@@ -7,6 +7,8 @@ use app\core\middlewares\employeeMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\employeeModel;
+use app\models\logisticModel;
+use app\models\managerModel;
 
 class employeeController extends Controller
 {
@@ -19,11 +21,11 @@ class employeeController extends Controller
     protected function viewEmployees(Request $request,Response $response) {
 
         $userType = $this->getUserType();
-        $model = new employeeModel();
-        $user = $this->getUserModel();
+        $logistics = new logisticModel();
+        $managers = new managerModel();
         $this->render($userType ."/employees/view","View employees",[
-            'model' => $model,
-            'user' => $user
+            'logistics' => $logistics,
+            'managers' => $managers,
         ]);
     }
 

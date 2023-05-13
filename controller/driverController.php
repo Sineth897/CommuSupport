@@ -128,5 +128,22 @@ class driverController extends Controller
             'employeeID' => $request->getBody()['employeeID']
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function viewDriverStat(Request $request, Response $response) : void {
+
+        $usertype = $this->getUserType();
+
+        $dates = $this->getAllDatesBetween2Dates(date('Y-m-d',time()-60*60*24*30),date('Y-m-d'),'m-d');
+
+        $this->render($usertype . "/drivers/driversStat", "Driver Statistics", [
+            'dates' => $dates,
+        ]);
+
+    }
 }
 
