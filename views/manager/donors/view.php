@@ -32,7 +32,7 @@ $profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Donors"); ?>
+<?php $headerDiv->heading("Individual Donors"); ?>
 
 <?php $headerDiv->pages(["individuals", "organizations"]); ?>
 
@@ -69,9 +69,6 @@ $searchDiv->end(); ?>
      if($donors['individuals']) {
          $individualDonorTable->displayTable($donors['individuals']);
      }
-     else {
-         echo "No Individual Donors";
-     }
     ?>
 
 </div>
@@ -83,9 +80,6 @@ $searchDiv->end(); ?>
         <?php
         if($donors['organizations']) {
             $organizationDonorTable->displayTable($donors['organizations']);
-        }
-        else {
-            echo "No Organization Donors";
         }
         ?>
 </div>

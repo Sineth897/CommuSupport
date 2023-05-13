@@ -9,8 +9,13 @@ class profileMiddleware extends Middleware
     {
         return
             [
-                'viewProfile' => [$this->MANAGER, $this->CHO, $this->ADMIN, $this->LOGISTIC, $this->DONEE, $this->DONOR, $this->DRIVER],
                 'doneeProfile' => [$this->DONEE],
+                'donorProfile' => [$this->DONOR],
+                'logisticProfile' => [$this->LOGISTIC],
+                'managerProfile' => [$this->MANAGER],
+                'driverProfile' => [$this->DRIVER],
+                'choProfile' => [$this->CHO],
+                'adminProfile' => [$this->ADMIN],
             ];
     }
 

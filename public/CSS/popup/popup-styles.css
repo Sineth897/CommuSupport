@@ -128,7 +128,7 @@ button {
 .popup-btns {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     width: 100%;
     gap: 10px;

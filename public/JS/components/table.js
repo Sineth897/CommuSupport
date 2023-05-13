@@ -6,6 +6,10 @@ function displayTable(tableDiv, array) {
     //clearing the div
     tableDiv.innerHTML = '';
 
+    if(array['data'].length === 0) {
+        return;
+    }
+
     //getting the array keys
     tableKeys = array['keys'];
     let table = document.createElement('table');
@@ -79,7 +83,7 @@ function createButton(btnInfo,row) {
 
     //creating the button using a anchor tag
     const btn = document.createElement('a');
-    btn.classList.add('btn-primary');
+    btn.classList.add('view');
     if(btnInfo[4]) {
         btn.id = row[btnInfo[4]];
     }

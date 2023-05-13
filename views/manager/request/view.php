@@ -19,9 +19,7 @@ $posted = array_filter($requests,function($request) {
     return $request['approval'] === "Approved";
 });
 
-//$history = array_filter($requests,function($request) {
-//    return $request->status === 'completed';
-//});
+$history = \app\models\acceptedModel::getCompletedRequestsUnderCC($user->ccID);
 
 ?>
 
@@ -38,7 +36,7 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Requests");
+$headerDiv->heading("Pending Requests");
 
 $headerDiv->pages(["pending","posted","history"]);
 
@@ -53,9 +51,18 @@ $searchDiv->filterDivStart();
 
 $searchDiv->filterBegin();
 
+$filterForm = \app\core\components\form\form::begin('', '');
+$filterForm->dropDownList($model, "Select a Category", '', \app\models\requestModel::getAllSubcategories(), 'filterCategory');
+$filterForm::end();
+
 $searchDiv->filterEnd();
 
 $searchDiv->sortBegin();
+
+$sortForm = \app\core\components\form\form::begin('', '');
+$sortForm->checkBox($model,"Date Posted","",'sortByDatePosted');
+$sortForm->checkBox($model, "Amount", "amount", 'sortByAmount');
+$sortForm::end();
 
 $searchDiv->sortEnd();
 
@@ -84,12 +91,10 @@ $searchDiv->end();
 
 </div>
 
-<div class="content" id="completedRequests" style="display: none">
+<div class="content card-container" id="completedRequests" style="display: none">
 
     <?php
-    echo '<pre>';
-    print_r($pending);
-    echo '</pre>';
+    $requestCards->displayRequests($history,[["View","completedRequestView"]],true);
     ?>
 
 

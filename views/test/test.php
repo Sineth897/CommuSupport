@@ -1,63 +1,42 @@
-<!--<link rel="stylesheet" href="./public/CSS/cards/request-card.css">-->
-<link rel="stylesheet" href="./public/CSS/cards/cc-donation-card.css">
-<!--<link rel="stylesheet" href="./public/CSS/cards/postedRequestCard.css">-->
-<link rel="stylesheet" href="./public/CSS/cards/request-card.css">
-<?php
 
-$requestModel = new \app\models\requestModel();
-
-$requests = $requestModel->getOwnRequests($_SESSION['user']);
-
-?>
-
+<link rel="stylesheet" href="./public/CSS/cards/driver-delivery-card.css">
 
 <style>
 
+    @media print {
 
+        .sidenav {
+            display: none;
+        }
 
+    }
 
 </style>
 
+<?php
 
-<div class="content">
-    <div class="card-container">
-
-        <?php
-
-        $requestCards = new \app\core\components\cards\requestcard();
-
-        $requestCards->displayRequests($requests['completedRequests'],[['View','viewAcceptedRequest']],true);
-
-        echo "<pre>";
-        print_r($requests['completedRequests']);
-        echo "</pre>";
-
-        ?>
+//$sql
 
 
 
+?>
 
-        </div>
-    </div>
-</div>
+<button id="btn">Click</button>
 
-<div class="rq-card" id="accepted64479cdfe7c7b8.">
-    <div class="rq-card-header">
-        <h1>Rice</h1>
-        <div class="rq-delivery-status">
-            <strong>Delivery : </strong><p>Completed</p>
-        </div>
-    </div>
-    <div class="rq-category">
-        <p>Food</p>
-    </div>
-    <div class="rq-description">
-        <p>For the dependents of our organization</p>
-    </div>
-    <div class="rq-btns">
-        <button class="rq-btn btn-primary viewActiveRequest" value="request63ff473a58aff3.5">View</button>
-    </div>
-    <p class="rq-accepted-date"><strong>2 users </strong> donated</p>
-</div>
+<script>
+
+    window.onload = function(){
+        console.log("loaded");
+        document.querySelector("#btn").addEventListener("click", function(){
+            console.log("clicked");
+            window.print();
+        })
+    }
 
 
+
+
+    // window.print();
+
+
+</script>

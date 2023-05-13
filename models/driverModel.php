@@ -108,7 +108,7 @@ class driverModel extends DbModel
         $sql = "SELECT COUNT(*) as count,vehicleType FROM driver GROUP BY vehicleType";
         $statement = self::prepare($sql);
         $statement->execute();
-        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         $chartData = array();
         // Loop through the result and update the corresponding value in the new array
@@ -132,6 +132,53 @@ class driverModel extends DbModel
         }
         return $chartData;
 
+    }
+
+    /**
+     * @return array
+     */
+    public function getDriverInformationForProfile() : array {
+        return [
+            $this->getPersonalInfo()[0],
+            $this->getDriverStatistics(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getPersonalInfo() : array {
+
+        $sql = "SELECT *,d.contactNumber,d.address FROM users u 
+                    INNER JOIN driver d ON u.userID = d.employeeID
+                    INNER JOIN communitycenter c on d.ccID = c.ccID
+                    INNER JOIN communityheadoffice c2 on c.cho = c2.choID
+                    WHERE userID = '{$_SESSION['user']}'";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return array
+     */
+    private function getDriverStatistics() : array {
+
+        $arrayOfSql = [
+            $sqlAssignedDeliveries = "SELECT 'Assigned Deliveries',COUNT(*) FROM subdelivery s
+                                            WHERE s.status = 'Ongoing' AND s.deliveredBy = '{$_SESSION['user']}'",
+
+            $sqlCompletedDeliveries = "SELECT 'Completed Deliveries',COUNT(*) FROM subdelivery s
+                                            WHERE s.status = 'Completed' AND s.deliveredBy = '{$_SESSION['user']}'",
+
+            $sqlTotalDistance = "SELECT 'Distance Covered',CONCAT(ROUND(SUM(s.distance),2),' km') FROM subdelivery s
+                                            WHERE s.status = 'Completed' AND s.deliveredBy = '{$_SESSION['user']}'",
+        ];
+
+        $statement = self::prepare(implode(" UNION ",$arrayOfSql));
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
 }

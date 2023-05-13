@@ -1,6 +1,12 @@
 import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
+import {PopUp} from "../../popup/popUp.js";
+import togglePages from "../../togglePages.js";
+
+
+const toggle = new togglePages(
+                        [{btnId:'donations',pageId:'donationTable',title:''}]);
 
 const donationTableDiv = document.getElementById('donationTable');
 
@@ -23,6 +29,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const filterBtn = document.getElementById('filterBtn');
@@ -67,6 +81,8 @@ filterBtn.addEventListener('click', async function() {
         return;
     }
 
+    toggle.removeNoData();
+
     const tableData = {
         headings: ["Create By", "Item", "Amount", "Date", "Donate To","Delivery Status"],
         keys: ["username", "subcategoryName", "amount", "date", "city","deliveryStatus",['','View','#',[],'donationID']],
@@ -75,9 +91,15 @@ filterBtn.addEventListener('click', async function() {
 
     displayTable(donationTableDiv, tableData);
 
+    toggle.checkNoData();
+
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
     // console.log(data);
+
+    assignEventListeners();
+
 });
 
 sortBtn.addEventListener('click', async function() {
@@ -87,3 +109,48 @@ sortBtn.addEventListener('click', async function() {
 searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 });
+
+function assignEventListeners() {
+
+    const donationBtns = Array.from(document.getElementsByClassName('view'));
+
+    donationBtns.forEach(function(btn) {
+        btn.addEventListener('click', showDonationPopup)
+    });
+
+}
+
+assignEventListeners();
+
+const popup = new PopUp();
+
+async function showDonationPopup(e) {
+
+    const donationID = e.target.id;
+
+    const result = await getData('./donation/popup', 'post', {donationID:donationID});
+
+    console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error', value:result['msg']});
+        return;
+    }
+
+    const donation = result['donation'];
+    const deliveries = result['deliveries'];
+
+    popup.clearPopUp();
+
+    popup.setHeader('Donation Details');
+
+    popup.startSplitDiv();
+    popup.setBody(donation,['username','subcategoryName','date'],['Donated By','Item','Created Date']);
+    popup.setBody(donation,['cc','amount'],['Donated To','Amount']);
+    popup.endSplitDiv();
+
+    popup.setDeliveryDetails(deliveries);
+
+    popup.showPopUp();
+
+}

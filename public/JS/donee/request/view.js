@@ -84,7 +84,7 @@ async function showPopup(e) {
     popUp.clearPopUp();
 
     // add complaint for request
-    popUp.setComplaintIcon(request['requestID'],'acceptedRequest');
+    popUp.setComplaintIcon(request['acceptedID'],'acceptedRequest');
 
     // pop up heading
     popUp.setHeader('Request Details');
@@ -140,6 +140,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 // get the divs to show the deliveries
 const activeRequestsDiv = document.getElementById('activeRequests');
 const acceptedRequestsDiv = document.getElementById('acceptedRequests');
@@ -188,6 +196,8 @@ filterBtn.addEventListener('click', async function(e) {
         flash.showMessage({value: result['message'], type: 'error'});
         return;
     }
+
+    toggle.removeNoData();
 
     const activeRequests = result['activeRequests'];
     const acceptedRequests = result['acceptedRequests'];

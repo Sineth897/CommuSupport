@@ -9,7 +9,10 @@ import DeliveryCardLogistic from "../../components/deliveryCard-logistic.js";
 window.initMap = MapRoute.initMap;
 
 // toggle pages function
-let toggle = new togglePages([{btnId:'pending',pageId:'pendingDeliveryDiv'},{btnId:'completed',pageId:'completedDeliveryDiv'}],'grid');
+let toggle = new togglePages([
+                                {btnId:'pending',pageId:'pendingDeliveryDiv',title:'Pending Deliveries'},
+                                {btnId:'completed',pageId:'completedDeliveryDiv',title:'Completed Deliveries'},],
+                                'grid');
 
 // initialize variables to store delivery cards and assign buttons
 let deliveryCards = [];
@@ -269,6 +272,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 // get the divs to show the deliveries
 const pendingDeliveryDiv = document.getElementById('pendingDeliveryDiv');
 const completedDeliveryDiv = document.getElementById('completedDeliveryDiv');
@@ -315,6 +326,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     // get the data from the response
     // first get the deliveries
     const directDonations = result['directDonations'];
@@ -360,6 +373,8 @@ filterBtn.addEventListener('click', async function(e) {
         deliveries.showDeliveryCards(pendingDeliveryDiv,pendingCCDonations,'ccDonations');
         deliveries.showDeliveryCards(completedDeliveryDiv,completedCCDonations,'ccDonations');
     }
+
+    toggle.checkNoData();
 
     // hide the filter and sort options
     filterOptions.style.display = 'none';

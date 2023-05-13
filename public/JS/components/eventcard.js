@@ -7,9 +7,8 @@ function displayEventcards(eventsDiv,array) {
     eventIcons = array['icons'];
     eventsDiv.innerHTML = '';
     if(array['event'].length === 0) {
-        let heading = document.createElement('h2')
-        heading.innerHTML = "There no event to display"
-        eventsDiv.appendChild(heading);
+        // no events to display
+        eventsDiv.innerHTML = '';
     }
     else {
         array['event'].forEach( function (event) {

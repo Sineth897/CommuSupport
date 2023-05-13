@@ -126,6 +126,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 const assignedDeliveriesDiv = document.getElementById('assignedDeliveries');
 
 const filterBtn = document.getElementById('filterBtn');

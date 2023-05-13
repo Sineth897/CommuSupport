@@ -5,7 +5,10 @@ import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 import {displayTable} from "../../components/table.js";
 
-const toggle = new togglePages([{btnId:'individual',pageId:'individualDonorDisplay'},{btnId:'organization',pageId:'organizationDonorDisplay'}]);
+const toggle = new togglePages([
+                                    {btnId:'individual',pageId:'individualDonorDisplay',title:'Individual Donors'},
+                                    {btnId:'organization',pageId:'organizationDonorDisplay',title:'Organization Donors'}
+                                ], 'block');
 
 const individualDonorDisplay = document.getElementById('individualDonorDisplay');
 const organizationDonorDisplay = document.getElementById('organizationDonorDisplay');
@@ -18,6 +21,10 @@ document.getElementById('sort').addEventListener('click', function(e) {
     } else {
         sortOptions.style.display = 'block';
     }
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const sortBtn = document.getElementById('sortBtn');
@@ -39,10 +46,12 @@ sortBtn.addEventListener('click', async function(e) {
 
     let data = await getData('./donors/filter','post',{sort:sort,search:search});
 
+    toggle.checkNoData();
+
     // console.log(data);
 
     if(!data['status']) {
-        flash.showMessage({type:'error',value:data['msg']},3000);
+        flash.showMessage({type:'error',value:data['message']},3000);
         return;
     }
 
@@ -63,7 +72,9 @@ sortBtn.addEventListener('click', async function(e) {
 
     sortOptions.style.display = 'none';
 
-    let viewBtns = document.querySelectorAll('a.btn-primary');
+    toggle.checkNoData();
+
+    let viewBtns = document.querySelectorAll('.view');
 
     for(let i=0;i<viewBtns.length;i++) {
         viewBtns[i].addEventListener('click', showDonorPopup);
@@ -75,7 +86,13 @@ searchBtn.addEventListener('click', async function(e) {
     sortBtn.click();
 });
 
-let viewBtns = document.querySelectorAll('a.btn-primary');
+searchInput.addEventListener('keyup', async function(e) {
+    if(e.key === 'Enter') {
+        sortBtn.click();
+    }
+});
+
+let viewBtns = document.querySelectorAll('.view');
 
 for(let i=0;i<viewBtns.length;i++) {
     viewBtns[i].addEventListener('click', showDonorPopup);

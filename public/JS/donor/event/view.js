@@ -1,4 +1,4 @@
-import {getData} from "../../request.js";
+import {getData, getTextData} from "../../request.js";
 import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
@@ -25,6 +25,9 @@ async function showPopUp(e) {
     }
 
     let event = await getData('./event/popup', 'POST', {"event.eventID": eventCard.id});
+
+    console.log(event);
+
     let participationFlag = event['isGoing'];
     event = event['event'];
 
@@ -90,6 +93,10 @@ document.getElementById('filter').addEventListener('click', function(e) {
         filterOptions.style.display = 'block';
     }
     sortOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 let filterBtn = document.getElementById('filterBtn');

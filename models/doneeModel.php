@@ -42,8 +42,8 @@ class doneeModel extends DbModel
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
-//            'longitude' => [self::$REQUIRED, self::$LONGITUDE],
-//            'latitude' => [self::$REQUIRED, self::$LATITUDE],
+            'longitude' => [self::$REQUIRED, self::$LONGITUDE],
+            'latitude' => [self::$REQUIRED, self::$LATITUDE],
         ];
     }
 
@@ -196,15 +196,18 @@ class doneeModel extends DbModel
      */
     public function getDoneeInformationForProfile() : array {
         return [
-            'personalInfo' => $this->getPersonalInfo()[0],
-            'doneeStat' => $this->getDoneeStatistics(),
+            $this->getPersonalInfo()[0],
+            $this->getDoneeStatistics(),
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getPersonalInfo() : array {
 
-        $colsIndividual = "u.*,d.*,di.fname,di.lname,di.NIC,di.age";
-        $colsOrganization = "u.*,d.*,do.organizationName,do.representative,do.representativeContact,do.capacity";
+        $colsIndividual = "u.*,d.*,di.fname,di.lname,di.NIC,di.age,c.city,c2.district";
+        $colsOrganization = "u.*,d.*,do.organizationName,do.representative,do.representativeContact,do.capacity,c.city,c2.district";
 
         $sqlIndividual = "SELECT {$colsIndividual} FROM users u 
                             INNER JOIN donee d ON u.userID = d.doneeID
@@ -231,12 +234,23 @@ class doneeModel extends DbModel
     private function getDoneeStatistics() : array {
 
         $arrayOfSql = [
-            $sqlEventParticipartion = "SELECT 'Event Participation',COUNT(*) FROM eventparticipation WHERE userID = '{$_SESSION['user']}'",
-            $sqlNotApprovedRequests = "SELECT 'Requests waiting for Approval',COUNT(*) FROM request WHERE postedBy = '{$_SESSION['user']}' AND approval = 'pending'",
-            $sqlActiveRequests = "SELECT 'Active Requests',COUNT(*) FROM request WHERE postedBy = '{$_SESSION['user']}' AND approval = 'approved'",
-            $sqlAwaitingDeliveries = "SELECT 'Awaiting Deliveries',COUNT(*) FROM delivery WHERE end = '{$_SESSION['user']}' AND status != 'Completed'",
-            $sqlActiveComplaints = "SELECT 'Active Complaints',COUNT(*) FROM complaint WHERE filedBy = '{$_SESSION['user']}' AND status != 'Completed'",
-            $sqlSolvedComplaints = "SELECT 'Solved Complaints',COUNT(*) FROM complaint WHERE filedBy = '{$_SESSION['user']}' AND status = 'Completed'",
+            $sqlEventParticipartion = "SELECT 'Event Participation',COUNT(*) FROM eventparticipation 
+                                            WHERE userID = '{$_SESSION['user']}'",
+
+            $sqlNotApprovedRequests = "SELECT 'Requests waiting for Approval',COUNT(*) FROM request 
+                                            WHERE postedBy = '{$_SESSION['user']}' AND approval = 'pending'",
+
+            $sqlActiveRequests = "SELECT 'Active Requests',COUNT(*) FROM request 
+                                            WHERE postedBy = '{$_SESSION['user']}' AND approval = 'Approved'",
+
+            $sqlAwaitingDeliveries = "SELECT 'Awaiting Deliveries',COUNT(*) FROM delivery 
+                                            WHERE end = '{$_SESSION['user']}' AND status != 'Completed'",
+
+            $sqlActiveComplaints = "SELECT 'Active Complaints',COUNT(*) FROM complaint 
+                                            WHERE filedBy = '{$_SESSION['user']}' AND status != 'Completed'",
+
+            $sqlSolvedComplaints = "SELECT 'Solved Complaints',COUNT(*) FROM complaint 
+                                            WHERE filedBy = '{$_SESSION['user']}' AND status = 'Completed'",
         ];
 
         $statement = self::prepare(implode(" UNION ",$arrayOfSql));
