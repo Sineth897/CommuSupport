@@ -293,7 +293,6 @@ $app->router->get('/manager/profile', function ($request, $response) {
 
 
 
-
 //*************************Donee get and post methods*************************// --297
 $app->router->get('/donee/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
