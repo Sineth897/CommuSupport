@@ -17,10 +17,6 @@ class donorModel extends DbModel
     public string $longitude = '0';
     public string $latitude = '0';
 
-    private userModel $user;
-    private donorIndividualModel $donorIndividual;
-    private donorOrganizationModel $donorOrganization;
-
     public function table(): string
     {
         return 'donor';
@@ -49,20 +45,32 @@ class donorModel extends DbModel
         ];
     }
 
-    public function getDonorIndividuals(string $ccID = "") {
+    /**
+     * @param string $ccID
+     * @return array
+     */
+    public function getDonorIndividuals(string $ccID = "") : array {
         if($ccID == "") {
             return $this->retrieveWithJoin('donorindividual','donorID');
         }
         return $this->retrieveWithJoin('donorindividual','donorID',['donor.ccID' => $ccID]);
     }
 
-    public function getDonorOrganizations(string $ccID = "") {
+    /**
+     * @param string $ccID
+     * @return array
+     */
+    public function getDonorOrganizations(string $ccID = "") : array {
         if($ccID == "") {
             return $this->retrieveWithJoin('donororganization','donorID');
         }
         return $this->retrieveWithJoin('donororganization','donorID',['donor.ccID' => $ccID]);
     }
 
+    /**
+     * @param string $ccID
+     * @return array
+     */
     public function getAllDonors(string $ccID = ''): array
     {
         $individuals = $this->getDonorIndividuals($ccID);
@@ -70,29 +78,10 @@ class donorModel extends DbModel
         return [ 'individuals' => $individuals, 'organizations' => $organizations];
     }
 
-    public function getDonorTypes() {
-        return [
-            'Individual' => 'Individual',
-            'Organization' => 'Organization'
-        ];
-    }
-
-    public function setUser(userModel $user) {
-        $this->user = $user;
-        $this->user->userType = "donor";
-        $this->user->userID = $this->donorID;
-    }
-
-    public function setDonorIndividual(donorIndividualModel $donorIndividual) {
-        $this->donorIndividual = $donorIndividual;
-        $this->donorIndividual->donorID = $this->donorID;
-    }
-
-    public function setDonorOrganization(donorOrganizationModel $donorOrganization) {
-        $this->donorOrganization = $donorOrganization;
-        $this->donorOrganization->donorID = $this->donorID;
-    }
-
+    /**
+     * @param $data
+     * @return bool
+     */
     public function saveOnALL($data): bool
     {
         $data["donorID"] = substr(uniqid('donor',true),0,23);
@@ -105,6 +94,10 @@ class donorModel extends DbModel
         }
     }
 
+    /**
+     * @param $data
+     * @return bool
+     */
     private function saveIndividualDonor($data): bool {
         try {
             $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','fname','lname','nic','age','username','password','longitude','latitude'];
@@ -124,6 +117,10 @@ class donorModel extends DbModel
         }
     }
 
+    /**
+     * @param $data
+     * @return bool
+     */
     private function saveOrganizationDonor($data): bool {
         try {
             $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','organizationName','regNo','representative','representativeContact','username','password','longitude','latitude'];
@@ -142,6 +139,10 @@ class donorModel extends DbModel
         }
     }
 
+    /**
+     * @param $data
+     * @return bool
+     */
     public function createDonation($data): bool
     {
         $cols = ['donationID', 'createdBy', 'item', 'amount', 'donateTo'];
@@ -165,6 +166,10 @@ class donorModel extends DbModel
 
     }
 
+    /**
+     * @param array $requests
+     * @return array
+     */
     public function filterRequests(array $requests): array {
         $sql = acceptedModel::prepare("SELECT requestID FROM acceptedrequest WHERE acceptedBy = :donorID");
         $sql->bindValue(":donorID",$this->donorID);
@@ -175,6 +180,10 @@ class donorModel extends DbModel
         });
     }
 
+    /**
+     * @param string $ccID
+     * @return array
+     */
     public static function getDonorIDs(string $ccID): array {
         $sql = self::prepare("SELECT donorID FROM donor WHERE ccID = :ccID");
         $sql->bindValue(":ccID",$ccID);
@@ -215,6 +224,71 @@ class donorModel extends DbModel
             $chartData[$row['month']] = $row['count'];
         }
         return $chartData;
+    }
+
+    public function getDonorInformationForProfile() : array {
+        return [
+            $this->getPersonalInfo()[0],
+            $this->getDonorStatistics(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getPersonalInfo() : array {
+
+        $colsIndividual = "u.*,d.*,c.city,c2.district,di.fname,di.lname,di.NIC,di.age";
+        $colsOrganization = "u.*,d.*,c.city,c2.district,do.organizationName,do.representative,do.representativeContact,c.fax";
+
+        $sqlIndividual = "SELECT {$colsIndividual} FROM users u 
+                            INNER JOIN donor d ON u.userID = d.donorID
+                            INNER JOIN donorindividual di ON d.donorID = di.donorID
+                            INNER JOIN communitycenter c on d.ccID = c.ccID
+                            INNER JOIN communityheadoffice c2 on c.cho = c2.choID
+                            WHERE u.userID = '{$_SESSION['user']}'";
+
+        $sqlOrganization = "SELECT {$colsOrganization} FROM users u
+                            INNER JOIN donor d ON u.userID = d.donorID
+                            INNER JOIN donororganization do ON d.donorID = do.donorID
+                            INNER JOIN communitycenter c on d.ccID = c.ccID
+                            INNER JOIN communityheadoffice c2 on c.cho = c2.choID
+                            WHERE u.userID = '{$_SESSION['user']}'";
+
+        $statement = self::prepare($sqlIndividual . " UNION " . $sqlOrganization);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return array
+     */
+    private function getDonorStatistics() : array {
+
+        $arrayOfSql = [
+            $sqlEventParticipartion = "SELECT 'Event Participation',COUNT(*) FROM eventparticipation 
+                                            WHERE userID = '{$_SESSION['user']}'",
+
+            $sqlCompletedDonations = "SELECT 'Completed Donations',COUNT(*) FROM donation 
+                                            WHERE createdBy = '{$_SESSION['user']}' AND deliveryStatus = 'Completed'",
+
+            $sqlActiveDonations = "SELECT 'Active Donations',COUNT(*) FROM donation 
+                                            WHERE createdBy = '{$_SESSION['user']}' AND deliveryStatus != 'Completed'",
+
+            $sqlAwaitingDeliveries = "SELECT 'Awaiting Deliveries',COUNT(*) FROM delivery 
+                                            WHERE end = '{$_SESSION['user']}' AND status != 'Completed'",
+
+            $sqlActiveComplaints = "SELECT 'Active Complaints',COUNT(*) FROM complaint 
+                                            WHERE filedBy = '{$_SESSION['user']}' AND status != 'Completed'",
+
+            $sqlSolvedComplaints = "SELECT 'Solved Complaints',COUNT(*) FROM complaint 
+                                            WHERE filedBy = '{$_SESSION['user']}' AND status = 'Completed'",
+        ];
+
+        $statement = self::prepare(implode(" UNION ",$arrayOfSql));
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+
     }
 
 }

@@ -2,12 +2,17 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/navbar/sidenav-styles.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/navbar/main-styles.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/charts/charts.css">
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
 <div class="sidenav">
     <div class="logo_content">
         <div class="logo">
             <img src="/CommuSupport/public/src/navlogo/CMS_Admin.svg" alt="" class="logo_name">
         </div>
-        <i class="material-icons" id="btn">menu</i>
+<!--        <i class="material-icons" id="btn">menu</i>-->
     </div>
     <ul class="nav_list">
         <li>

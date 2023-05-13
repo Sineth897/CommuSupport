@@ -4,7 +4,10 @@ import {getData,getTextData} from "../../request.js";
 import flash from "../../flashmessages/flash.js";
 import {PopUp} from "../../popup/popUp.js";
 
-let toggle = new togglePages([{btnId:'ongoing',pageId:'ongoingDonations'},{btnId:'completed',pageId:'completedDonations'}],'grid');
+let toggle = new togglePages([
+                                    {btnId:'ongoing',pageId:'ongoingDonations',title:'Ongoing Donations'},
+                                    {btnId:'completed',pageId:'completedDonations',title:'Completed Donations'}],
+                                    'grid');
 
 let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
@@ -25,6 +28,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const ongoingDonationsDiv = document.getElementById('ongoingDonations');
@@ -67,6 +78,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     const donations = result['donations'];
 
     const completedDonations = donations.filter(donation => donation['deliveryStatus'] === 'Completed');
@@ -74,6 +87,8 @@ filterBtn.addEventListener('click', async function(e) {
 
     donationCards.displayDonationCards(ongoingDonationsDiv,ongoingDonations);
     donationCards.displayDonationCards(completedDonationsDiv,completedDonations);
+
+    toggle.checkNoData();
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';

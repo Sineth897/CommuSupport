@@ -15,14 +15,12 @@ var itemChart = new Chart(ctx, {
     },
     options: {
         title: {
-            display: true,
+            display: false,
             text: 'Categories of Requests',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'
         },
-        responsive: true,
-        maintainAspectRatio: true,
         legend: {
             display: true,
             position: 'top',

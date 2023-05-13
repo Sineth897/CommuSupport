@@ -97,7 +97,7 @@ class PopUp {
                 this.popUpButtons.append(this.getCancelButton(buttons[i]));
             }
         }
-        this.popUpContainer.append(this.popUpButtons);
+        this.splitDiv[this.splitFormFlag].append(this.popUpButtons);
     }
 
     insertHeading(heading) {

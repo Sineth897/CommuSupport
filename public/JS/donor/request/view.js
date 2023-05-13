@@ -5,7 +5,10 @@ import flash from "../../flashmessages/flash.js";
 import requestCard from "../../components/requestcard.js";
 import togglePages from "../../togglePages.js";
 
-let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'accepted',pageId:'acceptedRequests'}],'grid');
+let toggle = new togglePages([
+                                {btnId:'posted',pageId:'postedRequests',title:"Posted Requests"},
+                                {btnId:'accepted',pageId:'acceptedRequests',title:'Accepted Requests'}],
+                        'grid');
 
 let popUpRequest = new PopUp();
 
@@ -39,7 +42,9 @@ async function showReqPopUp(e) {
 
     if( element.id.includes('accepted')) {
         popUpRequest.clearPopUp();
-        popUpRequest.setComplaintIcon(data.acceptedID,'request');
+
+        popUpRequest.setComplaintIcon(data['acceptedID'],'acceptedRequest');
+
         popUpRequest.setHeader('Request Details');
 
         popUpRequest.startSplitDiv();
@@ -148,6 +153,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 const requestDisplay = document.getElementById('postedRequests');
 const acceptedDisplay = document.getElementById('acceptedRequests');
 
@@ -192,6 +205,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     const requests = result['requests'];
     const acceptedRequests = result['acceptedRequests'];
 
@@ -203,6 +218,8 @@ filterBtn.addEventListener('click', async function(e) {
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    toggle.checkNoData();
 
     let newRequests = document.querySelectorAll('.requestView');
 

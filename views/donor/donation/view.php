@@ -36,7 +36,7 @@ $profile->end(); ?>
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Your Donations");
+$headerDiv->heading("Active Donations");
 
 $headerDiv->pages(["active", "completed"]);
 

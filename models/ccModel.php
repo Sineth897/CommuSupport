@@ -80,6 +80,7 @@ class ccModel extends DbModel
 
     public function getHighestPerformingCC()
     {
+//         give out the community center with the highest number of registrations
         $sql = "SELECT communitycenter.city, COUNT(*) AS registration_count FROM communitycenter LEFT JOIN donor ON communitycenter.ccID = donor.ccID LEFT JOIN donee ON communitycenter.ccID = donee.ccID GROUP BY communitycenter.ccID ORDER BY registration_count DESC LIMIT 5;";
         $stmnt = self::prepare($sql);
         $stmnt->execute();
@@ -91,8 +92,13 @@ class ccModel extends DbModel
             $chartData[$row['city']] = $row['registration_count'];
         }
         return $chartData;
-
     }
+
+
+
+
+
+
 
 
 }

@@ -1,9 +1,11 @@
 let btn = document.querySelector("#btn");
 let sidebar = document.querySelector(".sidenav");
 
-btn.onclick = function(){
-    sidebar.classList.toggle("active");
-}
+//
+// btn.onclick = function(){
+//     sidebar.classList.toggle("active");
+// }
+
 const logoutLink = document.querySelector("#logout");
 
 sidebar.addEventListener("active", () => {

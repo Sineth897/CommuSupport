@@ -5,7 +5,11 @@ import {PopUp} from "../../popup/popUp.js";
 import CCDonationCard from "../../components/ccDonationCard.js";
 
 // toggle pages
-let toggle = new togglePages([{btnId:'posted',pageId:'postedDonations'},{btnId:'ongoing',pageId:'ongoingDonations'},{btnId:'completed',pageId:'completedDonations'}],'grid');
+let toggle = new togglePages([
+                                {btnId:'posted',pageId:'postedDonations',title:'Posted Donations'},
+                                {btnId:'ongoing',pageId:'ongoingDonations',title:'Ongoing Donations'},
+                                {btnId:'completed',pageId:'completedDonations',title:'Completed Donations'}],
+                                'grid');
 
 // get all CC donation cards with a accept btn
 let acceptBtns = document.querySelectorAll('.accept');
@@ -244,6 +248,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 const postedDonationsDiv = document.getElementById('postedDonations');
 const ongoingDonationsDiv = document.getElementById('ongoingDonations');
 const completedDonationsDiv = document.getElementById('completedDonations');
@@ -291,6 +303,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     // if the status is true then get the data from the response
     const ccDonations = result['ccDonations'];
     const communitycenters = result['communitycenters'];
@@ -321,6 +335,8 @@ filterBtn.addEventListener('click', async function(e) {
     CCDonationCard.displayCards(postedDonationsDiv, postedDonations, CC, 'posted');
     CCDonationCard.displayCards(ongoingDonationsDiv, ongoingDonations, CC, 'ongoing');
     CCDonationCard.displayCards(completedDonationsDiv, completedDonations, CC, 'completed');
+
+    toggle.checkNoData();
 
     // hide the filter and sort options
     filterOptions.style.display = 'none';

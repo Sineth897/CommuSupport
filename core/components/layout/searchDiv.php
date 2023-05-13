@@ -22,13 +22,13 @@ class searchDiv
     public function filterBegin(): void
     {
         echo "<div class='filter' id='filter'>";
-        echo "<p ><i class='material-icons'>filter_alt</i><span>Filter</span></p>";
+        echo "<p><i class='material-icons'>filter_list</i><span>Filter</span></p>";
         echo "<div class='filter-box' id='filterOptions' style='display: none'>";
     }
 
     public function filterEnd(): void
     {
-        echo "<button type='button' id='filterBtn' class='btn-primary'>Filter</button>";
+        echo "<button type='button' id='filterBtn' class='btn-small-primary'>Filter</button>";
         echo "</div></div>";
     }
 
@@ -41,13 +41,13 @@ class searchDiv
 
     public function sortEnd(): void
     {
-        echo "<button type='button' id='sortBtn' class='btn-primary'>Sort</button>";
+        echo "<button type='button' id='sortBtn' class='btn-small-primary'>Sort</button>";
         echo "</div></div>";
     }
 
     public function search(): void
     {
-        echo "<div class='search'><input type='text' placeholder='Search' id='searchInput'><a href='#' id='searchBtn'><i class='material-icons'>search</i></a></div>";
+        echo "<div class='search'><input type='text' placeholder='Search' id='searchInput'><a href='#'><i class='material-icons' id='searchBtn'>search</i></a></div>";
     }
 
     public function end(): void

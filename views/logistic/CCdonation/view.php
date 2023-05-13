@@ -55,7 +55,7 @@ $profile->end(); ?>
 <!--This will show the header with the heading and the pages-->
 <?php $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("Donations");
+$headerDiv->heading("Posted Donations");
 
 $headerDiv->pages(["posted","ongoing","completed"]);
 

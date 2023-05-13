@@ -4,16 +4,6 @@
 /** @var $user \app\models\userModel */
 ?>
 
-<?php
-echo '<pre>';
-if(empty(\app\core\Application::session()->getFlash('success'))) {
-    print_r(\app\core\Application::session()->getFlash('error'));
-} else if(empty(\app\core\Application::session()->getFlash('error'))) {
-    print_r(\app\core\Application::session()->getFlash('success'));
-}
-echo '</pre>';
-?>
-
 <!--        Profile Details-->
 <div class="profile">
     <div class="notif-box">
@@ -52,6 +42,8 @@ echo '</pre>';
     <?php $choRegistrationForm->inputField($user, "Username",'text','username') ?>
 
     <?php $choRegistrationForm->inputField($user, "Password",'password','password') ?>
+
+    <?php $choRegistrationForm->inputField($user, "Confirm Password",'password','confirmPassword') ?>
 
         <div>
             <?php $choRegistrationForm->button("Confirm") ?>

@@ -48,6 +48,29 @@ echo '<ol>';
 </div>
 <?php $infoDiv->statDivEnd(); ?>
 
+<?php $infoDiv->statDivStart(); ?>
+<div class="stat-container">
+Hello!
+    Total Number of CC's per district
+    Average Registrations per CC - Increased Amount get this month and last month
+</div>
+<?php $infoDiv->statDivEnd(); ?>
+
+<?php $infoDiv->statDivStart(); ?>
+<div class="stat-container">
+    <?php
+
+    $chartData = $model->getHighestPerformingCC();
+    echo '<ol>';
+    foreach ($chartData as $city => $population) {
+        echo '<li>' . $city . '</li>';
+    }
+    echo '</ol>';
+
+    ?>
+</div>
+<?php $infoDiv->statDivEnd(); ?>
+
 
 
 <?php $infoDiv->End();?>
@@ -85,7 +108,7 @@ $searchDiv->end();
 
            $header = ["City", "Address", "Contact Number", "Community Head Office"];
 
-           $arrayKey = ["city", "address", "contactNumber", "cho",['',"View",'#',[],'ccID']];
+           $arrayKey = ["city", "address", "contactNumber", "cho",['',"View",'./communitycenter/view',['ccID'],'ccID']];
 
            $ccTable = new table($header, $arrayKey);
 

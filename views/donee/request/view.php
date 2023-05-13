@@ -11,11 +11,6 @@ use app\core\Application;
 $user = $user->findOne(['doneeID' => Application::$app->session->get('user')]);
 $acceptedRequests = $model->getOwnRequests($_SESSION['user']);
 
-//echo "<pre>";
-//print_r($acceptedRequests);
-//echo "</pre>";
-
-
 ?>
 
 

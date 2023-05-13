@@ -68,7 +68,7 @@ class test_Application extends TestCase
         // login function set the session with the details of the user
         $this->assertTrue($this->application->login($this->userModel));
 
-        print_r($_SESSION);
+//        print_r($_SESSION);
 
         //check if the session is set with the details of the user
         $this->assertSame($primaryKeyValue, $_SESSION['user']);
