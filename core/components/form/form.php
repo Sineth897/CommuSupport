@@ -110,7 +110,7 @@ class form
         echo "</div>";
     }
 
-    public function inputFieldwithPlaceholder($model, $label, $type, $attribute, $id = "",$placeholder): void
+    public function inputFieldwithPlaceholder($model, $label, $type, $attribute,$placeholder, $id = ""): void
     {
         echo "<div class='form-group'>";
         echo sprintf('<label class="form-label">%s :</label>', $label);
