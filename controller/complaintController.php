@@ -189,8 +189,8 @@ class complaintController extends Controller
                 $this->setFlash('result', 'Complaint failed to submitted');
             }
         }
-        var_dump($this->getUserType());
-        exit();
+//        var_dump($this->getUserType());
+//        exit();
 
         if($request->isGet())
         {
@@ -203,6 +203,5 @@ class complaintController extends Controller
         ]);
 
     }
-
 
 }

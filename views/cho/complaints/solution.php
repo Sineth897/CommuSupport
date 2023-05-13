@@ -8,7 +8,7 @@
 /** @var $solution \app\models\complaintModel */
 /** @var $user \app\models\choModel */
 
-print_r($solutions);
+//print_r($solutions);
 
 
 
@@ -41,7 +41,7 @@ $headerDiv->end();
 
 </div>
 <div class="content-form">
-
+<!---->
     <?php $solutionForm = \app\core\components\form\form::begin('','post') ?>
 
     <div class="form-box">
@@ -66,7 +66,7 @@ $headerDiv->end();
             <label for="" class="form-label">
                 Complaint Regarding
             </label>
-            <input class="basic-input-field" type="text" value="<?php echo $solutions[0]['subject']?>" disabled>
+            <input class="basic-input-field" type="text" value="<?php echo $solutions[0]['sub']?>" disabled>
 
         </div>
 

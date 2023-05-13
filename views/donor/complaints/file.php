@@ -5,8 +5,9 @@
 <link rel="stylesheet" href="../public/CSS/form/form.css" type="text/css" rel="stylesheet">
 <style>
     .form-group{
-        width: 300px;
+        width: 800px;
     }
+    .
 </style>
 <?php
 
@@ -84,10 +85,12 @@ $profile->end();
 
         </div>
 
+<div>
 
 
             <?php $complaintRegistrationForm->textArea($complaint,"Please provide the complaint" ,"complaint") ?>
 
+</div>
             <div style="display:none;">
 
                 <?php $complaintRegistrationForm->inputField($complaint,'Subject','text','subject') ?>
@@ -97,7 +100,7 @@ $profile->end();
 
         </div>
 
-        <div style="padding: 2rem;display:flex;justify-content: center">
+        <div style="padding: 2rem;display:flex;justify-content: center;">
             <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
         </div>
 
@@ -106,11 +109,6 @@ $profile->end();
     </div>
 
     <?php $complaintRegistrationForm->end() ?>
-
-
-
-
-
 
 
 

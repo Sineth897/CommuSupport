@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../public/CSS/form/form.css" type="text/css" rel="stylesheet">
 <style>
     .form-group{
-        width: 300px;
+        width: 800px;
     }
 </style>
 <?php
@@ -57,7 +57,7 @@ $profile->end();
             <label for="" class="form-label">
                 Item
             </label>
-            <input  class="basic-input-field" type="text" value="<?php echo $requests[0]['item']?>" disabled>
+            <input  class="basic-input-field" type="text" value="<?php echo $requests[0]['subcategoryName']?>" disabled>
 
         </div>
 

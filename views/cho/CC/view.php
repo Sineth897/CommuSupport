@@ -59,8 +59,8 @@ $headerDiv->end();
 
             <?php
 
-            $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer'];
-            $arrayKeys=['city','email','fax','contactNumber',['manager','Add','./communitycenters/register/manager',['ccID']],['logistic','Add','./communitycenters/register/logistic',['ccID']]];
+            $headers=['City','Email','Fax','Contact Number','Manager','Logistic Officer','Age'];
+            $arrayKeys=['city','email','fax','contactNumber',['manager','Add','./communitycenters/register/manager',['ccID']],['logistic','Add','./communitycenters/register/logistic',['ccID']],'age'];
             //create a table from table component
             $ccTable = new \app\core\components\tables\table($headers,$arrayKeys);
             //passing data from $CC to create a table
