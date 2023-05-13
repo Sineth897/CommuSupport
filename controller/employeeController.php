@@ -29,6 +29,89 @@ class employeeController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterEmployees(Request $request, Response $response) : void {
+
+        $data = $request->getJsonData();
+
+        $filter = $data['filters'];
+        $sort = $data['sort'];
+        $search = $data['search'];
+
+        try {
+            $sqlLogistic  = "SELECT * FROM logisticofficer l INNER JOIN communitycenter c on l.ccID = c.ccID ";
+            $sqlManager  = "SELECT * FROM manager m INNER JOIN communitycenter c on m.ccID = c.ccID ";
+
+            $this->sendJson([
+                'status' => 1,
+                'logisticOfficers' => logisticModel::runCustomQuery(
+                    $sqlLogistic,
+                    $filter,
+                    $sort,
+                    [$search,['name','city']]
+                ),
+                'managers' => managerModel::runCustomQuery(
+                    $sqlManager,
+                    $filter,
+                    $sort,
+                    [$search,['name','city']]
+                ),
+            ]);
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'status' => 0,
+                'message' => $e->getMessage()
+            ]);
+        }
+
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function employeesPopup(Request $request, Response $response) : void {
+
+        $data = $request->getJsonData();
+        $employeeID = $data['employeeID'];
+
+        try {
+            if (str_contains($employeeID,'logistic')) {
+
+                $this->sendJson([
+                    'status' => 1,
+                    'employee' => logisticModel::runCustomQuery(
+                        'SELECT * FROM logisticofficer l INNER JOIN communitycenter c on l.ccID = c.ccID',
+                        ['employeeID' => $employeeID],
+                    ) [0]
+                ]);
+
+            }
+            else {
+
+                    $this->sendJson([
+                        'status' => 1,
+                        'employee' => managerModel::runCustomQuery(
+                            'SELECT * FROM manager m INNER JOIN communitycenter c on m.ccID = c.ccID',
+                            ['employeeID' => $employeeID],
+                        ) [0]
+                    ]);
+            }
+        }
+        catch (\Exception $e) {
+            $this->sendJson([
+                'status' => 0,
+                'message' => $e->getMessage()
+            ]);
+        }
+
+    }
 
    
 }

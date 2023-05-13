@@ -203,6 +203,10 @@ $app->router->post('/manager/driver/popup', function ($request,$response) {
     $controller = new \app\controller\driverController("driverPopup",$request,$response);
 });
 
+$app->router->get('/manager/drivers/stat',function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDriverStat",$request,$response);
+});
+
 //Manager view donees
 $app->router->get('/manager/donees', function ($request, $response) {
     $controller = new \app\controller\doneeController("viewDonees",$request,$response);
@@ -266,10 +270,6 @@ $app->router->post('/manager/donations/filter', function ($request, $response) {
 $app->router->get('/manager/profile', function ($request, $response) {
     $controller = new \app\controller\profileController("managerProfile",$request,$response);
 });
-
-
-
-
 
 
 
@@ -830,6 +830,13 @@ $app->router->post('/admin/communitycenters/filter', function ($request, $respon
 $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
+
+$app->router->post('/admin/employees/filter',function ($request,$response){
+    $controller = new \app\controller\employeeController("filterEmployees",$request,$response);
+});
+$app->router->post('/admin/employees/popup',function ($request,$response){
+    $controller = new \app\controller\employeeController("employeesPopup",$request,$response);
+});
 //Admin view donation
 $app->router->get('/admin/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
@@ -1024,6 +1031,10 @@ $app->router->post('/admin/event/popup', function ($request, $response) {
 
 $app->router->post('/admin/donation/popup', function ($request, $response) {
     $controller = new \app\controller\adminController("getDonationPopup",$request,$response);
+});
+
+$app->router->get('/admin/drivers/stat', function ($request, $response) {
+    $controller = new \app\controller\adminController("viewDriverStat",$request,$response);
 });
 
 $app->run();

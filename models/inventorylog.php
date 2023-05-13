@@ -204,8 +204,8 @@ class inventorylog extends DbModel
 
         // select related data from the ccdonation table and insert it into the inventory log table
         // once cc donation is get accepted
-        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark)  
-                    SELECT ccdonationID,amount,item,fromCC,CONCAT('Donation was dispatched to ', c.city,' CC on ',CURRENT_DATE) 
+        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark,datePicked)  
+                    SELECT ccdonationID,amount,item,fromCC,CONCAT('Donation was dispatched to ', c.city,' CC on ',CURRENT_DATE), CURRENT_DATE 
                     FROM ccdonation cc INNER JOIN communitycenter c on cc.toCC = c.ccID 
                     WHERE cc.ccdonationID = '$ccdonationID'";
 

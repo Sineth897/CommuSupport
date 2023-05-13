@@ -246,4 +246,10 @@ class adminController extends Controller
 
     }
 
+    protected function viewDriverStat(Request $request, Response $response) : void {
+
+        $this->render('admin/driverStat', "Driver Stat");
+
+    }
+
 }

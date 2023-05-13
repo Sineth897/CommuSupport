@@ -138,9 +138,15 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+echo "<div class='btn-together' >";
+
 $searchDiv->search();
 
-echo "<button class='btn-cta-primary' id='driverPrint'>Print</button>";
+echo "<button class='btn-primary' id='driverPrint'>Get PDF</button>";
+
+echo "<a class='btn-primary' href='./drivers/stat'>View Driver Statistics</a>";
+
+echo "</div>";
 
 $searchDiv->end(); ?>
 
