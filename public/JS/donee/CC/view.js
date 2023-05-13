@@ -18,6 +18,10 @@ document.getElementById('filter').addEventListener('click', function(e) {
     }
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 filterBtn.addEventListener('click', function() {
     let districtId = district.value;
 

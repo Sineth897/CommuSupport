@@ -170,32 +170,58 @@ class deliveryController extends Controller
         }
     }
 
-    protected function completeDelivery(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function completeDelivery(Request $request, Response $response) : void {
         $data = $request->getJsonData()['data'];
 
         try {
             $this->startTransaction();
+
+            // function to calculate nextdelivery stage
             $this->calculateNextDeliveryStage($data['subdeliveryID'],$data['process']);
             $this->commitTransaction();
 //            $this->rollbackTransaction();
+
+            // send success message upon successful completion
             $this->sendJson(['status' => 1, 'message' => 'Delivery completion was saved successfully']);
         }
         catch (\PDOException $e) {
+
+            // send error message upon failure and rollback the transaction
             $this->rollbackTransaction();
             $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
         }
+
     }
 
-    private function calculateNextDeliveryStage(string $subdeliveryID,string $process) {
+    /**
+     * @param string $subdeliveryID
+     * @param string $process
+     * @return void
+     */
+    private function calculateNextDeliveryStage(string $subdeliveryID, string $process) : void {
 
+        // first get the subdelivery model
         $subdelivery = subdeliveryModel::getModel(['subdeliveryID' => $subdeliveryID]);
 
+        // check whether the delivery stage is the final one or not
         if($subdelivery->deliveryStage === 1) {
+
+            // if it is the final stage, then complete the delivery
             $this->complete($subdelivery,$process);
+
         }
         else {
+
+            // if it is not the final stage, then update the delivery stage and set the next process
             $this->setNextProcess($subdelivery,$process);
+
         }
+
     }
 
     /**
@@ -204,17 +230,45 @@ class deliveryController extends Controller
      * @return void
      */
     private function complete(subdeliveryModel $subdelivery, string $process) : void {
+
+        // get the timesamp to be used for completion
         $completed = date('Y-m-d H:i:s');
+
+        // update the subdelivery and delivery as completed
         subdeliveryModel::updateAsCompleted($subdelivery->subdeliveryID,$completed);
         deliveryModel::updateDeliveryAsCompleted($subdelivery->deliveryID,$completed);
+
+        // complete the process, here process means donation, accepted request or cc donation
         $this->completeProcess($subdelivery,$process,$completed);
+
+        // log the transaction on inventory logs
         $this->logtransactionComplete($subdelivery,$process);
+
+        // if the process is cc donation then update the cc donation as completed
         if($process === 'ccdonation') {
-            $this->setNotification("Your donation has been delivered",'Delivery Completed',$subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
+
+            // send the notification to logistic officer
+            $this->setNotification(
+                "Your donation has been delivered",
+                'Delivery Completed',
+                $subdelivery->end,'',
+                'delivery',$subdelivery->subdeliveryID);
             return;
+
         }
-        $this->sendSMSByUserID($process === "acceptedRequest" ? "Your delivery has been completed. Please check your dashboard for more details" : "Your donation has been delivered. Please check your dashboard for more details",$process === 'donation' ? $subdelivery->start : $subdelivery->end);
-        $this->setNotification($process === 'acceptedRequest' ? 'Your delivery has been completed. For any complaint please report via system or contact your community center' : 'Your donation has been delivered','Delivery Completed',$process === 'donation' ? $subdelivery->start : $subdelivery->end,'','delivery',$subdelivery->subdeliveryID);
+
+        // if it is of other 2 types, set the relevant SMS for relevant user
+        $this->sendSMSByUserID(
+            $process === "acceptedRequest" ? "Your delivery has been completed. Please check your dashboard for more details" : "Your donation has been delivered. Please check your dashboard for more details",
+            $process === 'donation' ? $subdelivery->start : $subdelivery->end);
+
+        // and send the notification for the relevant user
+        $this->setNotification(
+            $process === 'acceptedRequest' ? 'Your delivery has been completed. For any complaint please report via system or contact your community center' : 'Your donation has been delivered',
+            'Delivery Completed',
+            $process === 'donation' ? $subdelivery->start : $subdelivery->end,'',
+            'delivery',$subdelivery->subdeliveryID);
+
     }
 
     /**
@@ -223,7 +277,10 @@ class deliveryController extends Controller
      * @return void
      */
     private function logtransactionComplete(subdeliveryModel $subdelivery, string $process) : void {
+
         $sql = "";
+
+        // set the sql statement according to the process
         switch ($process) {
             case "donation":
                 $sql = "SELECT * FROM donation WHERE deliveryID = :deliveryID";
@@ -235,23 +292,27 @@ class deliveryController extends Controller
                 $sql = "SELECT * FROM ccdonation WHERE deliveryID = :deliveryID";
                 break;
         }
+
+        //fetch relevant data
         $stmnt = deliveryModel::prepare($sql);
         $stmnt->bindValue(':deliveryID',$subdelivery->deliveryID);
         $stmnt->execute();
         $data = $stmnt->fetch(\PDO::FETCH_ASSOC);
 
+        // log the transaction in inventory logs according to the process
         switch ($process) {
             case 'donation':
                 inventorylog::logCollectionOfDonationFromDonor($data['donationID'],$data['donateTo']);
                 inventoryModel::updateInventoryAfterDonation($data);
                 break;
             case 'acceptedRequest':
-                inventorylog::logPickupFromCC($data['acceptedID'],$data['postedBy']);
+                inventorylog::logPickupFromCC($data['acceptedID'],$subdelivery->end);
                 break;
             case 'ccdonation':
                 inventorylog::logCCdonation($data['ccDonationID'],$data['fromCC'],$data['toCC']);
                 break;
         }
+
     }
 
     /**
@@ -261,7 +322,10 @@ class deliveryController extends Controller
      * @return bool
      */
     private function completeProcess(subdeliveryModel $subdelivery, string $process, string $completedDate) : bool {
+
         $sql = "";
+
+        //
         switch ($process) {
             case "donation":
                 $sql = "UPDATE donation SET deliveryStatus = 'Completed' WHERE deliveryID = :deliveryID";
@@ -273,10 +337,13 @@ class deliveryController extends Controller
                 $sql = "UPDATE ccdonation SET deliveryStatus = 'Completed',completedDate = '$completedDate' WHERE deliveryID = :deliveryID";
                 break;
         }
+
+        // then update the process as completed
         $stmnt = deliveryModel::prepare($sql);
         $stmnt->bindValue(':deliveryID',$subdelivery->deliveryID);
         $stmnt->execute();
         return true;
+
     }
 
     /**
@@ -285,20 +352,50 @@ class deliveryController extends Controller
      * @return bool
      */
     private function setNextProcess(subdeliveryModel $subdelivery, string $process) : bool {
+
+        // get the time stamp for the completion
         $completed = date('Y-m-d H:i:s');
+
+        // update the subdelivery as completed
         subdeliveryModel::updateAsCompleted($subdelivery->subdeliveryID,$completed);
         $nextSubdelivery = new subdeliveryModel();
 
+        // check the current stage and set the next stage
         if($subdelivery->deliveryStage === 2) {
+
+            // if it is the 2nd stage, then set the next stage as final stage
             $nextSubdelivery->saveFinalStagedetails($subdelivery);
-            $this->sendSMSByUserID('Your delivery arrived at your community center. Please expect delivery soon',$nextSubdelivery->end);
-            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center. Please expect delivery soon',$nextSubdelivery->end,'','delivery',$nextSubdelivery->subdeliveryID);
+
+            // send SMS and notifications to relevant users
+            $this->sendSMSByUserID(
+                'Your delivery arrived at your community center. Please expect delivery soon',
+                $nextSubdelivery->end);
+
+            $this->setNotification(
+                'Your delivery arrived at your community center. Please expect delivery soon',
+                'Your delivery arrived at your community center.',
+                $nextSubdelivery->end,'',
+                'delivery',$nextSubdelivery->subdeliveryID);
+
         }
         else {
+
+            // if it is the 3rd stage, then set the next stage as 2nd stage
             $nextSubdelivery->save2ndStagedetails($subdelivery);
-            $this->sendSMSByUserID('Your delivery arrived at your community center. Please expect delivery soon',$subdelivery->start);
-            $this->setNotification('Your delivery arrived at your community center. Please expect delivery soon','Your delivery arrived at your community center. Please expect delivery soon',$subdelivery->start,'','delivery',$nextSubdelivery->subdeliveryID);
+
+            // send SMS and notifications to relevant users
+            $this->sendSMSByUserID(
+                "Your delivery arrived at your community center. It will be transferred to donee's community center soon",
+                $subdelivery->start);
+
+            $this->setNotification(
+                "Your delivery arrived at your community center. It will be transferred to donee's community center soon",
+                'Your delivery arrived at your community center.',
+                $subdelivery->start,'',
+                'delivery',$nextSubdelivery->subdeliveryID);
         }
+
+        // log the transaction
         $this->logtransactionNext($subdelivery,$process);
         return true;
     }
@@ -310,26 +407,37 @@ class deliveryController extends Controller
      */
     private function logtransactionNext(subdeliveryModel $subdelivery, string $process): void
     {
+
+        // only accepted request process has more than one stage
+        // retrieve directly from the accepted request table
         $sql = "SELECT * FROM acceptedrequest WHERE deliveryID = :deliveryID";
         $stmnt = deliveryModel::prepare($sql);
         $stmnt->bindValue(':deliveryID',$subdelivery->deliveryID);
         $stmnt->execute();
         $data = $stmnt->fetch(\PDO::FETCH_ASSOC);
 
+        // log the transaction according to the process
+        // switch between the 3rd stage and 2nd stage
         switch ($subdelivery->deliveryStage) {
             case 3:
-                inventorylog::logCollectionFromDonor($data['acceptedID'],$data['donateTo']);
+
+                // if the delivery was from donor
+                inventorylog::logCollectionFromDonor($data['acceptedID'],$data['acceptedBy']);
                 break;
             case 2:
+
+                // here check whether the delivery was from donor or from another CC
                 if(str_contains($subdelivery->start,'donor')) {
-                    inventorylog::logCollectionFromDonor($data['acceptedID'],$data['donateTo']);
+                    inventorylog::logCollectionFromDonor($data['acceptedID'],$data['acceptedBy']);
                 }
-                else {
-                    inventorylog::logDeliveryBetween2CCs($subdelivery->deliveryID);
+                else if ($data['acceptedBy'] === $subdelivery->start){
+                    inventorylog::logDeliveryBetween2CCs($subdelivery->deliveryID,$data['acceptedID']);
                 }
 
                 break;
+
         }
+
     }
 
 

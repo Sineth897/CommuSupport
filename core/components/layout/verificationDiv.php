@@ -13,21 +13,20 @@ class verificationDiv
     public function __construct()
     {
         $this->userType = \app\core\Application::session()->get('userType');
-        if($this->userType === 'donee') {
+        if ($this->userType === 'donee') {
             $this->user = \app\models\doneeModel::getModel(['doneeID' => \app\core\Application::session()->get('user')]);
-        }
-        else if($this->userType === 'donor') {
+        } else if ($this->userType === 'donor') {
             $this->user = \app\models\donorModel::getModel(['donorID' => \app\core\Application::session()->get('user')]);
         }
         $this->checkMobileVerification();
-        if($this->userType === 'donee') {
+        if ($this->userType === 'donee') {
             $this->checkDoneeVerification();
         }
     }
 
     public function checkMobileVerification(): void
     {
-        if($this->user->mobileVerification === 0){
+        if ($this->user->mobileVerification === 0) {
             $this->mobileVerification = 1;
             $this->needVerification = 1;
         }
@@ -47,7 +46,7 @@ class verificationDiv
 
     public function checkDoneeVerification(): void
     {
-        if($this->user->verificationStatus === 0) {
+        if ($this->user->verificationStatus === 0) {
             $this->doneeVerification = 1;
             $this->needVerification = 1;
         }
@@ -64,18 +63,33 @@ class verificationDiv
 
     public function notVerified(): int
     {
-        if($this->needVerification) {
-            echo '<div class="content">';
-            if($this->mobileVerification) {
+        if ($this->needVerification) {
+            echo '<div class="content"><div class="error-grid-2">';
+            if ($this->mobileVerification) {
                 $this->mobileVerificationDiv();
             }
-            if($this->doneeVerification) {
+            if ($this->doneeVerification) {
                 $this->doneeVerificationDiv();
             }
-            echo '</div>';
+            echo '</div></div>';
             return 1;
         }
         return 0;
     }
 
+    public function __destruct()
+    {
+        ?>
+        <script>
+            window.onload = function () {
+                const checkError = document.querySelector('.error-grid-2');
+                if (checkError && checkError.children.length === 1) {
+                    console.log(checkError);
+                    checkError.classList.replace('error-grid-2', 'error-container');
+                }
+            }
+        </script>
+        <?php
+
+    }
 }

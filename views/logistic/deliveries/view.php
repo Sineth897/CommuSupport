@@ -17,7 +17,7 @@ $pendingDeliveries['directDonations'] = array_filter($delivery['directDonations'
 });
 
 $pendingDeliveries['acceptedRequests'] = array_filter($delivery['acceptedRequests'], function($delivery) {
-    return $delivery['status'] !== "Completed";
+    return $delivery['deliveryStatus'] !== "Completed";
 });
 
 $pendingDeliveries['ccDonations'] = array_filter($delivery['ccDonations'], function($delivery) {
@@ -30,7 +30,7 @@ $completedDeliveries['directDonations'] = array_filter($delivery['directDonation
 });
 
 $completedDeliveries['acceptedRequests'] = array_filter($delivery['acceptedRequests'], function($delivery) {
-    return $delivery['status'] === "Completed";
+    return $delivery['deliveryStatus'] === "Completed";
 });
 
 $completedDeliveries['ccDonations'] = array_filter($delivery['ccDonations'], function($delivery) {
@@ -49,7 +49,7 @@ $profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Deliveries"); ?>
+<?php $headerDiv->heading("Pending Deliveries"); ?>
 
 <?php $headerDiv->pages(["pending", "completed"]); ?>
 

@@ -119,9 +119,9 @@ $app->router->post('/verifyMobile', function($request,$response) {
     $controller = new loginController('verifyMobile',$request,$response);
 });
 
-
-
-
+$app->router->post('/changepassword', function($request,$response) {
+    $controller = new loginController('changePasswordFromProfile',$request,$response);
+});
 
 
 
@@ -203,6 +203,10 @@ $app->router->post('/manager/driver/popup', function ($request,$response) {
     $controller = new \app\controller\driverController("driverPopup",$request,$response);
 });
 
+$app->router->get('/manager/drivers/stat',function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDriverStat",$request,$response);
+});
+
 //Manager view donees
 $app->router->get('/manager/donees', function ($request, $response) {
     $controller = new \app\controller\doneeController("viewDonees",$request,$response);
@@ -238,9 +242,20 @@ $app->router->get('/manager/requests', function ($request, $response) {
 $app->router->post('/manager/requests/popup', function ($request, $response) {
     $controller = new \app\controller\requestController("requestPopup",$request,$response);
 });
+$app->router->post('/manager/requests/popup/posted', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopupManager",$request,$response);
+});
+$app->router->post('/manager/requests/popup/completed', function ($request, $response) {
+    $controller = new \app\controller\requestController("requestPopupManager",$request,$response);
+});
 $app->router->post('/manager/request/approve', function ($request, $response) {
     $controller = new \app\controller\requestController("setApproval",$request,$response);
 });
+
+$app->router->post('/manager/requests/filter', function ($request, $response) {
+    $controller = new \app\controller\requestController("filterRequestsManager",$request,$response);
+});
+
 //Manager view donation
 $app->router->get('/manager/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
@@ -253,18 +268,8 @@ $app->router->post('/manager/donations/filter', function ($request, $response) {
 });
 //Manager view donation
 $app->router->get('/manager/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("managerProfile",$request,$response);
 });
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -339,15 +344,15 @@ $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 //donee file complaints
-$app->router->post('/donee/complaints/files',function($request,$response){
+$app->router->post('/donee/complaints/file',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
-
+$app->router->get('/donee/complaints/file', function ($request,$response){
+    $controller = new  \app\controller\complaintController('doneeFileComplaint',$request,$response);
+});
 $app->router->get('/donee/profile',function($request,$response){
     $controller = new \app\controller\profileController('doneeProfile',$request,$response);
 });
-
-
 
 
 
@@ -448,7 +453,7 @@ $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 
-//Donor file complaint
+//Donor file complaint on donation
 
 $app->router->post('/donor/complaints/file', function ($request,$response){
    $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
@@ -462,13 +467,13 @@ $app->router->get('/donee/profile',function($request,$response){
     $controller = new \app\controller\profileController('doneeProfile',$request,$response);
 });
 
+$app->router->get('/donor/profile',function($request,$response){
+    $controller = new \app\controller\profileController('donorProfile',$request,$response);
+});
+
 //$app->router->get('/donor/complaints/file',function ($request,$response){
 //   $controller = new \app\controller\donationController('viewDonationDetails',$request,$response);
 //});
-
-
-
-
 
 
 
@@ -501,7 +506,9 @@ $app->router->post('/logistic/drivers/filter', function ($request,$response) {
 $app->router->post('/logistic/driver/popup', function ($request,$response) {
     $controller = new \app\controller\driverController("driverPopup",$request,$response);
 });
-
+$app->router->get('/logistic/drivers/stat', function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDriverStat",$request,$response);
+});
 //logistic view inventory
 $app->router->get("/logistic/inventory", function ($request,$response) {
     $controller = new \app\controller\inventoryController("viewInventory",$request,$response);
@@ -513,6 +520,10 @@ $app->router->post('/logistic/inventory/add', function ($request,$response) {
 
 $app->router->post('/logistic/inventory/filter', function ($request,$response) {
     $controller = new \app\controller\inventoryController("filterInventory",$request,$response);
+});
+
+$app->router->get('/logistic/inventory/logs', function ($request,$response) {
+    $controller = new \app\controller\inventoryController("inventoryLog",$request,$response);
 });
 
 $app->router->get('/logistic/deliveries', function ($request,$response) {
@@ -582,13 +593,9 @@ $app->router->post('/logistic/donations/filter', function ($request,$response) {
     $controller = new \app\controller\donationController("filterDonationsEmployee",$request,$response);
 });
 
-
-
-
-
-
-
-
+$app->router->get('/logistic/profile',function($request,$response){
+    $controller = new \app\controller\profileController('logisticProfile',$request,$response);
+});
 
 
 
@@ -619,7 +626,7 @@ $app->router->get('/driver/deliveries/completed', function ($request,$response) 
 });
 
 $app->router->get('/driver/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("driverProfile",$request,$response);
 });
 
 $app->router->post('/driver/deliveries/popup', function ($request,$response) {
@@ -725,7 +732,7 @@ $app->router->post("/cho/complaints/solution",function ($request,$response){
 });
 
 $app->router->get('/cho/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("choProfile",$request,$response);
 });
 
 
@@ -823,6 +830,13 @@ $app->router->post('/admin/communitycenters/filter', function ($request, $respon
 $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
+
+$app->router->post('/admin/employees/filter',function ($request,$response){
+    $controller = new \app\controller\employeeController("filterEmployees",$request,$response);
+});
+$app->router->post('/admin/employees/popup',function ($request,$response){
+    $controller = new \app\controller\employeeController("employeesPopup",$request,$response);
+});
 //Admin view donation
 $app->router->get('/admin/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
@@ -889,7 +903,27 @@ $app->router->get('/admin/complaints',function ($request,$response)
 });
 
 $app->router->get('/admin/profile', function ($request, $response) {
-    $controller = new \app\controller\profileController("viewProfile",$request,$response);
+    $controller = new \app\controller\profileController("adminProfile",$request,$response);
+});
+
+// admin view individual CC
+$app->router->get('/admin/communitycenters/individual/view', function ($request, $response) {
+    $controller = new \app\controller\ccController("viewIndividualCC",$request,$response);
+});
+
+// admin view individual donee
+$app->router->get('/admin/donees/individual/view', function ($request, $response) {
+    $controller = new \app\controller\doneeController("viewIndividualDonee",$request,$response);
+});
+
+// admin view individual donor
+$app->router->get('/admin/donors/individual/view', function ($request, $response) {
+    $controller = new \app\controller\donorController("viewIndividualDonor",$request,$response);
+});
+
+// admin view driver profile
+$app->router->get('/admin/drivers/individual/view', function ($request, $response) {
+    $controller = new \app\controller\driverController("viewIndividualDriver",$request,$response);
 });
 
 
@@ -897,5 +931,110 @@ $app->router->get('/admin/profile', function ($request, $response) {
 
 
 
-// 882
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$app->router->post('/admin/profile/addcategory', function ($request, $response) {
+    $controller = new \app\controller\adminController("addCategory",$request,$response);
+});
+
+$app->router->post('/admin/profile/getcategories', function ($request, $response) {
+    $controller = new \app\controller\adminController("getCategories",$request,$response);
+});
+
+$app->router->post('/admin/profile/addsubcategory', function ($request, $response) {
+    $controller = new \app\controller\adminController("addSubCategory",$request,$response);
+});
+
+$app->router->get('/admin/viewinventorylog', function ($request, $response) {
+    $controller = new \app\controller\adminController("viewInventoryLog",$request,$response);
+});
+
+$app->router->post('/admin/request/popup', function ($request, $response) {
+    $controller = new \app\controller\adminController("requestPopup",$request,$response);
+});
+
+$app->router->post('/admin/event/popup', function ($request, $response) {
+    $controller = new \app\controller\adminController("getEventPopup",$request,$response);
+});
+
+$app->router->post('/admin/donation/popup', function ($request, $response) {
+    $controller = new \app\controller\adminController("getDonationPopup",$request,$response);
+});
+
+$app->router->get('/admin/drivers/stat', function ($request, $response) {
+    $controller = new \app\controller\adminController("viewDriverStat",$request,$response);
+});
+
 $app->run();

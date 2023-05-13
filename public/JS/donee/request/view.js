@@ -67,7 +67,7 @@ async function showPopup(e) {
     // get the data from the server
     const result = await getData('./request/popup', 'POST',  {requestID: requestID,acceptedID:acceptedID,deliveryStatus:deliveryStatus} );
 
-    console.log(result);
+    // console.log(result);
 
     // if the response is a error message
     if(!result['status']) {
@@ -78,12 +78,13 @@ async function showPopup(e) {
     // get the request details
     const request = result['requestDetails'];
     const deliveries = result['deliveries'];
+    // console.log(request)
 
     // set the popup
     popUp.clearPopUp();
 
     // add complaint for request
-    popUp.setComplaintIcon(request['requestID'],'acceptedRequest');
+    popUp.setComplaintIcon(request['acceptedID'],'acceptedRequest');
 
     // pop up heading
     popUp.setHeader('Request Details');
@@ -139,6 +140,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 // get the divs to show the deliveries
 const activeRequestsDiv = document.getElementById('activeRequests');
 const acceptedRequestsDiv = document.getElementById('acceptedRequests');
@@ -180,13 +189,15 @@ filterBtn.addEventListener('click', async function(e) {
     // const result = await getTextData('./requests/filter', 'POST', { filters:filters, sort:sort });
     const result = await getData('./requests/filter', 'POST', { filters:filters, sort:sort });
 
-    console.log(result);
+    // console.log(result);
 
     // if error occurs, show error message
     if(!result['status']) {
         flash.showMessage({value: result['message'], type: 'error'});
         return;
     }
+
+    toggle.removeNoData();
 
     const activeRequests = result['activeRequests'];
     const acceptedRequests = result['acceptedRequests'];

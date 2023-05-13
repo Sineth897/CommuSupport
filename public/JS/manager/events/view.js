@@ -1,25 +1,32 @@
-import {getData} from "../../request.js";
+import {getData,getTextData} from "../../request.js";
 import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
 import togglePages from "../../togglePages.js";
 import flash from "../../flashmessages/flash.js";
 
-let toggle = new togglePages([{btnId:'upcoming',pageId:'upcomingEvents'},{btnId:'completed',pageId:'finishedEvents'},{btnId:'cancelled',pageId:'cancelledEvents'}],);
+let toggle = new togglePages([
+                                {btnId:'upcoming',pageId:'upcomingEvents',title:'Upcoming Events'},
+                                {btnId:'completed',pageId:'finishedEvents',title:'Completed Events'},
+                                {btnId:'cancelled',pageId:'cancelledEvents',title:'Cancelled Events'}]
+                                ,'grid');
 
 let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
+
    if(filterOptions.style.display === 'block') {
        filterOptions.style.display = 'none';
    } else {
        filterOptions.style.display = 'block';
    }
     sortOptions.style.display = 'none';
+    // console.log(filterOptions.style.display);
 });
 
 document.getElementById('sort').addEventListener('click', function(e) {
+
     if(sortOptions.style.display === 'block') {
         sortOptions.style.display = 'none';
     } else {
@@ -28,18 +35,26 @@ document.getElementById('sort').addEventListener('click', function(e) {
     filterOptions.style.display = 'none';
 });
 
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
 let filterBtn = document.getElementById('filterBtn');
-const upcomingEventsDiv = document.getElementById('ongoingEventsDisplay');
-const finishedEventsDiv = document.getElementById('finishedEventsDisplay');
-const cancelledEventsDiv = document.getElementById('cancelledEventsDisplay');
+const upcomingEventsDiv = document.getElementById('upcomingEvents');
+const finishedEventsDiv = document.getElementById('finishedEvents');
+const cancelledEventsDiv = document.getElementById('cancelledEvents');
 
 let eventCategory = document.getElementById('eventCategory');
 let sortByDate = document.getElementById('sortByDate');
 let sortByParticipation = document.getElementById('sortByParticipation');
 // console.log(sortByParticipation);
 
-let popUpArrayKeys = ['organizedBy','date','time','location','description'];
-let popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
+const popUpArrayKeys = ['organizedBy','date','time','location','description'];
+const popUpArrayLabels = ['Organized By', ["Date",'date'],['Time','time'], 'Location',['Event Description','textarea']];
 
 updateEventCardOnClick();
 filterBtn.addEventListener('click', async function() {
@@ -61,7 +76,9 @@ filterBtn.addEventListener('click', async function() {
 
     const array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
 
-    console.log(array);
+    toggle.removeNoData();
+
+    // console.log(array);
 
     const upcomingEvents = {
         icons : array['icons'],
@@ -84,6 +101,9 @@ filterBtn.addEventListener('click', async function() {
     displayEventcards(upcomingEventsDiv,upcomingEvents);
     displayEventcards(finishedEventsDiv,finishedEvents);
     displayEventcards(cancelledEventsDiv,cancelledEvents);
+
+    toggle.checkNoData();
+
     updateEventCardOnClick();
 
 });
@@ -120,7 +140,7 @@ async function showPopUp(e) {
     popUpEvent.endPopUpInfo();
 
     popUpEvent.setBody(event,popUpArrayKeys,popUpArrayLabels);
-    if(event['status'] === 'Not active') {
+    if(event['status'] === 'Upcoming') {
         popUpEvent.setButtons([{text:'Update',classes:['btn-primary'],value:event['eventID'],func:updateFunc,cancel:true},
             {text:'Cancel Event',classes:['btn-danger'],value:event['eventID'],func:cancelFunc,cancel:true}]);
     }
@@ -167,7 +187,7 @@ let cancelFunc = async (e) => {
             flash.showMessage({type:'error',value:'Event cancel Failed'},3000);
         }
         popUpEvent.hidePopUp();
-        document.getElementById('filterBtn').click();
+        filterBtn.click();
         e.target.innerText = 'Cancel Event';
     }
 }

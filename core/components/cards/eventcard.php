@@ -17,13 +17,11 @@ class eventcard
      * @return void
      */
     public function displayEvents(array $events = [], string $id = "eventDisplay") : void  {
-        echo sprintf("<div class='card-container' id='%s'>",$id);
 
             foreach ($events as $event) {
                 $this->eventCard($event);
             }
 
-        echo "</div>";
     }
 
     /**

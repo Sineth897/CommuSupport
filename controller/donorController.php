@@ -66,7 +66,12 @@ class donorController extends Controller
         }
     }
 
-    protected function filterDonors(Request $request,Response $response) {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterDonors(Request $request, Response $response) : void {
 
         $data = $request->getJsonData();
 
@@ -78,11 +83,13 @@ class donorController extends Controller
 
         $sql1  = "SELECT * FROM donor INNER JOIN donorindividual d on donor.donorID = d.donorID";
         $sql2  = "SELECT * FROM donor INNER JOIN donororganization d on donor.donorID = d.donorID";
-        $where1 = " WHERE ccID = '$user->ccID' AND ";
-        $where2 = " WHERE ccID = '$user->ccID' AND ";
+        $where1 = " WHERE ccID = '$user->ccID'";
+        $where2 = " WHERE ccID = '$user->ccID'";
 
 
         if(!empty($search)) {
+            $where1 .= " AND ";
+            $where2 .= " AND ";
             $where1 .= " (fname LIKE '%$search%' OR lname LIKE '%$search%' OR email LIKE '%$search%')";
             $where2 .= " (email LIKE '%$search%' OR organizationName LIKE '%$search%' OR representative LIKE '%$search%')";
         }
@@ -102,7 +109,7 @@ class donorController extends Controller
             $statement2->execute();
             $this->sendJson(['status' => 1, 'individualDonors' => $statement1->fetchAll(\PDO::FETCH_ASSOC), 'organizationDonors' => $statement2->fetchAll(\PDO::FETCH_ASSOC)]);
         } catch (\Exception $e) {
-            $this->sendJson(['status' => 0 , 'message' => $e->getMessage()]);
+            $this->sendJson(['status' => 0 , 'message' => $e->getMessage(), 'sql' => $sql1]);
         }
 
     }
@@ -119,5 +126,16 @@ class donorController extends Controller
         } catch (\Exception $e) {
             $this->sendJson(['status' => 0 , 'msg' => $e->getMessage(), 'sql' => $sql]);
         }
+    }
+
+    protected function viewIndividualDonor(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+        $model = new donorModel();
+        $user = $this->getUserModel();
+        $this->render("admin/donors/individual", "View Individual Donor", [
+            'model' => $model,
+            'donorID' => $request->getBody()['donorID']
+        ]);
     }
 }

@@ -152,7 +152,7 @@ abstract class DbModel extends Model
     //example: $sql = "SELECT * FROM users INNER JOIN ..."; <- without WHERE, ORDER and LIKE clauses
     // $where = ['id' => 1, 'name' => 'John']; <- WHERE clause, can specify if not equal // $where = ['!id' => 1, '!name' => '!John'];
     // $sort = ['ASC' => ['id', 'name']]; <- ORDER BY clause
-    // $search = ['search' , ['name' => 'John']]; <- LIKE clause
+    // $search = ['search' , ['name','John']]; <- LIKE clause
     // $groupBy = 'id'; <- GROUP BY clause
     // $having = ['id' => 1, 'name' => 'John']; <- HAVING clause
     // $fetchMode = \PDO::FETCH_ASSOC; <- fetch mode
@@ -177,7 +177,7 @@ abstract class DbModel extends Model
 
         // structure search array to be like "name LIKE '%John%'"
         // then implode it with OR, then append it to where statement
-        if(!empty($search)) {
+        if(!empty($search[0])) {
             $wherestmnt = $wherestmnt === " WHERE " ? $wherestmnt : $wherestmnt . " AND ";
             $wherestmnt .= implode(" OR ", array_map(fn($attr) => "$attr LIKE '%$search[0]%' ", $search[1]));
         }

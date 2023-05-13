@@ -2,6 +2,9 @@ import {getData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
 import {PopUp} from "../../popup/popUp.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages([{btnID:'drivers',pageId:'driverTable'}]);
 
 const driverTableDiv = document.getElementById('driverTable');
 
@@ -9,21 +12,33 @@ let filterOptions = document.getElementById('filterOptions');
 let sortOptions = document.getElementById('sortOptions');
 
 document.getElementById('filter').addEventListener('click', function(e) {
+
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {
         filterOptions.style.display = 'block';
     }
     sortOptions.style.display = 'none';
+
 });
 
 document.getElementById('sort').addEventListener('click', function(e) {
+
     if(sortOptions.style.display === 'block') {
         sortOptions.style.display = 'none';
     } else {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const filterBtn = document.getElementById('filterBtn');
@@ -68,6 +83,8 @@ filterBtn.addEventListener('click', async function() {
         return
     }
 
+    toggle.removeNoData();
+
     // console.log(result['drivers']);
 
     const tableData = {
@@ -80,7 +97,9 @@ filterBtn.addEventListener('click', async function() {
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
 
-    let viewBtns = document.querySelectorAll('a.btn-primary');
+    toggle.checkNoData();
+
+    let viewBtns = document.querySelectorAll('.view');
 
     for(let i=0;i<viewBtns.length;i++) {
         viewBtns[i].addEventListener('click', showDriverPopup);
@@ -96,7 +115,13 @@ searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 })
 
-let viewBtns = document.querySelectorAll('a.btn-primary');
+searchInput.addEventListener('keyup', async function(e) {
+    if(e.key === 'Enter') {
+        sortBtn.click();
+    }
+});
+
+let viewBtns = document.querySelectorAll('.view');
 
 for(let i=0;i<viewBtns.length;i++) {
     viewBtns[i].addEventListener('click', showDriverPopup);

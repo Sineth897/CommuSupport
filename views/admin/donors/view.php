@@ -7,6 +7,34 @@ $CCs = \app\models\ccModel::getCCs();
 
 ?>
 
+<style>
+
+    @media print {
+
+        @page {
+            size: landscape;
+        }
+
+        .sidenav, .profile, .search-filter {
+            display: none;
+        }
+
+        .main {
+            width: 100vw;
+            left: 0;
+            height: 100%;
+            overflow: visible;
+        }
+
+        tbody td:last-child {
+            display: none;
+        }
+
+    }
+
+
+</style>
+
 <?php $profile = new \app\core\components\layout\profileDiv();
 
 $profile->notification();
@@ -16,15 +44,71 @@ $profile->profile();
 $profile->end(); ?>
 
 
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Donors"); ?>
+
+<?php $headerDiv->end(); ?>
+
 
 <!-- Inforgraphic Cards Layout -->
-<?php $infoDiv = new \app\core\components\layout\infoDiv([2,3]);
+<?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
 
+?>
+<div class="stat-box-2-h">
+    <div class="stat-card">
+        <span class="stat-title">
+Total Registrations       </span>
+        <span class="stat-value">
+            12
+        </span>
+        <span class="stat-movement inc">
+            <i class="material-icons">groups</i>
+        </span>
+
+    </div>
+    <div class="stat-card">
+                <span class="stat-title">
+Verified Donors    </span>
+        <span class="stat-value">
+            11
+
+        </span>
+        <span class="stat-movement inc">
+            <i class="material-icons">verified_user</i>
+        </span>
+
+    </div>
+</div>
+
+<?php
 // First Block of Statistics
+
+?>
+<!--Second Long Div with Bar Chart-->
+<?php $infoDiv->chartDivStart(); ?>
+<div class="chart-container">
+    <p>Registrations by months</p>
+    <!--    --><?php //$infoDiv->chartCanvas("totalRegChart"); ?>
+    <canvas id="totalRegChart" height="120px"></canvas>
+</div>
+
+<?php
+$chartData2 = $model->getDonorRegMonthly();
+?>
+
+<script>
+    const monthData = <?php echo json_encode($chartData2); ?>;
+</script>
+<script src="../public/JS/charts/admin/donor/totalRegChart.js"></script>
+
+<?php $infoDiv->chartDivEnd();
+
 $infoDiv->chartDivStart();
 //?>
 <div class="chart-container">
-    <canvas id="donorCategoryChart"></canvas>
+    <p>Donors by Category</p>
+    <canvas id="donorCategoryChart" height="240px"></canvas>
 </div>
 
 <?php
@@ -39,33 +123,9 @@ $chartData1 = $model->getDonorbyCategory();
 <?php
 $infoDiv->chartDivEnd();
 
-?>
-<!--Second Long Div with Bar Chart-->
-<?php $infoDiv->chartDivStart(); ?>
-<div class="chart-container">
-    <!--    --><?php //$infoDiv->chartCanvas("totalRegChart"); ?>
-    <canvas id="totalRegChart" width="400" height="250"></canvas>
-</div>
-
-<?php
-$chartData2 = $model->getDonorRegMonthly();
-?>
-
-<script>
-    const monthData = <?php echo json_encode($chartData2); ?>;
-</script>
-<script src="../public/JS/charts/admin/donor/totalRegChart.js"></script>
-
-<?php $infoDiv->chartDivEnd();
 $infoDiv->end(); ?>
 
 
-
-<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
-
-<?php $headerDiv->heading("Donors"); ?>
-
-<?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
 
@@ -92,6 +152,8 @@ $searchDiv->filterDivEnd();
 
 $searchDiv->search();
 
+echo "<button class='btn-cta-primary' id='donorPrint'>Print</button>";
+
 $searchDiv->end(); ?>
 
 
@@ -106,10 +168,9 @@ $searchDiv->end(); ?>
     }
 
     $headers = ["Username",'Registered Date','Community Center',"Contact Number","Type"];
-    $arrayKeys = ["username",'registeredDate','cc','contactNumber','type',['','View','#',[],'donorID']];
+    $arrayKeys = ["username",'registeredDate','cc','contactNumber','type',['','View','./donors/individual/view',['donorID'],'donorID']];
 
     $individualTable = new \app\core\components\tables\table($headers,$arrayKeys);
-
 
     $individualTable->displayTable($donors);
     ?>
@@ -117,3 +178,13 @@ $searchDiv->end(); ?>
 </div>
 
 <script type="module" src="../public/JS/admin/donor/view.js"></script>
+
+<script>
+
+    window.onload = function () {
+        document.getElementById("donorPrint").addEventListener("click", function() {
+            window.print();
+        })
+    }
+
+</script>

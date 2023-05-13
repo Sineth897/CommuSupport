@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/CommuSupport/public/CSS/table/table-styles.css">
-
+<link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 
 <?php
 
@@ -19,49 +19,6 @@ $profile->profile();
 $profile->end(); ?>
 
 
-<!-- Inforgraphic Cards Layout -->
-<?php $infoDiv = new \app\core\components\layout\infoDiv([2, 3]);
-
-// First Block of Statistics
-$infoDiv->chartDivStart();
-//?>
-<div class="chart-container">
-    <canvas id="itemChart"></canvas>
-</div>
-<?php
-$infoDiv->chartDivEnd();
-
-?>
-
-
-<!--Second Long Div with Bar Chart-->
-<?php $infoDiv->chartDivStart(); ?>
-<div class="chart-container">
-    <canvas id="totalChart" width="600"></canvas>
-</div>
-<?php
-$categories = array_values($model->getEventCategories());
-
-$chartData2 = $model->getEventPartbyMonth();
-
-
-?>
-
-<?php
-foreach ($categories as $category) { ?>
-
-    <script>
-        const <?php echo str_replace(' ', '_', $category); ?> = <?php echo json_encode($chartData2[$category]); ?>;
-    </script>
-    <?php
-    echo $category;
-    print_r($chartData2[$category]);
-    echo "<br>";
-}
-?>
-
-<?php $infoDiv->chartDivEnd();
-$infoDiv->end(); ?>
 
 
 
@@ -71,6 +28,82 @@ $infoDiv->end(); ?>
 
 <?php $headerDiv->end(); ?>
 
+<!-- Inforgraphic Cards Layout -->
+<?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
+
+// First Block of Statistics
+$infoDiv->chartDivStart();
+//?>
+<div class="chart-container">
+    <p>Event Categories</p>
+    <canvas id="itemChart" height="200%"></canvas>
+</div>
+<?php
+$chartData1 = $model->getEventbyCategory();
+
+?>
+<script>
+    const itemData = <?php echo json_encode($chartData1)?>;
+    console.log(itemData);
+
+</script>
+<script src="../public/JS/charts/admin/event/eventCategoryChart.js"></script>
+<?php
+$infoDiv->chartDivEnd();
+
+?>
+
+
+<!--Second Long Div with Bar Chart-->
+<?php $infoDiv->chartDivStart(); ?>
+<div class="chart-container">
+    <p>Event Categories</p>
+    <canvas id="totalChart" height="100%"></canvas>
+</div>
+<?php
+$categories = array_values($model->getEventCategories());
+
+$chartData2 = $model->getEventPartbyMonth();
+foreach ($categories as $category) { ?>
+
+    <script>
+        const <?php echo str_replace(' ', '_', $category); ?> = <?php echo json_encode($chartData2[$category]); ?>;
+        console.log(Blood_Donation);
+    </script>
+<?php } ?>
+<script src="../public/JS/charts/admin/event/totalChart.js"></script>
+<?php
+$infoDiv->chartDivEnd();
+?>
+<div class="stat-box-2-h">
+    <div class="stat-card">
+        <span class="stat-title">
+           Finished Events
+        </span>
+        <span class="stat-value">
+            100
+        </span>
+        <span class="stat-movement dec">
+            <i class="material-icons">arrow_downward</i>10%
+        </span>
+
+    </div>
+    <div class="stat-card">
+                <span class="stat-title">
+            Upcoming Events
+        </span>
+        <span class="stat-value">
+            100
+
+        </span>
+        <span class="stat-movement inc">
+            <i class="material-icons">arrow_upward</i>10%
+        </span>
+
+    </div>
+</div>
+<?php
+$infoDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
 

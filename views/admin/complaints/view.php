@@ -44,26 +44,25 @@ $headerDiv->pages(['pending','completed']);
 $headerDiv->end();
 ?>
 
+<?php
 
-<div class="content">
-    <div class="filters">
+$searchDiv = new \app\core\components\layout\searchDiv();
+$searchDiv ->filterDivStart();
 
-        <p ><i class="material-icons"  >
-                <select id="filter">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="completed">Completed</option>
-                </select></i>
-            <span>Filter</span>
-        </p>
+$searchDiv->sortBegin();
 
-        <div class="sort" id="sort-btn">
-            <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort</span></p>
-        </div>
-    </div>
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($complaints,"Reviewed Date","reviewedDate","registeredDateSort");
+$sort->end();
+$sort::end();
 
-</div>
 
+$searchDiv->sortEnd();
+$searchDiv->filterDivEnd();
+$searchDiv->end();
+
+
+?>
 
 <?php
 $checkVerification = new \app\core\components\layout\verificationDiv();
@@ -107,7 +106,7 @@ if($checkVerification->notVerified()) {
 
 
 
-<script type="module" src="../public/JS/admin/complaints/filter.js"></script>
+<script type="module" src="../public/JS/admin/complaints/sort.js"></script>
 
 
 

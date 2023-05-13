@@ -9,20 +9,19 @@ var itemChart = new Chart(ctx, {
             backgroundColor: [
                 '#225E27',
                 '#3AAC43',
-                '#78D480'
+                '#78D480',
+                '#B2E8B0',
             ]
         }]
     },
     options: {
         title: {
-            display: true,
+            display: false,
             text: 'Categories of Requests',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'
         },
-        responsive: true,
-        maintainAspectRatio: true,
         legend: {
             display: true,
             position: 'top',

@@ -197,5 +197,26 @@ class Controller
         notificationModel::setNotification($message,$title,$userID,$usertype,$related,$relatedID);
     }
 
+    /**
+     * @param string $startDate
+     * @param string $endDate
+     * @param string $format
+     * @return array
+     */
+    protected function getAllDatesBetween2Dates(string $startDate, string $endDate, string $format = 'Y-m-d') : array {
+
+        $dateArray = [];
+
+        $startDate = strtotime($startDate);
+        $endDate = strtotime($endDate);
+
+        for ($i=$startDate; $i<=$endDate; $i+=86400) {
+            $dateArray[] = date($format, $i);
+        }
+
+        return $dateArray;
+
+    }
+
 
 }

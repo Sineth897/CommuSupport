@@ -35,7 +35,7 @@ async function showPopup(e) {
 
     const result = await getData('./popup','post', {subdeliveryID: parent.id.split(",")[0]});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type: "error", value: result['message']});
@@ -81,6 +81,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const completedDeliveriesDiv = document.getElementById('completedDeliveries');

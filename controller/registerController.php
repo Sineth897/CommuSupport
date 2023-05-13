@@ -15,6 +15,7 @@ use app\models\donorIndividualModel;
 use app\models\donorModel;
 use app\models\donorOrganizationModel;
 use app\models\driverModel;
+use app\models\managerModel;
 use app\models\userModel;
 
 class registerController extends Controller
@@ -82,6 +83,7 @@ class registerController extends Controller
                         $user->reset();
                     }
                     $this->commitTransaction();
+                    $response->redirect('/admin/communityheadoffices');
                 } catch (\Exception $e) {
                     $this->rollbackTransaction();
                     $this->setFlash('error', 'Unable to save on database');
@@ -168,10 +170,15 @@ class registerController extends Controller
                 try {
                     $this->startTransaction();
                     if ($donee->saveOnALL($data)) {
-                        $this->setFlash('success', 'Donee registered successfully. Please verify your mobile number to complete registration');
+                        $manager = managerModel::getModel(['ccID' => $donee->ccID ]);
+                        $this->setNotification("Donee with the username {$user->username} registered under your community center",
+                            'New registration',
+                            $manager->employeeID,'',
+                            'registration',$user->userID);
                         $donee->reset();
                         $user->reset();
                         $this->commitTransaction();
+                        $this->setFlash('success', 'Donee registered successfully. Please verify your mobile number to complete registration');
                         $response->redirect('/login/user');
                     }
                 } catch (\Exception $e) {

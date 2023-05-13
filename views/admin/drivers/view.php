@@ -9,6 +9,36 @@ use app\core\components\tables\table;
 $CCs = \app\models\ccModel::getCCs();
 
 ?>
+
+<style>
+
+    @media print {
+
+        @page {
+            size: landscape;
+        }
+
+        .sidenav, .profile, .search-filter {
+            display: none;
+        }
+
+        .main {
+            background-color: var(--background-main) !important;
+            -webkit-print-color-adjust: exact;
+            width: 100vw;
+            left: 0;
+            height: 100%;
+            overflow: visible;
+        }
+
+        tbody td:last-child {
+            display: none;
+        }
+
+    }
+
+</style>
+
 <!--        Profile Details-->
 
 <?php $profile = new \app\core\components\layout\profileDiv();
@@ -25,39 +55,62 @@ $profile->end(); ?>
 
 <?php $headerDiv->end(); ?>
 
-<!-- Inforgraphic Cards Layout -->
-<?php //$infoDiv = new \app\core\components\layout\infoDiv();
-//
-//$infoDiv->statDivStart();
-//?>
-<!--<div class="stat-content main-stat">-->
-<!--    <p>Total Drivers</p>-->
-<!--    <p id="total">980</p>-->
-<!--</div>-->
-<!--<div class="stat-content co-stat">-->
-<!--    <p>Long Distance Drivers</p>-->
-<!--    <p id="long-distance">980</p>-->
-<!--</div>-->
-<!--<div class="stat-content co-stat">-->
-<!--    <p>Short Distance Drivers</p>-->
-<!--    <p id="short-distance">980</p>-->
-<!--</div>-->
-<?php
-//$infoDiv->statDivEnd();
-//$infoDiv->chartDivStart();
-//?>
-<!--<h1>Two Charts</h1>-->
-<!--<p>Driver Distribution by Vehicle</p>-->
-<!--    --><?php //$infoDiv->chartCanvas("chart1"); ?>
-<?php
-//$infoDiv->chartDivEnd();
-//$infoDiv->chartDivStart();
-//$infoDiv->chartCanvas("chart3");
-//?>
-<!--<h1>Deliveries in an year</h1>-->
-<?php
-//$infoDiv->chartDivEnd();
-//$infoDiv->end(); ?>
+
+<?php $infoDiv = new \app\core\components\layout\infoDiv([1, 2, 1]); ?>
+
+
+<?php $infoDiv->chartDivStart();
+// retrieving the data for driver by vehicle type chart
+$chartData = $model->getDriverbyVehicle();
+?>
+<script>
+    const chartData = <?php echo json_encode($chartData); ?>;
+</script>
+<div class="stat-container">
+    <p>Driver Vehicles</p>
+    <canvas id="vehicleTypeChart" width="500">
+    </canvas>
+</div>
+
+<script src="../public/JS/charts/admin/driver/driverVehicleChart.js"></script>
+<?php $infoDiv->chartDivEnd(); ?>
+
+<?php $infoDiv->chartDivStart(); ?>
+<div class="stat-container">
+
+</div>
+<?php $infoDiv->chartDivEnd(); ?>
+
+<div class="stat-box-2-h">
+    <div class="stat-card">
+        <span class="stat-title">
+           Short Distance
+        </span>
+        <span class="stat-value">
+            100
+        </span>
+        <span class="stat-movement dec">
+            <i class="material-icons">arrow_downward</i>10%
+        </span>
+
+    </div>
+    <div class="stat-card">
+                <span class="stat-title">
+            Long Distance
+        </span>
+        <span class="stat-value">
+            100
+
+        </span>
+        <span class="stat-movement inc">
+            <i class="material-icons">arrow_upward</i>10%
+        </span>
+
+    </div>
+</div>
+
+<?php $infoDiv->End(); ?>
+
 
 <!-- Search, Sort, Filter Divs -->
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
@@ -85,7 +138,15 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+echo "<div class='btn-together' >";
+
 $searchDiv->search();
+
+echo "<button class='btn-primary' id='driverPrint'>Get PDF</button>";
+
+echo "<a class='btn-primary' href='./drivers/stat'>View Driver Statistics</a>";
+
+echo "</div>";
 
 $searchDiv->end(); ?>
 
@@ -100,7 +161,7 @@ $searchDiv->end(); ?>
 
     $header = ["Name", "Age", "ContactNumber", 'Vehicle', "Vehicle No", "Community Center"];
 
-    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', '#', [], 'employeeID']];
+    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', './drivers/individual/view', ['employeeID'], 'employeeID']];
 
     $driverTable = new table($header, $arrayKey);
 
@@ -110,5 +171,15 @@ $searchDiv->end(); ?>
 </div>
 
 <script type="module" src="../public/JS/admin/driver/view.js"></script>
+
+<script>
+
+    window.onload = function () {
+        document.getElementById('driverPrint').addEventListener('click', function () {
+            window.print();
+        })
+    }
+
+</script>
 
 

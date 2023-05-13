@@ -42,8 +42,8 @@ class doneeModel extends DbModel
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, self::$CONTACT, [self::$UNIQUE, 'class' => self::class]],
             'type' => [self::$REQUIRED],
-//            'longitude' => [self::$REQUIRED, self::$LONGITUDE],
-//            'latitude' => [self::$REQUIRED, self::$LATITUDE],
+            'longitude' => [self::$REQUIRED, self::$LONGITUDE],
+            'latitude' => [self::$REQUIRED, self::$LATITUDE],
         ];
     }
 
@@ -51,9 +51,10 @@ class doneeModel extends DbModel
      * @param string $ccID
      * @return array
      */
-    public function getDoneeIndividuals(string $ccID = "") : array {
-        if($ccID == "") {
-            return $this->retrieveWithJoin('doneeindividual','doneeID');
+    public function getDoneeIndividuals(string $ccID = ""): array
+    {
+        if ($ccID == "") {
+            return $this->retrieveWithJoin('doneeindividual', 'doneeID');
         }
         return $this->retrieveWithJoin('doneeindividual', 'doneeID', ['donee.ccID' => $ccID]);
     }
@@ -62,9 +63,10 @@ class doneeModel extends DbModel
      * @param string $ccID
      * @return array
      */
-    public function getDoneeOrganizations(string $ccID = "") : array {
-        if($ccID == "") {
-            return $this->retrieveWithJoin('doneeorganization','doneeID');
+    public function getDoneeOrganizations(string $ccID = ""): array
+    {
+        if ($ccID == "") {
+            return $this->retrieveWithJoin('doneeorganization', 'doneeID');
         }
         return $this->retrieveWithJoin('doneeorganization', 'doneeID', ['donee.ccID' => $ccID]);
     }
@@ -73,7 +75,7 @@ class doneeModel extends DbModel
      * @param string $ccID
      * @return array
      */
-    public function getAllDonees(string $ccID = '') : array
+    public function getAllDonees(string $ccID = ''): array
     {
         $individuals = $this->getDoneeIndividuals($ccID);
         $organizations = $this->getDoneeOrganizations($ccID);
@@ -84,8 +86,9 @@ class doneeModel extends DbModel
      * @param array $data
      * @return bool
      */
-    public function saveOnALL(array $data) : bool {
-        $data['doneeID'] = substr(uniqid('donee',true),0,23);
+    public function saveOnALL(array $data): bool
+    {
+        $data['doneeID'] = substr(uniqid('donee', true), 0, 23);
         $data['registeredDate'] = date('Y-m-d');
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         if ($data['type'] === 'Individual') {
@@ -99,7 +102,8 @@ class doneeModel extends DbModel
      * @param array $data
      * @return bool
      */
-    private function saveOnDoneeIndividual(array $data): bool {
+    private function saveOnDoneeIndividual(array $data): bool
+    {
         try {
             $nicFront = Application::file()->saveDonee('nicFront', $data['doneeID']);
             $nicBack = Application::file()->saveDonee('nicBack', $data['doneeID'], 'back');
@@ -108,7 +112,7 @@ class doneeModel extends DbModel
                 $this->addError('nicBack', $nicBack);
                 return false;
             }
-            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','fname','lname','NIC','age','username','password','longitude','latitude'];
+            $cols = ['doneeID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type', 'fname', 'lname', 'NIC', 'age', 'username', 'password', 'longitude', 'latitude'];
             $sql = 'CALL insertDoneeIndividual(' . implode(',', array_map((fn($attr) => ":$attr"), $cols)) . ')';
             $stmt = self::prepare($sql);
             foreach ($cols as $key) {
@@ -126,7 +130,8 @@ class doneeModel extends DbModel
      * @param array $data
      * @return bool
      */
-    private function saveOnDoneeOrganization(array $data): bool {
+    private function saveOnDoneeOrganization(array $data): bool
+    {
         try {
             $certificateFront = Application::file()->saveDonee('certificateFront', $data['doneeID']);
             $certificateBack = Application::file()->saveDonee('certificateBack', $data['doneeID'], 'back');
@@ -194,17 +199,22 @@ class doneeModel extends DbModel
     /**
      * @return array
      */
-    public function getDoneeInformationForProfile() : array {
+    public function getDoneeInformationForProfile(): array
+    {
         return [
-            'personalInfo' => $this->getPersonalInfo()[0],
-            'doneeStat' => $this->getDoneeStatistics(),
+            $this->getPersonalInfo()[0],
+            $this->getDoneeStatistics(),
         ];
     }
 
-    private function getPersonalInfo() : array {
+    /**
+     * @return array
+     */
+    private function getPersonalInfo(): array
+    {
 
-        $colsIndividual = "u.*,d.*,di.fname,di.lname,di.NIC,di.age";
-        $colsOrganization = "u.*,d.*,do.organizationName,do.representative,do.representativeContact,do.capacity";
+        $colsIndividual = "u.*,d.*,di.fname,di.lname,di.NIC,di.age,c.city,c2.district";
+        $colsOrganization = "u.*,d.*,do.organizationName,do.representative,do.representativeContact,do.capacity,c.city,c2.district";
 
         $sqlIndividual = "SELECT {$colsIndividual} FROM users u 
                             INNER JOIN donee d ON u.userID = d.doneeID
@@ -228,21 +238,49 @@ class doneeModel extends DbModel
     /**
      * @return array
      */
-    private function getDoneeStatistics() : array {
+    private function getDoneeStatistics(): array
+    {
 
         $arrayOfSql = [
-            $sqlEventParticipartion = "SELECT 'Event Participation',COUNT(*) FROM eventparticipation WHERE userID = '{$_SESSION['user']}'",
-            $sqlNotApprovedRequests = "SELECT 'Requests waiting for Approval',COUNT(*) FROM request WHERE postedBy = '{$_SESSION['user']}' AND approval = 'pending'",
-            $sqlActiveRequests = "SELECT 'Active Requests',COUNT(*) FROM request WHERE postedBy = '{$_SESSION['user']}' AND approval = 'approved'",
-            $sqlAwaitingDeliveries = "SELECT 'Awaiting Deliveries',COUNT(*) FROM delivery WHERE end = '{$_SESSION['user']}' AND status != 'Completed'",
-            $sqlActiveComplaints = "SELECT 'Active Complaints',COUNT(*) FROM complaint WHERE filedBy = '{$_SESSION['user']}' AND status != 'Completed'",
-            $sqlSolvedComplaints = "SELECT 'Solved Complaints',COUNT(*) FROM complaint WHERE filedBy = '{$_SESSION['user']}' AND status = 'Completed'",
+            $sqlEventParticipartion = "SELECT 'Event Participation',COUNT(*) FROM eventparticipation 
+                                            WHERE userID = '{$_SESSION['user']}'",
+
+            $sqlNotApprovedRequests = "SELECT 'Requests waiting for Approval',COUNT(*) FROM request 
+                                            WHERE postedBy = '{$_SESSION['user']}' AND approval = 'pending'",
+
+            $sqlActiveRequests = "SELECT 'Active Requests',COUNT(*) FROM request 
+                                            WHERE postedBy = '{$_SESSION['user']}' AND approval = 'Approved'",
+
+            $sqlAwaitingDeliveries = "SELECT 'Awaiting Deliveries',COUNT(*) FROM delivery 
+                                            WHERE end = '{$_SESSION['user']}' AND status != 'Completed'",
+
+            $sqlActiveComplaints = "SELECT 'Active Complaints',COUNT(*) FROM complaint 
+                                            WHERE filedBy = '{$_SESSION['user']}' AND status != 'Completed'",
+
+            $sqlSolvedComplaints = "SELECT 'Solved Complaints',COUNT(*) FROM complaint 
+                                            WHERE filedBy = '{$_SESSION['user']}' AND status = 'Completed'",
         ];
 
-        $statement = self::prepare(implode(" UNION ",$arrayOfSql));
+        $statement = self::prepare(implode(" UNION ", $arrayOfSql));
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
-
     }
 
+    public function getDoneePersonalInfo($doneeID)
+    {
+// basic fields from the donee table
+        $sql = "SELECT d.doneeID, d.registeredDate, d.verificationStatus, d.email, d.address, d.contactNumber, d.type, d.mobileVerification, d.longitude, d.latitude, ";
+// conditional sql to find the donee name based on the type of donee
+        $sqlconditional = "CASE WHEN d.type = 'individual' THEN CONCAT(i.fname, ' ', i.lname) ELSE o.organizationName END AS doneeName, ";
+        // fields from the individual table and organization table
+        $sqlfields = "i.NIC, i.age, o.regNo, o.representative, o.representativeContact, o.capacity, c.city AS communityCenterName ";
+// joins to the individual table and organization table with donee table, gets the cc name using cc table
+        $sqljoins = "FROM donee d LEFT JOIN doneeindividual i ON d.doneeID = i.doneeID AND d.type = 'individual' LEFT JOIN doneeorganization o ON d.doneeID = o.doneeID AND d.type = 'organization' LEFT JOIN communitycenter c ON d.ccID = c.ccID ";
+
+        $sqlwhere = "WHERE d.doneeID = '$doneeID'";
+        $statement = self::prepare($sql . $sqlconditional . $sqlfields . $sqljoins . $sqlwhere);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 }

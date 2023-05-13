@@ -1,7 +1,7 @@
 import { getData } from "../../request.js";
 import {PopUp} from "../../popup/popUp.js";
 
-const viewBtns = document.querySelectorAll('a.btn-primary');
+const viewBtns = document.querySelectorAll('.view');
 
 for(let i=0; i<viewBtns.length; i++){
     viewBtns[i].addEventListener('click', showPopup)
@@ -37,12 +37,22 @@ function getCCNames(ccs) {
     let ccHeading = document.createElement('h5');
     ccHeading.innerHTML = 'Community Centers';
     ccDiv.appendChild(ccHeading)
+    const ccUl = document.createElement('ul');
+    ccDiv.appendChild(ccUl);
     for(let i=0; i<ccs.length; i++){
-        let cc = document.createElement('input');
-        cc.classList.add('basic-input-field');
-        cc.value = ccs[i]['city'];
+        let cc = document.createElement('li');
+        cc.style.listStyleType = 'none';
+        cc.style.display = 'flex';
+        // cc.classList.add('basic-input-field');
+        cc.innerHTML = ccs[i]['city'];
         cc.disabled = true;
-        ccDiv.appendChild(cc);
+
+        const viewBtn = document.createElement('i');
+        viewBtn.classList.add('material-icons');
+        viewBtn.innerHTML = 'visibility';
+        cc.append(viewBtn);
+
+        ccUl.appendChild(cc);
     }
     return ccDiv;
 }

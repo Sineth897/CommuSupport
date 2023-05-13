@@ -108,7 +108,7 @@ class driverModel extends DbModel
         $sql = "SELECT COUNT(*) as count,vehicleType FROM driver GROUP BY vehicleType";
         $statement = self::prepare($sql);
         $statement->execute();
-        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         $chartData = array();
         // Loop through the result and update the corresponding value in the new array
@@ -133,5 +133,93 @@ class driverModel extends DbModel
         return $chartData;
 
     }
+
+    /**
+     * @return array
+     */
+    public function getDriverInformationForProfile() : array {
+        return [
+            $this->getPersonalInfo()[0],
+            $this->getDriverStatistics(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getPersonalInfo() : array {
+
+        $sql = "SELECT *,d.contactNumber,d.address FROM users u 
+                    INNER JOIN driver d ON u.userID = d.employeeID
+                    INNER JOIN communitycenter c on d.ccID = c.ccID
+                    INNER JOIN communityheadoffice c2 on c.cho = c2.choID
+                    WHERE userID = '{$_SESSION['user']}'";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return array
+     */
+    private function getDriverStatistics() : array {
+
+        $arrayOfSql = [
+            $sqlAssignedDeliveries = "SELECT 'Assigned Deliveries',COUNT(*) FROM subdelivery s
+                                            WHERE s.status = 'Ongoing' AND s.deliveredBy = '{$_SESSION['user']}'",
+
+            $sqlCompletedDeliveries = "SELECT 'Completed Deliveries',COUNT(*) FROM subdelivery s
+                                            WHERE s.status = 'Completed' AND s.deliveredBy = '{$_SESSION['user']}'",
+
+            $sqlTotalDistance = "SELECT 'Distance Covered',CONCAT(ROUND(SUM(s.distance),2),' km') FROM subdelivery s
+                                            WHERE s.status = 'Completed' AND s.deliveredBy = '{$_SESSION['user']}'",
+        ];
+
+        $statement = self::prepare(implode(" UNION ",$arrayOfSql));
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    public function getDriverStatisticsForAdmin(string $employeeID) : array {
+// Getting details for all completed deliveries, currently assigned deliveries and number of deliveries less than 10km and more than 10km using SUM and COUNT functions.
+        $sql =
+            "SELECT 
+  COUNT(CASE WHEN subdelivery.status = 'Completed' THEN 1 ELSE NULL END) AS completed,
+  COUNT(CASE WHEN subdelivery.status = 'Ongoing' THEN 1 ELSE NULL END) AS assigned,
+  SUM(CASE WHEN subdelivery.distance < 10 THEN 1 ELSE 0 END) AS lessThan10,
+  SUM(CASE WHEN subdelivery.distance > 10 THEN 1 ELSE 0 END) AS greaterThan10
+FROM subdelivery
+JOIN driver ON subdelivery.deliveredBy = driver.employeeID
+WHERE driver.employeeID = '$employeeID'";
+        // replace employee ID with :employeeID
+
+        $statement = self::prepare($sql);
+//         bind the employeeID to :employeeID
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    /**
+     * @param string $ccID
+     * @return array
+     */
+    public static function getDriverDeliveryCountStatisticsUnderCCMonthBack(string $ccID) : array {
+
+        $sql = "SELECT name,vehicleType,preference,COUNT(*) AS deliveries,CONCAT(ROUND(SUM(s.distance),2),' km') AS distance FROM subdelivery s
+                INNER JOIN driver d ON s.deliveredBy = d.employeeID
+                INNER JOIN users u ON d.employeeID = u.userID
+                INNER JOIN communitycenter c ON d.ccID = c.ccID
+                WHERE d.ccID = '$ccID' AND s.status = 'Completed' AND s.completedDate >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                GROUP BY d.employeeID";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
 
 }

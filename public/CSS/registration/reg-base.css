@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800,900&display=swap');
 
+::-webkit-file-upload-button {
+    margin-top: 4px;
+    margin-left: -10px;
+    border: none;
+    background: var(--secondary-color);
+    color: white;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+
 :root {
     --primary-color: #1a1a1a;
     --secondary-color: #00d776;
@@ -19,15 +31,15 @@
     padding: 0;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-ul{
+ul {
     list-style: none;
 }
 
-.background{
+.background {
     background-image: url(../../src/login/background.jpg);
     background-size: cover;
     height: 100vh;
@@ -35,34 +47,40 @@ ul{
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: hidden;
 }
-.reg-form-container
-{
+
+.reg-form-container {
     /*height: 60%;*/
     /*overflow-y: scroll;*/
     /*width: 50%;*/
     background: white;
 
-    border-radius: 0.75rem;
+    /*border-radius: 0.75rem;*/
     gap: 40px;
+    padding: 40px 0;
+    height: 100vh;
+    overflow-y: scroll;
+    width: 800px;
+
 }
-.login-grid-2
-{
+
+.login-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     /*height: 60%;*/
     /*overflow-y: scroll;*/
     /*width: 50%;*/
     background: transparent;
-    padding: 40px;
+    padding: 0 40px;
     border-radius: 12px;
-    gap: 10px;
+    /*gap: 10px;*/
+    column-gap: 10px;
+    margin-bottom: 40px;
 }
 
 
-
-.block
-{
+.block {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -77,29 +95,27 @@ ul{
 }
 
 
-.block-header{
+.block-header {
     text-align: center;
 }
 
-.block-header h1{
+.block-header h1 {
     font-size: 2rem;
     font-weight: 600;
 }
 
-.block-header p{
+.block-header p {
     font-size: 0.8rem;
     font-weight: 300;
     color: var(--light);
 }
 
 
-
-.block ul{
+.block ul {
     width: 280px;
 }
 
-.block ul li
-{
+.block ul li {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -108,12 +124,11 @@ ul{
     border-bottom: 1px solid var(--super-light);
 }
 
-.block ul li i
-{
+.block ul li i {
     margin-right: 10px;
 }
 
-.block button{
+.block button {
     background: var(--secondary-color);
     color: white;
     padding: 10px 20px;
@@ -125,13 +140,13 @@ ul{
     transition: all 0.3s ease;
 }
 
-.block button:hover{
+.block button:hover {
     border: solid 1px var(--secondary-color);
-background: transparent;
-color: var(--secondary-color);
+    background: transparent;
+    color: var(--secondary-color);
 }
 
-.popup .close{
+.popup .close {
     width: 30px;
     height: 30px;
     display: flex;
@@ -141,7 +156,66 @@ color: var(--secondary-color);
     border-radius: 20%;
 }
 
-.close i{
+.close i {
     color: white;
     font-size: 1.2rem;
+}
+
+.heading-pages a {
+    border: #9b9b9b solid 1px;
+}
+
+.active-heading-page {
+    border: #00c615 solid 1px !important;
+}
+
+.form-label {
+    margin-top: 8px !important;
+}
+
+.heading h1 {
+    margin-left: 20px;
+}
+
+.btn-cta-primary {
+    font-weight: 400;
+    font-size: 0.8rem;
+    width: fit-content;
+    height: 40px;
+    padding: 0 20px;
+}
+
+/*#organizationName{*/
+/*    display: none;*/
+/*}*/
+
+.form-sections {
+    padding: 0 40px;
+}
+
+.form-sections h2 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.form-sections p {
+    font-size: 0.8rem;
+}
+
+.form-sections ul{
+    font-size: 0.8rem;
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+input[type="file"] {
+border: none;
+}
+
+.register-button-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }

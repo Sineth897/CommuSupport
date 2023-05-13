@@ -22,6 +22,9 @@ class test_Router extends TestCase
         $this->router = new Router($this->request, $this->response);
     }
 
+    /**
+     * @return void
+     */
     public function test_router_constructor_whether_routes_are_empty() : void {
 
         // test case to check if the routes array is empty at initialization
@@ -33,7 +36,9 @@ class test_Router extends TestCase
 
     }
 
-
+    /**
+     * @return void
+     */
     public function test_router_get_function() : void {
 
         // test case to check if the get function is working properly
@@ -58,7 +63,9 @@ class test_Router extends TestCase
 
     }
 
-
+    /**
+     * @return void
+     */
     public function test_router_post_function() : void {
 
             // test case to check if the post function is working properly

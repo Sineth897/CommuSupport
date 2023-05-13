@@ -5,7 +5,10 @@ import flash from "../../flashmessages/flash.js";
 import requestCard from "../../components/requestcard.js";
 import togglePages from "../../togglePages.js";
 
-let toggle = new togglePages([{btnId:'posted',pageId:'postedRequests'},{btnId:'accepted',pageId:'acceptedRequests'}],'grid');
+let toggle = new togglePages([
+                                {btnId:'posted',pageId:'postedRequests',title:"Posted Requests"},
+                                {btnId:'accepted',pageId:'acceptedRequests',title:'Accepted Requests'}],
+                        'grid');
 
 let popUpRequest = new PopUp();
 
@@ -27,7 +30,7 @@ async function showReqPopUp(e) {
 
     let result = await getData('./requests/popup', 'POST', {"r.requestID": element.id});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({'type':'error','value':result['message']});
@@ -35,10 +38,13 @@ async function showReqPopUp(e) {
     }
 
     let data = result['requestDetails'];
+    console.log(data)
 
     if( element.id.includes('accepted')) {
         popUpRequest.clearPopUp();
-        popUpRequest.setComplaintIcon('acceptedID','acceptedRequest');
+
+        popUpRequest.setComplaintIcon(data['acceptedID'],'acceptedRequest');
+
         popUpRequest.setHeader('Request Details');
 
         popUpRequest.startSplitDiv();
@@ -113,7 +119,11 @@ const confirm = async (e) => {
     const amount = acceptPopUp.querySelector('#amount').value;
     const reqId = acceptPopUp.querySelector('#confirm').value;
 
-    let result = await getData('./requests/accept', 'POST', {"requestID": reqId, "amount": acceptedAmount, "remaining": amount-acceptedAmount});
+    // console.log(parseInt(amount)-acceptedAmount);
+
+    let result = await getData('./requests/accept', 'POST', {"requestID": reqId, "amount": acceptedAmount, "remaining": parseInt(amount)-acceptedAmount});
+
+    console.log(result);
 
     if(result['success']) {
         flash.showMessage({type:'success',value:'Request accepted successfully!'});
@@ -122,6 +132,7 @@ const confirm = async (e) => {
         acceptPopUp.remove();
         document.querySelector('#popUpContainer').style.display = 'block';
         document.getElementById(reqId).querySelector('button').click();
+        filterBtn.click();
     } else {
         flash.showMessage({type:'error',vallue:'Something went wrong! Please try again later!'});
     }
@@ -145,6 +156,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const requestDisplay = document.getElementById('postedRequests');
@@ -191,6 +210,8 @@ filterBtn.addEventListener('click', async function(e) {
         return;
     }
 
+    toggle.removeNoData();
+
     const requests = result['requests'];
     const acceptedRequests = result['acceptedRequests'];
 
@@ -202,6 +223,8 @@ filterBtn.addEventListener('click', async function(e) {
 
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    toggle.checkNoData();
 
     let newRequests = document.querySelectorAll('.requestView');
 

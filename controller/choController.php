@@ -38,6 +38,7 @@ class choController extends Controller
         }
     }
 
+    // view users
     protected function viewUsers(Request $request, Response $response)
     {
         $this->checkLink($request);
@@ -48,6 +49,7 @@ class choController extends Controller
             ['model' => $model,
                 'user'=>$user,]);
     }
+
 
 //    public function  filterCommunityCenters(Request $request, Response $response)
 //    {
@@ -65,6 +67,15 @@ class choController extends Controller
 //
 //
 //    }
+
+    protected function viewIndividualCHO(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+
+        $model = new \app\models\choModel();
+        $this->render('admin/communityheadoffices/view/IndividualCHO', 'View Cho', ['model' => $model,]);
+    }
+
 
 
 }

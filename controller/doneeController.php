@@ -25,7 +25,7 @@ class doneeController extends Controller
         $userType = $this->getUserType();
         $model = new doneeModel();
         $user = $this->getUserModel();
-        $this->render($userType . "/donees/view", "View Donees",[
+        $this->render($userType . "/donees/view", "View Donees", [
             'model' => $model,
             'user' => $user
         ]);
@@ -42,13 +42,13 @@ class doneeController extends Controller
 
     }
 
-    private function getDoneeDetails($doneeID) : array
+    private function getDoneeDetails($doneeID): array
     {
-        $donee = doneeModel::getModel(['doneeID' =>$doneeID]);
-        if($donee->type == "Individual") {
-            return $donee->retrieveWithJoin('doneeindividual','doneeID',['donee.doneeID' => $doneeID]);
+        $donee = doneeModel::getModel(['doneeID' => $doneeID]);
+        if ($donee->type == "Individual") {
+            return $donee->retrieveWithJoin('doneeindividual', 'doneeID', ['donee.doneeID' => $doneeID]);
         } else {
-            return $donee->retrieveWithJoin('doneeorganization','doneeID',['donee.doneeID' => $doneeID]);
+            return $donee->retrieveWithJoin('doneeorganization', 'doneeID', ['donee.doneeID' => $doneeID]);
         }
     }
 
@@ -57,10 +57,10 @@ class doneeController extends Controller
         try {
             $data = $request->getJsonData();
             $donee = doneeModel::getModel(['doneeID' => $data['doneeID']]);
-            $donee->update(['doneeID' => $data['doneeID']],['verificationStatus' => 1]);
+            $donee->update(['doneeID' => $data['doneeID']], ['verificationStatus' => 1]);
             $this->sendJson(['status' => 1]);
         } catch (\Exception $e) {
-            $this->sendJson(['status' => 0,'message' => $e->getMessage()]);
+            $this->sendJson(['status' => 0, 'message' => $e->getMessage()]);
         }
     }
 
@@ -72,33 +72,34 @@ class doneeController extends Controller
             $sort = $data['sortBy'];
             $search = $data['search'];
 
-            $sql  = "SELECT * FROM donee INNER JOIN users ON donee.doneeID = users.userID";
+            $sql = "SELECT * FROM donee INNER JOIN users ON donee.doneeID = users.userID";
             $where = " WHERE ";
 
-            if(!empty($filters)) {
+            if (!empty($filters)) {
                 $where .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
             }
 
-            if(!empty($search)) {
+            if (!empty($search)) {
                 $where = $where === " WHERE " ? $where : $where . " AND ";
                 $where .= " (email LIKE '%$search%' OR contactNumber LIKE '%$search%' OR username LIKE '%$search%' OR address LIKE '%$search%')";
             }
 
             $sql .= $where === " WHERE " ? "" : $where;
 
-            if(!empty($sort['DESC'])) {
+            if (!empty($sort['DESC'])) {
                 $sql .= " ORDER BY age";
             }
 
             $stmt = doneeModel::prepare($sql);
             $stmt->execute();
-            $this->sendJson(['status'=> 1,'donees'=>$stmt->fetchAll(\PDO::FETCH_ASSOC), 'CCs' => ccModel::getCCs()]);
+            $this->sendJson(['status' => 1, 'donees' => $stmt->fetchAll(\PDO::FETCH_ASSOC), 'CCs' => ccModel::getCCs()]);
         } catch (\Exception $e) {
             $this->sendJson($e->getMessage());
         }
     }
 
-    protected function filterDonees(Request $request,Response $response) {
+    protected function filterDonees(Request $request, Response $response)
+    {
         $data = $request->getJsonData();
         $filters = $data['filters'];
         $sort = $data['sort'];
@@ -108,17 +109,17 @@ class doneeController extends Controller
         $user = $user->findOne(['employeeID' => $_SESSION['user']]);
         $filters['ccID'] = $user->ccID;
 
-        $sql1  = "SELECT * FROM donee INNER JOIN doneeindividual d on donee.doneeID = d.doneeID";
-        $sql2  = "SELECT * FROM donee INNER JOIN doneeorganization d on donee.doneeID = d.doneeID";
+        $sql1 = "SELECT * FROM donee INNER JOIN doneeindividual d on donee.doneeID = d.doneeID";
+        $sql2 = "SELECT * FROM donee INNER JOIN doneeorganization d on donee.doneeID = d.doneeID";
         $where1 = " WHERE ";
         $where2 = " WHERE ";
 
-        if(!empty($filters)) {
+        if (!empty($filters)) {
             $where1 .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
             $where2 .= implode(" AND ", array_map(fn($key) => "$key = '$filters[$key]'", array_keys($filters)));
         }
 
-        if(!empty($search)) {
+        if (!empty($search)) {
             $where1 = $where1 === " WHERE " ? $where1 : $where1 . " AND ";
             $where2 = $where2 === " WHERE " ? $where2 : $where2 . " AND ";
             $where1 .= " (fname LIKE '%$search%' OR lname LIKE '%$search%' OR email LIKE '%$search%')";
@@ -128,7 +129,7 @@ class doneeController extends Controller
         $sql1 .= $where1 === " WHERE " ? "" : $where1;
         $sql2 .= $where2 === " WHERE " ? "" : $where2;
 
-        if(!empty($sort['DESC'])) {
+        if (!empty($sort['DESC'])) {
             $sql1 .= " ORDER BY registeredDate DESC";
             $sql2 .= " ORDER BY registeredDate DESC";
         }
@@ -138,7 +139,7 @@ class doneeController extends Controller
             $stmt1->execute();
             $stmt2 = doneeModel::prepare($sql2);
             $stmt2->execute();
-            $this->sendJson(['status'=> 1,'individualDonees'=>$stmt1->fetchAll(\PDO::FETCH_ASSOC), 'organizationDonees' => $stmt2->fetchAll(\PDO::FETCH_ASSOC)]);
+            $this->sendJson(['status' => 1, 'individualDonees' => $stmt1->fetchAll(\PDO::FETCH_ASSOC), 'organizationDonees' => $stmt2->fetchAll(\PDO::FETCH_ASSOC)]);
         } catch (\Exception $e) {
             $this->sendJson(['status' => 0, "msg" => $e->getMessage(), "sql" => $sql1, "sql2" => $sql2]);
         }
@@ -153,12 +154,24 @@ class doneeController extends Controller
         $doneeID = $data['doneeID'];
 
         try {
-            $this->sendJson(['status' => 1, 'donee' => doneeModel::runCustomQuery($sql,['d.doneeID' => $doneeID])[0]]);
-        }
-        catch (\Exception $e) {
+            $this->sendJson(['status' => 1, 'donee' => doneeModel::runCustomQuery($sql, ['d.doneeID' => $doneeID])[0]]);
+        } catch (\Exception $e) {
             $this->sendJson(['status' => 0, 'msg' => $e->getMessage()]);
         }
 
+    }
+
+    protected function viewIndividualDonee(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+        $model = new doneeModel();
+
+//        render the individual donee page
+        $this->render( "admin/donees/individual","View Individual Donee",[
+//            'model' is the array key - it is the variable name that will be used in the view, $model is the variable name in this file
+            'model' => $model,
+            'doneeID' => $request->getBody()['doneeID']
+        ]);
     }
 
 }

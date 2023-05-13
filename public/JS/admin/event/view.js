@@ -1,6 +1,12 @@
-import {getData} from "../../request.js";
+import {getData, getTextData} from "../../request.js";
 import {displayTable} from "../../components/table.js";
 import flash from "../../flashmessages/flash.js";
+import togglePages from "../../togglePages.js";
+import {PopUp} from "../../popup/popUp.js";
+
+const toggle = new togglePages([
+                                    {btnId:'events',pageId:'eventTable',title:''},
+                                ]);
 
 const eventTableDiv = document.getElementById('eventTable');
 
@@ -23,6 +29,14 @@ document.getElementById('sort').addEventListener('click', function(e) {
         sortOptions.style.display = 'block';
     }
     filterOptions.style.display = 'none';
+});
+
+filterOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+
+sortOptions.addEventListener('click', function(e) {
+    e.stopPropagation();
 });
 
 const filterBtn = document.getElementById('filterBtn');
@@ -71,12 +85,14 @@ filterBtn.addEventListener('click', async function() {
 
     let data = await getData('./events/filter', 'post',{filters:filters, sortBy:sort, search:search});
 
-    console.log(data);
+    // console.log(data);
 
     if(!data['status']) {
         flash.showMessage({type:'error', value:data['message']});
         return;
     }
+
+    toggle.removeNoData();
 
     const tableData = {
         headings: ["Theme", "OrganizedBy", "Location", "Date", "Status",],
@@ -86,8 +102,12 @@ filterBtn.addEventListener('click', async function() {
 
     displayTable(eventTableDiv, tableData);
 
+    toggle.checkNoData();
+
     filterOptions.style.display = 'none';
     sortOptions.style.display = 'none';
+
+    assignEventListeners();
 
     // console.log(data);
 
@@ -100,3 +120,54 @@ sortBtn.addEventListener('click', async function() {
 searchBtn.addEventListener('click', async function() {
     filterBtn.click();
 });
+
+function assignEventListeners() {
+
+    const viewBtns = Array.from(document.getElementsByClassName('view'));
+
+    viewBtns.forEach(function(btn) {
+        btn.addEventListener('click', eventPopup);
+    });
+
+}
+
+assignEventListeners();
+
+const popUpEvent = new PopUp();
+
+async function eventPopup(e) {
+
+    const eventID = e.target.id;
+
+    const result = await getData('./event/popup', 'post', {eventID:eventID});
+
+    // console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error', value:result['message']});
+        return;
+    }
+
+    const event = result['event'];
+
+    popUpEvent.clearPopUp();
+
+    popUpEvent.setHeader('theme',event,'name');
+
+    popUpEvent.startPopUpInfo();
+    popUpEvent.showStatus(event['status']);
+    popUpEvent.showParticipants(event['participationCount']);
+    popUpEvent.endPopUpInfo();
+
+    popUpEvent.startSplitDiv();
+    popUpEvent.setBody(event,['organizedBy','date'],['Organized By','Date']);
+    popUpEvent.setBody(event,['cc','time'],['Within','Time']);
+    popUpEvent.endSplitDiv();
+
+    popUpEvent.setBody(event,
+        ['location','description'],
+        [['Location','textarea'],['Description','textarea']]);
+
+    popUpEvent.showPopUp();
+
+}
