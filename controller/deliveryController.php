@@ -322,7 +322,7 @@ class deliveryController extends Controller
                 break;
             case 2:
                 if(str_contains($subdelivery->start,'donor')) {
-                    inventorylog::logCollectionFromDonor($data['acceptedID'],$data['donateTo']);
+                    inventorylog::logCollectionFromDonor($data['acceptedID'],$data['acceptedBy']);
                 }
                 else {
                     inventorylog::logDeliveryBetween2CCs($subdelivery->deliveryID);
