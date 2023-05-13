@@ -1,37 +1,45 @@
 <link rel="stylesheet" href="./public/CSS/button/button-styles.css">
 <link rel="stylesheet" href="./public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="./public/CSS/flashMessages.css">
+<link href="../public/CSS/table/table-styles.css" type="text/css" rel="stylesheet">
 <link rel="stylesheet" href="../public/CSS/form/form.css" type="text/css" rel="stylesheet">
-
+<style>
+    .form-group{
+        width: 800px;
+    }
+</style>
 <?php
 
 /** @var $complaint \app\models\complaintModel */
-/** @var $user \app\models\doneeModel */
+/** @var $user \app\models\donorModel */
+/** @var $model donationModel */
 
 $requests = $complaint->requestComplaints($_GET['processID']);
+//print_r($requests);
 
 ?>
 
-<?php
-
-$profile = new \app\core\components\layout\profileDiv();
-
-$profile->notification();
-
-$profile->profile();
-
-$profile->end();
-
-?>
-
-<!--   Heading Block - Other Pages for Ongoing, Completed .etc      -->
 <?php
 $headerDiv = new \app\core\components\layout\headerDiv();
 
-$headerDiv->heading("File a complaint");
+$headerDiv->heading("Submit a complaint on Request");
 
 $headerDiv->end();
 ?>
+
+
+
+
+
+<?php $profile = new \app\core\components\layout\profileDiv();
+
+$profile->notification();
+$profile->profile();
+$profile->end();
+?>
+
+
+
 
 <div class="content-form">
 
@@ -49,7 +57,7 @@ $headerDiv->end();
             <label for="" class="form-label">
                 Item
             </label>
-            <input  class="basic-input-field" type="text" value="<?php echo $requests[0]['item']?>" disabled>
+            <input  class="basic-input-field" type="text" value="<?php echo $requests[0]['subcategoryName']?>" disabled>
 
         </div>
 
@@ -86,31 +94,34 @@ $headerDiv->end();
 
 
 
+        <?php $complaintRegistrationForm->textArea($complaint,"Please provide the complaint" ,"complaint") ?>
 
-        <div >
+        <div style="display:none;">
 
-
-            <?php $complaintRegistrationForm->textArea($complaint,"Please provide the complaint" ,"complaint") ?>
-
-            <div style="display:none;">
-
-                <?php $complaintRegistrationForm->inputField($complaint,'Subject','text','subject') ?>
-            </div>
-
-
-
-        </div>
-
-        <div style="padding: 2rem;display:flex;justify-content: center">
-
-            <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
-
+            <?php $complaintRegistrationForm->inputField($complaint,'Subject','text','subject') ?>
         </div>
 
 
 
     </div>
 
-    <?php $complaintRegistrationForm->end() ?>
+    <div style="padding: 2rem;display:flex;justify-content: center">
+        <?php $complaintRegistrationForm->button("Submit",'submit','confirm') ?>
+    </div>
+
+
 
 </div>
+
+<?php $complaintRegistrationForm->end() ?>
+
+
+
+
+
+
+
+
+
+</div>
+

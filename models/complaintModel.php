@@ -5,6 +5,8 @@ namespace app\models;
 use app\core\DbModel;
 use app\core\Model;
 use app\core\notificationModel;
+use app\core\donationModel;
+use mysql_xdevapi\Exception;
 
 class complaintModel extends DbModel
 {
@@ -49,18 +51,16 @@ class complaintModel extends DbModel
 
     public function save(): bool
     {
+
+        try {
         $this->complaintID = substr(uniqid('complaint', true), 0, 23);
         $this->filedBy=$_SESSION['user'];
-//        protected function getchoIDforComplaints($donorID)
-//    {
-//
-//        $statement= self::prepare("SELECT choID.cc from donor INNER JOIN communitycenter ON donor.ccID = communitycenter.ccID where donorID=:$donorID");
-//        $statement->bindValue(':userID',$donorID);
-//        $statement->execute();
-//        return $statement->fetchAll(\PDO::FETCH_ASSOC);
-//
-//    }
-//        $this->choID=$_SESSION['user'];
+
+            $this->choID = $this->getchoIDofDonor($_SESSION['user']);
+        }
+        catch (Exception $e) {
+            echo 'aul';
+        }
 
         return parent::save();
 
@@ -69,20 +69,21 @@ class complaintModel extends DbModel
 
     private function getchoIDofDonor($donorID)
     {
-        $statement = self::prepare("SELECT c.cho from communitycenter c INNER JOIN donor d ON c.ccID = d.ccID WHERE d.donorID=:donorID ");
+        $statement = self::prepare("SELECT c.cho from communitycenter c INNER JOIN donor d ON c.ccID = d.ccID WHERE d.donorID=:donorID LIMIT 1");
         $statement->bindValue(':donorID', $donorID);
         $statement->execute();
-        return $statement->fetch(\PDO::FETCH_ASSOC);
-
-
+        return $statement->fetch(\PDO::FETCH_COLUMN);
     }
 
     public function getAllComplaints(string $choID)
     {
-        $statement = self::prepare("SELECT u.username,c.filedDate,s.subcategoryName,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c INNER JOIN users u ON c.filedBy=u.userID INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where choID=:choID");
+        $statement = self::prepare("SELECT u.username,c.filedDate,c.filedBy,c.subject,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c
+        INNER JOIN users u ON c.filedBy=u.userID where choID=:choID");
+
         $statement->bindValue(':choID', $choID);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
 
 
     }
@@ -96,6 +97,9 @@ class complaintModel extends DbModel
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+
+    //submitting the solution for each complaint
+    //solution and related complaintID passing as query parameters
        public function submitSolution(string $solution,string $complaintID)
    {
        $updateDate=date('Y-m-d');
@@ -109,13 +113,16 @@ class complaintModel extends DbModel
        return $statement->fetchAll(\PDO::FETCH_ASSOC);
 
    }
+
+    // select user types
     public function getUserType(): bool|array
     {
-        $statement = self::prepare("SELECT usrType FROM users");
+        $statement = self::prepare("SELECT userType FROM users");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
+    // retrieve all complaints
     public function allComplaints()
     {
         $statement = self::prepare("SELECT * from complaint");
@@ -123,11 +130,25 @@ class complaintModel extends DbModel
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getID(string $userID)
-    {
-        $statement = self::prepare("SELECT complaintID from complaint where choID=:userID");
+    public function provideSolution(string $donorID,string $complaintID)
+    {  $statement = self::prepare("SELECT u.username,c.complaint,c.filedDate,c.filedBy,SUBSTRING(REGEXP_REPLACE(c.subject, '[^a-zA-Z]', ''),1,8) AS sub,c.complaintID,c.status,c.solution,c.reviewedDate FROM complaint c
+        INNER JOIN users u ON c.filedBy=u.userID where filedBy=:filedBy and complaintID=:complaintID");
+//        $statement = self::prepare("SELECT * from complaint c INNER JOIN donation d ON c.subject=d.donationID INNER JOIN subcategory s ON d.item=s.subcategoryID where filedBy=:filedBy and complaintID=:complaintID");
+        $statement->bindValue(':filedBy', $donorID);
+        $statement->bindValue(':complaintID',$complaintID);
+
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function requestComplaints($requestID)
+    {
+        $statement = self::prepare("SELECT r.approvedDate,s.subcategoryName,r.amount,r.urgency,
+        r.postedDate,r.expDate,r.notes FROM acceptedrequest r INNER JOIN  subcategory s ON r.item = s.subcategoryID where acceptedID=:requestID");
+        $statement->bindValue(':requestID',$requestID);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
     }
 
 

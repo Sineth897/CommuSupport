@@ -38,10 +38,13 @@ async function showReqPopUp(e) {
     }
 
     let data = result['requestDetails'];
+    console.log(data)
 
     if( element.id.includes('accepted')) {
         popUpRequest.clearPopUp();
+
         popUpRequest.setComplaintIcon(data['acceptedID'],'acceptedRequest');
+
         popUpRequest.setHeader('Request Details');
 
         popUpRequest.startSplitDiv();

@@ -1,20 +1,15 @@
 
 const pending = document.getElementById("pending")
-const completed = document.getElementById("completed")
 pending.addEventListener("click",function (e){
     e.preventDefault();
     filterComplaints("pending")
-    pending.classList.add("active-heading-page");
-    completed.classList.remove("active-heading-page");
 
 });
 
-
+const completed = document.getElementById("completed")
 completed.addEventListener("click",function (e){
     e.preventDefault();
     filterComplaints("completed")
-    completed.classList.add("active-heading-page");
-    pending.classList.remove("active-heading-page");
 
 });
 
@@ -54,10 +49,6 @@ sort_btn.addEventListener("click",function(){
         document.getElementById("sortOptions").style.display="block";
     }
 
-});
-
-sortOption.addEventListener("click",function (e){
-    e.stopPropagation();
 });
 
 sort.addEventListener("click",sortTable)
