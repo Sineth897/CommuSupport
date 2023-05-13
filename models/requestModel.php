@@ -283,7 +283,7 @@ class requestModel extends DbModel
         $stmnt = self::prepare("SELECT a.requestID,CONCAT(COUNT(*),' users') AS users, 
                                         CONCAT(SUM(a.amount),' ',s.scale) AS amount FROM acceptedrequest a 
                                         INNER JOIN subcategory s ON a.item = s.subcategoryID 
-                                        WHERE a.postedBy = :doneeID AND a.deliveryStatus = 'Accepted' 
+                                        WHERE a.postedBy = :doneeID AND a.status = 'Accepted' 
                                         GROUP BY a.requestID");
 
         // bind donee ID to the statement

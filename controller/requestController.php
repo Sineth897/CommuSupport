@@ -564,14 +564,35 @@ class requestController extends Controller
         }
 
         try {
-            $activeRequestSql = "SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName,COUNT(a.acceptedBy) AS users,CONCAT(SUM(a.amount),' ',s.scale) AS acceptedAmount FROM request r LEFT JOIN subcategory s ON r.item = s.subcategoryID LEFT JOIN acceptedrequest a ON a.requestID = r.requestID";
+            $activeRequestSql = "SELECT r.*,subcategoryName,CONCAT(r.amount,' ',s.scale) AS amount FROM request r LEFT JOIN subcategory s ON r.item = s.subcategoryID";
             $acceptedRequestSql = "SELECT * FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
             $completedRequestSql = "SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
+
+            $activeRequests = requestModel::runCustomQuery($activeRequestSql,$activeRequestFilters,$activeRequestSort,[],);
+
+            $acceptedInfo = requestModel::runCustomQuery("SELECT a.requestID,CONCAT(COUNT(*),' users') AS users, 
+                                        CONCAT(SUM(a.amount),' ',s.scale) AS amount FROM acceptedrequest a 
+                                        INNER JOIN subcategory s ON a.item = s.subcategoryID ",
+                                        ['a.postedBy' => $_SESSION['user']],[],[],'a.requestID');
+
+            foreach ($activeRequests as &$request) {
+
+                $index = array_search($request['requestID'], array_column($acceptedInfo,'requestID'));
+
+                if($index !== false) {
+                    $request['users'] = $acceptedInfo[$index]['users'];
+                    $request['acceptedAmount'] = $acceptedInfo[$index]['amount'];
+                }
+                else {
+                    $request['users'] = '0 ';
+                    $request['acceptedAmount'] = 0;
+                }
+            }
 
             $this->sendJson(
                 [
                     "status" => 1,
-                    "activeRequests" => requestModel::runCustomQuery($activeRequestSql,$activeRequestFilters,$activeRequestSort,[],'a.requestID'),
+                    "activeRequests" => $activeRequests,
                     "acceptedRequests" => requestModel::runCustomQuery($acceptedRequestSql,$acceptedRequestFilters,$acceptedRequestSort),
                     "completedRequests" => requestModel::runCustomQuery($completedRequestSql,$completedRequestFilters,$completedRequestSort,[],'r.requestID'),
                 ]

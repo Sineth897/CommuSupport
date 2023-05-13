@@ -60,7 +60,7 @@ class DoneeRequestCard {
             return `<p><strong> Your request haven't been approved by the manager yet! </strong> </p>`;
         }
         // if the request is approved but no one has accepted it yet
-        else if(request['users'] === 0 ) {
+        else if(parseInt(request['users']) === 0 ) {
             return `<p><strong> No user have accepted your request yet </strong> </p>`;
         }
         // if the request is approved and someone has accepted it

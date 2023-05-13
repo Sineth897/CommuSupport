@@ -56,7 +56,7 @@ class inventorylog extends DbModel
     public static function logPickupFromCC(string $acceptedID, string $ccID) : void {
 
         // select related data from the accepted request table and insert it into the inventory log table
-        // once request item is get pickep up from the cc
+        // once request item is get picked up from the cc
         $sql = "UPDATE inventorylog SET remark = CONCAT(remark,CONCAT('Delivery was picked up from CC with id ', '$ccID',' on ',CURRENT_DATE)) 
                                      AND datePicked = CURRENT_DATE WHERE processID = '$acceptedID' AND ccID = '$ccID'";
 
@@ -126,6 +126,28 @@ class inventorylog extends DbModel
                 FROM  acceptedrequest a INNER JOIN subdelivery s ON a.deliveryID = s.deliveryID 
                 INNER JOIN communitycenter c ON s.end = c.ccID 
                 WHERE a.deliveryID = '$deliveryID'";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+
+    }
+
+    /**
+     * @param string $acceptedID
+     * @param string $ccID
+     * @return void
+     */
+    public static function logDeliveryBetween2CCsForAcceptedRequest(string $acceptedID, string $ccID) : void {
+
+        //log pickup from the cc
+        inventorylog::logPickupFromCC($acceptedID, $ccID);
+
+        // select related data from the accepted request table and insert it into the inventory log table
+        // once item was received from the donor or cc
+        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark) 
+                    SELECT acceptedID,amount,item,acceptedBy,CONCAT('Delivery for donee with ID ', d.doneeID,' was received on ',CURRENT_DATE) 
+                    FROM acceptedrequest a INNER JOIN donee d ON a.postedBy = d.doneeID 
+                    WHERE a.acceptedID = '$acceptedID'";
 
         $statement = self::prepare($sql);
         $statement->execute();

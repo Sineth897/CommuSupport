@@ -113,7 +113,7 @@ class subdeliveryModel extends DbModel
         $this->fromLatitude = $subdelivery->toLatitude;
         $this->deliveryID = $subdelivery->deliveryID;
 
-        $sql = "SELECT a.acceptedID,c.* FROM  = d.doneeID INNER JOIN communitycenter c ON d.ccID = c.ccID WHERE deliveryID = :deliveryID";
+        $sql = "SELECT a.acceptedID,c.* FROM acceptedrequest a INNER JOIN donee d on a.postedBy = d.doneeID INNER JOIN communitycenter c ON c.ccID = d.ccID WHERE deliveryID = :deliveryID";
         $stmt = self::prepare($sql);
         $stmt->bindValue(":deliveryID",$this->deliveryID);
         $stmt->execute();
