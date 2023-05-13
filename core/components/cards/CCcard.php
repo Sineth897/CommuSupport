@@ -25,22 +25,19 @@ class CCcard
         echo "<div class='cc-card-header'>";
         echo sprintf("<h1>%s</h1>",$cc['city']);
         echo "</div>";
-        echo sprintf("<div class='cc-map'><div  id='%s' style='%s'></div></div>", $cc['ccID'],"width: 100%; height: 15rem;");
+        echo sprintf("<div class='cc-map'><div  id='%s' style='%s'></div></div>", $cc['ccID'],"width: 100%; height: 300px;");
         echo "<div class='cc-details'>";
-        echo sprintf("<p class='cc-location-info'><strong>Address : </strong>%s</p>", $cc['address']);
-        echo sprintf("<p class='cc-location-info'><strong>District : </strong><span id='%s' class='cho'>%s</span></p>",$cc['cho'] ,$this->chos[$cc['cho']]);
-        echo "<div class='details-group'>";
-        echo sprintf("<p><strong>Contact : </strong>%s</p>
-                <div class='icon-button'><i class='material-icons'>call</i></div>", $cc['contactNumber']);
-        echo "</div>";
-        echo sprintf("<div class='details-group'>
-                <p><strong>Fax : </strong>%s</p>
-                <div class='icon-button'><i class='material-icons'>fax</i></div>
-            </div>",$cc['fax']);
-        echo sprintf("<div class='details-group'>
-                <p><strong>Email : </strong>%s</p>
-                <div class='icon-button'><a href='mailto:%s'<i class='material-icons'>email</i></a></div>
-            </div>",$cc['email'],$cc['email']);
+        echo sprintf("<p class='cc-location-info'><span>Address</span><span>%s</span></p>", $cc['address']);
+        echo sprintf("<p class='cc-location-info'><span>District</span><span id='%s' class='cho'>%s</span></p>",$cc['cho'] ,$this->chos[$cc['cho']]);
+        echo "<p class='details-group'>";
+        echo sprintf("<span>Contact</span><span>%s</span>", $cc['contactNumber']);
+        echo "</p>";
+        echo sprintf("<p class='details-group'>
+                <span>Fax</span><span>%s </span>
+            </p>",$cc['fax']);
+        echo sprintf("<p class='details-group'>
+                <span>Email</span><span>%s</span><a href='mailto:%s'><i class='material-icons'>email</i></a></p>
+            </p>",$cc['email'],$cc['email']);
         echo '</div>';
         echo "</div>";
     }

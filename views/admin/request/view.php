@@ -86,10 +86,10 @@ $chartData2 = $model->getRequestDataMonthly();
         <span class="stat-title">
 Pending Requests        </span>
         <span class="stat-value">
-            100
+            80
         </span>
-        <span class="stat-movement dec">
-            <i class="material-icons">arrow_downward</i>10%
+        <span class="stat-movement">
+            <i class="material-icons">assignment_late</i>
         </span>
 
     </div>
@@ -97,11 +97,11 @@ Pending Requests        </span>
                 <span class="stat-title">
 Completed Requests        </span>
         <span class="stat-value">
-            100
+            150
 
         </span>
-        <span class="stat-movement inc">
-            <i class="material-icons">arrow_upward</i>10%
+        <span class="stat-movement">
+            <i class="material-icons">assignment_turned_in</i>
         </span>
 
     </div>

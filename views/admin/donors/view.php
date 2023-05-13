@@ -60,10 +60,10 @@ $profile->end(); ?>
         <span class="stat-title">
 Total Registrations       </span>
         <span class="stat-value">
-            100
+            12
         </span>
-        <span class="stat-movement dec">
-            <i class="material-icons">arrow_downward</i>10%
+        <span class="stat-movement inc">
+            <i class="material-icons">groups</i>
         </span>
 
     </div>
@@ -71,11 +71,11 @@ Total Registrations       </span>
                 <span class="stat-title">
 Verified Donors    </span>
         <span class="stat-value">
-            100
+            11
 
         </span>
         <span class="stat-movement inc">
-            <i class="material-icons">arrow_upward</i>10%
+            <i class="material-icons">verified_user</i>
         </span>
 
     </div>

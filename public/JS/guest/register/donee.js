@@ -29,6 +29,7 @@ district.addEventListener('change', function() {
     if(activeCity !== '') {
         show(citySelectDivs[activeCity]);
         citySelect[activeCity].removeAttribute("disabled");
+        document.getElementById('city-placeholder').style.display = "none";
     }
 });
 
@@ -36,17 +37,51 @@ let individual = document.getElementById('individual');
 let organization = document.getElementById('organization');
 let doneeType = document.getElementById('doneeType');
 
+//  individual view
 individual.addEventListener('click', function() {
     document.getElementById('organizationForm').style.display = "none";
-    document.getElementById('individualForm').style.display = "block";
+    document.getElementById('individualForm').style.display = "block";    (document.getElementById('firstname-input').parentNode).style.display = "flex";
+    document.getElementById('#organization-name-block').style.display = "none";
+    document.getElementById('nicFront').style.display = "block";
+    document.getElementById('nicBack').style.display = "block";
+
+    var elements = document.getElementsByClassName('cert-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'none';
+    }
+
+    elements = document.getElementsByClassName('nic-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'block';
+    }
+
     individual.classList.add('active-heading-page');
     organization.classList.remove('active-heading-page');
     doneeType.value = "Individual";
 });
 
+//  Organization View
 organization.addEventListener('click', function() {
     document.getElementById('individualForm').style.display = "none";
     document.getElementById('organizationForm').style.display = "block";
+    (document.getElementById('firstname-input').parentNode).style.display = "none";
+    document.getElementById('#organization-name-block').style.display = "block";
+    // document.getElementById('nicFront').style.display = "none";
+    // document.getElementById('nicBack').style.display = "none";
+    //
+    // document.getElementById('certificateFront').style.display = "flex";
+    // document.getElementById('certificateBack').style.display = "flex";
+
+    var elements = document.getElementsByClassName('cert-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'block';
+    }
+
+    elements = document.getElementsByClassName('nic-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'none';
+    }
+
     individual.classList.remove('active-heading-page');
     organization.classList.add('active-heading-page');
     doneeType.value = "Organization";
