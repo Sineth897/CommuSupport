@@ -30,7 +30,7 @@
         </div>
 
         <div id="otpReqDiv" style="display: none">
-            <p> Account exists request a otp </p>
+            <p> Account exists! Request an OTP </p>
             <span id="otpCountDown" class="success" style="font-size: .9rem"></span>
             <button id="otpRequest" class="btn-primary">Request OTP</button>
         </div>

@@ -11,8 +11,11 @@
     <div class="grid-background">
 
         <h3>Verify Your Mobile Number</h3>
+        <img src="/CommuSupport/public/src/verify/OTP.svg" alt="" class="OTP-img">
         <p> Request an OTP for provided mobile number at your registration.
-            Enter the OTP received and verify your identity</p>
+            <br>
+<!--            Enter the OTP received and verify your identity-->
+        </p><br>
 
 
         <div class="form-group">
@@ -39,16 +42,20 @@
         </div>
 
         <div class="logout-icon-div">
-
-            <div>
-                <i class="material-icons">arrow_back</i>
-                <p>  <a href="/CommuSupport/">Back to the home page </a> </p>
+            <div class="otp-back-to-home">
+<!--                <i class="material-icons">arrow_back</i>-->
+                <a href="/CommuSupport/"><button class="btn-medium-secondary"><i class="material-icons">
+                            arrow_back</i>
+                        Home Page </button></a>
             </div>
 
-            <div>
+            <div class="otp-logout">
                 <form action="/CommuSupport/logout" method="post">
-                    <i class="material-icons">logout</i>
-                    <input value="Logout" type="submit">
+<!--                    <i class="material-icons">logout</i>-->
+<!--                    <input value="Logout" type="submit">-->
+                    <button type="submit" class="btn-danger">
+                        <i class="material-icons">logout</i>
+                        Logout</button>
                 </form>
             </div>
 
