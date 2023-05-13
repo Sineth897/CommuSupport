@@ -111,9 +111,10 @@ async function showPostedReqPopUp(e) {
 async function showPendingReqPopUp(e) {
 
     let request = await getData('./requests/popup', 'POST', {"r.requestID": e.target.value});
-
+console.log(request);
     let reqDetails = request['requestDetails'];
-    let donee = request['donee'][0];
+    let donee = request['donee'];
+    console.log(donee);
 
     popUpRequest.clearPopUp();
 

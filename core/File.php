@@ -67,9 +67,9 @@ class File
             return "Invalid file type";
         }
 
-        if(!$this->checkFileSize($file_name, $max_size)) {
-            return "File size too large";
-        }
+//        if(!$this->checkFileSize($file_name, $max_size)) {
+//            return "File size too large";
+//        }
 
         return null;
     }
@@ -98,13 +98,13 @@ class File
         return false;
     }
 
-    private function checkFileSize(string $file_name, int $max_size): bool
-    {
-        if($_FILES[$file_name]['size'] > $max_size) {
-            return false;
-        }
-        return true;
-    }
+//    private function checkFileSize(string $file_name, int $max_size): bool
+//    {
+//        if($_FILES[$file_name]['size'] > $max_size) {
+//            return false;
+//        }
+//        return true;
+//    }
     private function save(string $dir, string $file_name): bool
     {
         if(move_uploaded_file($_FILES[$file_name]['tmp_name'], $dir)) {

@@ -141,7 +141,7 @@ class requestController extends Controller
                 $donee['name'] = $donee['fname'] . " " . $donee['lname'];
             }
             else {
-                $donee = $donee->retrieveWithJoin('doneeOrganization','doneeID',['donee.doneeID' => $donee->doneeID]);
+                $donee = $donee->retrieveWithJoin('doneeOrganization','doneeID',['donee.doneeID' => $donee->doneeID])[0];
             };
 
             // send the response
