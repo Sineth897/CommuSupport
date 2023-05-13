@@ -28,15 +28,15 @@ class Requestcard {
                 <p>${request['categoryName']}</p></div>
                 <div class='rq-description'>
                 <p>${request['notes']}</p></div>` +
-                (this.accepted ? `<p class='rq-accepted-date'><strong>Accepted On : </strong> ${request['acceptedDate']} </p>`: ``) + Requestcard.getButtons(btns) ;
+                (this.accepted ? `<p class='rq-accepted-date'><strong>Accepted On : </strong> ${request['acceptedDate']} </p>`: ``) + Requestcard.getButtons(btns,request) ;
         return card;
     }
 
-    static getButtons(btns) {
+    static getButtons(btns,request) {
         if(btns === undefined) return ``;
         this.btns = ``;
         btns.forEach( (btn) => {
-          this.btns += this.btnDetails[btn[0]].replace('%s',btn[1]);
+          this.btns += this.btnDetails[btn[0]].replace('%s',btn[1]).replace('%s',request['requestID']);
         });
         return `<div class='rq-btns'>` + this.btns + `</div>`;
     }

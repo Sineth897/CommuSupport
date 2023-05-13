@@ -67,7 +67,7 @@ async function showPopup(e) {
     // get the data from the server
     const result = await getData('./request/popup', 'POST',  {requestID: requestID,acceptedID:acceptedID,deliveryStatus:deliveryStatus} );
 
-    console.log(result);
+    // console.log(result);
 
     // if the response is a error message
     if(!result['status']) {
@@ -189,7 +189,7 @@ filterBtn.addEventListener('click', async function(e) {
     // const result = await getTextData('./requests/filter', 'POST', { filters:filters, sort:sort });
     const result = await getData('./requests/filter', 'POST', { filters:filters, sort:sort });
 
-    console.log(result);
+    // console.log(result);
 
     // if error occurs, show error message
     if(!result['status']) {

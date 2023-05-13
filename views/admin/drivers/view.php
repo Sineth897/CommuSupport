@@ -9,6 +9,36 @@ use app\core\components\tables\table;
 $CCs = \app\models\ccModel::getCCs();
 
 ?>
+
+<style>
+
+    @media print {
+
+        @page {
+            size: landscape;
+        }
+
+        .sidenav, .profile, .search-filter {
+            display: none;
+        }
+
+        .main {
+            background-color: var(--background-main) !important;
+            -webkit-print-color-adjust: exact;
+            width: 100vw;
+            left: 0;
+            height: 100%;
+            overflow: visible;
+        }
+
+        tbody td:last-child {
+            display: none;
+        }
+
+    }
+
+</style>
+
 <!--        Profile Details-->
 
 <?php $profile = new \app\core\components\layout\profileDiv();
@@ -37,7 +67,7 @@ $chartData = $model->getDriverbyVehicle();
     const chartData = <?php echo json_encode($chartData); ?>;
 </script>
 <div class="stat-container">
-    <p>Hello MF</p>
+    <p>Driver Vehicles</p>
     <canvas id="vehicleTypeChart" width="500">
     </canvas>
 </div>
@@ -108,7 +138,15 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+echo "<div class='btn-together' >";
+
 $searchDiv->search();
+
+echo "<button class='btn-primary' id='driverPrint'>Get PDF</button>";
+
+echo "<a class='btn-primary' href='./drivers/stat'>View Driver Statistics</a>";
+
+echo "</div>";
 
 $searchDiv->end(); ?>
 
@@ -123,7 +161,7 @@ $searchDiv->end(); ?>
 
     $header = ["Name", "Age", "ContactNumber", 'Vehicle', "Vehicle No", "Community Center"];
 
-    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', '#', [], 'employeeID']];
+    $arrayKey = ["name", "age", "contactNumber", 'vehicleType', 'vehicleNo', "cc", ['', 'View', './drivers/individual/view', ['employeeID'], 'employeeID']];
 
     $driverTable = new table($header, $arrayKey);
 
@@ -133,5 +171,15 @@ $searchDiv->end(); ?>
 </div>
 
 <script type="module" src="../public/JS/admin/driver/view.js"></script>
+
+<script>
+
+    window.onload = function () {
+        document.getElementById('driverPrint').addEventListener('click', function () {
+            window.print();
+        })
+    }
+
+</script>
 
 

@@ -66,7 +66,7 @@ $CHOs = \app\models\choModel::getCHOs();
 
                         <?php $donorForm->inputField($donorIndividual, 'Age','number','age'); ?>
 
-                        <?php $donorForm->inputField($donorIndividual, 'NIC','text','nic'); ?>
+                        <?php $donorForm->inputField($donorIndividual, 'NIC','text','NIC'); ?>
                     </div>
 
                     <div id="organizationForm" style="display: none">

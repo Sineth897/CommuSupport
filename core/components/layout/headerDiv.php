@@ -77,6 +77,18 @@ class headerDiv
             'icon' => 'assignment_ind',
             'name' => 'Assigned'
         ],
+        'logistic' => [
+            'id' => 'logistic',
+            'link' => '#',
+            'icon' => 'local_shipping',
+            'name' => 'Logistic'
+        ],
+        'manager' => [
+            'id' => 'manager',
+            'link' => '#',
+            'icon' => 'supervisor_account',
+            'name' => 'Manager'
+        ],
     ];
 
     public function __construct()

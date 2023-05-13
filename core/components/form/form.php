@@ -17,7 +17,7 @@ class form
         echo '</form>';
     }
 
-    public function inputField($model, $label, $type, $attribute, $id = ""): void
+    public function inputField($model, $label, $type, $attribute, $id = "",): void
     {
         echo "<div class='form-group'>";
         echo sprintf('<label class="form-label">%s :</label>', $label);
@@ -83,7 +83,7 @@ class form
             $classes = implode(' ',$classes);
         }
         else {
-            $classes = 'btn-cta-primary';
+            $classes = 'btn-primary';
         }
         if($id == ""){
             echo sprintf("<button type='%s' class='%s'>%s</button>", $type,$classes ,$label);
@@ -110,5 +110,16 @@ class form
         echo "</div>";
     }
 
-
+    public function inputFieldwithPlaceholder($model, $label, $type, $attribute, $id = "",$placeholder): void
+    {
+        echo "<div class='form-group'>";
+        echo sprintf('<label class="form-label">%s :</label>', $label);
+        if($id == "") {
+            echo sprintf('<input type="%s" name="%s" value="%s" class="basic-input-field" size="40" placeholder="%s">', $type, $attribute, $model->{$attribute},$placeholder);
+        } else {
+            echo sprintf('<input type="%s" name="%s" value="%s" id="%s" class="basic-input-field" size="40" placeholder="%s">', $type, $attribute, $model->{$attribute}, $id, $placeholder );
+        }
+        echo sprintf('<span class="error">%s</span>', $model->getFirstError($attribute));
+        echo "</div>";
+    }
 }
