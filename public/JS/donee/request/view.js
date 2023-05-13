@@ -78,6 +78,7 @@ async function showPopup(e) {
     // get the request details
     const request = result['requestDetails'];
     const deliveries = result['deliveries'];
+    // console.log(request)
 
     // set the popup
     popUp.clearPopUp();

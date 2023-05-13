@@ -344,15 +344,15 @@ $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 //donee file complaints
-$app->router->post('/donee/complaints/files',function($request,$response){
+$app->router->post('/donee/complaints/file',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
-
+$app->router->get('/donee/complaints/file', function ($request,$response){
+    $controller = new  \app\controller\complaintController('doneeFileComplaint',$request,$response);
+});
 $app->router->get('/donee/profile',function($request,$response){
     $controller = new \app\controller\profileController('doneeProfile',$request,$response);
 });
-
-
 
 
 
@@ -453,7 +453,7 @@ $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 
-//Donor file complaint
+//Donor file complaint on donation
 
 $app->router->post('/donor/complaints/file', function ($request,$response){
    $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
