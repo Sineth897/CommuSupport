@@ -22,7 +22,6 @@ use app\models\doneeModel;
 
 <div class="profile-container">
     <div class="profile">
-
         <div class="img-username-div">
 
             <div class="profile-img">

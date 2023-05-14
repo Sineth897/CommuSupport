@@ -77,7 +77,7 @@ async function finishDelivery(e) {
 
     const finishData = await getData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
     // const finishData = await getTextData('./delivery/finish', 'POST', { data: {subdeliveryID: stringSplit[0], process:stringSplit[1]}});
-    console.log(finishData);
+    // console.log(finishData);
 
     if(!finishData['status']) {
         flash.showMessage({value: finishData['message'], type: 'error'});
@@ -87,7 +87,7 @@ async function finishDelivery(e) {
     flash.showMessage({value: finishData['message'], type: 'success'});
     parent.remove();
 
-    toggle.checkNoData();
+    filterBtn.click();
 
 }
 

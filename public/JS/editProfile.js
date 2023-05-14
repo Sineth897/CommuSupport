@@ -24,6 +24,7 @@ const fields = {
     'logistic': ['address', 'contactNumber'],
     'manager': ['address', 'contactNumber'],
     'driver': ['address', 'contactNumber'],
+    'cho': ['address', 'contactNumber','email'],
 }
 
 function closePopup() {

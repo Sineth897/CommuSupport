@@ -145,7 +145,7 @@ class eventModel extends DbModel
     /**
      * @return array
      */
-    public function getAllUpcominAndActiveEvents() : array {
+    public function getAllUpcomingAndActiveEvents() : array {
         $sql = "SELECT * FROM event WHERE status = 'Upcoming' OR status = 'Active'";
         $stmt = self::prepare($sql);
         $stmt->execute();

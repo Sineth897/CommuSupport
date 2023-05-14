@@ -116,6 +116,7 @@ class eventController extends Controller
         $model = new eventModel();
         $filters = $request->getJsonData()['filters'];
         $sortBy = $request->getJsonData()['sortBy'];
+//        $filters['!eventStatus'] = 'Cancelled';
         $events = $model->retrieve($filters,$sortBy);
         $categoryIcons = eventModel::getEventCategoryIcons();
         $this->sendJson([
