@@ -10,59 +10,48 @@ $doneeID = $_GET['doneeID'];
 
 
 <div class="profile-container">
-    <div class="stat-card req">
-        <div class="main-stat">
-            <div class="stat-title">
-                Total Requests
+    <div class="stat-card-container">
+        <div class="stat-card">
+        <span class="stat-title">
+Total Requests Posted      </span>
+            <span class="stat-value">
+100
+        </span>
+            <div class="sub-stat">
+                        <span class="stat-title">
+Most Request Item      </span>
+                <span class="stat-small-value">
+Rice - Dry Foods
+        </span>
             </div>
-            <div class="main-val stat-value">
-                <p>60</p>
-            </div>
+            <span class="stat-movement dec">
+            <i class="material-icons">volunteer_activism</i>
+        </span>
+
         </div>
-        <div class="sec-stat first">
-            <div class="stat-title">
-                Pending Requests
-            </div>
-            <div class="sec-val stat-value">
-                <p>45</p>
-            </div>
+        <div class="stat-card">
+        <span class="stat-title">
+Total Donations Recieved     </span>
+            <span class="stat-value">
+100
+        </span>
+            <span class="stat-movement dec">
+            <i class="material-icons">inventory_2</i>
+        </span>
+
         </div>
-        <div class="sec-stat second">
-            <div class="stat-title">
-                Accepted Requests
-            </div>
-            <div class="sec-val stat-value">
-                <p>45</p>
-            </div>
-        </div>
-    </div>
-    <div class="stat-card donation">
-        <div class="main-stat">
-            <div class="stat-title">
-                Donations
-            </div>
-            <div class="main-val stat-value">
-                <p>60</p>
-            </div>
-        </div>
-        <div class="sec-stat first">
-            <div class="stat-title">
-                Donations
-            </div>
-            <div class="sec-val stat-value">
-                <p>Rice</p>
-            </div>
-        </div>
-        <div class="sec-stat second">
-            <div class="stat-title">
-                Accepted Requests
-            </div>
-            <div class="sec-val stat-value">
-                <p>45</p>
-            </div>
+        <div class="stat-card">
+        <span class="stat-title">
+Total Events Participated     </span>
+            <span class="stat-value">
+100
+        </span>
+            <span class="stat-movement dec">
+            <i class="material-icons">calendar_month</i>
+        </span>
+
         </div>
     </div>
-    <div class="stat-card event"> Events Participated</div>
     <div class="profile-block">
         <?php
         $doneeData = $model->getDoneePersonalInfo($doneeID);

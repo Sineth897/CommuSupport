@@ -159,7 +159,7 @@ $searchDiv->end(); ?>
     }
 
     $headers = ["Username", 'Registered Date', 'Verified', 'Community Center', "Contact Number", "Type"];
-    $arrayKeys = ["username", 'registeredDate', ['verificationStatus', 'bool', ['No', 'Yes']], 'cc', 'contactNumber', 'type', ['', 'View', '#', [], 'doneeID']];
+    $arrayKeys = ["username", 'registeredDate', ['verificationStatus', 'bool', ['No', 'Yes']], 'cc', 'contactNumber', 'type', ['', 'View', './donees/individual/view', ['doneeID'], 'doneeID']];
 
     $individualTable = new \app\core\components\tables\table($headers, $arrayKeys);
 
