@@ -64,14 +64,6 @@ $searchDiv->end();
 
 ?>
 
-<?php
-$checkVerification = new \app\core\components\layout\verificationDiv();
-
-if($checkVerification->notVerified()) {
-    return;
-}
-?>
-
 
 
 

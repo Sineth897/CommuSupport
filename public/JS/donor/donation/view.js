@@ -33,7 +33,7 @@ async function showDonationPopUp(e) {
 
     const result = await getData('./donation/popup','post',{donationID:donationID});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type:'error',value:result['msg']},3000);

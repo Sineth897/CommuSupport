@@ -61,11 +61,11 @@ class eventController extends Controller
         if($request->isPost()) {
             $model->getData($request->getBody());
             if($model->validate($request->getBody()) && $model->save()) {
-                $this->setFlash('success', 'Event created successfully');
+//                $this->setFlash('success', 'Event created successfully');
                 $model->reset();
             }
             else {
-                $this->setFlash('error', 'Event creation failed');
+//                $this->setFlash('error', 'Event creation failed');
             }
         }
 

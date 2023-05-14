@@ -237,12 +237,12 @@ class requestController extends Controller
                     break;
             }
             $this->sendJson([
-                'success' => true
+                'status' => true
             ]);
         }
         catch (\PDOException $e) {
             $this->rollbackTransaction();
-            $this->sendJson($e->getMessage());
+            $this->sendJson(['status' => 0,$e->getMessage()]);
         }
     }
 
