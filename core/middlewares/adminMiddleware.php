@@ -17,6 +17,7 @@ class adminMiddleware extends Middleware
             'getEventPopup' => [$this->ADMIN],
             'getDonationPopup' => [$this->ADMIN],
             'viewDriverStat' => [$this->ADMIN],
+            'viewEventsStat' => [$this->ADMIN],
         ];
 
     }

@@ -7,18 +7,15 @@
  * @var $dates array
  */
 
-$manager = \app\models\managerModel::getModel(['employeeID' => $_SESSION['user']]);
+$eventDetails = \app\models\eventModel::getEventDetailsMonthBack();
 
-$driverStats = \app\models\driverModel::getDriverDeliveryCountStatisticsUnderCCMonthBack($manager->ccID);
+$eventByType = \app\models\eventModel::getEventDetailsWithTypeMonthBack();
 
-$deliveryByDate = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBack($manager->ccID);
+$eventsFinished = \app\models\eventModel::getEventFinishedMonthBack();
 
-$deliveryByDistance = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBackByDistance($manager->ccID);
-
-//echo "<pre>";
-//print_r($deliveryByDistance);
-//echo "</pre>";
-
+echo "<pre>";
+print_r($eventsFinished);
+echo "</pre>";
 ?>
 
 <style>
@@ -44,8 +41,9 @@ $deliveryByDistance = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBa
             justify-content: center;
         }
 
-        #chartByDistance {
+        #deliveryVariations {
             height: 60% !important;
+            width: 95% !important;
         }
 
         .info-container .grid-1-2 .chart-container canvas{
@@ -67,15 +65,15 @@ $deliveryByDistance = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBa
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Delivery Stats of Last 30 Days"); ?>
+<?php $headerDiv->heading("Events published of Last 30 Days"); ?>
 
 <?php $headerDiv->end(); ?>
 
@@ -93,8 +91,8 @@ $searchDiv->end(); ?>
 
 <div class="chart-test chart-container">
 
-    <p> Deliveries by Distance </p>
-    <canvas id="chartByDistance" height="180%"  ></canvas>
+    <p> Types of events </p>
+    <canvas id="chartByEventType" height="180%"  ></canvas>
 
 </div>
 
@@ -104,8 +102,8 @@ $searchDiv->end(); ?>
 
 <div class="chart-test chart-container">
 
-    <p> Deliveries completed over last month </p>
-    <canvas id="deliveryVariations" height="75%"></canvas>
+    <p> Events posted within last 30 days </p>
+    <canvas id="eventPosted" height="75%"></canvas>
 
 </div>
 
@@ -118,14 +116,15 @@ $searchDiv->end(); ?>
 
     <?php
 
-        $tableHeaders = ['Name', 'Vehicle','Preference','No of Deliveries','Total Distance' ];
-        $arrayKeys = ['name','vehicleType','preference','deliveries','distance'];
+    $tableHeaders = ['Theme','Type',"Participated users",'Location','Community Center'];
+    $arrKeys = ['theme','name','participationCount','location','city'];
 
-        $driverStatTable = new \app\core\components\tables\table($tableHeaders, $arrayKeys);
+    $table = new \app\core\components\tables\table($tableHeaders,$arrKeys);
 
-        $driverStatTable->displayTable($driverStats);
+    $table->displayTable($eventDetails);
 
     ?>
+
 
 </div>
 
@@ -137,19 +136,18 @@ $searchDiv->end(); ?>
         }
     }
 
-    let deliveryData = <?php echo json_encode($deliveryByDate); ?>;
+    let eventData = <?php echo json_encode($eventsFinished); ?>;
 
-    Object.keys(deliveryData).forEach(key => {
-        deliveryData[key.substring(5)] = deliveryData[key];
-        delete deliveryData[key];
+    Object.keys(eventData).forEach(key => {
+       eventData[key.substring(5)] = eventData[key];
+       delete eventData[key];
     });
 
     const dates = <?= json_encode($dates) ?>;
 
-    const deliveryByDistance = <?= json_encode($deliveryByDistance) ?>;
+    const eventsByType = <?= json_encode($eventByType) ?>;
 
 </script>
 
-<script type="module" src="../../public/JS/charts/manager/drivers/deliveryVariations.js"></script>
-<script type="module" src="../../public/JS/charts/manager/drivers/deliveryByDistance.js"></script>
-
+<!--<script type="module" src="../../public/JS/charts/admin/driver/deliveryVariations.js"></script>-->
+<script type="module" src="../../public/JS/charts/admin/event/eventTypeLastMonth.js"></script>

@@ -12,9 +12,9 @@ use app\core\components\tables\table;
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -44,7 +44,6 @@ $chartData1 = $model->getEventbyCategory();
 ?>
 <script>
     const itemData = <?php echo json_encode($chartData1)?>;
-    console.log(itemData);
 
 </script>
 <script src="../public/JS/charts/admin/event/eventCategoryChart.js"></script>
@@ -68,7 +67,6 @@ foreach ($categories as $category) { ?>
 
     <script>
         const <?php echo str_replace(' ', '_', $category); ?> = <?php echo json_encode($chartData2[$category]); ?>;
-        console.log(Blood_Donation);
     </script>
 <?php } ?>
 <script src="../public/JS/charts/admin/event/totalChart.js"></script>
@@ -130,7 +128,13 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+echo "<div class='btn-together'>";
+
 $searchDiv->search();
+
+echo "<a class='btn-primary' href='./events/stats'>View event statistics</a>";
+
+echo "</div>";
 
 $searchDiv->end(); ?>
 

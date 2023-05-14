@@ -1037,4 +1037,8 @@ $app->router->get('/admin/drivers/stat', function ($request, $response) {
     $controller = new \app\controller\adminController("viewDriverStat",$request,$response);
 });
 
+$app->router->get('/admin/events/stats', function ($request, $response) {
+    $controller = new \app\controller\adminController("viewEventsStat",$request,$response);
+});
+
 $app->run();

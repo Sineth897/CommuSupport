@@ -7,16 +7,16 @@
  * @var $dates array
  */
 
-$manager = \app\models\managerModel::getModel(['employeeID' => $_SESSION['user']]);
+use app\core\components\tables\table;
 
-$driverStats = \app\models\driverModel::getDriverDeliveryCountStatisticsUnderCCMonthBack($manager->ccID);
+$driverStats = \app\models\driverModel::getDriverDeliveryCountStatisticsMonthBack();
 
-$deliveryByDate = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBack($manager->ccID);
+$deliveryVariations = \app\models\deliveryModel::getDeliveriesDoneMonthBack();
 
-$deliveryByDistance = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBackByDistance($manager->ccID);
+$deliveryByDistance = \app\models\deliveryModel::getDeliveriesDoneMonthBackByDistance();
 
 //echo "<pre>";
-//print_r($deliveryByDistance);
+//print_r($deliveryVariations);
 //echo "</pre>";
 
 ?>
@@ -44,8 +44,9 @@ $deliveryByDistance = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBa
             justify-content: center;
         }
 
-        #chartByDistance {
+        #deliveryVariations {
             height: 60% !important;
+            width: 95% !important;
         }
 
         .info-container .grid-1-2 .chart-container canvas{
@@ -67,9 +68,9 @@ $deliveryByDistance = \app\models\deliveryModel::getDeliveriesDoneUnderCCMonthBa
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -114,16 +115,17 @@ $searchDiv->end(); ?>
 
 <?php $infoDiv->end(); ?>
 
+
 <div class="content">
 
     <?php
 
-        $tableHeaders = ['Name', 'Vehicle','Preference','No of Deliveries','Total Distance' ];
-        $arrayKeys = ['name','vehicleType','preference','deliveries','distance'];
+    $tableHeaders = ['Name', 'Vehicle','Preference','No of Deliveries','Total Distance','Community Center'];
+    $arrayKeys = ['name','vehicleType','preference','deliveries','distance','city'];
 
-        $driverStatTable = new \app\core\components\tables\table($tableHeaders, $arrayKeys);
+    $driverTable = new table($tableHeaders, $arrayKeys);
 
-        $driverStatTable->displayTable($driverStats);
+    $driverTable->displayTable($driverStats);
 
     ?>
 
@@ -137,7 +139,7 @@ $searchDiv->end(); ?>
         }
     }
 
-    let deliveryData = <?php echo json_encode($deliveryByDate); ?>;
+    let deliveryData = <?php echo json_encode($deliveryVariations); ?>;
 
     Object.keys(deliveryData).forEach(key => {
         deliveryData[key.substring(5)] = deliveryData[key];
@@ -150,6 +152,5 @@ $searchDiv->end(); ?>
 
 </script>
 
-<script type="module" src="../../public/JS/charts/manager/drivers/deliveryVariations.js"></script>
-<script type="module" src="../../public/JS/charts/manager/drivers/deliveryByDistance.js"></script>
-
+<script type="module" src="../../public/JS/charts/admin/driver/deliveryVariations.js"></script>
+<script type="module" src="../../public/JS/charts/admin/driver/deliveryByDistance.js"></script>
