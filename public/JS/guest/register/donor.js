@@ -35,42 +35,19 @@ individual.addEventListener('click', function() {
     individual.classList.add('active-heading-page');
     organization.classList.remove('active-heading-page');
     donorType.value = "Individual";
-    (document.getElementById('firstname-input').parentNode).style.display = "flex";
-    document.getElementById('#organization-name-block').style.display = "none";
-    document.getElementById('nicFront').style.display = "block";
-    document.getElementById('nicBack').style.display = "block";
-
-    var elements = document.getElementsByClassName('cert-div-org');
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'none';
-    }
-
-
-    elements = document.getElementsByClassName('nic-div-org');
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'block';
-    }
+    (document.getElementById('firstname-input').parentNode).style.display = "block";
+    document.getElementById('organization-name-block').style.display = "none";
 });
 
 organization.addEventListener('click', function() {
     document.getElementById('individualForm').style.display = "none";
     document.getElementById('organizationForm').style.display = "block";
+    (document.getElementById('firstname-input').parentNode).style.display = "none";
+    document.getElementById('organization-name-block').style.display = "block";
+
     individual.classList.remove('active-heading-page');
     organization.classList.add('active-heading-page');
     donorType.value = "Organization";
-
-    (document.getElementById('firstname-input').parentNode).style.display = "none";
-    document.getElementById('#organization-name-block').style.display = "block";
-
-    var elements = document.getElementsByClassName('cert-div-org');
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'block';
-    }
-
-    elements = document.getElementsByClassName('nic-div-org');
-    for (let i = 0; i < elements.length; i++) {
-        elements[i].style.display = 'none';
-    }
 });
 
 function prepareDistrictOptionArray() {

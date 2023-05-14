@@ -77,16 +77,18 @@ $profile->end(); ?>
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
 <?php $headerDiv->heading("Delivery Stats of Last 30 Days"); ?>
-
-<?php $headerDiv->end(); ?>
-
-<?php $searchDiv = new \app\core\components\layout\searchDiv();
-
-
+<?php
 echo "<div></div>";
 echo "<button class='btn-cta-primary' id='statPrint'> Get PDF </button>";
+?>
+<?php $headerDiv->end(); ?>
 
-$searchDiv->end(); ?>
+<?php //$searchDiv = new \app\core\components\layout\searchDiv();
+//
+//
+//
+//
+//$searchDiv->end(); ?>
 
 <?php $infoDiv = new \app\core\components\layout\infoDiv([1,2]); ?>
 

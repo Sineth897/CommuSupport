@@ -7,9 +7,20 @@ var itemChart = new Chart(ctx, {
             label: 'My Pie Chart',
             data: Object.values(itemData),
             backgroundColor: [
-                '#225E27',
-                '#3AAC43',
-                '#78D480'
+                // '#1c8625',
+                // '#3AAC43',
+                // '#78D480',
+                // '#B2E8A1',
+                // '#D9F2C7',
+                // '#F2F2F2',
+                // '#006400', '#556B2F', '#008080', '#7FFF00', '#00FF00', '#9ACD32'
+                '#013220',
+                '#0F8344',
+                '#2CBF6C',
+                '#42D77C',
+                '#66E294',
+                '#8CF2B6',
+                '#B2FFD9'
             ]
         }]
     },
@@ -31,7 +42,7 @@ var itemChart = new Chart(ctx, {
                 fontSize: 10,
             }
         },
-        layout:{
+        layout: {
             padding: 0
         }
     }
