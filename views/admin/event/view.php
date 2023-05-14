@@ -36,7 +36,7 @@ $infoDiv->chartDivStart();
 //?>
 <div class="chart-container">
     <p>Event Categories</p>
-    <canvas id="itemChart" height="200%"></canvas>
+    <canvas id="itemChart" height="280px"></canvas>
 </div>
 <?php
 $chartData1 = $model->getEventbyCategory();
@@ -56,8 +56,8 @@ $infoDiv->chartDivEnd();
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
 <div class="chart-container">
-    <p>Event Categories</p>
-    <canvas id="totalChart" height="100%"></canvas>
+    <p>Event Participation by Categories</p>
+    <canvas id="totalChart" height="140px"></canvas>
 </div>
 <?php
 $categories = array_values($model->getEventCategories());

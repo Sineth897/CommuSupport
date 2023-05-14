@@ -155,7 +155,7 @@ class eventModel extends DbModel
 //    To create a chart that shows event participation per each event category
     public function getEventbyCategory(): array
     {
-        $sql = "SELECT ec.name, SUM(e.participationCount) as count FROM event e RIGHT JOIN eventcategory ec ON e.eventCategoryID = ec.eventCategoryID GROUP BY ec.name";
+        $sql = "SELECT ec.name, COUNT(*) as count FROM event e RIGHT JOIN eventcategory ec ON e.eventCategoryID = ec.eventCategoryID GROUP BY ec.name";
         $stmt = self::prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
