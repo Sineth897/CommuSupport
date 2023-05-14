@@ -246,4 +246,12 @@ class eventModel extends DbModel
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
+
+    public function getEventSums()
+    {
+        $sql = "SELECT status, COUNT(*) FROM event GROUP BY status";
+        $stmt = self::prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
 }

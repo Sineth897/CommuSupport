@@ -42,30 +42,13 @@ $CHOs = \app\models\choModel::getCHOs();
                 <?php $donorForm->inputFieldwithPlaceholder($donorIndividual, 'First Name', 'text', 'fname', 'Nimesh', 'firstname-input'); ?>
 
                 <div
-                    id="organization-name-block"
-                    style="display: none;">   <?php $donorForm->inputFieldwithPlaceholder($donorOrganization, 'Organization Name', 'text', 'organizationName', 'Ex : Leo Club Colombo', 'organizationName'); ?>
+                    id="organization-name-block" style="display: none">   <?php $donorForm->inputFieldwithPlaceholder($donorOrganization, 'Organization Name', 'text', 'organizationName', 'Ex : Leo Club Colombo', 'organizationName'); ?>
                 </div>
-
-                <!--                --><?php //$donorForm->dropDownList($donor, 'Choose District', 'district', $CHOs, 'district'); ?>
-                <!---->
-                <!--                --><?php //foreach ($CHOs as $key => $value) : ?>
-                <!--                    <div id="-->
-                <?php //echo $key ?><!--" class="form-group" style="display: none">-->
-                <!--                        --><?php //$donorForm->dropDownList($donor, 'Choose City', 'ccID', \app\models\choModel::getCCsUnderCHO($key)); ?>
-                <!--                    </div>-->
-                <!--                --><?php //endforeach; ?>
-
                 <?php $donorForm->inputFieldwithPlaceholder($donor, 'Email', 'email', 'email', 'Ex : donor@cms.com'); ?>
 
                 <?php $donorForm->inputFieldwithPlaceholder($donor, 'Address', 'text', 'address', 'Ex : 12/3, Nuwara Beach, Ampara'); ?>
 
                 <?php $donorForm->inputFieldwithPlaceholder($donor, 'Contact Number', 'text', 'contactNumber', 'No Spaces, 10 Numbers - Ex : 0771234567'); ?>
-                <!---->
-                <!--                --><?php //$donorForm->inputField($user, 'Username', 'text', 'username'); ?>
-                <!---->
-                <!--                --><?php //$donorForm->inputField($user, 'Password', 'password', 'password'); ?>
-                <!---->
-                <!--                --><?php //$donorForm->inputField($user, 'Confirm Password', 'password', 'confirmPassword'); ?>
 
             </div>
 

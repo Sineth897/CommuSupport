@@ -28,19 +28,24 @@ $profile->end(); ?>
 
 
 <!-- Inforgraphic Cards Layout -->
-<?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
+<?php $infoDiv = new \app\core\components\layout\infoDiv([1, 2, 1]);
 ?>
 
+<?php
+$statData = $model->getDoneeStats();
+?>
 
 <div class="stat-box-2-h">
     <div class="stat-card">
         <span class="stat-title">
 Registrations       </span>
         <span class="stat-value">
-            100
+            <?php
+            echo $statData['0'] + $statData['1'];
+            ?>
         </span>
         <span class="stat-movement dec">
-            <i class="material-icons">arrow_downward</i>10%
+            <i class="material-icons">group</i>
         </span>
 
     </div>
@@ -48,11 +53,13 @@ Registrations       </span>
                 <span class="stat-title">
 Verified Donors    </span>
         <span class="stat-value">
-            100
+            <?php
+            echo $statData['1'];
+            ?>
 
         </span>
         <span class="stat-movement inc">
-            <i class="material-icons">arrow_upward</i>10%
+            <i class="material-icons">verified_user</i>
         </span>
 
     </div>
@@ -62,7 +69,10 @@ Verified Donors    </span>
 <?php $infoDiv->chartDivStart(); ?>
 <div class="chart-container">
     <!--    --><?php //$infoDiv->chartCanvas("totalRegChart"); ?>
-    Total Registrations
+    Registrations in
+    <?php echo date(
+    "Y"); ?>
+
     <canvas id="totalRegChart" height="120px"></canvas>
 </div>
 
@@ -117,9 +127,9 @@ $searchDiv->filterDivStart();
 $searchDiv->filterBegin();
 
 $filter = \app\core\components\form\form::begin('', '');
-$filter->dropDownList($model,"Community center","cc",$CCs,"ccFilter");
-$filter->dropDownList($model,"Verification Status","verificationStatus",[ "No" => "Not Verified", "Yes" => "Verified"],"verificationStatusFilter");
-$filter->dropDownList($model,"Type","type",['Individual' => 'Individual','Organization' => 'Organization'],"typeFilter");
+$filter->dropDownList($model, "Community center", "cc", $CCs, "ccFilter");
+$filter->dropDownList($model, "Verification Status", "verificationStatus", ["No" => "Not Verified", "Yes" => "Verified"], "verificationStatusFilter");
+$filter->dropDownList($model, "Type", "type", ['Individual' => 'Individual', 'Organization' => 'Organization'], "typeFilter");
 $filter->end();
 
 $searchDiv->filterEnd();
@@ -127,7 +137,7 @@ $searchDiv->filterEnd();
 $searchDiv->sortBegin();
 
 $sort = \app\core\components\form\form::begin('', '');
-$sort->checkBox($model,"Registered Date","registeredDate","registeredDateSort");
+$sort->checkBox($model, "Registered Date", "registeredDate", "registeredDateSort");
 $sort->end();
 
 $searchDiv->sortEnd();
@@ -142,16 +152,16 @@ $searchDiv->end(); ?>
 <div id="doneeTable" class="content">
 
     <?php
-    $donees = $model->retrieveWithJoin('users','userID',[],[],'doneeID');
+    $donees = $model->retrieveWithJoin('users', 'userID', [], [], 'doneeID');
     //adding relevant ceommunity center for each donee
     foreach ($donees as $key => $donee) {
         $donees[$key]['cc'] = $CCs[$donee['ccID']];
     }
 
-    $headers = ["Username",'Registered Date', 'Verified','Community Center',"Contact Number","Type"];
-    $arrayKeys = ["username",'registeredDate',['verificationStatus','bool',['No','Yes']],'cc','contactNumber','type',['','View','#',[],'doneeID']];
+    $headers = ["Username", 'Registered Date', 'Verified', 'Community Center', "Contact Number", "Type"];
+    $arrayKeys = ["username", 'registeredDate', ['verificationStatus', 'bool', ['No', 'Yes']], 'cc', 'contactNumber', 'type', ['', 'View', '#', [], 'doneeID']];
 
-    $individualTable = new \app\core\components\tables\table($headers,$arrayKeys);
+    $individualTable = new \app\core\components\tables\table($headers, $arrayKeys);
 
 
     $individualTable->displayTable($donees); ?>

@@ -525,4 +525,15 @@ class requestModel extends DbModel
         return $chartData;
     }
 
+    public function getRequestStats()
+    {
+        $sqltable01 = "SELECT 'request' as Name, COUNT(requestID) as count FROM request";
+        $sqltable02 = "SELECT 'acceptedrequest' as Name, COUNT(DISTINCT requestID) as count FROM acceptedrequest";
+
+        $statement = requestModel::prepare($sqltable01. " UNION ALL ". $sqltable02);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $result;
+    }
+
 }

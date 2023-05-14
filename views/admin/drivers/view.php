@@ -77,7 +77,13 @@ $chartData = $model->getDriverbyVehicle();
 
 <?php $infoDiv->chartDivStart(); ?>
 <div class="stat-container">
+    <?php
+    $chartData3 = $model->getDeliveryMonthly();
+    echo "<pre>";
+    print_r($chartData3);
+    echo "</pre>";
 
+    ?>
 </div>
 <?php $infoDiv->chartDivEnd(); ?>
 

@@ -55,12 +55,18 @@ $profile->end(); ?>
 <?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
 
 ?>
+
+<?php
+$statData = $model->getDonorStats();
+?>
 <div class="stat-box-2-h">
     <div class="stat-card">
         <span class="stat-title">
 Total Registrations       </span>
         <span class="stat-value">
-            12
+<?php
+echo $statData['0'] + $statData['1'];
+?>
         </span>
         <span class="stat-movement inc">
             <i class="material-icons">groups</i>
@@ -71,7 +77,9 @@ Total Registrations       </span>
                 <span class="stat-title">
 Verified Donors    </span>
         <span class="stat-value">
-            11
+            <?php
+            echo $statData['1'];
+            ?>
 
         </span>
         <span class="stat-movement inc">
@@ -88,8 +96,8 @@ Verified Donors    </span>
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
 <div class="chart-container">
-    <p>Registrations by months</p>
-    <!--    --><?php //$infoDiv->chartCanvas("totalRegChart"); ?>
+    <p>Registrations in  <?php echo date(
+            "Y"); ?></p>
     <canvas id="totalRegChart" height="120px"></canvas>
 </div>
 
