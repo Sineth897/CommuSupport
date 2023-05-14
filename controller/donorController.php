@@ -127,4 +127,15 @@ class donorController extends Controller
             $this->sendJson(['status' => 0 , 'msg' => $e->getMessage(), 'sql' => $sql]);
         }
     }
+
+    protected function viewIndividualDonor(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+        $model = new donorModel();
+        $user = $this->getUserModel();
+        $this->render("admin/donors/individual", "View Individual Donor", [
+            'model' => $model,
+            'donorID' => $request->getBody()['donorID']
+        ]);
+    }
 }

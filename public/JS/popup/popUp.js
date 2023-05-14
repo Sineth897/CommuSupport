@@ -369,7 +369,7 @@ class PopUp {
         this.deliverySteps = this.getElement('ul',['delivery-steps']);
         this.deliveryDiv.append(this.deliverySteps);
         const subdeliveryCount = subdeliveries[0]['subdeliveryCount'];
-        const deliveryStageText = PopUp.deliveryStageText[subdeliveryCount-1];
+        const deliveryStageText = PopUp.deliveryStageText[subdeliveryCount-1]; console.log(subdeliveries);
 
         //To show the initial step where the first delivery should be marked separately
         this.deliverySteps.append(this.getDeliveryStage(subdeliveries[0],0,deliveryStageText));
@@ -388,7 +388,7 @@ class PopUp {
 
             }
             else if ( i >= subdeliveries.length) {
-                this.deliverySteps.append(this.getDeliveryStage([],i,deliveryStageText));
+                this.deliverySteps.append(this.getDeliveryStage(false,i,deliveryStageText));
             }
             else {
                 this.deliverySteps.append(this.getDeliveryStage(subdeliveries[i],i,deliveryStageText));
@@ -404,7 +404,7 @@ class PopUp {
     getDeliveryStage(subdelivery,stage,deliveryStageText) {
         const deliveryStage = this.getElement('li',['delivery-stage']);
 
-        if(subdelivery) {
+        if(!subdelivery) {
             deliveryStage.innerHTML = `<span class="stage-number">${stage+2}</span><p class="stage-label next-stages-description">${deliveryStageText[stage+1]}</p>`;
             return deliveryStage;
         }
@@ -429,7 +429,6 @@ class PopUp {
 
         switch (subdelivery['deliveryStatus']) {
             case 'Not Assigned':
-            case 'Not assigned':
                 firstStage.classList.add('current-stage');
                 firstStage.innerHTML = `<span class="stage-number">1</span><p class="stage-label current-stage-description">${deliveryStageText[0]}</p>`;
                 secondStage.innerHTML = `<span class="stage-number">2</span><p class="stage-label next-stages-description">${ subdelivery['subdeliveryCount'] === 1 ? deliveryStageText[1][secondStageTextIndex] : deliveryStageText[1] }</p>`;

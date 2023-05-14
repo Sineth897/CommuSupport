@@ -50,4 +50,32 @@ class choController extends Controller
                 'user'=>$user,]);
     }
 
+
+//    public function  filterCommunityCenters(Request $request, Response $response)
+//    {
+//        $data = $request->getJsonData();
+//        $search = $data['search'];
+//        $sql = "select * from communitycenter";
+//        $where ="WHERE ";
+//
+//        if (!empty($search)){
+//            $where = $where === " WHERE " ? $where : $where . " AND ";
+//            $where .= " (city LIKE '%$search%')";
+//        }
+//
+//        $sql .=$where === " WHERE " ? "" : $where;
+//
+//
+//    }
+
+    protected function viewIndividualCHO(Request $request, Response $response)
+    {
+        $this->checkLink($request);
+
+        $model = new \app\models\choModel();
+        $this->render('admin/communityheadoffices/view/IndividualCHO', 'View Cho', ['model' => $model,]);
+    }
+
+
+
 }

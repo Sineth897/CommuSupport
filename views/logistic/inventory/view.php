@@ -60,7 +60,10 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd(); ?>
 
-<button id="addBtn" class="btn-cta-primary">Add Item</button>
+<div class="btn-together">
+    <button id="addBtn" class="btn-cta-primary">Add Item</button>
+    <a class="btn-cta-primary" href="./inventory/logs">View Inventory Log</a>
+</div>
 
 <?php $searchDiv->end(); ?>
 

@@ -12,6 +12,7 @@ class inventoryMiddleware extends Middleware
             'addInventory' => [$this->LOGISTIC],
             'filterInventory' => [$this->LOGISTIC,$this->ADMIN],
             'getCurrentInventory' => [$this->LOGISTIC,$this->ADMIN],
+            'inventoryLog' => [$this->LOGISTIC,],
         ];
     }
 }

@@ -270,17 +270,46 @@ class requestModel extends DbModel
     {
 
         // function to retreive all active requests posted by a given donee where some amount has been accepted by other users
-        $stmnt = self::prepare("SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName,
-                                            COUNT(a.acceptedBy) AS users,
-                                            CONCAT(SUM(a.amount),' ',s.scale) AS acceptedAmount FROM request r 
-                                            LEFT JOIN subcategory s ON r.item = s.subcategoryID 
-                                            LEFT JOIN acceptedrequest a on a.requestID = r.requestID 
-                                            WHERE r.postedBy = :doneeID GROUP BY a.requestID");
+        $stmnt = self::prepare("SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName
+                                            FROM request r 
+                                            INNER JOIN subcategory s ON r.item = s.subcategoryID 
+                                            WHERE r.postedBy = :doneeID");
 
         // bind donee ID to the statement
         $stmnt->bindValue(':doneeID', $doneeID);
         $stmnt->execute();
-        return $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+        $requests = $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $stmnt = self::prepare("SELECT a.requestID,CONCAT(COUNT(*),' users') AS users, 
+                                        CONCAT(SUM(a.amount),' ',s.scale) AS amount FROM acceptedrequest a 
+                                        INNER JOIN subcategory s ON a.item = s.subcategoryID 
+                                        WHERE a.postedBy = :doneeID AND a.status = 'Accepted' 
+                                        GROUP BY a.requestID");
+
+        // bind donee ID to the statement
+        $stmnt->bindValue(':doneeID', $doneeID);
+        $stmnt->execute();
+        $acceptedRequests = $stmnt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // loop through the requests and append the accepted amount and users to the request
+        foreach ($requests as $key => $request) {
+
+            // find whether a user has accepted the request
+            $index = array_search($request['requestID'], array_column($acceptedRequests, 'requestID'));
+
+            //if acceptted, append the accepted amount and users to the request
+            if ($index !== false) {
+                $requests[$key]['acceptedAmount'] = $acceptedRequests[$index]['amount'];
+                $requests[$key]['users'] = $acceptedRequests[$index]['users'];
+            }
+            // else append 0 to the accepted amount and users
+            else {
+                $requests[$key]['acceptedAmount'] = '0';
+                $requests[$key]['users'] = 0;
+            }
+        }
+
+        return $requests;
 
     }
 
@@ -494,6 +523,17 @@ class requestModel extends DbModel
             $chartData[$row['categoryName']] = $row['count'];
         }
         return $chartData;
+    }
+
+    public function getRequestStats()
+    {
+        $sqltable01 = "SELECT 'request' as Name, COUNT(requestID) as count FROM request";
+        $sqltable02 = "SELECT 'acceptedrequest' as Name, COUNT(DISTINCT requestID) as count FROM acceptedrequest";
+
+        $statement = requestModel::prepare($sqltable01. " UNION ALL ". $sqltable02);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $result;
     }
 
 }

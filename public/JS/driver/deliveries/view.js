@@ -3,6 +3,9 @@ import deliveryPopup from "../../popup/deliveryPopup.js";
 import flash from "../../flashmessages/flash.js";
 import MapRoute from "../../map/map-route.js";
 import driverDeliveryCard from "../../components/driverDeliveryCard.js";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages([{btnID:'deliveries',pageId:'assignedDeliveries'}]);
 
 window.initMap = MapRoute.initMap;
 
@@ -84,6 +87,8 @@ async function finishDelivery(e) {
     flash.showMessage({value: finishData['message'], type: 'success'});
     parent.remove();
 
+    toggle.checkNoData();
+
 }
 
 async function reassignDelivery(e) {
@@ -159,12 +164,14 @@ filterBtn.addEventListener('click', async function(e) {
 
     const result = await getData('./deliveries/filter','post',{filters:filters,sort:sort});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type: "error", value: result['message']});
         return;
     }
+
+    toggle.removeNoData();
 
     const deliveries = result['deliveries'];
     const destinations = result['destinations'];
@@ -177,6 +184,8 @@ filterBtn.addEventListener('click', async function(e) {
     });
 
     driverDeliveryCard.showDeliveries(assignedDeliveriesDiv,deliveries);
+
+    toggle.checkNoData();
 
     assignEventlistenersToRelevantButtons();
 

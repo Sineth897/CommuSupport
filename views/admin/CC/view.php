@@ -108,7 +108,7 @@ $searchDiv->end();
 
            $header = ["City", "Address", "Contact Number", "Community Head Office"];
 
-           $arrayKey = ["city", "address", "contactNumber", "cho",['',"View",'./communitycenter/view',['ccID'],'ccID']];
+           $arrayKey = ["city", "address", "contactNumber", "cho",['',"View",'./communitycenters/individual/view',['ccID'],'ccID']];
 
            $ccTable = new table($header, $arrayKey);
 

@@ -90,7 +90,9 @@ async function showPostedReqPopUp(e) {
         flash.showMessage({type:'error',value:result['message']});
     }
 
-    const request = result['request'];
+    let request = result['request'];
+
+    request['acceptedAmount'] = result['acceptedAmount'] ?? '';
 
     popUpRequest.clearPopUp();
 
@@ -113,7 +115,7 @@ async function showPendingReqPopUp(e) {
     let request = await getData('./requests/popup', 'POST', {"r.requestID": e.target.value});
 
     let reqDetails = request['requestDetails'];
-    let donee = request['donee'][0];
+    let donee = request['donee'];
 
     popUpRequest.clearPopUp();
 
@@ -167,11 +169,14 @@ let approveFun = async (e) => {
         let requestData = {requestID:btn.value};
         let result = await getData('./request/approve', 'POST', {do:'approve',data:requestData});
         if(result['status']) {
-            console.log('updated');
+            // console.log('updated');
+            flash.showMessage({type:'error',value:'Unable to Approve the request. Try again later.'});
         } else {
-            console.log(result);
+            // console.log(result);
+            flash.showMessage({type:'success',value:'Request Approved Marked Successfully'});
         }
         popUpRequest.hidePopUp();
+        filterBtn.click();
     }
 }
 

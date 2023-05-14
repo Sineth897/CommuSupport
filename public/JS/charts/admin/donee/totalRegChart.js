@@ -3,24 +3,26 @@ const monthsOfYear = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", 
 const totalRegChart = new Chart(canvas, {
     type: 'line', data: {
         labels: monthsOfYear, datasets: [{
+            label: 'Registrations',
                        data: Object.values(monthData),
-            borderColor: 'rgb(0,107,14)',
+            borderColor: 'rgb(0,198,21)',
             borderWidth: 2,
             fill: false,
             pointRadius: 3,
-            pointBackgroundColor: 'rgb(0,107,14)',
+            pointBackgroundColor: 'rgb(0,198,21)',
             lineTension: 0
         },]
     }, options: {
         title: {
-            display: true,
+            display: false,
             text: 'Variation of the Registrations over the months',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'
         },
 
-        responsive: true, maintainAspectRatio: false, scales: {
+        // responsive: true, maintainAspectRatio: false,
+        scales: {
             yAxes: [{
                 ticks: {
                     beginAtZero: true,
@@ -41,7 +43,11 @@ const totalRegChart = new Chart(canvas, {
         },
 
         legend: {
-display: false
+            labels: {
+                usePointStyle: true,
+                boxWidth: 4,
+                fontSize: 10,
+            }
         }
     }
 });

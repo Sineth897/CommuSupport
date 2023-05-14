@@ -51,9 +51,10 @@ class doneeModel extends DbModel
      * @param string $ccID
      * @return array
      */
-    public function getDoneeIndividuals(string $ccID = "") : array {
-        if($ccID == "") {
-            return $this->retrieveWithJoin('doneeindividual','doneeID');
+    public function getDoneeIndividuals(string $ccID = ""): array
+    {
+        if ($ccID == "") {
+            return $this->retrieveWithJoin('doneeindividual', 'doneeID');
         }
         return $this->retrieveWithJoin('doneeindividual', 'doneeID', ['donee.ccID' => $ccID]);
     }
@@ -62,9 +63,10 @@ class doneeModel extends DbModel
      * @param string $ccID
      * @return array
      */
-    public function getDoneeOrganizations(string $ccID = "") : array {
-        if($ccID == "") {
-            return $this->retrieveWithJoin('doneeorganization','doneeID');
+    public function getDoneeOrganizations(string $ccID = ""): array
+    {
+        if ($ccID == "") {
+            return $this->retrieveWithJoin('doneeorganization', 'doneeID');
         }
         return $this->retrieveWithJoin('doneeorganization', 'doneeID', ['donee.ccID' => $ccID]);
     }
@@ -73,7 +75,7 @@ class doneeModel extends DbModel
      * @param string $ccID
      * @return array
      */
-    public function getAllDonees(string $ccID = '') : array
+    public function getAllDonees(string $ccID = ''): array
     {
         $individuals = $this->getDoneeIndividuals($ccID);
         $organizations = $this->getDoneeOrganizations($ccID);
@@ -84,8 +86,9 @@ class doneeModel extends DbModel
      * @param array $data
      * @return bool
      */
-    public function saveOnALL(array $data) : bool {
-        $data['doneeID'] = substr(uniqid('donee',true),0,23);
+    public function saveOnALL(array $data): bool
+    {
+        $data['doneeID'] = substr(uniqid('donee', true), 0, 23);
         $data['registeredDate'] = date('Y-m-d');
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         if ($data['type'] === 'Individual') {
@@ -99,7 +102,8 @@ class doneeModel extends DbModel
      * @param array $data
      * @return bool
      */
-    private function saveOnDoneeIndividual(array $data): bool {
+    private function saveOnDoneeIndividual(array $data): bool
+    {
         try {
             $nicFront = Application::file()->saveDonee('nicFront', $data['doneeID']);
             $nicBack = Application::file()->saveDonee('nicBack', $data['doneeID'], 'back');
@@ -108,7 +112,7 @@ class doneeModel extends DbModel
                 $this->addError('nicBack', $nicBack);
                 return false;
             }
-            $cols = ['doneeID','ccID','registeredDate','email','address','contactNumber','type','fname','lname','NIC','age','username','password','longitude','latitude'];
+            $cols = ['doneeID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type', 'fname', 'lname', 'NIC', 'age', 'username', 'password', 'longitude', 'latitude'];
             $sql = 'CALL insertDoneeIndividual(' . implode(',', array_map((fn($attr) => ":$attr"), $cols)) . ')';
             $stmt = self::prepare($sql);
             foreach ($cols as $key) {
@@ -126,7 +130,8 @@ class doneeModel extends DbModel
      * @param array $data
      * @return bool
      */
-    private function saveOnDoneeOrganization(array $data): bool {
+    private function saveOnDoneeOrganization(array $data): bool
+    {
         try {
             $certificateFront = Application::file()->saveDonee('certificateFront', $data['doneeID']);
             $certificateBack = Application::file()->saveDonee('certificateBack', $data['doneeID'], 'back');
@@ -147,6 +152,7 @@ class doneeModel extends DbModel
             return false;
         }
     }
+
 
     private function ownComplaints($userID)
     {
@@ -179,7 +185,7 @@ class doneeModel extends DbModel
         // Create an array with all 12 months of the year
         $monthsOfYear = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
         // Get the count of requests published on each month for urgency = "Within 7 days"
-        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donee GROUP BY MONTH(registeredDate)";
+        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donee WHERE YEAR(registeredDate) = YEAR(CURRENT_DATE) GROUP BY MONTH(registeredDate)";
         $statement = requestModel::prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -194,7 +200,8 @@ class doneeModel extends DbModel
     /**
      * @return array
      */
-    public function getDoneeInformationForProfile() : array {
+    public function getDoneeInformationForProfile(): array
+    {
         return [
             $this->getPersonalInfo()[0],
             $this->getDoneeStatistics(),
@@ -204,7 +211,8 @@ class doneeModel extends DbModel
     /**
      * @return array
      */
-    private function getPersonalInfo() : array {
+    private function getPersonalInfo(): array
+    {
 
         $colsIndividual = "u.*,d.*,di.fname,di.lname,di.NIC,di.age,c.city,c2.district";
         $colsOrganization = "u.*,d.*,do.organizationName,do.representative,do.representativeContact,do.capacity,c.city,c2.district";
@@ -231,7 +239,8 @@ class doneeModel extends DbModel
     /**
      * @return array
      */
-    private function getDoneeStatistics() : array {
+    private function getDoneeStatistics(): array
+    {
 
         $arrayOfSql = [
             $sqlEventParticipartion = "SELECT 'Event Participation',COUNT(*) FROM eventparticipation 
@@ -253,10 +262,38 @@ class doneeModel extends DbModel
                                             WHERE filedBy = '{$_SESSION['user']}' AND status = 'Completed'",
         ];
 
-        $statement = self::prepare(implode(" UNION ",$arrayOfSql));
+        $statement = self::prepare(implode(" UNION ", $arrayOfSql));
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
-
     }
+
+    public function getDoneePersonalInfo($doneeID)
+    {
+// basic fields from the donee table
+        $sql = "SELECT d.doneeID, d.registeredDate, d.verificationStatus, d.email, d.address, d.contactNumber, d.type, d.mobileVerification, d.longitude, d.latitude, ";
+// conditional sql to find the donee name based on the type of donee
+        $sqlconditional = "CASE WHEN d.type = 'individual' THEN CONCAT(i.fname, ' ', i.lname) ELSE o.organizationName END AS doneeName, ";
+        // fields from the individual table and organization table
+        $sqlfields = "i.NIC, i.age, o.regNo, o.representative, o.representativeContact, o.capacity, c.city AS communityCenterName ";
+// joins to the individual table and organization table with donee table, gets the cc name using cc table
+        $sqljoins = "FROM donee d LEFT JOIN doneeindividual i ON d.doneeID = i.doneeID AND d.type = 'individual' LEFT JOIN doneeorganization o ON d.doneeID = o.doneeID AND d.type = 'organization' LEFT JOIN communitycenter c ON d.ccID = c.ccID ";
+
+        $sqlwhere = "WHERE d.doneeID = '$doneeID'";
+        $statement = self::prepare($sql . $sqlconditional . $sqlfields . $sqljoins . $sqlwhere);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function getDoneeStats()
+    {
+        $sql = "SELECT verificationStatus, COUNT(*) as count FROM donee group by verificationStatus";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $result;
+    }
+
 
 }

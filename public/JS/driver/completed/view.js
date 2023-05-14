@@ -35,7 +35,7 @@ async function showPopup(e) {
 
     const result = await getData('./popup','post', {subdeliveryID: parent.id.split(",")[0]});
 
-    console.log(result);
+    // console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type: "error", value: result['message']});

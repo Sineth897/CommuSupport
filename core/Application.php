@@ -77,7 +77,7 @@ class Application
             echo $this->router->resolve();
             ob_end_flush();
         } catch (\Exception $e) {
-            echo $e->getMessage();
+//            echo $e->getMessage();
             $this->response->setStatusCode($e->getCode());
             ob_start();
             echo $this->router->render('error',$e->getMessage(),[

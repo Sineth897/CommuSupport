@@ -17,11 +17,22 @@ use app\core\components\tables\table;
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
 
+$profile->notification();
+
 $profile->end(); ?>
+
+
+<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
+
+<?php $headerDiv->heading("Posted Requests"); ?>
+
+<?php $headerDiv->pages(["pending", 'accepted']) ?>
+
+<?php $headerDiv->end(); ?>
+
+
 
 <!-- Inforgraphic Cards Layout -->
 <?php $infoDiv = new \app\core\components\layout\infoDiv([1,2,1]);
@@ -38,7 +49,8 @@ $chartData1 = $model->getRequestDatabyCategory();
 ?>
 
 <script>
-    const itemData = <?php echo json_encode($chartData1); ?>;
+    const itemData = <?php echo json_encode($chartData1)?>;
+    console.log(itemData);
 </script>
 <script src="../public/JS/charts/admin/request/subcategoryChart.js"></script>
 <!-- Summary of ALl Statistics in this div-->
@@ -67,16 +79,48 @@ $chartData2 = $model->getRequestDataMonthly();
 <script src="../public/JS/charts/admin/request/totalChart.js"></script>
 
 <?php $infoDiv->chartDivEnd();
+?>
+
+<?php
+    $statData = $model->getRequestStats();
+//    var_dump($statData);
+?>
+
+<div class="stat-box-2-h">
+    <div class="stat-card">
+        <span class="stat-title">
+Active Requests        </span>
+        <span class="stat-value">
+            <?php
+            echo $statData['request'];
+            ?>
+        </span>
+        <span class="stat-movement">
+            <i class="material-icons">library_books</i>
+        </span>
+
+    </div>
+    <div class="stat-card">
+                <span class="stat-title">
+Completed Requests        </span>
+        <span class="stat-value">
+
+            <?php
+            echo $statData['acceptedrequest'];
+            ?>
+
+        </span>
+        <span class="stat-movement">
+            <i class="material-icons">library_add_check</i>
+        </span>
+
+    </div>
+</div>
+
+<?php
 $infoDiv->end(); ?>
 
 
-<?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
-
-<?php $headerDiv->heading("Pending Requests"); ?>
-
-<?php $headerDiv->pages(["pending", 'accepted']) ?>
-
-<?php $headerDiv->end(); ?>
 
 <?php $searchDiv = new \app\core\components\layout\searchDiv();
 

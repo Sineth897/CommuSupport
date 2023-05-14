@@ -11,6 +11,8 @@ class driverMiddleware extends Middleware
             'filterDriversAdmin' => [$this->ADMIN],
             'filterDrivers' => [$this->MANAGER,$this->LOGISTIC],
             'driverPopup' => [$this->MANAGER, $this->ADMIN,$this->LOGISTIC],
+            'viewIndividualDriver' => [$this->ADMIN],
+            'viewDriverStat' => [$this->LOGISTIC,$this->MANAGER,$this->ADMIN],
         ];
 
     }

@@ -143,7 +143,6 @@ async function showPopup(e) {
 
     popup.clearPopUp();
     popup.setHeader('Donation Details');
-    popup.setComplaintIcon(parent.id,"donation");
 
     popup.startSplitDiv();
     popup.setBody(donation,['username','subcategoryName'],['Donated By',"Item"]);

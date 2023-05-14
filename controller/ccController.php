@@ -63,4 +63,16 @@ class ccController extends Controller
         }
     }
 
+    protected function viewIndividualCC(Request $request, Response $response) {
+//      Check the link to check whether the user who sent the request is the same as the one in the link
+        $this->checkLink($request);
+        $model = new ccModel();
+//         get the view from the view folder
+        $this->render( "admin/CC/individual","View Community Center",[
+//            'model' is the array key - it is the variable name that will be used in the view, $model is the variable name in this file
+            'model' => $model,
+            'ccID' => $request->getBody()['ccID']
+        ]);
+    }
+
 }
