@@ -72,6 +72,7 @@
     color: var(--secondary-color);
 }
 
-
-
+.stat-value-individual{
+    font-size: 5rem;
+}
 
