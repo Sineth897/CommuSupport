@@ -40,7 +40,7 @@ use app\models\driverModel;
         <!--        provide an id for the fields that can be updated-->
         <form action="#" class="form-grid-1">
 
-            <input type="hidden" id="userType" value="manager">
+            <input type="hidden" id="userType" value="driver">
 
             <div class="personal-details">
 

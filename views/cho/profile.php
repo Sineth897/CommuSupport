@@ -1,9 +1,7 @@
-<<<<<<< HEAD
-
-
-=======
 <link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
+<link rel="stylesheet" href="../public/CSS/charts/charts.css">
+
 
 <?php
 
@@ -22,14 +20,8 @@ use app\models\choModel;
 
 ?>
 
->>>>>>> a58141fd720f1c101985d472ce0b0c2c8e551d02
 <div class="profile-container">
     <div class="profile">
-
-        <div class="edit-change-password">
-            <p id="change-password"> Change Password </p>
-            <i class="material-icons" id="edit-details">edit_note</i>
-        </div>
 
         <div class="img-username-div">
 
@@ -39,9 +31,17 @@ use app\models\choModel;
             <p class="user-type"><?php echo '@' . $personalInfo['username'] ?></p>
         </div>
 
+        <div class="edit-change-password">
+            <p id="change-password"> Change Password <i class="material-icons">key</i></p>
+            <p id="edit-profile"> Edit Profile <i class="material-icons">edit_note</i></p>
+        </div>
+
         <!--        each attribute is displayed as disabled input field-->
         <!--        provide an id for the fields that can be updated-->
         <form action="#" class="form-grid-1">
+
+            <input type="hidden" id="userType" value="cho">
+
 
             <div class="personal-details">
 
@@ -52,19 +52,19 @@ use app\models\choModel;
 
                 <div class="form-group">
                     <label class="form-label"> Contact Number </label>
-                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" disabled>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" id="contactNumber" disabled>
                 </div>
 
             </div>
 
             <div class="form-group description">
                 <label class="form-label"> Address </label>
-                <textarea class="basic-text-area"  disabled> <?php echo $personalInfo['address'] ?> </textarea>
+                <textarea class="basic-text-area"  id="address" disabled> <?php echo $personalInfo['address'] ?> </textarea>
             </div>
 
             <div class="form-group description">
                 <label class="form-label"> Email </label>
-                <textarea class="basic-text-area"  disabled> <?php echo $personalInfo['email'] ?> </textarea>
+                <textarea class="basic-text-area"  id="email" disabled> <?php echo $personalInfo['email'] ?> </textarea>
             </div>
 
         </form>
@@ -77,9 +77,12 @@ use app\models\choModel;
         <?php foreach ($choStat as $key => $value) {
 
             // stat and the value
-            echo "<div class='stat'>";
-            echo "<h4 class='align-text-center'>{$key}</h4>";
-            echo "<h1 class='align-text-center'>{$value}</h1>";
+            echo "<div class='stat-card'>";
+            echo "<span class='stat-title'>{$key}</span>";
+            echo "<span class='stat-value'>{$value}</span>";
+            echo "<span class='stat-movement'>
+            <i class='material-icons'>arrow_downward</i>
+        </span>";
             echo "</div>";
 
         }?>
@@ -102,6 +105,10 @@ use app\models\choModel;
             ];
 
             $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
+
+            if (empty($notifications)) {
+                echo "<h2 class='no-notification'> No notifications to show</h2>";
+            }
 
             foreach ($notifications as $notification) {
 
@@ -142,3 +149,5 @@ use app\models\choModel;
 </div>
 
 <script type="module" src="../public/JS/changePassword.js"></script>
+<script type="module" src="../public/JS/editProfile.js"></script>
+
