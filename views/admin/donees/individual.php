@@ -12,44 +12,19 @@ $doneeID = $_GET['doneeID'];
 <div class="profile-container">
     <div class="stat-card-container">
         <div class="stat-card">
-        <span class="stat-title">
-Total Requests Posted      </span>
-            <span class="stat-value">
-100
-        </span>
-            <div class="sub-stat">
-                        <span class="stat-title">
-Most Request Item      </span>
-                <span class="stat-small-value">
-Rice - Dry Foods
-        </span>
-            </div>
-            <span class="stat-movement dec">
-            <i class="material-icons">volunteer_activism</i>
-        </span>
-
+            <span class="stat-title">Total Requests Posted</span>
+            <span class="stat-value-individual">100</span>
+            <span class="stat-movement"><i class="material-icons">inventory_2</i></span>
         </div>
         <div class="stat-card">
-        <span class="stat-title">
-Total Donations Recieved     </span>
-            <span class="stat-value">
-100
-        </span>
-            <span class="stat-movement dec">
-            <i class="material-icons">inventory_2</i>
-        </span>
-
+            <span class="stat-title">Total Donations Recieved</span>
+            <span class="stat-value-individual">100</span>
+            <span class="stat-movement"><i class="material-icons">local_shipping</i></span>
         </div>
         <div class="stat-card">
-        <span class="stat-title">
-Total Events Participated     </span>
-            <span class="stat-value">
-100
-        </span>
-            <span class="stat-movement dec">
-            <i class="material-icons">calendar_month</i>
-        </span>
-
+            <span class="stat-title">Total Events Participated</span>
+            <span class="stat-value-individual">100</span>
+            <span class="stat-movement"><i class="material-icons">emoji_events</i></span>
         </div>
     </div>
     <div class="profile-block">
@@ -117,10 +92,12 @@ Total Events Participated     </span>
 
         <p>Verification Status</p>
 
-        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>front.pdf" class="profile-view-docs" target="_blank">
+        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>front.pdf" class="profile-view-docs"
+           target="_blank">
             Front
         </a>
-        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>back.pdf" class="profile-view-docs" target="_blank">
+        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>back.pdf" class="profile-view-docs"
+           target="_blank">
             Back
         </a>
 
