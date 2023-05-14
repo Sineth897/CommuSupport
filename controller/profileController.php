@@ -443,4 +443,60 @@ class profileController extends Controller
 
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
+    private function updateDriver($data) : void {
+
+        $managerTable = [];
+
+        if (!empty($data['contactNumber'])) {
+            $managerTable['contactNumber'] = $data['contactNumber'];
+        }
+
+        if (!empty($data['address'])) {
+            $managerTable['address'] = $data['address'];
+        }
+
+        if (!empty($managerTable)) {
+            $managerModel = new managerModel();
+            $managerModel->update(['employeeID' => $_SESSION['user']], $managerTable);
+        }
+
+        $this->sendJson([
+            'message' => 'Profile Updated Successfully',
+            'status' => 1
+        ]);
+
+    }
+
+    /**
+     * @param $data
+     * @return void
+     */
+    private function updateCHO($data) : void {
+
+        $choTable = [];
+
+        if (!empty($data['contactNumber'])) {
+            $choTable['contactNumber'] = $data['contactNumber'];
+        }
+
+        if (!empty($data['address'])) {
+            $choTable['address'] = $data['address'];
+        }
+
+        if (!empty($choTable)) {
+            $choModel = new choModel();
+            $choModel->update(['choID' => $_SESSION['user']], $choTable);
+        }
+
+        $this->sendJson([
+            'message' => 'Profile Updated Successfully',
+            'status' => 1
+        ]);
+
+    }
+
 }
