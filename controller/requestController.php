@@ -533,7 +533,12 @@ class requestController extends Controller
 
     }
 
-    protected function filterOwnRequests(Request $request,Response $response) : void {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterOwnRequests(Request $request, Response $response) : void {
 
         $data = $request->getJsonData();
         $filters = $data['filters'];
@@ -541,7 +546,7 @@ class requestController extends Controller
 
         $doneeID = $_SESSION['user'];
 
-        $activeRequestFilters = ['r.postedBy' => $doneeID];
+        $activeRequestFilters = ['r.postedBy' => $doneeID,'!r.approval' => 'Cancelled'];
         $acceptedRequestFilters = ['r.postedBy' => $doneeID, '!r.deliveryStatus' => 'Completed'];
         $completedRequestFilters = ['r.postedBy' => $doneeID, 'r.deliveryStatus' => 'Completed'];
 
@@ -604,7 +609,12 @@ class requestController extends Controller
         }
     }
 
-    protected function filterRequestsManager(Request $request,Response $response) : void {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
+    protected function filterRequestsManager(Request $request, Response $response) : void {
 
         $data = $request->getJsonData();
 
@@ -629,6 +639,11 @@ class requestController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return void
+     */
     protected function requestPopupManager(Request $request, Response $response) : void {
 
         $data = $request->getJsonData();
@@ -654,6 +669,10 @@ class requestController extends Controller
 
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     private function requestPopupManagerPosted($data) : void {
 
         $sql = "SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName,COUNT(a.acceptedBy) AS users,CONCAT(SUM(a.amount),' ',s.scale) AS acceptedAmount FROM request r LEFT JOIN subcategory s ON r.item = s.subcategoryID LEFT JOIN acceptedrequest a ON a.requestID = r.requestID";
@@ -667,6 +686,10 @@ class requestController extends Controller
 
     }
 
+    /**
+     * @param $data
+     * @return void
+     */
     private function requestPopupManagerCompleted($data) : void {
 
         $sql = "SELECT *,CONCAT(SUM(r.amount),' ',s.scale) AS amount,COUNT(r.requestID) AS users,CONCAT(SUM(r.amount),' ',s.scale) AS acceptedAmount FROM acceptedrequest r INNER JOIN subcategory s ON r.item = s.subcategoryID INNER JOIN category c ON s.categoryID = c.categoryID";
@@ -677,6 +700,42 @@ class requestController extends Controller
             'status' => 1,
             'request' => $request[0]
         ]);
+
+    }
+
+    protected function cancelRequest(Request $request,Response $response) : void {
+
+            $data = $request->getJsonData();
+
+            $requestID = $data['requestID'];
+
+            try {
+
+                $this->startTransaction();
+
+                $request = requestModel::getModel(['requestID' => $requestID]);
+
+                if($request->postedBy !== $_SESSION['user']) {
+                    $this->sendJson([
+                        'status' => 0,
+                        'message' => 'You are not allowed to cancel this request']);
+                    return;
+                }
+
+                $request->update(
+                    ['requestID' => $requestID],
+                    ['approval' => 'Cancelled']);
+
+                $this->commitTransaction();
+
+                $this->sendJson([
+                    'status' => 1,
+                    'message' => 'Request cancelled successfully']);
+
+            }
+            catch (\PDOException $e) {
+                $this->sendJson(['status' => 0,'message' => $e->getMessage()]);
+            }
 
     }
 
