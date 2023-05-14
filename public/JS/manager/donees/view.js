@@ -10,13 +10,15 @@ const toggle = new togglePages([
                                     {btnId:'organization',pageId:'organizationDoneeDisplay',title:'Organization Donees'}
                                 ],);
 
-let temp =  document.getElementsByClassName('pendingVerification');
+let temp =  document.getElementsByClassName('unver-user-card');
 let pendingVerifications = {};
 
 for(let i = 0; i < temp.length; i++) {
     let id = temp[i].getElementsByTagName('button')[0].value;
     pendingVerifications[id] = temp[i];
 }
+
+// console.log(pendingVerifications);
 
 function toggleHidden(element) {
     if(element.style.display === "none") {
@@ -88,11 +90,13 @@ let verifyFunc = async (e) => {
          let result = await getData('./donee/verify','post',{doneeID: id});
          if(result['status']) {
                 flash.showMessage({type:'success',value:`Donee's verification is marked successfully`},3000);
-                pendingVerifications[id].style.display = 'none';
+                pendingVerifications[id].remove();
+                filterBtn.click();
                 popup.hidePopUp();
          }
          else {
-                console.log(result);
+                flash.showMessage({type:'error',value:`Error occurred while marking the verification`},3000);
+                popup.hidePopUp();
          }
      }
 }
@@ -174,7 +178,7 @@ filterBtn.addEventListener('click', async function(e) {
 
     let data = await getData('./donees/filter','post',{filters,sort,search});
 
-    console.log(data);
+    // console.log(data);
 
     if(!data['status']) {
         flash.showMessage({type:'error',value:data['msg']},3000);
