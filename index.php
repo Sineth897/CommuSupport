@@ -203,6 +203,10 @@ $app->router->post('/manager/driver/popup', function ($request,$response) {
     $controller = new \app\controller\driverController("driverPopup",$request,$response);
 });
 
+$app->router->get('/manager/drivers/stat',function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDriverStat",$request,$response);
+});
+
 //Manager view donees
 $app->router->get('/manager/donees', function ($request, $response) {
     $controller = new \app\controller\doneeController("viewDonees",$request,$response);
@@ -295,10 +299,6 @@ $app->router->get('/manager/profile', function ($request, $response) {
 
 
 
-
-
-
-
 //*************************Donee get and post methods*************************// --297
 $app->router->get('/donee/request', function ($request, $response) {
     $controller = new \app\controller\requestController("viewRequests",$request,$response);
@@ -344,15 +344,15 @@ $app->router->get('/donee/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 //donee file complaints
-$app->router->post('/donee/complaints/files',function($request,$response){
+$app->router->post('/donee/complaints/file',function($request,$response){
     $controller = new \app\controller\complaintController('doneeFileComplaint',$request,$response);
 });
-
+$app->router->get('/donee/complaints/file', function ($request,$response){
+    $controller = new  \app\controller\complaintController('doneeFileComplaint',$request,$response);
+});
 $app->router->get('/donee/profile',function($request,$response){
     $controller = new \app\controller\profileController('doneeProfile',$request,$response);
 });
-
-
 
 
 
@@ -453,7 +453,7 @@ $app->router->get('/donor/complaints', function($request,$response) {
     $controller = new \app\controller\complaintController('viewComplaints',$request,$response);
 });
 
-//Donor file complaint
+//Donor file complaint on donation
 
 $app->router->post('/donor/complaints/file', function ($request,$response){
    $controller = new  \app\controller\complaintController('donorFileComplaint',$request,$response);
@@ -506,7 +506,9 @@ $app->router->post('/logistic/drivers/filter', function ($request,$response) {
 $app->router->post('/logistic/driver/popup', function ($request,$response) {
     $controller = new \app\controller\driverController("driverPopup",$request,$response);
 });
-
+$app->router->get('/logistic/drivers/stat', function ($request,$response) {
+    $controller = new \app\controller\driverController("viewDriverStat",$request,$response);
+});
 //logistic view inventory
 $app->router->get("/logistic/inventory", function ($request,$response) {
     $controller = new \app\controller\inventoryController("viewInventory",$request,$response);
@@ -828,6 +830,13 @@ $app->router->post('/admin/communitycenters/filter', function ($request, $respon
 $app->router->get('/admin/employees', function ($request, $response) {
     $controller = new \app\controller\employeeController("viewEmployees",$request,$response);
 });
+
+$app->router->post('/admin/employees/filter',function ($request,$response){
+    $controller = new \app\controller\employeeController("filterEmployees",$request,$response);
+});
+$app->router->post('/admin/employees/popup',function ($request,$response){
+    $controller = new \app\controller\employeeController("employeesPopup",$request,$response);
+});
 //Admin view donation
 $app->router->get('/admin/donations', function ($request, $response) {
     $controller = new \app\controller\donationController("viewDonations",$request,$response);
@@ -1022,6 +1031,14 @@ $app->router->post('/admin/event/popup', function ($request, $response) {
 
 $app->router->post('/admin/donation/popup', function ($request, $response) {
     $controller = new \app\controller\adminController("getDonationPopup",$request,$response);
+});
+
+$app->router->get('/admin/drivers/stat', function ($request, $response) {
+    $controller = new \app\controller\adminController("viewDriverStat",$request,$response);
+});
+
+$app->router->get('/admin/events/stats', function ($request, $response) {
+    $controller = new \app\controller\adminController("viewEventsStat",$request,$response);
 });
 
 $app->run();

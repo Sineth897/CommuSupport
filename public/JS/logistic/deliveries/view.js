@@ -336,12 +336,12 @@ filterBtn.addEventListener('click', async function(e) {
 
     // filter out pending deliveries
     const pendingDirectDonations = directDonations ? directDonations.filter(delivery => delivery['status'] !== 'Completed') : [];
-    const pendingAcceptedRequests = acceptedRequests ? acceptedRequests.filter(delivery => delivery['status'] !== 'Completed') : [];
+    const pendingAcceptedRequests = acceptedRequests ? acceptedRequests.filter(delivery => delivery['deliveryStatus'] !== 'Completed') : [];
     const pendingCCDonations = ccDonations ? ccDonations.filter(delivery => delivery['status'] !== 'Completed') : [];
 
     // filter out completed deliveries
     const completedDirectDonations = directDonations ? directDonations.filter(delivery => delivery['status'] === 'Completed') : [];
-    const completedAcceptedRequests = acceptedRequests ? acceptedRequests.filter(delivery => delivery['status'] === 'Completed') : [];
+    const completedAcceptedRequests = acceptedRequests ? acceptedRequests.filter(delivery => delivery['deliveryStatus'] === 'Completed') : [];
     const completedCCDonations = ccDonations ? ccDonations.filter(delivery => delivery['status'] === 'Completed') : [];
 
 

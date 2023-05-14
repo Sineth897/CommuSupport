@@ -35,7 +35,9 @@ $headerDiv->end();
 ?>
 
 
+
 <?php
+
 $searchDiv = new \app\core\components\layout\searchDiv();
 
 $searchDiv->filterDivStart();
@@ -60,33 +62,9 @@ $searchDiv->end();
 
 <div class="search-filter">
 
-<!--        <div class="filters">-->
-<!--            <div class="filter">-->
-<!--                <p><i class="material-icons">filter_list</i><span>Filter</span></p>-->
-<!--            </div>-->
-<!--            <div class="sort">-->
-<!--                <p><i class="material-icons">sort</i> <span>Sort</span></p>-->
-<!--            </div>-->
-<!--        </div>  -->-->
-<!---->
-<!--        <div class="filters">-->
-<!---->
-<!--            <p ><i class="material-icons"  >-->
-<!--                    <select id="filter">-->
-<!--                        <option value="all">All</option>-->
-<!--                        <option value="donor">Donor</option>-->
-<!--                        <option value="donee">Donee</option>-->
-<!--                        <option value="individual">Individual</option>-->
-<!--                        <option value="organization">Organization</option>-->
-<!--                    </select></i>-->
-<!--                <span>Filter</span>-->
-<!--            </p>-->
-<!---->
-<!---->
-<!--        </div>-->
 
 
-    <div class="search">
+    <div class="search" >
         <input type="text" placeholder="Search" name="find" id="search">
         <a href="#"><i class="material-icons">search</i></a>
     </div>
@@ -115,7 +93,7 @@ $searchDiv->end();
 </div>
 
 
-<!--<script type="module" src="../public/JS/cho/users/filter.js"></script>-->
+<script type="module" src="../public/JS/cho/users/filter.js"></script>
 
 
 

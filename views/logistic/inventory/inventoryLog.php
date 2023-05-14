@@ -15,10 +15,6 @@ $inventoryChartDate = \app\models\inventorylog::getInventoryLogsOfMonthBackGroup
 
 $currentInventory = \app\models\inventoryModel::getCurrentInventoryOfGivenCCByCategories($logistic->ccID);
 
-echo "<pre>";
-print_r($currentInventory);
-echo "</pre>";
-
 ?>
 
 <style>
@@ -91,8 +87,8 @@ $searchDiv->end(); ?>
 
 <div class="chart-test chart-container">
 
-    <p> Current invetory by category </p>
-    <canvas id="currentInventory" height="80px"  ></canvas>
+    <p> Current inventory by category </p>
+    <canvas id="currentInventory" height="180%"  ></canvas>
 
 </div>
 
@@ -113,8 +109,6 @@ $searchDiv->end(); ?>
 <?php $infoDiv->end(); ?>
 
 <div class="content">
-
-
 
     <?php
 
@@ -146,8 +140,7 @@ $searchDiv->end(); ?>
 
     const dates = <?= json_encode($dates) ?>;
 
-    const currenyInventory = <?= json_encode($currentInventory) ?>;
-
+    const currentInventory = <?= json_encode($currentInventory) ?>;
 
 </script>
 

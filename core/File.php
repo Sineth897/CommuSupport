@@ -90,8 +90,8 @@ class File
                 return true;
             }
         }
-        if($file_type == "pdf") {
-            if($file_ext == "pdf") {
+        if($file_type === "pdf") {
+            if($file_ext === "pdf") {
                 return true;
             }
         }

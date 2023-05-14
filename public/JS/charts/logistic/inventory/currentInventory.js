@@ -9,7 +9,10 @@ const itemChart = new Chart(currentInventoryDoghnut, {
             backgroundColor: [
                 '#225E27',
                 '#3AAC43',
-                '#78D480'
+                '#78D480',
+                '#A9E6A0',
+                '#D0F0C0',
+                '#F0F7E2'
             ]
         }]
     },
@@ -21,8 +24,8 @@ const itemChart = new Chart(currentInventoryDoghnut, {
             fontColor: '#000',
             fontFamily: 'inter'
         },
-        responsive: false,
-        maintainAspectRatio: false,
+        // responsive: false,
+        // maintainAspectRatio: false,
         legend: {
             display: true,
             position: 'top',

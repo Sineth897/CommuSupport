@@ -42,6 +42,26 @@ $headerDiv->end();
 ?>
 
 <?php
+
+$searchDiv = new \app\core\components\layout\searchDiv();
+$searchDiv ->filterDivStart();
+
+$searchDiv->sortBegin();
+
+$sort = \app\core\components\form\form::begin('', '');
+$sort->checkBox($complaints,"Reviewed Date","reviewedDate","registeredDateSort");
+$sort->end();
+$sort::end();
+
+
+$searchDiv->sortEnd();
+$searchDiv->filterDivEnd();
+$searchDiv->end();
+
+
+?>
+
+<?php
 $checkVerification = new \app\core\components\layout\verificationDiv();
 
 if($checkVerification->notVerified()) {
@@ -49,24 +69,7 @@ if($checkVerification->notVerified()) {
 }
 ?>
 
-<div class="content">
-    <div class="filters">
 
-        <p ><i class="material-icons"  >
-                <select id="filter">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="completed">Completed</option>
-                </select></i>
-            <span>Filter</span>
-        </p>
-
-        <div class="sort" id="sort-btn">
-            <p id="sort-btn" ><i class="material-icons"  >sort</i> <span>Sort</span></p>
-        </div>
-    </div>
-
-</div>
 <div class="content-form">
 
     <?php
@@ -93,4 +96,4 @@ if($checkVerification->notVerified()) {
 </div>
 
 
-<script type="module" src="../public/JS/donor/complaints/sort.js"></script>
+<script type="module" src="../public/JS/donee/complaints/sort.js"></script>

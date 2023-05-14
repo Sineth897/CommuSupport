@@ -56,7 +56,7 @@ class inventorylog extends DbModel
     public static function logPickupFromCC(string $acceptedID, string $ccID) : void {
 
         // select related data from the accepted request table and insert it into the inventory log table
-        // once request item is get pickep up from the cc
+        // once request item is get picked up from the cc
         $sql = "UPDATE inventorylog SET remark = CONCAT(remark,CONCAT('Delivery was picked up from CC with id ', '$ccID',' on ',CURRENT_DATE)) 
                                      AND datePicked = CURRENT_DATE WHERE processID = '$acceptedID' AND ccID = '$ccID'";
 
@@ -134,6 +134,28 @@ class inventorylog extends DbModel
 
     /**
      * @param string $acceptedID
+     * @param string $ccID
+     * @return void
+     */
+    public static function logDeliveryBetween2CCsForAcceptedRequest(string $acceptedID, string $ccID) : void {
+
+        //log pickup from the cc
+        inventorylog::logPickupFromCC($acceptedID, $ccID);
+
+        // select related data from the accepted request table and insert it into the inventory log table
+        // once item was received from the donor or cc
+        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark) 
+                    SELECT acceptedID,amount,item,acceptedBy,CONCAT('Delivery for donee with ID ', d.doneeID,' was received on ',CURRENT_DATE) 
+                    FROM acceptedrequest a INNER JOIN donee d ON a.postedBy = d.doneeID 
+                    WHERE a.acceptedID = '$acceptedID'";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+
+    }
+
+    /**
+     * @param string $acceptedID
      * @return void
      */
     public static function logInventoryAcceptingRequest(string $acceptedID) : void {
@@ -182,8 +204,8 @@ class inventorylog extends DbModel
 
         // select related data from the ccdonation table and insert it into the inventory log table
         // once cc donation is get accepted
-        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark)  
-                    SELECT ccdonationID,amount,item,fromCC,CONCAT('Donation was dispatched to ', c.city,' CC on ',CURRENT_DATE) 
+        $sql = "INSERT INTO inventorylog(processID, amount, item, ccID, remark,datePicked)  
+                    SELECT ccdonationID,amount,item,fromCC,CONCAT('Donation was dispatched to ', c.city,' CC on ',CURRENT_DATE), CURRENT_DATE 
                     FROM ccdonation cc INNER JOIN communitycenter c on cc.toCC = c.ccID 
                     WHERE cc.ccdonationID = '$ccdonationID'";
 

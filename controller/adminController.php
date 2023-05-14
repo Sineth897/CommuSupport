@@ -246,4 +246,24 @@ class adminController extends Controller
 
     }
 
+    protected function viewDriverStat(Request $request, Response $response) : void {
+
+        $dates = $this->getAllDatesBetween2Dates(date('Y-m-d',time()-60*60*24*30),date('Y-m-d'),'m-d');
+
+        $this->render('admin/drivers/driverStat', "Driver Stat",[
+            'dates' => $dates,
+        ]);
+
+    }
+
+    protected function viewEventsStat(Request $request, Response $response) : void {
+
+        $dates = $this->getAllDatesBetween2Dates(date('Y-m-d',time()-60*60*24*30),date('Y-m-d'),'m-d');
+
+        $this->render('admin/event/eventsStat', "Events Stat",[
+            'dates' => $dates,
+        ]);
+
+    }
+
 }

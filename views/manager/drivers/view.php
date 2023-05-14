@@ -32,8 +32,6 @@ $profile->end(); ?>
 
 <?php $creatEvent = \app\core\components\form\form::begin('./drivers/register', 'get'); ?>
 
-<button class="btn-cta-primary"> Register a driver </button>
-
 <?php $creatEvent->end(); ?>
 
 <?php $headerDiv->end(); ?>
@@ -61,7 +59,13 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+echo "<div class='btn-together'>";
+
 $searchDiv->search();
+
+echo  "<button class='btn-primary'> Register a driver </button>
+    <a class='btn-primary' href='./drivers/stat'> View Driver Statistics </a>
+</div>";
 
 $searchDiv->end(); ?>
 

@@ -107,5 +107,23 @@ class donationModel extends DbModel
         return $chartData;
     }
 
+    public function getDonationDetails(string $donationID)
+    {
+        $statement = self::prepare("SELECT * FROM donation d INNER JOIN
+    delivery de ON d.deliveryID = de.deliveryID INNER JOIN subdelivery s ON de.deliveryID=s.deliveryID INNER JOIN driver dr ON s.deliveredBy=dr.employeeID INNER JOIN subcategory c ON d.item=c.subcategoryID  WHERE donationID=:donationID");
+        $statement->bindValue(':donationID',$donationID);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
+
+    public function getDelStatus(string $donationID)
+    {
+        $statement = self::prepare("SELECT deliveryStatus FROM donation  WHERE donationID=:donationID");
+        $statement->bindValue(':donationID',$donationID);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
 
 }
