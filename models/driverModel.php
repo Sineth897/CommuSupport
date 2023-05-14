@@ -250,12 +250,28 @@ WHERE driver.employeeID = '$employeeID'";
 
     public function getDeliveryMonthly()
     {
-        $distances = ['>10km', '<10km'];
+        $distances = array(">10km", "<10km");
+
+// Define the array of months
+        $months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+// Create the empty associative array
+        $chartData = array();
+        foreach ($distances as $distance) {
+            // Initialize the array for this distance
+            $chartData[$distance] = array();
+
+            // Add an array for each month with a count of 0
+            foreach ($months as $month) {
+                $chartData[$distance][$month] = 0;
+            }
+        }
+
         $sqlbase = "SELECT COUNT(*) as count, MONTHNAME(completedDate) as month";
 //        case function to get distance >10 or <10
         $sqlCase = "CASE WHEN distance > 10 THEN '>10km' ELSE '<10km' END AS distance";
 //        group by month and distance
-        $sqlGroup = "GROUP BY MONTH(completedDate),distance";
+        $sqlGroup = "GROUP BY MONTH(completedDate)";
 //        order by month
         $sqlOrder = "ORDER BY MONTH(completedDate)";
 
@@ -263,12 +279,27 @@ WHERE driver.employeeID = '$employeeID'";
         $statement = self::prepare($sqlbase." , ".$sqlCase." ".$sqlWhere." ".$sqlGroup." ".$sqlOrder);
 
         $statement->execute();
-        echo $statement->queryString;
+//        echo $statement->queryString;
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
         foreach ($result as $row) {
-            $chartData[$row['month']][$row['distance']] = $row['count'];
+            if ($row['distance'] == '>10km') {
+                $chartData['>10km'][$row['month']] = $row['count'];
+            } else if ($row['distance'] == '<10km') {
+                $chartData['<10km'][$row['month']] = $row['count'];
+            }
         }
+        return  $chartData;
+    }
+
+    public function getDriverStats()
+    {
+        $sql = "SELECT status, COUNT(*) AS count from subdelivery WHERE status!='Not Assigned' GROUP BY status;";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
         return $result;
+
     }
 
 

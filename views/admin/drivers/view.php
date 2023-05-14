@@ -77,39 +77,50 @@ $chartData = $model->getDriverbyVehicle();
 
 <?php $infoDiv->chartDivStart(); ?>
 <div class="stat-container">
+    <p>Deliveries throughout the Years</p>
+    <canvas id="totalDeliveryChart" width="100px">
+    </canvas>
     <?php
-    $chartData3 = $model->getDeliveryMonthly();
-    echo "<pre>";
-    print_r($chartData3);
-    echo "</pre>";
-
+    $chartData2 = $model->getDeliveryMonthly();
+    //    $model->getDeliveryMonthly();
+//    print_r($chartData2);
     ?>
+    <script>
+        const moreThan10 = <?php echo json_encode($chartData2['>10km']); ?>;
+        const lessThan10 = <?php echo json_encode($chartData2['<10km']); ?>;
+    </script>
+<script src="../public/JS/charts/admin/driver/deliveryTotalChart.js"></script>
+
 </div>
 <?php $infoDiv->chartDivEnd(); ?>
-
+<?php
+$statData = $model->getDriverStats();
+?>
 <div class="stat-box-2-h">
     <div class="stat-card">
         <span class="stat-title">
-           Short Distance
+           Ongoing Deliveries
         </span>
         <span class="stat-value">
-            100
+            <?php
+            echo $statData['Ongoing'];
+            ?>
         </span>
-        <span class="stat-movement dec">
-            <i class="material-icons">arrow_downward</i>10%
+        <span class="stat-movement">
+            <i class="material-icons">local_shipping</i>
         </span>
 
     </div>
     <div class="stat-card">
                 <span class="stat-title">
-            Long Distance
+           Completed Deliveries
         </span>
         <span class="stat-value">
-            100
-
-        </span>
-        <span class="stat-movement inc">
-            <i class="material-icons">arrow_upward</i>10%
+            <?php
+            echo $statData['Completed'];
+            ?></span>
+        <span class="stat-movement ">
+            <i class="material-icons">inventory_2</i>
         </span>
 
     </div>
