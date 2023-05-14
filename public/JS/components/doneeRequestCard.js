@@ -37,19 +37,27 @@ class DoneeRequestCard {
                     <h2>${request['subcategoryName']}</h2>
                     <p class="posted-rq-card-approval"> <strong>Approval : </strong> ${request['approval']} </p>
                 </div>
+                
                 <div class="posted-rq-card-info">
                     <p><strong>Amount : </strong> ${request['amount']} </p>
                     <p><strong>Posted date : </strong> ${request['postedDate']} </p>
                 </div>
+                
                 <div class="posted-rq-card-info">
                     <p><strong>Urgency : </strong> ${request['urgency']} </p>
                     <p><strong>Visible until : </strong> ${request['expDate']} </p>
                 </div>
+                
                 <div class="posted-rq-card-info  description">
                     <p>${request['notes'] ? request['notes'] : `<p style='color: var(--danger-color)'>You have not added any note</p>`}</p>
                 </div>
+                
                 <div class="posted-rq-card-info accepted-info">
                     ${DoneeRequestCard.getAcceptedInfo(request)}
+                </div>
+                
+                <div class='posted-rq-btns'>
+                <button class='btn-danger cancel-req' value='${request['requestID']}'>Cancel</button>
                 </div>`;
     }
 

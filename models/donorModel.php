@@ -214,7 +214,7 @@ class donorModel extends DbModel
         // Create an array with all 12 months of the year
         $monthsOfYear = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
         // Get the count of requests published on each month for urgency = "Within 7 days"
-        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donor GROUP BY MONTH(registeredDate)";
+        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donor WHERE YEAR(registeredDate) =  YEAR(CURRENT_DATE) GROUP BY MONTH(registeredDate)";
         $statement = requestModel::prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -289,6 +289,15 @@ class donorModel extends DbModel
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
 
+    }
+
+    public function getDonorStats()
+    {
+        $sql = "SELECT mobileVerification, COUNT(*) as count FROM donor group by mobileVerification";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $result;
     }
 
 }

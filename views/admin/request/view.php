@@ -17,16 +17,16 @@ use app\core\components\tables\table;
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
 
 <?php $headerDiv = new \app\core\components\layout\headerDiv(); ?>
 
-<?php $headerDiv->heading("Pending Requests"); ?>
+<?php $headerDiv->heading("Posted Requests"); ?>
 
 <?php $headerDiv->pages(["pending", 'accepted']) ?>
 
@@ -81,15 +81,22 @@ $chartData2 = $model->getRequestDataMonthly();
 <?php $infoDiv->chartDivEnd();
 ?>
 
+<?php
+    $statData = $model->getRequestStats();
+//    var_dump($statData);
+?>
+
 <div class="stat-box-2-h">
     <div class="stat-card">
         <span class="stat-title">
-Pending Requests        </span>
+Active Requests        </span>
         <span class="stat-value">
-            80
+            <?php
+            echo $statData['request'];
+            ?>
         </span>
         <span class="stat-movement">
-            <i class="material-icons">assignment_late</i>
+            <i class="material-icons">library_books</i>
         </span>
 
     </div>
@@ -97,11 +104,14 @@ Pending Requests        </span>
                 <span class="stat-title">
 Completed Requests        </span>
         <span class="stat-value">
-            150
+
+            <?php
+            echo $statData['acceptedrequest'];
+            ?>
 
         </span>
         <span class="stat-movement">
-            <i class="material-icons">assignment_turned_in</i>
+            <i class="material-icons">library_add_check</i>
         </span>
 
     </div>

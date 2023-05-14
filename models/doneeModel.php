@@ -153,6 +153,7 @@ class doneeModel extends DbModel
         }
     }
 
+
     private function ownComplaints($userID)
     {
         $statement = self::prepare("SELECT filedDate,subject,status,solution,reviewedDate from complaint where filedBy=:userID");
@@ -184,7 +185,7 @@ class doneeModel extends DbModel
         // Create an array with all 12 months of the year
         $monthsOfYear = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
         // Get the count of requests published on each month for urgency = "Within 7 days"
-        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donee GROUP BY MONTH(registeredDate)";
+        $sql = "SELECT COUNT(*) as count, MONTHNAME(registeredDate) as month FROM donee WHERE YEAR(registeredDate) = YEAR(CURRENT_DATE) GROUP BY MONTH(registeredDate)";
         $statement = requestModel::prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -283,4 +284,16 @@ class doneeModel extends DbModel
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
+
+
+    public function getDoneeStats()
+    {
+        $sql = "SELECT verificationStatus, COUNT(*) as count FROM donee group by verificationStatus";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $result;
+    }
+
+
 }

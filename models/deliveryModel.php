@@ -239,4 +239,38 @@ class deliveryModel extends DbModel
 
     }
 
+    /**
+     * @return array
+     */
+    public static function getDeliveriesDoneMonthBack() : array {
+        $sql = "SELECT s.completedDate,COUNT(*) AS deliveries FROM subdelivery s
+                INNER JOIN driver d ON s.deliveredBy = d.employeeID
+                INNER JOIN users u ON d.employeeID = u.userID
+                INNER JOIN communitycenter c ON d.ccID = c.ccID
+                WHERE s.status = 'Completed' AND s.completedDate >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                GROUP BY s.completedDate";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getDeliveriesDoneMonthBackByDistance() : array {
+        $sql = "SELECT 
+            CASE WHEN s.distance < 10 THEN 'Less than 10km'
+            ELSE 'More than 10km' END AS distanceRange,
+            COUNT(*) AS deliveries FROM subdelivery s
+            INNER JOIN driver d ON s.deliveredBy = d.employeeID
+            WHERE s.status = 'Completed' AND s.completedDate >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+            GROUP BY distanceRange";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+
+    }
+
 }

@@ -29,7 +29,7 @@ class driverModel extends DbModel
 
     public function attributes(): array
     {
-        return ['employeeID', 'name', 'age', 'NIC','gender', 'address', 'contactNumber', 'ccID', 'licenseNo', 'vehicleNo', 'vehicleType', 'preference'];
+        return ['employeeID', 'name', 'age', 'NIC', 'gender', 'address', 'contactNumber', 'ccID', 'licenseNo', 'vehicleNo', 'vehicleType', 'preference'];
     }
 
     public function primaryKey(): string
@@ -40,7 +40,7 @@ class driverModel extends DbModel
     public function rules(): array
     {
         return [
-            'name'  => [self::$REQUIRED],
+            'name' => [self::$REQUIRED],
             'age' => [self::$REQUIRED],
             'NIC' => [self::$REQUIRED, self::$nic, [self::$UNIQUE, 'class' => self::class]],
             'gender' => [self::$REQUIRED],
@@ -55,15 +55,14 @@ class driverModel extends DbModel
 
     public function save(): bool
     {
-        $this->employeeID = uniqid('driver',true);
+        $this->employeeID = uniqid('driver', true);
         $manager = managerModel::getModel(['employeeID' => Application::session()->get('user')]);
         $this->ccID = $manager->ccID;
 
-        if(parent::save()) {
-            if($this->user->save()) {
+        if (parent::save()) {
+            if ($this->user->save()) {
                 return true;
-            }
-            else {
+            } else {
                 $this->delete(['employeeID' => $this->employeeID]);
                 return false;
             }
@@ -76,33 +75,37 @@ class driverModel extends DbModel
         return [
             'Bike' => 'Bike',
             'Three-wheeler' => 'Three-wheeler',
-            'Car'=> 'Car',
+            'Car' => 'Car',
             'Van' => 'Van',
         ];
     }
 
-    public function getPreferences(): array {
+    public function getPreferences(): array
+    {
         return [
             '< 10km' => 'Less than 10km',
             '> 10km' => 'More than 10km',
         ];
     }
 
-    public function setUser(userModel $user) {
+    public function setUser(userModel $user)
+    {
         $this->user = $user;
         $this->user->userType = "driver";
         $this->user->userID = $this->employeeID;
     }
 
-    public static function getDriverDetails(string $employeeID) : array {
+    public static function getDriverDetails(string $employeeID): array
+    {
         $sql = "SELECT status,COUNT(deliveredBy) FROM subdelivery WHERE deliveredBy = '$employeeID' GROUP BY status";
         $stmt = driverModel::prepare($sql);
         $stmt->execute();
-        return ['driver' => driverModel::getModel(['employeeID' => $employeeID]),'deliveryInfo' => $stmt->fetchALL(\PDO::FETCH_KEY_PAIR)];
+        return ['driver' => driverModel::getModel(['employeeID' => $employeeID]), 'deliveryInfo' => $stmt->fetchALL(\PDO::FETCH_KEY_PAIR)];
     }
 
 
-    public function getDriverbyVehicle() {
+    public function getDriverbyVehicle()
+    {
 //         get the count of donees and group by type
 
         $sql = "SELECT COUNT(*) as count,vehicleType FROM driver GROUP BY vehicleType";
@@ -137,7 +140,8 @@ class driverModel extends DbModel
     /**
      * @return array
      */
-    public function getDriverInformationForProfile() : array {
+    public function getDriverInformationForProfile(): array
+    {
         return [
             $this->getPersonalInfo()[0],
             $this->getDriverStatistics(),
@@ -147,7 +151,8 @@ class driverModel extends DbModel
     /**
      * @return array
      */
-    private function getPersonalInfo() : array {
+    private function getPersonalInfo(): array
+    {
 
         $sql = "SELECT *,d.contactNumber,d.address FROM users u 
                     INNER JOIN driver d ON u.userID = d.employeeID
@@ -163,7 +168,8 @@ class driverModel extends DbModel
     /**
      * @return array
      */
-    private function getDriverStatistics() : array {
+    private function getDriverStatistics(): array
+    {
 
         $arrayOfSql = [
             $sqlAssignedDeliveries = "SELECT 'Assigned Deliveries',COUNT(*) FROM subdelivery s
@@ -176,12 +182,13 @@ class driverModel extends DbModel
                                             WHERE s.status = 'Completed' AND s.deliveredBy = '{$_SESSION['user']}'",
         ];
 
-        $statement = self::prepare(implode(" UNION ",$arrayOfSql));
+        $statement = self::prepare(implode(" UNION ", $arrayOfSql));
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
-    public function getDriverStatisticsForAdmin(string $employeeID) : array {
+    public function getDriverStatisticsForAdmin(string $employeeID): array
+    {
 // Getting details for all completed deliveries, currently assigned deliveries and number of deliveries less than 10km and more than 10km using SUM and COUNT functions.
         $sql =
             "SELECT 
@@ -206,7 +213,8 @@ WHERE driver.employeeID = '$employeeID'";
      * @param string $ccID
      * @return array
      */
-    public static function getDriverDeliveryCountStatisticsUnderCCMonthBack(string $ccID) : array {
+    public static function getDriverDeliveryCountStatisticsUnderCCMonthBack(string $ccID): array
+    {
 
         $sql = "SELECT name,vehicleType,preference,COUNT(*) AS deliveries,CONCAT(ROUND(SUM(s.distance),2),' km') AS distance FROM subdelivery s
                 INNER JOIN driver d ON s.deliveredBy = d.employeeID
@@ -218,6 +226,79 @@ WHERE driver.employeeID = '$employeeID'";
         $statement = self::prepare($sql);
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    /**
+     * @return array
+     */
+    public static function getDriverDeliveryCountStatisticsMonthBack(): array
+    {
+
+        $sql = "SELECT name,vehicleType,preference,COUNT(*) AS deliveries,CONCAT(ROUND(SUM(s.distance),2),' km') AS distance,c.city FROM subdelivery s
+                INNER JOIN driver d ON s.deliveredBy = d.employeeID
+                INNER JOIN users u ON d.employeeID = u.userID
+                INNER JOIN communitycenter c ON d.ccID = c.ccID
+                WHERE s.status = 'Completed' AND s.completedDate >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                GROUP BY d.employeeID";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+    }
+
+    public function getDeliveryMonthly()
+    {
+        $distances = array(">10km", "<10km");
+
+// Define the array of months
+        $months = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+// Create the empty associative array
+        $chartData = array();
+        foreach ($distances as $distance) {
+            // Initialize the array for this distance
+            $chartData[$distance] = array();
+
+            // Add an array for each month with a count of 0
+            foreach ($months as $month) {
+                $chartData[$distance][$month] = 0;
+            }
+        }
+
+        $sqlbase = "SELECT COUNT(*) as count, MONTHNAME(completedDate) as month";
+//        case function to get distance >10 or <10
+        $sqlCase = "CASE WHEN distance > 10 THEN '>10km' ELSE '<10km' END AS distance";
+//        group by month and distance
+        $sqlGroup = "GROUP BY MONTH(completedDate)";
+//        order by month
+        $sqlOrder = "ORDER BY MONTH(completedDate)";
+
+        $sqlWhere = "FROM subdelivery WHERE status = 'Completed'";
+        $statement = self::prepare($sqlbase." , ".$sqlCase." ".$sqlWhere." ".$sqlGroup." ".$sqlOrder);
+
+        $statement->execute();
+//        echo $statement->queryString;
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach ($result as $row) {
+            if ($row['distance'] == '>10km') {
+                $chartData['>10km'][$row['month']] = $row['count'];
+            } else if ($row['distance'] == '<10km') {
+                $chartData['<10km'][$row['month']] = $row['count'];
+            }
+        }
+        return  $chartData;
+    }
+
+    public function getDriverStats()
+    {
+        $sql = "SELECT status, COUNT(*) AS count from subdelivery WHERE status!='Not Assigned' GROUP BY status;";
+        $statement = self::prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $result;
 
     }
 

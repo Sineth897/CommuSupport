@@ -18,6 +18,7 @@ class requestMiddleware extends Middleware
             'filterOwnRequests' => [$this->DONEE],
             'filterRequestsManager' => [$this->MANAGER],
             'requestPopupManager' => [$this->MANAGER],
+            'cancelRequest' => [$this->DONEE],
         ];
     }
 }

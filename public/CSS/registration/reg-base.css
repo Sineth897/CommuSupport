@@ -219,3 +219,7 @@ border: none;
     align-items: center;
     gap: 10px;
 }
+
+.btn-danger{
+    font-size: 0.8rem;
+}
