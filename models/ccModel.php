@@ -58,7 +58,7 @@ class ccModel extends DbModel
 
     public function getAll(string $choID)
     {
-        $stmnt = self::prepare("SELECT cc.*,m.name AS manager,l.name AS logistic FROM manager m RIGHT JOIN communitycenter cc ON m.ccID = cc.ccID LEFT JOIN logisticofficer l ON l.ccID=cc.ccID WHERE cc.cho = :choID; ");
+        $stmnt = self::prepare("SELECT cc.*, m.name AS manager,l.name AS logistic FROM manager m RIGHT JOIN communitycenter cc ON m.ccID = cc.ccID LEFT JOIN logisticofficer l ON l.ccID=cc.ccID WHERE cc.cho = :choID; ");
         $stmnt->bindValue(':choID',$choID);
         $stmnt ->execute();
         return $stmnt->fetchAll(\PDO::FETCH_ASSOC);

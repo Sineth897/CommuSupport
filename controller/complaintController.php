@@ -52,6 +52,7 @@ class complaintController extends Controller
 
             if($model->validate($request->getBody()) && $model->save()){
                 $this->setFlash("result",'Complaint submitted');
+                $response->redirect('/donor/complaints');
                 $model->reset();
             }
             else {
@@ -69,7 +70,7 @@ class complaintController extends Controller
 
         if($deliveryStatus==='Ongoing'){
 
-            notificationModel::setNotification("Didn't receive yet. Check my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
+            notificationModel::setNotification("Didn't received donation. Check your log. ","Not arrived yet",$driver,"donor","complaint",$donationID);
 
         }
         else{
@@ -107,6 +108,7 @@ class complaintController extends Controller
             if($model->validate($request->getBody()) && $model->save())
             {
                 $this->setFlash('result','Complaint submitted');
+                $response->redirect('/donor/complaints');
                 $model->reset();
             }
             else {
@@ -144,6 +146,7 @@ class complaintController extends Controller
                     $model->submitSolution($model->solution,$model->complaintID);
                     notificationModel::setNotification("Complaint reviewed. Check Complaints page for solution ","Solution",$model->filedBy,"","complaint",$model->complaintID);
                     $this->setFlash('result','Solution Added');
+                    $response->redirect('/cho/complaints');
                 }
                 else{
                     $model->addError('solution','No solution has filed');
@@ -182,7 +185,9 @@ class complaintController extends Controller
             if($model->validate($request->getBody()) && $model->save())
             {
                 $this->setFlash('result','Complaint submitted');
+
                 $model->reset();
+
             }
             else {
 
