@@ -47,20 +47,85 @@ class managerModel extends DbModel
             'NIC' => [self::$REQUIRED, self::$nic, [self::$UNIQUE, 'class' => self::class]],
             'address' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
             'contactNumber' => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class]],
-            'ccID' => [self::$REQUIRED],
+            'ccID' =>[self::$REQUIRED],
+            
         ];
     }
 
 
     public function save(): bool
     {
-        $this->employeeID = uniqid('manager',true);
+
         return parent::save();
     }
 
     public function userType(): string
     {
         return 'manager';
+    }
+
+    /**
+     * @return array
+     */
+    public function getManagerInformationForProfile() : array {
+        return [
+            $this->getPersonalInfo()[0],
+            $this->getManagerStatistics(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getPersonalInfo() : array {
+
+        $sql = "SELECT *,m.contactNumber,m.address FROM users u 
+                    INNER JOIN manager m ON u.userID = m.employeeID
+                    INNER JOIN communitycenter c on m.ccID = c.ccID
+                    INNER JOIN communityheadoffice c2 on c.cho = c2.choID
+                    WHERE userID = '{$_SESSION['user']}'";
+
+        $statement = self::prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return array
+     */
+    private function getManagerStatistics() : array {
+
+        $arrayOfSql = [
+            $sqlActiveEvents = "SELECT 'Active Events',COUNT(*) FROM event e 
+                                            INNER JOIN manager m ON e.ccID = m.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND e.status IN ('Upcoming','Active')",
+
+            $sqlCompletedEvents = "SELECT 'Finished Events',COUNT(*) FROM event e 
+                                            INNER JOIN manager m ON e.ccID = m.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND e.status = 'Finished'",
+
+            $sqlCancelledEvents = "SELECT 'Cancelled Events',COUNT(*) FROM event e 
+                                            INNER JOIN manager m ON e.ccID = m.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND e.status = 'Cancelled'",
+
+            $sqlccDonorsRegistered = "SELECT 'Registered Donors',COUNT(*) FROM donor d 
+                                            INNER JOIN manager m ON m.ccID = d.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' ",
+
+            $sqlccDoneesRegistered = "SELECT 'Registered Donees',COUNT(*) FROM donee d 
+                                            INNER JOIN manager m ON m.ccID = d.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' ",
+
+            $sqlccDoneesRegistered = "SELECT 'Donees Waiting For Verification',COUNT(*) FROM donee d 
+                                            INNER JOIN manager m ON m.ccID = d.ccID 
+                                            WHERE m.employeeID = '{$_SESSION['user']}' AND d.verificationStatus = 0 ",
+
+
+        ];
+
+        $statement = self::prepare(implode(" UNION ",$arrayOfSql));
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
     }
 
 }

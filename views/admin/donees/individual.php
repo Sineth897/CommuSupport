@@ -1,0 +1,145 @@
+<?php
+/** @var $model \app\models\doneeModel */
+/**  @userID string */
+
+$doneeID = $_GET['doneeID'];
+?>
+
+<link rel="stylesheet" href="/CommuSupport/public/CSS/individual/donee.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+
+
+<div class="profile-container">
+    <div class="stat-card-container">
+        <div class="stat-card">
+        <span class="stat-title">
+Total Requests Posted      </span>
+            <span class="stat-value">
+100
+        </span>
+            <div class="sub-stat">
+                        <span class="stat-title">
+Most Request Item      </span>
+                <span class="stat-small-value">
+Rice - Dry Foods
+        </span>
+            </div>
+            <span class="stat-movement dec">
+            <i class="material-icons">volunteer_activism</i>
+        </span>
+
+        </div>
+        <div class="stat-card">
+        <span class="stat-title">
+Total Donations Recieved     </span>
+            <span class="stat-value">
+100
+        </span>
+            <span class="stat-movement dec">
+            <i class="material-icons">inventory_2</i>
+        </span>
+
+        </div>
+        <div class="stat-card">
+        <span class="stat-title">
+Total Events Participated     </span>
+            <span class="stat-value">
+100
+        </span>
+            <span class="stat-movement dec">
+            <i class="material-icons">calendar_month</i>
+        </span>
+
+        </div>
+    </div>
+    <div class="profile-block">
+        <?php
+        $doneeData = $model->getDoneePersonalInfo($doneeID);
+
+        // array(1) { [0]=> array(18) { ["doneeID"]=> string(23) "donee6384c832a74500.891" ["registeredDate"]=> string(10) "2022-11-28" ["verificationStatus"]=> int(1) ["email"]=> string(18) "oshani99@gmail.com" ["address"]=> string(26) "22,Kalapaluwawa,Rajagiriya" ["contactNumber"]=> string(10) "0714852365" ["type"]=> string(10) "Individual" ["mobileVerification"]=> int(1) ["longitude"]=> float(0) ["latitude"]=> float(0) ["doneeName"]=> string(14) "Oshani Nimeshi" ["NIC"]=> string(12) "198835752589" ["age"]=> int(34) ["regNo"]=> NULL ["representative"]=> NULL ["representativeContact"]=> NULL ["capacity"]=> NULL ["communityCenterName"]=> string(10) "Wallawatta" } }
+        ?>
+        <h><?php echo $doneeData[0]['doneeName'] ?></h>
+        <!-- check the donee type and use it in the name -->
+        <?php if ($doneeData[0]['type'] == 'Individual') { ?>
+
+            <p class="profile-category">Individual</p>
+            <?php
+        } else { ?>
+
+            <p class="profile-category">
+                Organization
+            </p>
+        <?php } ?>
+
+        <?php if ($doneeData[0]['type'] == 'Organization') { ?>
+            <h3 class="profile-org-rep">
+                <?php echo $doneeData[0]['representative'] ?>
+            </h3>
+            <p class="org-rep-label">
+                Representative
+            </p>
+            <?php
+        } ?>
+
+        <h3 class="profile-contact">
+            <?php echo $doneeData[0]['contactNumber'] ?>
+        </h3>
+
+        <p>Contact</p>
+
+        <h3 class="profile-email">
+            <?php echo $doneeData[0]['email'] ?>
+        </h3>
+
+        <p>Email</p>
+
+        <h3 class="profile-address">
+            <?php echo $doneeData[0]['address'] ?>
+        </h3>
+
+        <p>Address</p>
+
+        <h3 class="profile-cc">
+            <?php echo $doneeData[0]['communityCenterName'] ?>
+        </h3>
+
+        <p>Community Center</p>
+
+        <h3 class="profile-ver-status">
+            <?php
+            if ($doneeData[0]['verificationStatus'] == 1) {
+                echo "Verified";
+            } else {
+                echo "Not Verified";
+            }
+            ?>
+        </h3>
+
+        <p>Verification Status</p>
+
+        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>front.pdf" class="profile-view-docs" target="_blank">
+            Front
+        </a>
+        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>back.pdf" class="profile-view-docs" target="_blank">
+            Back
+        </a>
+
+    </div>
+    <div class="user-activity">
+        <p>
+            User Activity
+        </p>
+        <div class="activity-scroller">
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+            <div class="activity-card"></div>
+        </div>
+    </div>
+</div>

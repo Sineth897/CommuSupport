@@ -1,0 +1,135 @@
+
+* {
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+table {
+    border-collapse: collapse;
+    text-align: left;
+    border-radius: 12px;
+    width: 100%;
+    background-color: white;
+    overflow-y: scroll;
+}
+
+table thead > tr {
+    border-radius: 8px;
+    border-bottom: 1px solid #d9d9d9;
+    height: 50px;
+
+}
+
+table th {
+    padding: 10px 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #515151;
+
+}
+
+table th:first-child {
+    padding: 10px 40px;
+}
+
+table tbody tr {
+    border-radius: 8px;
+
+}
+
+table tbody{
+    overflow-y: scroll;
+}
+
+table td {
+    padding: 10px 20px;
+    max-width: 225px;
+}
+
+table td:first-child {
+    padding: 10px 40px;
+}
+
+table tbody td {
+    font-size: 0.8rem;
+    color: black;
+    height: 60px;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #d9d9d9;
+
+}
+
+table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+
+}
+
+
+table tbody td a {
+    border-radius: 0.5rem;
+    padding: 8px 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    max-width: 50px;
+}
+
+table td .view {
+    /*background-color: var(--secondary-color);*/
+    /*color: white;*/
+    background-color: #d1ffd6;
+    color:  var(--secondary-dark);
+}
+
+table td .view:hover {
+    background-color: var(--secondary-color);
+    color: white;
+    /*background-color: #beffc4;*/
+    /*color:  var(--secondary-color);*/
+}
+
+
+table td .delete {
+    background-color: var(--danger-color);
+    color: white
+}
+
+table td .edit {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.actions a i {
+    display: none;
+    font-size: 0.01rem;
+}
+
+.actions a:hover i {
+    color: white;
+    display: block;
+    font-size: 1rem;
+}
+
+

@@ -1,0 +1,72 @@
+.horizontal-scroll{
+    padding: 0 20px;
+}
+
+.unver-user-container {
+    width: 100%;
+    overflow-x: auto;
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 8px 0;
+}
+
+.unver-user-card {
+    min-width: 300px;
+    flex: 0 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.profile-section img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.info-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info-section p {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+
+}
+
+.stat-card{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.info-section .verification-status, .info-section .registration-date{
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.verification-status.verified {
+    color: var(--secondary-color);
+}
+
+.verification-status.unverified {
+    color: var(--danger-color);
+}
+
+
