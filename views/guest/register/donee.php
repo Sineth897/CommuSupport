@@ -173,7 +173,7 @@ $CHOs = \app\models\choModel::getCHOs();
         </div>
         <div class="register-button-container">
             <?php $doneeForm->button('Accept Terms and Services & Register'); ?>
-            <a href="http://localhost/CommuSupport" class="btn-danger">Cancel Registration</a>
+            <a href="/CommuSupport/" class="btn-danger">Cancel Registration</a>
         </div>
     </div>
 

@@ -34,6 +34,12 @@ function assignPopupFunctionToCards() {
         completedCards[i].addEventListener('click', showPopup);
     }
 
+    const cancelBtns = Array.from(document.querySelectorAll('.cancel-req'));
+
+    cancelBtns.forEach(btn => {
+      btn.addEventListener('click', cancelRequest);
+    })
+
 }
 
 // calling the function initially
@@ -114,6 +120,28 @@ async function showPopup(e) {
 
     //show popup
     popUp.showPopUp();
+
+}
+
+// function to cancel request
+async function cancelRequest(e) {
+
+    const requestID = e.target.value;
+
+    console.log(requestID);
+
+    const result = await getData('./request/cancel', 'POST', {requestID: requestID});
+
+    // console.log(result);
+
+    if(!result['status']) {
+        flash.showMessage({type:'error',value:result['message']});
+        return;
+    }
+
+    flash.showMessage({type:'success',value:result['message']});
+
+    filterBtn.click();
 
 }
 

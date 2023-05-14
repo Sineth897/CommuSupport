@@ -13,9 +13,6 @@ $eventByType = \app\models\eventModel::getEventDetailsWithTypeMonthBack();
 
 $eventsFinished = \app\models\eventModel::getEventFinishedMonthBack();
 
-echo "<pre>";
-print_r($eventsFinished);
-echo "</pre>";
 ?>
 
 <style>
@@ -41,8 +38,8 @@ echo "</pre>";
             justify-content: center;
         }
 
-        #deliveryVariations {
-            height: 60% !important;
+        #eventPosted {
+            /*height: 60% !important;*/
             width: 95% !important;
         }
 
@@ -149,5 +146,5 @@ $searchDiv->end(); ?>
 
 </script>
 
-<!--<script type="module" src="../../public/JS/charts/admin/driver/deliveryVariations.js"></script>-->
+<script type="module" src="../../public/JS/charts/admin/event/eventFinishVariations.js"></script>
 <script type="module" src="../../public/JS/charts/admin/event/eventTypeLastMonth.js"></script>

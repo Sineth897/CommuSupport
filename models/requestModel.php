@@ -273,7 +273,7 @@ class requestModel extends DbModel
         $stmnt = self::prepare("SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName
                                             FROM request r 
                                             INNER JOIN subcategory s ON r.item = s.subcategoryID 
-                                            WHERE r.postedBy = :doneeID");
+                                            WHERE r.postedBy = :doneeID AND r.approval != 'Cancelled'");
 
         // bind donee ID to the statement
         $stmnt->bindValue(':doneeID', $doneeID);

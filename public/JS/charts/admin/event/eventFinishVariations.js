@@ -1,18 +1,19 @@
-const chartDiv = document.querySelector('#deliveryVariations');
+const chartDiv = document.querySelector('#eventPosted');
 
-let deliveries = [];
+let events = [];
 
 dates.forEach(date => {
-    deliveries.push(deliveryData[date] ? deliveryData[date] : 0);
+    events.push(eventData[date] ? eventData[date] : 0);
 });
+
 
 const variationChart = new Chart(chartDiv, {
     type: 'line',
     data: {
         labels: dates,
         datasets: [{
-            label: 'No. of deliveries completed per day',
-            data: deliveries,
+            label: 'No. events per day',
+            data: events,
             borderColor: 'rgb(0,198,21)',
             borderWidth: 2,
             fill: false,
@@ -24,7 +25,7 @@ const variationChart = new Chart(chartDiv, {
     options: {
         title: {
             display: false,
-            text: 'Variation of the transactions per day over the months',
+            text: 'Events hold per day over the months',
             fontSize: 24,
             fontColor: '#000',
             fontFamily: 'inter'

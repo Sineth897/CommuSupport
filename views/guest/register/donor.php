@@ -128,7 +128,7 @@ $CHOs = \app\models\choModel::getCHOs();
             <?php $donorForm->button('Accept Terms and Services & Register'); ?>
 
             <?php $donorForm->end() ?>
-            <a href="http://localhost/CommuSupport" class="btn-danger">Cancel Registration</a>
+            <a href="/CommuSupport/" class="btn-danger">Cancel Registration</a>
         </div>
     </div>
 

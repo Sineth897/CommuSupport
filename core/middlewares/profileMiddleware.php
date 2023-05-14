@@ -16,6 +16,7 @@ class profileMiddleware extends Middleware
                 'driverProfile' => [$this->DRIVER],
                 'choProfile' => [$this->CHO],
                 'adminProfile' => [$this->ADMIN],
+                'updateProfile' => [$this->DONEE, $this->DONOR, $this->LOGISTIC, $this->MANAGER, $this->DRIVER, $this->CHO],
             ];
     }
 

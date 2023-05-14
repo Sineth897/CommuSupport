@@ -194,13 +194,10 @@ class eventModel extends DbModel
      */
     public static function getEventDetailsMonthBack() : array {
 
-//        $sql = "SELECT * FROM event e
-//                    INNER JOIN communitycenter c on e.ccID = c.ccID
-//                    INNER JOIN eventcategory e2 on e.eventCategoryID = e2.eventCategoryID
-//                    WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)";
-        $sql = "SELECT * FROM event e 
-                    INNER JOIN communitycenter c on e.ccID = c.ccID 
-                    INNER JOIN eventcategory e2 on e.eventCategoryID = e2.eventCategoryID";
+        $sql = "SELECT * FROM event e
+                    INNER JOIN communitycenter c on e.ccID = c.ccID
+                    INNER JOIN eventcategory e2 on e.eventCategoryID = e2.eventCategoryID
+                    WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)";
                     ;
         $stmt = self::prepare($sql);
         $stmt->execute();
@@ -218,10 +215,7 @@ class eventModel extends DbModel
                     INNER JOIN eventcategory e2 on e.eventCategoryID = e2.eventCategoryID
                     WHERE date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
                     GROUP BY name";
-        $sql = "SELECT name,COUNT(*) FROM event e 
-                    INNER JOIN communitycenter c on e.ccID = c.ccID 
-                    INNER JOIN eventcategory e2 on e.eventCategoryID = e2.eventCategoryID
-                    GROUP BY name";
+
         $stmt = self::prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
@@ -236,10 +230,6 @@ class eventModel extends DbModel
         $sql = "SELECT date,COUNT(*) FROM event 
                     WHERE status = 'Finished' 
                     AND date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-                    GROUP BY date";
-
-        $sql = "SELECT date,COUNT(*) FROM event 
-                    WHERE status = 'Finished'
                     GROUP BY date";
 
         $stmt = self::prepare($sql);

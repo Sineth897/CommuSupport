@@ -7,6 +7,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use app\controller\eventController;
 use app\controller\loginController;
+use app\controller\profileController;
 use app\controller\redirectController;
 use app\controller\registerController;
 use app\core\Application;
@@ -122,10 +123,9 @@ $app->router->post('/verifyMobile', function($request,$response) {
 $app->router->post('/changepassword', function($request,$response) {
     $controller = new loginController('changePasswordFromProfile',$request,$response);
 });
-
-
-
-
+$app->router->post('/updateprofile', function($request,$response) {
+    $controller = new profileController('updateProfile',$request,$response);
+});
 
 
 
@@ -319,6 +319,9 @@ $app->router->post('/donee/request/popup', function ($request, $response) {
 $app->router->post('/donee/requests/filter', function ($request, $response) {
     $controller = new \app\controller\requestController("filterOwnRequests",$request,$response);
 });
+$app->router->post('/donee/request/cancel', function ($request,$response) {
+    $controller = new \app\controller\requestController("cancelRequest",$request,$response);
+});
 
 $app->router->get('/donee/communitycenters', function ($request, $response) {
     $controller = new \app\controller\ccController("viewCC",$request,$response);
@@ -353,12 +356,6 @@ $app->router->get('/donee/complaints/file', function ($request,$response){
 $app->router->get('/donee/profile',function($request,$response){
     $controller = new \app\controller\profileController('doneeProfile',$request,$response);
 });
-
-
-
-
-
-
 
 
 

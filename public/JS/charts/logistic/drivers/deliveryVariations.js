@@ -9,7 +9,7 @@ dates.forEach(date => {
 const variationChart = new Chart(chartDiv, {
     type: 'line',
     data: {
-        labels: deliveries,
+        labels: dates,
         datasets: [{
             label: 'No. of deliveries completed per day',
             data: deliveries,
