@@ -3,6 +3,7 @@
 namespace app\controller;
 
 use app\core\Controller;
+use app\core\exceptions\forbiddenException;
 use app\core\middlewares\complaintMiddleware;
 use app\core\Request;
 use app\core\Response;
@@ -33,6 +34,10 @@ class complaintController extends Controller
     }
 
    // getting complaints filed by the donor
+
+    /**
+     * @throws forbiddenException
+     */
     public function donorFileComplaint(Request $request, Response $response)
     {
 
@@ -48,6 +53,15 @@ class complaintController extends Controller
 
         if($request->isPost()){
             $model ->getData($request->getBody());
+            if($deliveryStatus==='Ongoing'){
+
+                notificationModel::setNotification("Didn't received donation. Check your log. ","Not arrived yet",$driver,"donor","complaint",$donationID);
+
+            }
+            else{
+                notificationModel::setNotification("Please send my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
+
+            }
 
 
             if($model->validate($request->getBody()) && $model->save()){
@@ -59,6 +73,7 @@ class complaintController extends Controller
 
                 $this->setFlash('result', 'Complaint failed to submitted');
             }
+
         }
 
         if($request->isGet()){
@@ -68,22 +83,13 @@ class complaintController extends Controller
 
         }
 
-        if($deliveryStatus==='Ongoing'){
 
-            notificationModel::setNotification("Didn't received donation. Check your log. ","Not arrived yet",$driver,"donor","complaint",$donationID);
-
-        }
-        else{
-            notificationModel::setNotification("Please send my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
-
-        }
         $process=$_GET['process'];
-        if ($process==='request'){
+
+        if ($process==='acceptedRequest'){
             $this->render("./donor/complaints/reqFile",'File a Complaint',[
                 'complaint'=>$model,
                 'model'=>$dModel
-
-
             ]);
         }else{
             $this->render("./donor/complaints/file",'File a Complaint',[

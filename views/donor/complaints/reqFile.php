@@ -8,6 +8,7 @@
         width: 800px;
     }
 </style>
+
 <?php
 
 /** @var $complaint \app\models\complaintModel */
@@ -15,6 +16,7 @@
 /** @var $model donationModel */
 
 $requests = $complaint->requestComplaints($_GET['processID']);
+
 //print_r($requests);
 
 ?>
