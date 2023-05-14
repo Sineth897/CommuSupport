@@ -30,7 +30,7 @@ input:disabled {
 /*    grid-area: 1 / 5 / 3 / 7;*/
 /*}*/
 
-.stat-card-container{
+.stat-card-container {
     grid-area: 1 / 1/ 3 / 7;
 }
 
@@ -45,7 +45,7 @@ input:disabled {
     padding: 20px;
 }
 
-.stat-card-container{
+.stat-card-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     background-color: transparent;
@@ -76,10 +76,23 @@ input:disabled {
 }
 
 
-.user-activity p {
-    padding: 20px 0;
-    height: 60px;
-    font-size: 1.2rem;
+.btn-div {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.stat-card .stat-movement i {
+    font-size: 3rem;
+}
+
+.form-grid-1, .form-grid-2-2 {
+    width: 100%;
+}
+
+
+.user-activity {
+    font-size: 0.8rem;
     font-weight: 500;
 
 }
@@ -90,21 +103,62 @@ input:disabled {
 }
 
 
-.activity-card {
+.profile-notif-card {
     margin-top: 10px;
-    height: 80px;
-    background-color: #dcffe0;
-    border-radius: 14px;
+    /*height: 80px;*/
+    /*background-color: #dcffe0;*/
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    /*box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);*/
 }
 
 
-
-.btn-div {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+.no-notification {
+    align-self: center;
+    justify-self: center;
 }
 
-.stat-card .stat-movement i{
-    font-size: 3rem;
+/* {*/
+/*    border-bottom: 1px solid #e3e3e3;*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    justify-content: flex-start;*/
+/*    align-items: center;*/
+/*}*/
+
+.profile-notif-left-block {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
+.profile-notif-right-block {
+    /*width: %;*/
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:  1rem 0;
+}
+
+.profile-notif-date-time {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #9b9b9b;
+}
+
+.profile-notif-right-block i {
+    padding: 10px;
+    border-radius: 100%;
+    background-color: #00D749;
+    color: white;
+}
+

@@ -7,6 +7,7 @@ $doneeID = $_GET['doneeID'];
 
 <link rel="stylesheet" href="/CommuSupport/public/CSS/individual/donee.css">
 <link rel="stylesheet" href="/CommuSupport/public/CSS/form/form.css">
+<link rel="stylesheet" href="/CommuSupport/public/CSS/notification/notification.css">
 
 
 <div class="profile-container">
@@ -29,77 +30,53 @@ $doneeID = $_GET['doneeID'];
     </div>
     <div class="profile-block">
         <?php
-        $doneeData = $model->getDoneePersonalInfo($doneeID);
-
-        // array(1) { [0]=> array(18) { ["doneeID"]=> string(23) "donee6384c832a74500.891" ["registeredDate"]=> string(10) "2022-11-28" ["verificationStatus"]=> int(1) ["email"]=> string(18) "oshani99@gmail.com" ["address"]=> string(26) "22,Kalapaluwawa,Rajagiriya" ["contactNumber"]=> string(10) "0714852365" ["type"]=> string(10) "Individual" ["mobileVerification"]=> int(1) ["longitude"]=> float(0) ["latitude"]=> float(0) ["doneeName"]=> string(14) "Oshani Nimeshi" ["NIC"]=> string(12) "198835752589" ["age"]=> int(34) ["regNo"]=> NULL ["representative"]=> NULL ["representativeContact"]=> NULL ["capacity"]=> NULL ["communityCenterName"]=> string(10) "Wallawatta" } }
+        $retrievedData = $model->getDoneePersonalInfo($doneeID);
+        //        var_dump($personalInfo);
+        //        $personalInfo =  $model->getDoneePersonalInfo();
+        $personalInfo = $retrievedData[0];
+//        var_dump($personalInfo);
         ?>
-        <h><?php echo $doneeData[0]['doneeName'] ?></h>
-        <!-- check the donee type and use it in the name -->
-        <?php if ($doneeData[0]['type'] == 'Individual') { ?>
+        <div class="img-username-div">
 
-            <p class="profile-category">Individual</p>
+            <div class="profile-img">
+            </div>
+            <h2><?php echo $personalInfo['doneeName'] ?></h2>
+        </div>
+        <div class="form-grid-2-2">
+
+            <div class="form-group">
+                <label class="form-label"> Name </label>
+                <input class="basic-input-field" value="<?php echo $personalInfo['doneeName'] ?>" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="" class="form-label">Community Center</label>
+                <input type="text" class="basic-input-field" value="<?php echo $personalInfo['communityCenterName']; ?>" disabled>
+            </div>
+
             <?php
-        } else { ?>
-
-            <p class="profile-category">
-                Organization
-            </p>
-        <?php } ?>
-
-        <?php if ($doneeData[0]['type'] == 'Organization') { ?>
-            <h3 class="profile-org-rep">
-                <?php echo $doneeData[0]['representative'] ?>
-            </h3>
-            <p class="org-rep-label">
-                Representative
-            </p>
-            <?php
-        } ?>
-
-        <h3 class="profile-contact">
-            <?php echo $doneeData[0]['contactNumber'] ?>
-        </h3>
-
-        <p>Contact</p>
-
-        <h3 class="profile-email">
-            <?php echo $doneeData[0]['email'] ?>
-        </h3>
-
-        <p>Email</p>
-
-        <h3 class="profile-address">
-            <?php echo $doneeData[0]['address'] ?>
-        </h3>
-
-        <p>Address</p>
-
-        <h3 class="profile-cc">
-            <?php echo $doneeData[0]['communityCenterName'] ?>
-        </h3>
-
-        <p>Community Center</p>
-
-        <h3 class="profile-ver-status">
-            <?php
-            if ($doneeData[0]['verificationStatus'] == 1) {
-                echo "Verified";
-            } else {
-                echo "Not Verified";
-            }
-            ?>
-        </h3>
-
-        <p>Verification Status</p>
-
-        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>front.pdf" class="profile-view-docs"
-           target="_blank">
-            Front
-        </a>
-        <a href="/CommuSupport/src/donee/<?php echo $doneeID ?>back.pdf" class="profile-view-docs"
-           target="_blank">
-            Back
-        </a>
+            if ($personalInfo['type'] === 'Organization') {
+                ?>
+                <div class="form-group">
+                    <label class="form-label"> Representative </label>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['representative'] ?>" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="" class="form-label">Representive Contact</label>
+                    <input type="text" class="basic-input-field"
+                           value="<?php echo $personalInfo['representativeContact']; ?>" disabled>
+                </div>
+            <?php } ?>
+            <div class="form-group">
+                <label class="form-label">Contact Number</label>
+                <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" disabled>
+            </div>
+            <div class="form-group">
+                <label for="" class="form-label">Email Address</label>
+                <input type="text" class="basic-input-field"
+                       value="<?php echo $personalInfo['email']; ?>" disabled>
+            </div>
+        </div>
 
     </div>
     <div class="user-activity">
@@ -107,16 +84,56 @@ $doneeID = $_GET['doneeID'];
             User Activity
         </p>
         <div class="activity-scroller">
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
-            <div class="activity-card"></div>
+
+                <?php
+
+                $notificationIcon = [
+                    'event' => 'event',
+                    'directDonations' => 'local_shipping',
+                    'request' => 'local_shipping',
+                    'acceptedRequests' => 'local_shipping',
+                    'delivery' => 'local_shipping',
+                    'ccDonation' => 'local_shipping',
+                    'complaint' => 'report',
+                ];
+
+                $notifications = \app\models\notificationModel::getNotification(['userID' => $doneeID, 'usertype' =>  'donee']);
+
+                if (empty($notifications)) {
+                    echo "<h2 class='no-notification'> No notifications to show</h2>";
+                }
+
+                foreach ($notifications as $notification) {
+
+                    echo "<div class='profile-notif-card'>";
+                    echo "<div class='profile-notif-left-block'>";
+
+                    // title and the message
+                    echo "<div class='profile-notif-message'>";
+                    echo sprintf("<h4> %s </h4>",$notification['title']);
+                    echo sprintf("<p><small>%s</small></p>",$notification['message']);
+                    echo "</div>";
+
+                    // date and time
+                    echo "<div class='profile-notif-date-time'>";
+                    echo sprintf("<p class='date'>%s</p>",date('M d',strtotime($notification['dateCreated'])));
+                    echo sprintf("<p class='time'>%s</p>",date('g:i a',strtotime($notification['dateCreated'])));
+                    echo "</div>";
+
+                    echo "</div>";
+
+                    echo "<div class='profile-notif-right-block'>";
+
+                    // icon for related process
+                    echo    sprintf("<i class='material-icons'>%s</i>", $notificationIcon[$notification['related']]);
+
+                    echo "</div>";
+
+                    echo "</div>";
+
+                }
+
+                ?>
         </div>
     </div>
 </div>
