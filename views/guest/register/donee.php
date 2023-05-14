@@ -9,7 +9,7 @@
 /** @var $doneeOrganization \app\models\doneeOrganizationModel */
 
 $CHOs = \app\models\choModel::getCHOs();
-
+//
 //echo '<pre>';
 //var_dump($donee->errors);
 //echo '</pre>';
@@ -44,17 +44,17 @@ $CHOs = \app\models\choModel::getCHOs();
                     <?php $doneeForm->inputField($donee, 'Donee Type', 'text', 'type', 'doneeType'); ?>
                 </div>
 
-                <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'First Name', 'text', 'fname', 'firstname-input', 'Ex : Nimal'); ?>
+                <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'First Name', 'text', 'fname', 'Ex : Nimal', 'firstname-input'); ?>
 
                 <div id="#organization-name-block" style="display: none">
-                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Organization Name', 'text', 'organizationName', 'organizationName', 'Ex : Araliya Children\'s Home'); ?>
+                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Organization Name', 'text', 'organizationName', 'Ex : Araliya Children\'s Home', 'organizationName'); ?>
                 </div>
 
-                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Email', 'email', 'email', '', 'Ex : example@cms.com'); ?>
+                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Email', 'email', 'email', 'Ex : example@cms.com'); ?>
 
-                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Address', 'text', 'address', '', 'Ex : 12/3, Colombo Road, Colombo 07'); ?>
+                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Address', 'text', 'address', 'Ex : 12/3, Colombo Road, Colombo 07'); ?>
 
-                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Contact Number', 'text', 'contactNumber', '', 'No Spaces, 10 Numbers - Ex : 0771234567'); ?>
+                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Contact Number', 'text', 'contactNumber', 'No Spaces, 10 Numbers - Ex : 0771234567'); ?>
 
             </div>
 
@@ -62,11 +62,11 @@ $CHOs = \app\models\choModel::getCHOs();
 
                 <div id="individualForm">
 
-                    <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'Last Name', 'text', 'lname', '', 'Ex : Kumara'); ?>
+                    <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'Last Name', 'text', 'lname', 'Ex : Kumara'); ?>
 
                     <?php $doneeForm->inputField($doneeIndividual, 'Age', 'number', 'age'); ?>
 
-                    <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'NIC', 'text', 'NIC', '', '10 numbers - Ex : 1000897867'); ?>
+                    <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'NIC', 'text', 'NIC', '10 numbers - Ex : 1000897867'); ?>
 
                     <!--                    --><?php //$doneeForm->fileInput($donee, 'Upload your NIC Front', 'nicFront'); ?>
                     <!---->
@@ -75,13 +75,13 @@ $CHOs = \app\models\choModel::getCHOs();
 
                 <div id="organizationForm" style="display: none">
 
-                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Representative Name', 'text', 'representative', '', 'Ex : Araliya Fernando'); ?>
+                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Representative Name', 'text', 'representative', 'Ex : Araliya Fernando'); ?>
 
 
 
-                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Representative Contact', 'text', 'representativeContact', '', 'No Spaces, 10 Numbers - Ex : 0771234567077'); ?>
+                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Representative Contact', 'text', 'representativeContact', 'No Spaces, 10 Numbers - Ex : 0771234567077'); ?>
 
-                    <?php $doneeForm->inputField($doneeOrganization, 'Registration Number', 'text', 'regNo'); ?>
+                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Registration Number', 'text', 'regNo', 'Ex : WC99999 - 2 Letters and 5 Numbers'); ?>
                     <!---->
                     <!--                    --><?php //$doneeForm->fileInput($donee, 'Upload your registration certificate front', 'certificateFront'); ?>
                     <!---->
@@ -154,7 +154,7 @@ $CHOs = \app\models\choModel::getCHOs();
         </div>
         <div class="form-sections">
             <h2>User Account Creation</h2>
-<p>Create a unique and memorable Username and a strong password. This will be used to log you in.</p>
+            <p>Create a unique and memorable Username and a strong password. This will be used to log you in.</p>
             <ul>
                 <li>Password must be longer than 8 characters</li>
                 <li>Password must contain a Uppercase letter</li>
@@ -173,7 +173,7 @@ $CHOs = \app\models\choModel::getCHOs();
         </div>
         <div class="register-button-container">
             <?php $doneeForm->button('Accept Terms and Services & Register'); ?>
-            <a href="http://localhost/CommuSupport" class="btn-danger">Cancel Registration</a>
+            <a href="/CommuSupport/" class="btn-danger">Cancel Registration</a>
         </div>
     </div>
 

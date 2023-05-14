@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
+<link rel="stylesheet" href="../public/CSS/charts/charts.css">
 
 <?php
 
@@ -30,7 +31,7 @@ use app\models\donorModel;
         </div>
         <div class="edit-change-password">
             <p id="change-password"> Change Password <i class="material-icons">key</i></p>
-            <p> Edit Profile <i class="material-icons">edit_note</i></p>
+            <p id="edit-profile"> Edit Profile <i class="material-icons">edit_note</i></p>
         </div>
 
 
@@ -42,6 +43,8 @@ use app\models\donorModel;
             <div class="personal-details">
 
                 <?php if ($personalInfo['type'] === 'Individual') { ?>
+
+                    <input type="hidden" id="userType" value="donorIndividual">
 
                     <div class="form-group">
                         <label class="form-label"> First Name </label>
@@ -65,6 +68,8 @@ use app\models\donorModel;
 
                 <?php } else { ?>
 
+                    <input type="hidden" id="userType" value="donorOrganization">
+
                     <div class="form-group">
                         <label class="form-label"> Organization Name </label>
                         <input class="basic-input-field" value="<?php echo $personalInfo['fname'] ?>" disabled>
@@ -72,26 +77,26 @@ use app\models\donorModel;
 
                     <div class="form-group">
                         <label class="form-label"> Representative </label>
-                        <input class="basic-input-field" value="<?php echo $personalInfo['lname'] ?>" disabled>
+                        <input class="basic-input-field" value="<?php echo $personalInfo['lname'] ?>" id="representative" disabled>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label"> Representative Contact </label>
-                        <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" disabled>
+                        <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" id="representativeContact" disabled>
                     </div>
 
                 <?php } ?>
 
                 <div class="form-group">
                     <label class="form-label"> Contact Number </label>
-                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" disabled>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" id="contactNumber" disabled>
                 </div>
 
             </div>
 
             <div class="form-group description">
                 <label class="form-label"> Email </label>
-                <textarea class="basic-text-area" disabled>  <?php echo $personalInfo['email'] ?> </textarea>
+                <textarea class="basic-text-area" id="email" disabled>  <?php echo $personalInfo['email'] ?> </textarea>
             </div>
 
             <div class="form-group description">
@@ -125,9 +130,12 @@ use app\models\donorModel;
         <?php foreach ($donorStat as $key => $value) {
 
             // stat and the value
-            echo "<div class='stat'>";
-            echo "<h4 class='align-text-center'>{$key}</h4>";
-            echo "<h1 class='align-text-center'>{$value}</h1>";
+            echo "<div class='stat-card'>";
+            echo "<span class='stat-title'>{$key}</span>";
+            echo "<span class='stat-value'>{$value}</span>";
+            echo "<span class='stat-movement'>
+            <i class='material-icons'>arrow_downward</i>
+        </span>";
             echo "</div>";
 
         } ?>
@@ -193,4 +201,5 @@ use app\models\donorModel;
     </div>
 </div>
 <script type="module" src="../public/JS/changePassword.js"></script>
+<script type="module" src="../public/JS/editProfile.js"></script>
 

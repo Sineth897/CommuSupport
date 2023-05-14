@@ -273,7 +273,7 @@ class requestModel extends DbModel
         $stmnt = self::prepare("SELECT r.*,CONCAT(r.amount,' ',s.scale) AS amount,s.*,'category' AS categoryName
                                             FROM request r 
                                             INNER JOIN subcategory s ON r.item = s.subcategoryID 
-                                            WHERE r.postedBy = :doneeID");
+                                            WHERE r.postedBy = :doneeID AND r.approval != 'Cancelled'");
 
         // bind donee ID to the statement
         $stmnt->bindValue(':doneeID', $doneeID);
@@ -523,6 +523,17 @@ class requestModel extends DbModel
             $chartData[$row['categoryName']] = $row['count'];
         }
         return $chartData;
+    }
+
+    public function getRequestStats()
+    {
+        $sqltable01 = "SELECT 'request' as Name, COUNT(requestID) as count FROM request";
+        $sqltable02 = "SELECT 'acceptedrequest' as Name, COUNT(DISTINCT requestID) as count FROM acceptedrequest";
+
+        $statement = requestModel::prepare($sqltable01. " UNION ALL ". $sqltable02);
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+        return $result;
     }
 
 }

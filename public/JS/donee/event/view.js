@@ -3,7 +3,9 @@ import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import flash from "../../flashmessages/flash.js";
 import {PopUpFunctions} from "../../popup/popupFunctions.js";
-import togglePages from "../../togglePages";
+import togglePages from "../../togglePages.js";
+
+const toggle = new togglePages({btnId:'all',pageId:'eventDisplay'});
 
 let eventCards = document.getElementsByClassName('event-card');
 

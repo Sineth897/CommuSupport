@@ -12,9 +12,9 @@ use app\core\components\tables\table;
 
 <?php $profile = new \app\core\components\layout\profileDiv();
 
-$profile->notification();
-
 $profile->profile();
+
+$profile->notification();
 
 $profile->end(); ?>
 
@@ -36,7 +36,7 @@ $infoDiv->chartDivStart();
 //?>
 <div class="chart-container">
     <p>Event Categories</p>
-    <canvas id="itemChart" height="200%"></canvas>
+    <canvas id="itemChart" height="280px"></canvas>
 </div>
 <?php
 $chartData1 = $model->getEventbyCategory();
@@ -44,7 +44,6 @@ $chartData1 = $model->getEventbyCategory();
 ?>
 <script>
     const itemData = <?php echo json_encode($chartData1)?>;
-    console.log(itemData);
 
 </script>
 <script src="../public/JS/charts/admin/event/eventCategoryChart.js"></script>
@@ -57,8 +56,8 @@ $infoDiv->chartDivEnd();
 <!--Second Long Div with Bar Chart-->
 <?php $infoDiv->chartDivStart(); ?>
 <div class="chart-container">
-    <p>Event Categories</p>
-    <canvas id="totalChart" height="100%"></canvas>
+    <p>Event Participation by Categories</p>
+    <canvas id="totalChart" height="140px"></canvas>
 </div>
 <?php
 $categories = array_values($model->getEventCategories());
@@ -68,23 +67,30 @@ foreach ($categories as $category) { ?>
 
     <script>
         const <?php echo str_replace(' ', '_', $category); ?> = <?php echo json_encode($chartData2[$category]); ?>;
-        console.log(Blood_Donation);
     </script>
 <?php } ?>
 <script src="../public/JS/charts/admin/event/totalChart.js"></script>
 <?php
 $infoDiv->chartDivEnd();
 ?>
+
+<?php
+$statData = $model->getEventSums();
+?>
+
 <div class="stat-box-2-h">
     <div class="stat-card">
         <span class="stat-title">
            Finished Events
         </span>
         <span class="stat-value">
-            100
+<!--            --><?php
+//            var_dump($statData);
+            echo $statData['Finished'];
+//            ?>
         </span>
-        <span class="stat-movement dec">
-            <i class="material-icons">arrow_downward</i>10%
+        <span class="stat-movement">
+            <i class="material-icons">event_available</i>
         </span>
 
     </div>
@@ -93,11 +99,13 @@ $infoDiv->chartDivEnd();
             Upcoming Events
         </span>
         <span class="stat-value">
-            100
+<!--            --><?php
+            echo $statData['Upcoming'];
+//            ?>
 
         </span>
-        <span class="stat-movement inc">
-            <i class="material-icons">arrow_upward</i>10%
+        <span class="stat-movement">
+            <i class="material-icons">date_range</i>
         </span>
 
     </div>
@@ -130,7 +138,13 @@ $searchDiv->sortEnd();
 
 $searchDiv->filterDivEnd();
 
+echo "<div class='btn-together'>";
+
 $searchDiv->search();
+
+echo "<a class='btn-primary' href='./events/stats'>View event statistics</a>";
+
+echo "</div>";
 
 $searchDiv->end(); ?>
 

@@ -27,7 +27,7 @@ class unverifiedDoneeCard
     private function unverifiedDoneeCard($donee): void {
         echo "<div class='unver-user-card'>";
         echo "<div class='profile-section'>";
-        echo "<img src='https://s3.amazonaws.com/images.imvdb.com/video/812084549200-kenny-rogers-the-gambler_music_video_ov.jpg?v=2'
+        echo "<img src='/CommuSupport/public/src/icons/lockedDonee/lock_acc.jpg'
                  alt='Profile Picture'>";
         echo "<div class='action-buttons'>";
         echo sprintf("<button class='btn btn-primary verify' value='%s'>Verify</button>", $donee['doneeID']);

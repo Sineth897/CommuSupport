@@ -69,6 +69,10 @@ class postedRequestCard
         }
         echo sprintf("</div>");
 
+        echo sprintf("<div class='posted-rq-btns'>
+                <button class='btn-danger cancel-req' value='%s'>Cancel</button>
+            </div>", $request['requestID']);
+
         echo sprintf("</div>");
 
     }

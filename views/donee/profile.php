@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="../public/CSS/popup/popup-styles.css">
 <link rel="stylesheet" href="../public/CSS/profile/profile.css">
+<link rel="stylesheet" href="../public/CSS/charts/charts.css">
+
 
 <?php
 
@@ -20,18 +22,16 @@ use app\models\doneeModel;
 
 <div class="profile-container">
     <div class="profile">
-
-        <div class="edit-change-password">
-            <p id="change-password"> Change Password </p>
-            <i class="material-icons" id="edit-details">edit_note</i>
-        </div>
-
         <div class="img-username-div">
 
             <div class="profile-img">
             </div>
             <h1><?php echo $personalInfo['type'] === 'Individual'? $personalInfo['fname'] . " " . $personalInfo['lname'] : $personalInfo['fname'] ?></h1>
             <p class="user-type"><?php echo '@' . $personalInfo['username'] ?></p>
+        </div>
+        <div class="edit-change-password">
+            <p id="change-password"> Change Password <i class="material-icons">key</i></p>
+            <p id="edit-profile"> Edit Profile <i class="material-icons">edit_note</i></p>
         </div>
 
 <!--        each attribute is displayed as disabled input field-->
@@ -41,6 +41,8 @@ use app\models\doneeModel;
             <div class="personal-details">
 
                 <?php if($personalInfo['type'] === 'Individual')  { ?>
+
+                    <input type="hidden" id="userType" value="doneeIndividual">
 
                 <div class="form-group">
                     <label class="form-label"> First Name </label>
@@ -66,6 +68,9 @@ use app\models\doneeModel;
 
                 else {?>
 
+                    <input type="hidden" id="userType" value="doneeOrganization">
+
+
                     <div class="form-group">
                         <label class="form-label"> Organization Name </label>
                         <input class="basic-input-field" value="<?php echo $personalInfo['fname'] ?>" disabled>
@@ -73,12 +78,12 @@ use app\models\doneeModel;
 
                     <div class="form-group">
                         <label class="form-label"> Representative </label>
-                        <input class="basic-input-field" value="<?php echo $personalInfo['lname'] ?>" disabled>
+                        <input class="basic-input-field" value="<?php echo $personalInfo['lname'] ?>" id="representative" disabled>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label"> Representative Contact </label>
-                        <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" disabled>
+                        <input class="basic-input-field" value="<?php echo $personalInfo['NIC'] ?>" id="representativeContact" disabled>
                     </div>
 
                     <div class="form-group">
@@ -90,14 +95,14 @@ use app\models\doneeModel;
 
                 <div class="form-group">
                     <label class="form-label"> Contact Number </label>
-                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" disabled>
+                    <input class="basic-input-field" value="<?php echo $personalInfo['contactNumber'] ?>" id="contactNumber" disabled>
                 </div>
 
             </div>
 
             <div class="form-group description">
                 <label class="form-label"> Email </label>
-                <textarea class="basic-text-area"  disabled>  <?php echo $personalInfo['email']?> </textarea>
+                <textarea class="basic-text-area" id="email" disabled>  <?php echo $personalInfo['email']?> </textarea>
             </div>
 
             <div class="form-group description">
@@ -132,12 +137,15 @@ use app\models\doneeModel;
         <?php foreach ($doneeStat as $key => $value) {
 
             // stat and the value
-            echo "<div class='stat'>";
-            echo "<h4 class='align-text-center'>{$key}</h4>";
-            echo "<h1 class='align-text-center'>{$value}</h1>";
+            echo "<div class='stat-card'>";
+            echo "<span class='stat-title'>{$key}</span>";
+            echo "<span class='stat-value'>{$value}</span>";
+            echo "<span class='stat-movement'>
+            <i class='material-icons'>arrow_downward</i>
+        </span>";
             echo "</div>";
 
-        }?>
+        } ?>
 
     </div>
     <div class="profile-notifications">
@@ -157,6 +165,10 @@ use app\models\doneeModel;
                                 ];
 
             $notifications = \app\models\notificationModel::getNotification(['userID' => $_SESSION['user'], 'usertype' =>  $_SESSION['userType']]);
+
+            if (empty($notifications)) {
+                echo "<h2 class='no-notification'> No notifications to show</h2>";
+            }
 
             foreach ($notifications as $notification) {
 
@@ -197,3 +209,4 @@ use app\models\doneeModel;
 </div>
 
 <script type="module" src="../public/JS/changePassword.js"></script>
+<script type="module" src="../public/JS/editProfile.js"></script>

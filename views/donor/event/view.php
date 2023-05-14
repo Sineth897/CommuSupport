@@ -5,7 +5,7 @@
 
 /** @var $model \app\models\eventModel */
 
-$events = $model->getAllUpcominAndActiveEvents();
+$events = $model->getAllUpcomingAndActiveEvents();
 
 ?>
 
@@ -66,7 +66,7 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class='content'>
+<div class='content card-container'>
     <?php
     $eventCards = new \app\core\components\cards\eventcard();
     $eventCards->displayEvents($events);
