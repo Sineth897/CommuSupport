@@ -44,13 +44,13 @@ $CHOs = \app\models\choModel::getCHOs();
                     <?php $doneeForm->inputField($donee, 'Donee Type', 'text', 'type', 'doneeType'); ?>
                 </div>
 
-                <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'First Name', 'text', 'fname', 'Ex : Nimal' ,'firstname-input'); ?>
+                <?php $doneeForm->inputFieldwithPlaceholder($doneeIndividual, 'First Name', 'text', 'fname', 'Ex : Nimal', 'firstname-input'); ?>
 
                 <div id="#organization-name-block" style="display: none">
-                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Organization Name', 'text', 'organizationName','Ex : Araliya Children\'s Home', 'organizationName'); ?>
+                    <?php $doneeForm->inputFieldwithPlaceholder($doneeOrganization, 'Organization Name', 'text', 'organizationName', 'Ex : Araliya Children\'s Home', 'organizationName'); ?>
                 </div>
 
-                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Email', 'email', 'email', 'Ex : example@cms.com' ); ?>
+                <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Email', 'email', 'email', 'Ex : example@cms.com'); ?>
 
                 <?php $doneeForm->inputFieldwithPlaceholder($donee, 'Address', 'text', 'address', 'Ex : 12/3, Colombo Road, Colombo 07'); ?>
 
@@ -154,7 +154,7 @@ $CHOs = \app\models\choModel::getCHOs();
         </div>
         <div class="form-sections">
             <h2>User Account Creation</h2>
-<p>Create a unique and memorable Username and a strong password. This will be used to log you in.</p>
+            <p>Create a unique and memorable Username and a strong password. This will be used to log you in.</p>
             <ul>
                 <li>Password must be longer than 8 characters</li>
                 <li>Password must contain a Uppercase letter</li>

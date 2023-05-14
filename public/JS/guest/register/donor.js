@@ -21,6 +21,7 @@ district.addEventListener('change', function() {
     if(activeCity !== '') {
         show(citySelectDivs[activeCity]);
         citySelect[activeCity].removeAttribute("disabled");
+        document.getElementById('city-placeholder').style.display = "none";
     }
 });
 
@@ -34,6 +35,21 @@ individual.addEventListener('click', function() {
     individual.classList.add('active-heading-page');
     organization.classList.remove('active-heading-page');
     donorType.value = "Individual";
+    (document.getElementById('firstname-input').parentNode).style.display = "flex";
+    document.getElementById('#organization-name-block').style.display = "none";
+    document.getElementById('nicFront').style.display = "block";
+    document.getElementById('nicBack').style.display = "block";
+
+    var elements = document.getElementsByClassName('cert-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'none';
+    }
+
+
+    elements = document.getElementsByClassName('nic-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'block';
+    }
 });
 
 organization.addEventListener('click', function() {
@@ -42,6 +58,19 @@ organization.addEventListener('click', function() {
     individual.classList.remove('active-heading-page');
     organization.classList.add('active-heading-page');
     donorType.value = "Organization";
+
+    (document.getElementById('firstname-input').parentNode).style.display = "none";
+    document.getElementById('#organization-name-block').style.display = "block";
+
+    var elements = document.getElementsByClassName('cert-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'block';
+    }
+
+    elements = document.getElementsByClassName('nic-div-org');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].style.display = 'none';
+    }
 });
 
 function prepareDistrictOptionArray() {
