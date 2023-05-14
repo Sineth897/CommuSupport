@@ -43,7 +43,7 @@ class ccModel extends DbModel
             "contactNumber" => [self::$REQUIRED, [self::$UNIQUE, 'class' => self::class],self::$CONTACT],
             'longitude' => [self::$REQUIRED, self::$LONGITUDE],
             'latitude' => [self::$REQUIRED, self::$LATITUDE],
-            'cho' => [self::$REQUIRED,],
+            'cho' => [self::$REQUIRED],
 
         ];
     }

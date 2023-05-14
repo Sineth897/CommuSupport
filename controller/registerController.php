@@ -219,11 +219,13 @@ class registerController extends Controller
     protected function registerCC(Request $request, Response $response)
     {
         $cc = new \app\models\ccModel();
-
+        $choID = \app\core\Application::session()->get('user');
+        $_POST['cho']=$choID;
 
         if ($request->isPost()) {
             $cc->getData($request->getBody());
             if ($cc->validate($request->getBody())) {
+
                 if ($cc->save()) {
                     $this->setFlash('success', 'Community Center Registered successfully');
                     $cc->reset();
@@ -231,6 +233,7 @@ class registerController extends Controller
                     $this->setFlash('Error', 'Unable to save on database');
                 }
             } else {
+
                 $this->setFlash('Error', 'Validation failed');
             }
         }
