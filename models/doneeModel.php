@@ -285,7 +285,6 @@ class doneeModel extends DbModel
         return $result;
     }
 
-
     public function getDoneeStats()
     {
         $sql = "SELECT verificationStatus, COUNT(*) as count FROM donee group by verificationStatus";
@@ -294,6 +293,4 @@ class doneeModel extends DbModel
         $result = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
         return $result;
     }
-
-
 }
