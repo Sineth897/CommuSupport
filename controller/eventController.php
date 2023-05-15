@@ -61,11 +61,11 @@ class eventController extends Controller
         if($request->isPost()) {
             $model->getData($request->getBody());
             if($model->validate($request->getBody()) && $model->save()) {
-                $this->setFlash('success', 'Event created successfully');
+//                $this->setFlash('success', 'Event created successfully');
                 $model->reset();
             }
             else {
-                $this->setFlash('error', 'Event creation failed');
+//                $this->setFlash('error', 'Event creation failed');
             }
         }
 
@@ -117,10 +117,18 @@ class eventController extends Controller
         $filters = $request->getJsonData()['filters'];
         $sortBy = $request->getJsonData()['sortBy'];
 //        $filters['!eventStatus'] = 'Cancelled';
+
+//        $sql = "SELECT * FROM event e INNER JOIN eventcategory e2 on e2.eventCategoryID = e.eventCategoryID WHERE status IN ('Active','Upcoming')";
         $events = $model->retrieve($filters,$sortBy);
+
+        $events = array_filter($events, function($event) {
+            return $event['status'] === 'Upcoming' ||  $event['status'] === 'Active';
+        });
+
         $categoryIcons = eventModel::getEventCategoryIcons();
         $this->sendJson([
             'event' => $events,
+//            'test' => $events,
             'icons' => $categoryIcons
         ]);
     }

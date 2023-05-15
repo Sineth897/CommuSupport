@@ -12,6 +12,8 @@
 
 $CHOs = \app\models\choModel::getCHOs();
 
+//print_r($donorIndividual->errors);
+
 ?>
 
 <div class="background">

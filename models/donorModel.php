@@ -100,7 +100,7 @@ class donorModel extends DbModel
      */
     private function saveIndividualDonor($data): bool {
         try {
-            $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','fname','lname','nic','age','username','password','longitude','latitude'];
+            $cols = ['donorID', 'ccID', 'registeredDate', 'email', 'address', 'contactNumber', 'type','fname','lname','NIC','age','username','password','longitude','latitude'];
             $params = array_map((fn($attr) => ":$attr"), $cols);
             $sql = "CALL insertDonorIndividual(" . implode(',', $params) . ")";
             echo $sql;

@@ -120,6 +120,8 @@ filterBtn.addEventListener('click', async function() {
 
     let array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
 
+    // console.log(array);
+
     filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);
     updateEventCardOnClick();

@@ -41,13 +41,15 @@ class registerController extends Controller
                 try {
                     $this->startTransaction();
                     if ($driver->save()) {
-                        $this->setFlash('success', 'Driver registered successfully');
+//                        $this->setFlash('success', 'Driver registered successfully');
+                        $response->redirect('/manager/drivers');
                         $driver->reset();
                         $user->reset();
                     }
                     $this->commitTransaction();
                 } catch (\Exception $e) {
                     $this->rollbackTransaction();
+//                    echo $e->getMessage();
                     $this->setFlash('error', 'Unable to save on database');
                 }
             } else {

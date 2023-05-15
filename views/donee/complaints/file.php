@@ -49,10 +49,11 @@ $headerDiv->end();
             <label for="" class="form-label">
                 Item
             </label>
-            <input  class="basic-input-field" type="text" value="<?php echo $requests[0]['item']?>" disabled>
+            <input  class="basic-input-field" type="text" value="<?php echo $requests[0]['subcategoryName']?>" disabled>
 
         </div>
 
+<!--        --><?php //print_r($requests)?>
 
         <div class="form-group">
             <label for="" class="form-label">

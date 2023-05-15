@@ -134,7 +134,7 @@ async function showDriverPopup(e) {
 
     const result = await getData('./driver/popup', 'POST', {employeeID:employeeID});
 
-    // console.log(result);
+    console.log(result);
 
     if(!result['status']) {
         flash.showMessage({type:'error', value:result['msg']});

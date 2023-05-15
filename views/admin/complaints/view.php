@@ -18,7 +18,7 @@ catch(\Exception $e){
     echo $e->getMessage();
 }
 
-
+//var_dump($complaint);
 
 ?>
 
@@ -64,14 +64,6 @@ $searchDiv->end();
 
 ?>
 
-<?php
-$checkVerification = new \app\core\components\layout\verificationDiv();
-
-if($checkVerification->notVerified()) {
-    return;
-}
-?>
-
 
 
 
@@ -83,7 +75,7 @@ if($checkVerification->notVerified()) {
 
     <?php
     $headers = ['Complaint','Filed Date','Subject','Status','Solution','Reviewed Date'];
-    $arrayKeys = ['complaint','filedDate','subcategoryName','status','solution','reviewedDate'];
+    $arrayKeys = ['complaint','filedDate','subject','status','solution','reviewedDate'];
 
 
     $complaintsTable = new table($headers,$arrayKeys);

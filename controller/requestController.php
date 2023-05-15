@@ -237,12 +237,12 @@ class requestController extends Controller
                     break;
             }
             $this->sendJson([
-                'success' => true
+                'status' => true
             ]);
         }
         catch (\PDOException $e) {
             $this->rollbackTransaction();
-            $this->sendJson($e->getMessage());
+            $this->sendJson(['status' => 0,$e->getMessage()]);
         }
     }
 
@@ -255,6 +255,8 @@ class requestController extends Controller
         $this->sendSMSByUserID('Your request has been approved. You can view. request details under active requests page',$requestmodel->postedBy);
 
         $this->commitTransaction();
+
+
     }
 
     private function rejectRequest($data) {

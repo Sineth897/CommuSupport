@@ -82,7 +82,7 @@ document.getElementById('confirmDonation').addEventListener('click', async funct
     if(result['status']) {
         flash.showMessage({type: 'success', value: result['msg']},5000);
         hide(donationDiv);
-        resetInputs();
+        // resetInputs();
         filterBtn.click();
     }
     else {
@@ -107,10 +107,10 @@ function validateDonation() {
     return true;
 }
 
-function resetInputs() {
-    activeSubcategory.value = '';
-    category.value = '';
-    amount.value = '';
-}
+// function resetInputs() {
+//     // activeSubcategory.value = '';
+//     category.value = '';
+//     amount.value = '';
+// }
 
 

@@ -168,7 +168,8 @@ let approveFun = async (e) => {
     else {
         let requestData = {requestID:btn.value};
         let result = await getData('./request/approve', 'POST', {do:'approve',data:requestData});
-        if(result['status']) {
+        console.log(result);
+        if(!result['status']) {
             // console.log('updated');
             flash.showMessage({type:'error',value:'Unable to Approve the request. Try again later.'});
         } else {
@@ -212,10 +213,12 @@ let rejectFun = async (e) => {
         let requestData = {requestID: e.target.value,rejectedReason: document.getElementById('rejectedReason').querySelector('textarea').value};
         let result = await getData('./request/approve', 'POST', {do:'reject',data:requestData});
         if(result['status']) {
-            console.log('updated');
+            // console.log('updated');
+            flash.showMessage({type:'success',value:'Request Rejected Successfully'});
         }
         else {
-            console.log(result);
+            // console.log(result);
+            flash.showMessage({type:'error',value:'Unable to Reject the request. Try again later.'});
         }
         popUpRequest.hidePopUp();
     }

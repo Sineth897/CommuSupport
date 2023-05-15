@@ -57,8 +57,10 @@ async  function showDeliveryPopUp(e) {
 
     // if no error, get data from the response
     let deliveryData = result['data']
-    let drivers = result['drivers'];
+    let drivers = result['drivers']
     const addresses = result['addresses'];
+
+    // console.log(drivers);
 
     // update deliveryData with start and end addresses
     deliveryData['startAddress'] = addresses[deliveryData['start']];
@@ -209,6 +211,7 @@ async function assignDriver(e) {
 
     // get the selected driver div
     const selectedDriverDiv = document.getElementById('driverScroller').querySelector('div.selected');
+    // console.log(selectedDriverDiv);
 
     // get the distance to be saved along with subdelivery
     const distance = parseFloat(document.getElementById('distance').innerHTML.split(' ')[0]);

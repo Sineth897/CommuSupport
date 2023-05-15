@@ -9,6 +9,7 @@ use app\core\Response;
 use app\models\complaintModel;
 use app\models\donationModel;
 use app\models\notificationModel;
+use mysql_xdevapi\Exception;
 
 class complaintController extends Controller
 {
@@ -52,7 +53,7 @@ class complaintController extends Controller
 
             if($model->validate($request->getBody()) && $model->save()){
                 $this->setFlash("result",'Complaint submitted');
-                $response->redirect('/donor/complaints');
+                $response->redirect("donor/complaints/");
                 $model->reset();
             }
             else {
@@ -70,11 +71,11 @@ class complaintController extends Controller
 
         if($deliveryStatus==='Ongoing'){
 
-            notificationModel::setNotification("Didn't received donation. Check your log. ","Not arrived yet",$driver,"donor","complaint",$donationID);
+//            notificationModel::setNotification("Didn't receive yet. Check my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
 
         }
         else{
-            notificationModel::setNotification("Please send my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
+//            notificationModel::setNotification("Please send my donation ","Not arrived yet",$driver,"donor","complaint",$donationID);
 
         }
         $process=$_GET['process'];
@@ -105,15 +106,21 @@ class complaintController extends Controller
         {
             $model->getData($request->getBody());
 
-            if($model->validate($request->getBody()) && $model->save())
-            {
-                $this->setFlash('result','Complaint submitted');
-                $response->redirect('/donor/complaints');
-                $model->reset();
-            }
-            else {
+            try {
+                if($model->validate($request->getBody()) && $model->save())
 
-                $this->setFlash('result', 'Complaint failed to submitted');
+                {
+                    $this->setFlash('result','Complaint submitted');
+                    $response->redirect('/donor/complaints');
+                    $model->reset();
+                }
+                else {
+
+                    $this->setFlash('result', 'Complaint failed to submitted');
+                }
+            }
+            catch (Exception $e) {
+                echo $e->getMessage();
             }
         }
 
@@ -146,7 +153,6 @@ class complaintController extends Controller
                     $model->submitSolution($model->solution,$model->complaintID);
                     notificationModel::setNotification("Complaint reviewed. Check Complaints page for solution ","Solution",$model->filedBy,"","complaint",$model->complaintID);
                     $this->setFlash('result','Solution Added');
-                    $response->redirect('/cho/complaints');
                 }
                 else{
                     $model->addError('solution','No solution has filed');
@@ -185,9 +191,7 @@ class complaintController extends Controller
             if($model->validate($request->getBody()) && $model->save())
             {
                 $this->setFlash('result','Complaint submitted');
-
                 $model->reset();
-
             }
             else {
 

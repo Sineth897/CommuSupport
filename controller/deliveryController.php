@@ -79,7 +79,7 @@ class deliveryController extends Controller
 
         $drivers = driverModel::getAllData(['ccID' => $user->ccID]);
 
-        $sql2 = "SELECT deliveredBy,COUNT(*) as count FROM subdelivery WHERE deliveredBy IN (SELECT employeeID FROM driver WHERE ccID = :ccID) AND status = 'Ongoing'";
+        $sql2 = "SELECT deliveredBy,COUNT(*) as count FROM subdelivery WHERE deliveredBy IN (SELECT employeeID FROM driver WHERE ccID = :ccID) AND status = 'Ongoing' GROUP BY deliveredBy";
         $stmt2 = deliveryModel::prepare($sql2);
         $stmt2->bindValue(':ccID',$user->ccID);
         $stmt2->execute();
@@ -117,7 +117,7 @@ class deliveryController extends Controller
                 $this->sendSMSbyuserID("Your delivery has been assigned to a driver. Please check your dashboard for more details",$subdelivery['end']);
                 $this->setNotification('Expect delivery to be delivered very soon.','Your delivery has been assigned to a driver.',$subdelivery['end'],'',$data['related'],$data['processID']);
             }
-
+            $this->rollbackTransaction();
             $this->commitTransaction();
             $this->sendJson(['status' => 1, 'message' => 'Delivery Assigned Successfully',]);
         }

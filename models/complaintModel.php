@@ -56,10 +56,16 @@ class complaintModel extends DbModel
         $this->complaintID = substr(uniqid('complaint', true), 0, 23);
         $this->filedBy=$_SESSION['user'];
 
+        if($_SESSION['userType'] === 'donor') {
             $this->choID = $this->getchoIDofDonor($_SESSION['user']);
         }
+        else {
+            $this->choID = $this->getChoIDofDonee($_SESSION['user']);
+        }
+
+        }
         catch (Exception $e) {
-            echo 'aul';
+//            echo $e->getMessage();
         }
 
         return parent::save();
@@ -71,6 +77,13 @@ class complaintModel extends DbModel
     {
         $statement = self::prepare("SELECT c.cho from communitycenter c INNER JOIN donor d ON c.ccID = d.ccID WHERE d.donorID=:donorID LIMIT 1");
         $statement->bindValue(':donorID', $donorID);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_COLUMN);
+    }
+
+    private function getChoIDofDonee($doneeID) {
+        $statement = self::prepare("SELECT c.cho from communitycenter c INNER JOIN donee d ON c.ccID = d.ccID WHERE d.doneeID=:doneeID LIMIT 1");
+        $statement->bindValue(':doneeID', $doneeID);
         $statement->execute();
         return $statement->fetch(\PDO::FETCH_COLUMN);
     }
