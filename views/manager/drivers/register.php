@@ -6,13 +6,14 @@
 ?>
 
 <?php
-    echo '<pre>';
-    if(empty(\app\core\Application::session()->getFlash('success'))) {
-        print_r(\app\core\Application::session()->getFlash('error'));
-    } else if(empty(\app\core\Application::session()->getFlash('error'))) {
-        print_r(\app\core\Application::session()->getFlash('success'));
-    }
-    echo '</pre>';
+//    echo '<pre>';
+//    if(empty(\app\core\Application::session()->getFlash('success'))) {
+//        print_r(\app\core\Application::session()->getFlash('error'));
+//    } else if(empty(\app\core\Application::session()->getFlash('error'))) {
+//        print_r(\app\core\Application::session()->getFlash('success'));
+//    }
+//    echo '</pre>';
+
 ?>
 
 <?php $profile = new \app\core\components\layout\profileDiv();
@@ -31,9 +32,9 @@ $headerDiv->heading("Register a Driver");
 $headerDiv->end();
 ?>
 
+<div class="content">
 
-
-<?php $driverRegistrationForm = \app\core\components\form\form::begin('','post') ?>
+    <?php $driverRegistrationForm = \app\core\components\form\form::begin('','post') ?>
 
     <div class="form-split" >
 
@@ -81,31 +82,37 @@ $headerDiv->end();
 
     </div>
 
-<div class="form-split">
+    <div class="form-split">
 
-    <div>
-        <?php $driverRegistrationForm->inputField($driver, "License Number",'text','licenseNo') ?>
+        <div>
+            <?php $driverRegistrationForm->inputField($driver, "License Number",'text','licenseNo') ?>
 
-        <?php $driverRegistrationForm->inputField($driver, "Address",'text','address') ?>
+            <?php $driverRegistrationForm->inputField($driver, "Address",'text','address') ?>
 
-        <?php $driverRegistrationForm->inputField($driver, "Contact Number",'text','contactNumber') ?>
+            <?php $driverRegistrationForm->inputField($driver, "Contact Number",'text','contactNumber') ?>
+        </div>
+
+        <div>
+            <?php $driverRegistrationForm->inputField($user, "Username",'text','username') ?>
+
+            <?php $driverRegistrationForm->inputField($user, "Password",'password','password') ?>
+
+            <?php $driverRegistrationForm->inputField($user, "Confirm Password",'password','confirmPassword') ?>
+
+        </div>
+
+        <div>
+            <?php $driverRegistrationForm->button('Register') ?>
+        </div>
+
+
     </div>
 
-    <div>
-        <?php $driverRegistrationForm->inputField($user, "Username",'text','username') ?>
 
-        <?php $driverRegistrationForm->inputField($user, "Password",'password','password') ?>
 
-    </div>
-
-    <div>
-        <?php $driverRegistrationForm->button('Register') ?>
-    </div>
+    <?php $driverRegistrationForm::end();?>
 
 
 </div>
 
-
-
-<?php $driverRegistrationForm::end();?>
 

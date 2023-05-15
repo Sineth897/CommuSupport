@@ -49,6 +49,7 @@ class ccDonationController extends Controller
                     $this->setFlash("success","Donation created successfully");
                     $model->reset();
                     $_POST['category'] = "";
+                    $response->redirect('/logistic/CCdonations');
                 }
                 else {
                     $this->setFlash("error","Data validation failed");

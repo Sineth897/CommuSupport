@@ -168,6 +168,7 @@ let approveFun = async (e) => {
     else {
         let requestData = {requestID:btn.value};
         let result = await getData('./request/approve', 'POST', {do:'approve',data:requestData});
+        console.log(result);
         if(!result['status']) {
             // console.log('updated');
             flash.showMessage({type:'error',value:'Unable to Approve the request. Try again later.'});

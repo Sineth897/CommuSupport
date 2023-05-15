@@ -255,6 +255,8 @@ class requestController extends Controller
         $this->sendSMSByUserID('Your request has been approved. You can view. request details under active requests page',$requestmodel->postedBy);
 
         $this->commitTransaction();
+
+
     }
 
     private function rejectRequest($data) {

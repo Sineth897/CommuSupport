@@ -1,4 +1,4 @@
-import {getData} from "../../request.js";
+import {getData, getTextData} from "../../request.js";
 import {displayEventcards} from "../../components/eventcard.js";
 import {PopUp} from "../../popup/popUp.js";
 import flash from "../../flashmessages/flash.js";
@@ -88,10 +88,6 @@ let markParticipation = async (e) => {
 let filterOptions = document.getElementById('filterOptions');
 document.getElementById('filter').addEventListener('click', function(e) {
 
-    if(e.target !== this) {
-        return;
-    }
-
     if(filterOptions.style.display === 'block') {
         filterOptions.style.display = 'none';
     } else {
@@ -123,7 +119,9 @@ filterBtn.addEventListener('click', async function() {
         sort['DESC'] = ['date'];
     }
 
-    let array = await getData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+    let array = await getTextData('./event/filter', 'POST', {filters:filterValues, sortBy:sort});
+
+    console.log(array);
 
     filterOptions.style.display = 'none';
     displayEventcards(eventsDiv,array);

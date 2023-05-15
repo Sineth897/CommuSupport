@@ -117,10 +117,13 @@ class eventController extends Controller
         $filters = $request->getJsonData()['filters'];
         $sortBy = $request->getJsonData()['sortBy'];
 //        $filters['!eventStatus'] = 'Cancelled';
+
+        $sql = "SELECT * FROM event e INNER JOIN eventcategory e2 on e2.eventCategoryID = e.eventCategoryID WHERE status IN ('Active','Upcoming')";
         $events = $model->retrieve($filters,$sortBy);
         $categoryIcons = eventModel::getEventCategoryIcons();
         $this->sendJson([
             'event' => $events,
+            'test' => eventModel::runCustomQuery($sql,$filters,$sortBy),
             'icons' => $categoryIcons
         ]);
     }

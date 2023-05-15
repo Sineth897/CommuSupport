@@ -63,7 +63,8 @@ echo "<div class='btn-together'>";
 
 $searchDiv->search();
 
-echo  "<button class='btn-primary'> Register a driver </button>
+echo  "
+    <a class='btn-primary' href='./drivers/register'> Register a Driver </a>
     <a class='btn-primary' href='./drivers/stat'> View Driver Statistics </a>
 </div>";
 
