@@ -66,7 +66,7 @@ $creatEvent->end();
 $searchDiv->end();
 ?>
 
-<div class='content card-container'>
+<div class='content card-container' id="eventDisplay">
     <?php
     $eventCards = new \app\core\components\cards\eventcard();
     $eventCards->displayEvents($events);

@@ -6,13 +6,16 @@ let participationIcon = "/CommuSupport/public/src/icons/event/participants.svg";
 function displayEventcards(eventsDiv,array) {
     eventIcons = array['icons'];
     eventsDiv.innerHTML = '';
-    if(array['event'].length === 0) {
+    const events = array['event'];
+    // console.log(events);
+    if(Object.keys(events).length === 0) {
         // no events to display
         eventsDiv.innerHTML = '';
     }
     else {
-        array['event'].forEach( function (event) {
-            eventsDiv.append(eventCard(event));
+        const keys = Object.keys(events);
+        keys.forEach( function (key) {
+            eventsDiv.append(eventCard(events[key]));
         });
     }
 }
